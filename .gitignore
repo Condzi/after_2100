@@ -9,4 +9,4 @@ intermediate/
 dependencies/sfml
 dependencies/nlohmann
 dependencies/spdlog
-game/log.txt
+log.txt

@@ -95,12 +95,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="source\framework\common\assertions.hpp" />
+    <ClInclude Include="source\framework\common\debug_log.hpp" />
+    <ClInclude Include="source\framework\common\rgba.hpp" />
+    <ClInclude Include="source\framework\common\vec2.hpp" />
     <ClInclude Include="source\pch.hpp">
       <SubType>
       </SubType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\framework\common\assertions.cpp" />
+    <ClCompile Include="source\framework\common\debug_log.cpp" />
+    <ClCompile Include="source\framework\common\rgba.cpp" />
+    <ClCompile Include="source\framework\common\vec2.cpp" />
+    <ClCompile Include="source\main.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\pch.cpp">
       <SubType>
       </SubType>
