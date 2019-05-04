@@ -51,4 +51,6 @@ public:
 
 	friend std::ostream& operator<<( std::ostream& out, Vec2 const& vec );
 };
+
+using Point = Vec2;
 }
