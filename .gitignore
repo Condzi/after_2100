@@ -1,0 +1,12 @@
+*.pdb
+*.filters
+*.lib
+*.dll
+
+.vs/
+bin/
+intermediate/
+dependencies/sfml
+dependencies/nlohmann
+dependencies/spdlog
+game/log.txt
