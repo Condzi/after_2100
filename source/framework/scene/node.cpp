@@ -1,0 +1,228 @@
+/*
+	Conrad 'Condzi' Kubacki 2019
+	https://github.com/condzi
+*/
+
+#include "pch.hpp"
+
+#include "framework/scene/node.hpp"
+#include "framework/common/assertions.hpp"
+
+namespace con
+{
+void Node::rotate( r32 deg, bool affect_children )
+{
+	set_rotation( get_rotaton() + deg, affect_children );
+}
+
+void Node::set_rotation( r32 deg, bool affect_children )
+{
+	angle = deg - 360 * ( static_cast<s32>( deg ) % 360 );
+
+	if ( affect_children )
+		for ( auto& child : child_nodes )
+			child->set_rotation( deg, true );
+}
+
+void Node::set_scale( Size2 const& scale_, bool affect_children )
+{
+	scale = scale_;
+
+	if ( affect_children )
+		for ( auto& child : child_nodes )
+			child->set_scale( scale_, true );
+}
+
+void Node::apply_scale( Size2 const& scale_, bool affect_children )
+{
+	set_scale( get_scale() * scale_ );
+
+	if ( affect_children )
+		for ( auto& child : child_nodes )
+			child->apply_scale( scale_, true );
+}
+
+void Node::set_pause( bool val, bool affect_children )
+{
+	paused = val;
+
+	if ( affect_children )
+		for ( auto& child : child_nodes )
+			child->set_pause( val, true );
+}
+
+void Node::queue_for_delete()
+{
+	queued_for_delete = true;
+}
+
+void Node::remove_queued_for_delete()
+{
+	child_nodes.erase( std::remove_if( child_nodes.begin(), child_nodes.end(),
+					   []( auto const& child ) { return child->queued_for_delete; } ),
+					   child_nodes.end() );
+
+	for ( auto& child : child_nodes )
+		child->remove_queued_for_delete();
+}
+
+void Node::update_children( r32 dt )
+{
+	if ( not paused )
+		update( dt );
+
+	for ( auto& child : child_nodes )
+		child->update_children( dt );
+}
+
+void Node::handle_input_children( sf::Event const& event )
+{
+	if ( not paused )
+		handle_input( event );
+
+	for ( auto& child : child_nodes )
+		child->handle_input_children( event );
+}
+
+auto Node::get_local_position() const -> Point const&
+{
+	report_warning_if( parent_node is nullptr )
+	{
+		engine_log_warning( "Can't return local position if there is no parent. Returning (0,0)." );
+		return {};
+	}
+
+	return position - parent_node->position;
+}
+
+auto Node::attach( Ptr&& node_to_attach ) -> Node *const
+{
+	report_error_if( node_to_attach is nullptr )
+	{
+		engine_log_error( "Given node is empty, can't attach." );
+		return nullptr;
+	}
+
+	calculation_constant is_already_attached = std::find( child_nodes.begin(), child_nodes.end(), node_to_attach ) != child_nodes.end();
+	report_error_if( is_already_attached )
+	{
+		engine_log_error( "Given node is already attached, can't attach again." );
+		return nullptr;
+	}
+
+	report_error_if( node_to_attach->parent_node )
+	{
+		engine_log_error( "Given node has a parent already." );
+		return nullptr;
+	}
+
+	node_to_attach->parent_node = this;
+	Node *const return_value = node_to_attach.get();
+	child_nodes.emplace_back() = change_owner( node_to_attach );
+
+	return return_value;
+}
+
+auto Node::get_parent() -> Node *const
+{
+	return parent_node;
+}
+
+auto Node::get_node( std::string path ) -> Node* const
+{
+	report_error_if( path.empty() )
+	{
+		return nullptr;
+	}
+
+	// @TODO: Implement, when we have Root class.
+	if ( string_begins_with( path, "root/" ) )
+		pass;
+
+	Node* current_node{ nullptr };
+	std::string name_to_look;
+	bool search_for_node{ true };
+
+	auto concatenate_next_name = [&]() {
+		calculation_constant slash_position = path.find( '/' );
+		if ( slash_position == std::string::npos ) {
+			search_for_node = false;
+			return;
+		}
+
+		name_to_look = path.substr( 0, slash_position );
+		path = path.substr( slash_position+1 );
+	};
+
+	while ( search_for_node ) {
+		concatenate_next_name();
+
+		if ( auto it = std::find_if( child_nodes.begin(), child_nodes.end(),
+			 [&name_to_look]( auto const& ptr ) {
+			return ptr->name == name_to_look;
+		} ); it != child_nodes.end() ) {
+
+			current_node = it->get();
+		} else
+			return nullptr;
+	}
+
+	return current_node;
+}
+
+auto Node::get_global_position() const -> Point const&
+{
+	return position;
+}
+
+auto Node::get_rotaton() const -> r32
+{
+	return angle;
+}
+
+auto Node::is_paused() const -> bool
+{
+	return paused;
+}
+
+auto Node::is_queued_for_delete() const -> bool
+{
+	return queued_for_delete;
+}
+
+auto Node::get_scale() const -> Size2 const&
+{
+	return scale;
+}
+
+void Node::move( Vec2 const& vec )
+{
+	position += vec;
+
+	for ( auto& child : child_nodes )
+		child->move( vec );
+}
+
+void Node::set_global_position( Point const& new_position )
+{
+	calculation_constant old_position = position;
+	calculation_constant offset = new_position - old_position;
+
+	move( offset );
+}
+
+void Node::set_local_position( Point const& local_position )
+{
+	report_warning_if( parent_node is nullptr )
+	{
+		engine_log_warning( "Can't set local position if there is no parent. Returning." );
+		return;
+	}
+
+	calculation_constant old_position = position;
+	calculation_constant new_position = parent_node->position + local_position;
+	calculation_constant offset = new_position - old_position;
+
+	move( offset );
+}
+}

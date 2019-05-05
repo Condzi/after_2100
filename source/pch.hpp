@@ -37,7 +37,11 @@ using r64 = double;
 }
 
 #define CLASS_DEF( class_ )                                        \
+friend class Root;                                                 \
 public:                                                            \
+using Ptr = std::unique_ptr<class_>;                               \
+                                                                   \
+std::string name{ get_class_name_static() };                       \
                                                                    \
 static constexpr const char* get_class_name_static()               \
 {                                                                  \
@@ -49,9 +53,19 @@ virtual std::string get_class_name() const                         \
 	return get_class_name_static();                                \
 }                                                                  \
                                                                    \
-inline static std::unique_ptr<class_> instantiate()                \
+inline static Ptr instantiate()                                    \
 {                                                                  \
 	return std::make_unique<class_>();                             \
 }                                                                  \
 private:
-                                                                   
+
+inline bool string_begins_with( std::string const& string, std::string const& prefix )
+{
+	return string.substr( prefix.size() ) == prefix;
+}
+
+#define is ==
+#define calculation_constant auto const
+#define change_owner( uptr ) std::move( uptr )
+#define pass int{0}
+
