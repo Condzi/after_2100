@@ -12,6 +12,7 @@
 namespace sf
 {
 class Event;
+class RenderWindow;
 }
 
 namespace con
@@ -19,6 +20,8 @@ namespace con
 class Node
 {
 	CLASS_DEF( Node );
+
+	friend class Application;
 
 public:
 	using Node_Ptr = std::unique_ptr<Node>;
@@ -55,6 +58,7 @@ public:
 
 	virtual void update( r32 delta ) {}
 	virtual void handle_input( sf::Event const& event ) {}
+	virtual void draw( sf::RenderWindow& window ) {}
 
 private:
 	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
@@ -72,5 +76,6 @@ public:
 	void remove_queued_for_delete();
 	void update_children( r32 dt );
 	void handle_input_children( sf::Event const& event );
+	void draw_children( sf::RenderWindow& window );
 };
 }

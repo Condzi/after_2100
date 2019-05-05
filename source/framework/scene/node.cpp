@@ -85,6 +85,14 @@ void Node::handle_input_children( sf::Event const& event )
 		child->handle_input_children( event );
 }
 
+void Node::draw_children( sf::RenderWindow& window )
+{
+	draw( window );
+
+	for ( auto& child : child_nodes )
+		child->draw_children( window );
+}
+
 auto Node::get_local_position() const -> Point const&
 {
 	report_warning_if( parent_node is nullptr )
