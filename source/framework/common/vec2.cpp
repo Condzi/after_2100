@@ -74,7 +74,7 @@ Vec2& Vec2::operator*=( r32 scalar )
 	return *this;
 }
 
-Vec2 Vec2::operator*( r32 scalar )
+Vec2 Vec2::operator*( r32 scalar ) const
 {
 	return Vec2{ x, y } *= scalar;
 }
@@ -95,13 +95,25 @@ Vec2& Vec2::operator-=( Vec2 const& rhs )
 	return *this;
 }
 
-Vec2 Vec2::operator+( Vec2 const& rhs )
+Vec2 & Vec2::operator*=( Vec2 const& rhs )
+{
+	x *= rhs.x;
+	y += rhs.y;
+
+	return *this;
+}
+
+Vec2 Vec2::operator+( Vec2 const& rhs ) const
 {
 	return Vec2{ x,y } += rhs;
 }
 
-Vec2 Vec2::operator-( Vec2 const& rhs )
+Vec2 Vec2::operator-( Vec2 const& rhs ) const
 {
 	return Vec2{ x,y } -= rhs;
+}
+Vec2 Vec2::operator*( Vec2 const& rhs ) const
+{
+	return Vec2( x, y ) *= rhs;
 }
 }

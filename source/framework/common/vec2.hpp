@@ -14,8 +14,16 @@ namespace con
 class Vec2 final
 {
 public:
-	r32 x{ 0 };
-	r32 y{ 0 };
+	union
+	{
+		r32 x{ 0 };
+		r32 width;
+	};
+	union
+	{
+		r32 y{ 0 };
+		r32 height;
+	};
 
 	[[nodiscard]] constexpr static Vec2 ZERO()  { return { 0, 0 }; };
 	[[nodiscard]] constexpr static Vec2 LEFT()  { return { -1, 0 }; };
@@ -45,15 +53,17 @@ public:
 	[[nodiscard]] Vec2 operator-() const;
 
 	[[nodiscard]] Vec2& operator*=( r32 scalar );
-	[[nodiscard]] Vec2 operator*( r32 scalar );
+	[[nodiscard]] Vec2 operator*( r32 scalar ) const;
 
 	[[nodiscard]] Vec2& operator+=( Vec2 const& rhs );
 	[[nodiscard]] Vec2& operator-=( Vec2 const& rhs );
-	[[nodiscard]] Vec2 operator+( Vec2 const& rhs );
-	[[nodiscard] ]Vec2 operator-( Vec2 const& rhs );
+	[[nodiscard]] Vec2& operator*=( Vec2 const& rhs );
+	[[nodiscard]] Vec2 operator+( Vec2 const& rhs ) const;
+	[[nodiscard]] Vec2 operator-( Vec2 const& rhs ) const;
+	[[nodiscard]] Vec2 operator*( Vec2 const& rhs ) const;
 
 };
 
 using Point = Vec2;
-using Size = Vec2;
+using Size2 = Vec2;
 }

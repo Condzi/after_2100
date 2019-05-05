@@ -13,5 +13,4 @@ RGBA::operator sf::Color() const
 {
 	return sf::Color( r, g, b, a );
 }
-
 }
