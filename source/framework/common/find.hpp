@@ -16,10 +16,10 @@ struct Find_Result
 };
 
 template <typename TContainer, typename TValue>
-Find_Result find( TContainer const& container, TValue const& value );
+[[nodiscard]] Find_Result find( TContainer const& container, TValue const& value );
 
 template <typename TContainer, typename TLambda>
-Find_Result find_if( TContainer const& container, TLambda&& lambda );
+[[nodiscard]] Find_Result find_if( TContainer const& container, TLambda&& lambda );
 
 }
 

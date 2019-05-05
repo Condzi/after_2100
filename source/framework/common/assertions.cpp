@@ -26,8 +26,7 @@ bool report_and_break( spdlog::level::level_enum log_level, bool should_break, b
 	if ( condition ) {
 		Debug_Log::get_instance().engine_logger->log( log_level, MESSAGE, condition_string, file, line );
 
-		if ( should_break )
-			force_break( true );
+		force_break( should_break );
 	}
 
 	return condition;

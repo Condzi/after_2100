@@ -27,7 +27,8 @@ public:
 
 	[[nodiscard]] auto attach( Ptr&& node_to_attach )       -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
-	[[nodiscard]] auto get_node( std::string path )         -> Node *const;
+	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node *const;
+	[[nodiscard]] auto get_node( std::string const& path )  -> Node *const;
 
 	[[nodiscard]] auto get_global_position() const          -> Point const&;
 	[[nodiscard]] auto get_local_position() const           -> Point const&;
@@ -54,7 +55,7 @@ public:
 	virtual void handle_input( sf::Event const& event ) {}
 
 private:
-	Node* parent_node{ nullptr }; // The most outside nodes doesn't have parents.
+	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
 	std::vector<Ptr> child_nodes;
 
 	Point position{ 0, 0 };

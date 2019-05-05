@@ -129,7 +129,7 @@ auto Node::get_parent() -> Node *const
 	return parent_node;
 }
 
-auto Node::get_node( std::string path ) -> Node* const
+auto Node::get_node_or_null( std::string path ) -> Node* const
 {
 	report_error_if( path.empty() )
 	{
@@ -160,17 +160,29 @@ auto Node::get_node( std::string path ) -> Node* const
 		concatenate_next_name();
 
 		calculation_constant[found, idx] = find_if( current_node->child_nodes,
-										   [&name_to_look]( auto const& child ) {
+													[&name_to_look]( auto const& child ) {
 			return child->name == name_to_look;
 		} );
 
 		if ( not found )
 			return nullptr;
-			
+
 		current_node = current_node->child_nodes[idx].get();
 	}
 
 	return current_node;
+}
+
+auto Node::get_node( std::string const& path ) -> Node* const
+{
+	calculation_constant node = get_node_or_null( path );
+
+	report_error_if( node is nullptr )
+	{
+		engine_log_error( "Can't find node \"{}\" in node \"{}\".", path, name );
+	}
+
+	return node;
 }
 
 auto Node::get_global_position() const -> Point const&

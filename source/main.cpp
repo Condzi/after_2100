@@ -73,7 +73,7 @@ int main()
 	log_message();
 	log_info( "(paused)" );
 
-	node_1->move( {100,100} );
+	node_1->move( { 100,100 } );
 	log_message();
 	log_info( "(paused)" );
 
@@ -81,13 +81,15 @@ int main()
 	log_message();
 	log_info( "(unpaused)" );
 
-	node_1->get_node("second/third")->name = "better third";
+	node_1->get_node( "second/third" )->name = "better third";
 	log_message();
 
-	node_2->get_node("better third")->name = "another third bites the dust";
+	node_2->get_node( "better third" )->name = "another third bites the dust";
 	log_message();
 
 	node_2->queue_for_delete();
 	node_1->remove_queued_for_delete();
 	log_message();
+
+	node_1->get_node( "I don't exist! :(" );
 }
