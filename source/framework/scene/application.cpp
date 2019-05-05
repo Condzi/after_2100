@@ -9,7 +9,7 @@
 
 namespace con
 {
-Application::Application( u32 window_width, u32 window_height, u32 fps, std::string const& title )
+void Application::initialize( u32 window_width, u32 window_height, u32 fps, std::string const & title )
 {
 	window.create( { window_width, window_height }, title, sf::Style::Close );
 	window.setFramerateLimit( fps );
@@ -33,7 +33,7 @@ void Application::run()
 	}
 }
 
-Node* Application::get_root()
+Root* Application::get_root()
 {
 	return &root;
 }
@@ -41,5 +41,11 @@ Node* Application::get_root()
 void Application::exit_game()
 {
 	exit = true;
+}
+Application& Application::get_instance()
+{
+	static Application instance;
+
+	return instance;
 }
 }

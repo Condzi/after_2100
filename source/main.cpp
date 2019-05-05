@@ -10,25 +10,8 @@
 
 using namespace con;
 
-class My_Node : public Node
-{
-	CLASS_DEF( My_Node );
-
-public:
-	void update( r32 delta ) override
-	{
-		calculation_constant x = get_global_position().x;
-		calculation_constant y = get_global_position().y;
-
-		log_info( "{}: [{} | {}].", name, x, y );
-	}
-};
-
 int main()
 {
-	Application app{ 1280, 720, 60, "after_2100" };
-
-	app.get_root()->attach( My_Node::instantiate() );
-
-	app.run();
+	Application::get_instance().initialize( 1280, 720, 60, "after_2100" );
+	Application::get_instance().run();
 }

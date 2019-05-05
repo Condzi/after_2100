@@ -21,8 +21,6 @@ class Node
 {
 	CLASS_DEF( Node );
 
-	friend class Application;
-
 public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
@@ -58,6 +56,7 @@ public:
 
 	virtual void update( r32 delta ) {}
 	virtual void handle_input( sf::Event const& event ) {}
+	// @ToDo: Use it to add a Drawable object (which has layer and sf::Drawable ptr) to a storage instead.
 	virtual void draw( sf::RenderWindow& window ) {}
 
 private:

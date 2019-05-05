@@ -8,6 +8,7 @@
 #include "framework/scene/node.hpp"
 #include "framework/common/assertions.hpp"
 #include "framework/common/find.hpp"
+#include "framework/scene/application.hpp"
 
 namespace con
 {
@@ -144,11 +145,13 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 		return nullptr;
 	}
 
-	// @TODO: Implement, when we have Root class.
-	if ( string_begins_with( path, "root/" ) )
-		pass;
-
 	Node* current_node{ this };
+
+	if ( string_begins_with( path, "root/" ) ) {
+		current_node = Application::get_instance().get_root();
+		path = path.substr( 6 ); // "root/" has 6 chars, so just cut it off
+	}
+
 	std::string name_to_look;
 	bool search_for_node{ true };
 
