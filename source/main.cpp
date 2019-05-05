@@ -69,6 +69,18 @@ int main()
 	node_3->set_global_position( { 5,5 } );
 	log_message();
 
+	node_2->set_pause( true );
+	log_message();
+	log_info( "(paused)" );
+
+	node_1->move( {100,100} );
+	log_message();
+	log_info( "(paused)" );
+
+	node_2->set_pause( false );
+	log_message();
+	log_info( "(unpaused)" );
+
 	node_2->queue_for_delete();
 	node_1->remove_queued_for_delete();
 	log_message();
