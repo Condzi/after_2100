@@ -42,8 +42,6 @@ friend class Root;                                                 \
 public:                                                            \
 using Ptr = std::unique_ptr<class_>;                               \
                                                                    \
-std::string name{ get_class_name_static() };                       \
-                                                                   \
 static constexpr const char* get_class_name_static()               \
 {                                                                  \
 	return #class_;                                                \

@@ -21,9 +21,11 @@ class Node
 	CLASS_DEF( Node );
 
 public:
+	std::string name{ get_class_name() };
+
 	virtual ~Node() = default;
 
-	[[nodiscard]] auto attach( Ptr&& node_to_attach )        -> Node *const;
+	[[nodiscard]] auto attach( Ptr&& node_to_attach )       -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
 	[[nodiscard]] auto get_node( std::string path )         -> Node *const;
 

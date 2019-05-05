@@ -140,13 +140,14 @@ auto Node::get_node( std::string path ) -> Node* const
 	if ( string_begins_with( path, "root/" ) )
 		pass;
 
-	Node* current_node{ nullptr };
+	Node* current_node{ this };
 	std::string name_to_look;
 	bool search_for_node{ true };
 
 	auto concatenate_next_name = [&]() {
 		calculation_constant slash_position = path.find( '/' );
 		if ( slash_position == std::string::npos ) {
+			name_to_look = path;
 			search_for_node = false;
 			return;
 		}
@@ -158,7 +159,7 @@ auto Node::get_node( std::string path ) -> Node* const
 	while ( search_for_node ) {
 		concatenate_next_name();
 
-		calculation_constant[found, idx] = find_if( child_nodes,
+		calculation_constant[found, idx] = find_if( current_node->child_nodes,
 										   [&name_to_look]( auto const& child ) {
 			return child->name == name_to_look;
 		} );
@@ -166,7 +167,7 @@ auto Node::get_node( std::string path ) -> Node* const
 		if ( not found )
 			return nullptr;
 			
-		current_node = child_nodes[idx].get();
+		current_node = current_node->child_nodes[idx].get();
 	}
 
 	return current_node;
