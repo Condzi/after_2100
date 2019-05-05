@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <fstream>
 #include <memory>
+#include <iterator>
 #include <vector>
 
 #include <nlohmann/json.hpp>

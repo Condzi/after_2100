@@ -97,6 +97,10 @@
   <ItemGroup>
     <ClInclude Include="source\framework\common\assertions.hpp" />
     <ClInclude Include="source\framework\common\debug_log.hpp" />
+    <ClInclude Include="source\framework\common\find.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\framework\common\rgba.hpp" />
     <ClInclude Include="source\framework\common\vec2.hpp" />
     <ClInclude Include="source\framework\scene\node.hpp">
@@ -111,6 +115,10 @@
   <ItemGroup>
     <ClCompile Include="source\framework\common\assertions.cpp" />
     <ClCompile Include="source\framework\common\debug_log.cpp" />
+    <ClCompile Include="source\framework\common\find.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\framework\common\rgba.cpp" />
     <ClCompile Include="source\framework\common\vec2.cpp" />
     <ClCompile Include="source\framework\scene\node.cpp">
@@ -127,6 +135,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\framework\common\find.inl">
+      <SubType>
+      </SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
