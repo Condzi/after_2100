@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 
 #include <nlohmann/json.hpp>
 
@@ -33,3 +34,12 @@ using u64 = uint64_t;
 using r32 = float;
 using r64 = double;
 }
+
+#define CLASS_DEF( name )								\
+constexpr static const char* META_CLASS_NAME{ #name };	\
+														\
+static auto instantiate()								\
+{														\
+	return std::make_unique<name>();					\
+}												
+
