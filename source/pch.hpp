@@ -37,7 +37,6 @@ using r64 = double;
 }
 
 #define CLASS_DEF( class_ )                                        \
-class_() = default;                                                \
 public:                                                            \
                                                                    \
 static constexpr const char* get_class_name_static()               \

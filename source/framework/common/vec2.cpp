@@ -104,11 +104,4 @@ Vec2 Vec2::operator-( Vec2 const& rhs )
 {
 	return Vec2{ x,y } -= rhs;
 }
-
-std::ostream& operator<<( std::ostream& out, Vec2 const& vec )
-{
-	out << '[' << vec.x << ", " << vec.y << ']';
-
-	return out;
-}
 }
