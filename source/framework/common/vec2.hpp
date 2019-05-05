@@ -30,6 +30,9 @@ public:
 	r32 length() const;
 	r32 length_squared() const;
 	r32 distance( Vec2 const& second ) const;
+	r32 dot( Vec2 const& second ) const;
+	r32 cross( Vec2 const& second ) const;
+	r32 angle() const;
 	void normalize();
 
 	operator sf::Vector2f() const;
@@ -53,4 +56,5 @@ public:
 };
 
 using Point = Vec2;
+using Size = Vec2;
 }

@@ -22,10 +22,25 @@ r32 Vec2::length_squared() const
 
 r32 Vec2::distance( Vec2 const& second ) const
 {
-	r32 const x_diff_sqr{ (x - second.x) * (x - second.x) };
-	r32 const y_diff_sqr{ (y - second.y) * (y - second.y) };
+	r32 const x_diff_sqr{ ( x - second.x ) * ( x - second.x ) };
+	r32 const y_diff_sqr{ ( y - second.y ) * ( y - second.y ) };
 
 	return std::sqrtf( x_diff_sqr + y_diff_sqr );
+}
+
+r32 Vec2::dot( Vec2 const& second ) const
+{
+	return x * second.x + y * second.y;
+}
+
+r32 Vec2::cross( Vec2 const& second ) const
+{
+	return x * second.y - x * second.y;
+}
+
+r32 Vec2::angle() const
+{
+	return std::atan2f( y, x );
 }
 
 void Vec2::normalize()

@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <fstream>
 #include <memory>
+#include <vector>
 
 #include <nlohmann/json.hpp>
 
@@ -35,11 +36,23 @@ using r32 = float;
 using r64 = double;
 }
 
-#define CLASS_DEF( name )								\
-constexpr static const char* META_CLASS_NAME{ #name };	\
-														\
-static auto instantiate()								\
-{														\
-	return std::make_unique<name>();					\
-}												
-
+#define CLASS_DEF( class_ )                                        \
+class_() = default;                                                \
+public:                                                            \
+                                                                   \
+static constexpr const char* get_class_name_static()               \
+{                                                                  \
+	return #class_;                                                \
+}                                                                  \
+                                                                   \
+virtual std::string get_class_name() const                         \
+{                                                                  \
+	return get_class_name_static();                                \
+}                                                                  \
+                                                                   \
+inline static std::unique_ptr<class_> instantiate()                \
+{                                                                  \
+	return std::make_unique<class_>();                             \
+}                                                                  \
+private:
+                                                                   
