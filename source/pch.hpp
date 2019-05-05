@@ -36,11 +36,8 @@ using u64 = uint64_t;
 using r32 = float;
 using r64 = double;
 }
-
 #define CLASS_DEF( class_ )                                        \
-friend class Root;                                                 \
 public:                                                            \
-using Ptr = std::unique_ptr<class_>;                               \
                                                                    \
 static constexpr const char* get_class_name_static()               \
 {                                                                  \
@@ -52,7 +49,7 @@ virtual std::string get_class_name() const                         \
 	return get_class_name_static();                                \
 }                                                                  \
                                                                    \
-inline static Ptr instantiate()                                    \
+inline static auto instantiate()                                   \
 {                                                                  \
 	return std::make_unique<class_>();                             \
 }                                                                  \

@@ -21,11 +21,13 @@ class Node
 	CLASS_DEF( Node );
 
 public:
+	using Node_Ptr = std::unique_ptr<Node>;
+
 	std::string name{ get_class_name() };
 
 	virtual ~Node() = default;
 
-	[[nodiscard]] auto attach( Ptr&& node_to_attach )       -> Node *const;
+	[[nodiscard]] auto attach( Node_Ptr&& node_to_attach )  -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node *const;
 	[[nodiscard]] auto get_node( std::string const& path )  -> Node *const;
@@ -56,7 +58,7 @@ public:
 
 private:
 	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
-	std::vector<Ptr> child_nodes;
+	std::vector<Node_Ptr> child_nodes;
 
 	Point position{ 0, 0 };
 	Size2 scale{ 1, 1 };

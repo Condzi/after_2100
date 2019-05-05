@@ -96,7 +96,7 @@ auto Node::get_local_position() const -> Point const&
 	return position - parent_node->position;
 }
 
-auto Node::attach( Ptr&& node_to_attach ) -> Node *const
+auto Node::attach( Node_Ptr&& node_to_attach ) -> Node *const
 {
 	report_error_if( node_to_attach is nullptr )
 	{
