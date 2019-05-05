@@ -9,19 +9,17 @@
 
 namespace con
 {
-template <typename T>
 struct Find_Result
 {
 	bool found{ false };
 	s32 idx{ -1 };
-	T const *const value{ nullptr };
 };
 
 template <typename TContainer, typename TValue>
-Find_Result<TValue> find( TContainer const& container, TValue const& value );
+Find_Result find( TContainer const& container, TValue const& value );
 
-template <typename TValue, template<typename> class TContainer, typename TLambda>
-Find_Result<TValue> find_if( TContainer<TValue> const& container, TLambda&& lambda );
+template <typename TContainer, typename TLambda>
+Find_Result find_if( TContainer const& container, TLambda&& lambda );
 
 }
 

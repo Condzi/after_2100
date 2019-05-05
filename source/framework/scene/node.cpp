@@ -7,6 +7,7 @@
 
 #include "framework/scene/node.hpp"
 #include "framework/common/assertions.hpp"
+#include "framework/common/find.hpp"
 
 namespace con
 {
@@ -103,7 +104,7 @@ auto Node::attach( Ptr&& node_to_attach ) -> Node *const
 		return nullptr;
 	}
 
-	calculation_constant is_already_attached = std::find( child_nodes.begin(), child_nodes.end(), node_to_attach ) != child_nodes.end();
+	calculation_constant is_already_attached = find( child_nodes, node_to_attach ).found;
 	report_error_if( is_already_attached )
 	{
 		engine_log_error( "Given node is already attached, can't attach again." );
@@ -157,14 +158,15 @@ auto Node::get_node( std::string path ) -> Node* const
 	while ( search_for_node ) {
 		concatenate_next_name();
 
-		if ( auto it = std::find_if( child_nodes.begin(), child_nodes.end(),
-			 [&name_to_look]( auto const& ptr ) {
-			return ptr->name == name_to_look;
-		} ); it != child_nodes.end() ) {
+		calculation_constant[found, idx] = find_if( child_nodes,
+										   [&name_to_look]( auto const& child ) {
+			return child->name == name_to_look;
+		} );
 
-			current_node = it->get();
-		} else
+		if ( not found )
 			return nullptr;
+			
+		current_node = child_nodes[idx].get();
 	}
 
 	return current_node;
