@@ -42,7 +42,7 @@ class Resources_Storage final
 public:
 	auto get_texture( std::string const& name ) const        -> sf::Texture const* const;
 	auto get_sound_buffer( std::string const& name ) const   -> sf::SoundBuffer const* const;
-	auto get_music( std::string const& name ) const          -> sf::Music const* const;
+	auto get_music( std::string const& name )                -> sf::Music * const;
 	auto get_font( std::string const& name ) const           -> sf::Font const* const;
 
 	void reload();

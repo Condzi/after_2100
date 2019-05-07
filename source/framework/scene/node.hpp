@@ -31,6 +31,7 @@ public:
 
 	virtual ~Node() = default;
 
+	// @ToDo: template the getter methods to return valid Node instead of ptr and then cast?s
 	[[nodiscard]] auto attach( Node_Ptr&& node_to_attach )  -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node *const;
@@ -60,7 +61,7 @@ public:
 	virtual void update( r32 delta ) {}
 	virtual void handle_input( sf::Event const& event ) {}
 	// Use it for drawing own stuff, but prefer Sprite (or Text) node.
-	virtual void draw( Drawing_Queue& qeueue ) {}
+	virtual void draw( Drawing_Queue& drawing_queue ) {}
 
 private:
 	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.

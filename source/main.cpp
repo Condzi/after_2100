@@ -4,14 +4,26 @@
 */
 
 #include "pch.hpp"
-#include "framework/scene/node.hpp"
-#include "framework/common/debug_log.hpp"
 #include "framework/scene/application.hpp"
+#include "framework/scene/sprite.hpp"
+#include "framework/common/resources_storage.hpp"
 
 using namespace con;
 
 int main()
 {
-	Application::get_instance().initialize( 1280, 720, 60, "after_2100" );
-	Application::get_instance().run();
+	G_App.initialize( 1280, 720, 60, "after_2100" );
+
+	{
+		Sprite* sprite_node{ nullptr };
+		{
+			auto spr = Sprite::instantiate();
+			sprite_node = dynamic_cast<Sprite*>( G_Root.attach( change_owner( spr ) ) );
+		}
+		sprite_node->set_texture( G_Resource_Storage.get_texture( "player" ) );
+		sprite_node->set_scale( { 0.1, 0.1 } );
+	}
+
+
+	G_App.run();
 }

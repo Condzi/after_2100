@@ -5,7 +5,7 @@
 
 // Textures
 {
-	{"test", "resources/test.png"}
+	{ "player", "resources/player.png" }
 },
 
 // Sounds

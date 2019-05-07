@@ -66,4 +66,5 @@ inline con::u32 operator"" px( unsigned long long val )
 #define constant auto const
 #define change_owner( uptr ) std::move( uptr )
 #define pass int{0}
+#define unused( x ) ( ( void )( x ) )
 
