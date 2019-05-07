@@ -27,7 +27,7 @@ class Node
 public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
-	std::string name{ get_class_name() };
+	std::string name{ "unnamed_node" };
 
 	virtual ~Node() = default;
 
@@ -59,7 +59,7 @@ public:
 	void queue_for_delete();
 
 	virtual void update( r32 delta ) {}
-	virtual void handle_input( sf::Event const& event ) {}
+	virtual void input( sf::Event const& event ) {}
 	// Use it for drawing own stuff, but prefer Sprite (or Text) node.
 	virtual void draw( Drawing_Queue& drawing_queue ) {}
 

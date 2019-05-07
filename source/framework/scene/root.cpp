@@ -11,17 +11,16 @@
 
 namespace con
 {
-void Root::handle_input( sf::Event const& event )
+void Root::input( sf::Event const& event )
 {
 	if ( event.type == sf::Event::Closed )
-		Application::get_instance().exit_game();
+		G_App.exit_game();
 }
 
 void Root::update( r32 delta )
 {
 	if ( active_scene is nullptr and pending_scene is_not nullptr ) 
 		active_scene = attach( change_owner( pending_scene ) );
-
 
 	time_since_update += delta;
 

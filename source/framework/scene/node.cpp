@@ -80,7 +80,7 @@ void Node::update_children( r32 dt )
 void Node::handle_input_children( sf::Event const& event )
 {
 	if ( not paused )
-		handle_input( event );
+		input( event );
 
 	for ( auto& child : child_nodes )
 		child->handle_input_children( event );
