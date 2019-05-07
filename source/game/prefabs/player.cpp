@@ -41,22 +41,21 @@ void Player::update( r32 dt )
 void Player::update_illusion()
 {
 	// Sprite that is visible on the screen.
-	Node* main_sprite{ nullptr };
-	Node* mirror_sprite{ nullptr };
+	Node* main_sprite{ sprite_a };
+	Node* mirror_sprite{ sprite_b };
 	const Rectangle_Shape window{ {0,0}, G_App.get_window_size() };
 
-	if ( RectVsPoint( window, sprite_a->get_global_position() ) is true ) {
-		main_sprite = sprite_a;
-		mirror_sprite = sprite_b;
-	} else {
-		main_sprite = sprite_b;
-		mirror_sprite = sprite_a;
-	}
+	if ( RectVsPoint( window, sprite_b->get_global_position() ) is true )
+		std::swap( main_sprite, mirror_sprite );
+
+	Vec2 pos_to_set = main_sprite->get_global_position();
 
 	if ( main_sprite->get_global_position().y > window.size.height / 2 )
-		mirror_sprite->set_global_position( { get_global_position().x, main_sprite->get_global_position().y -window.size.height } );
+		pos_to_set.y -= window.size.height;
 	else
-		mirror_sprite->set_global_position( { get_global_position().x, main_sprite->get_global_position().y + window.size.height } );
+		pos_to_set.y += window.size.height;
+
+	mirror_sprite->set_global_position( pos_to_set );
 }
 
 void Player::check_movement_keys()

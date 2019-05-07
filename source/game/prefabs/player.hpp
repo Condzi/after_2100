@@ -9,6 +9,8 @@
 
 using namespace con;
 
+// @Info: Because of the illusion - the player position is split in two: for sprite_a and sprite_b.
+// It's main position (get_global_position) should not be used.
 class Player final :
 	public Node
 {
