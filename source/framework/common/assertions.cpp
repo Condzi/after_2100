@@ -34,7 +34,6 @@ bool report_and_break( spdlog::level::level_enum log_level, bool should_break, b
 		Debug_Log::get_instance().engine_logger->log( log_level, "Line: {}", line );
 		Debug_Log::get_instance().engine_logger->log( log_level, "==============================" );
 
-
 		force_break( should_break );
 	}
 
