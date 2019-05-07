@@ -26,8 +26,8 @@ public:
 
 	void set_texture( sf::Texture const* texture );
 
-	auto get_global_bounds() const -> Rectangle_Shape;
-	auto get_texture() const       -> sf::Texture const*;
+	[[nodiscard]] auto get_global_bounds() const -> Rectangle_Shape;
+	[[nodiscard]] auto get_texture() const       -> sf::Texture const*;
 
 private:
 	sf::Sprite sprite;

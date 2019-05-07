@@ -62,6 +62,7 @@ inline con::u32 operator"" px( unsigned long long val )
 }
 
 #define is ==
+#define is_not !=
 #define returned is
 #define constant auto const
 #define change_owner( uptr ) std::move( uptr )

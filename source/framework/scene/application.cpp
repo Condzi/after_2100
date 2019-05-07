@@ -28,6 +28,7 @@ void Application::run()
 			root.handle_input_children( event );
 		}
 
+		root.remove_queued_for_delete();
 		root.update_children( fps_clock.restart().asSeconds() );
 
 		window.clear();

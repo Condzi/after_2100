@@ -21,7 +21,6 @@ int main()
 			sprite_node = dynamic_cast<Sprite*>( G_Root.attach( change_owner( spr ) ) );
 		}
 		sprite_node->set_texture( G_Resources_Storage.get_texture( "player" ) );
-		sprite_node->set_scale( { 0.1, 0.1 } );
 	}
 
 
