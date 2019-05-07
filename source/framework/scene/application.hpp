@@ -32,7 +32,7 @@ private:
 	Application() = default;
 
 	sf::RenderWindow window;
-	Drawing_Queue drawing_queue;
+	Drawing_Set drawing_set;
 	bool exit = false;
 	Root root;
 };

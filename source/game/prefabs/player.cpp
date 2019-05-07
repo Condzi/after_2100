@@ -14,15 +14,25 @@
 Player::Player()
 {
 	name = "player";
-	set_texture( G_Resources_Storage.get_texture( "player" ) );
+
+	auto sprite_a = Sprite::instantiate();
+	sprite_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
+	sprite_a->name = "sprite_a";
+	attach( change_owner( sprite_a ) );
+
+	auto sprite_b = Sprite::instantiate();
+	sprite_b->name = "sprite_b";
+	sprite_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
+
+	// @ToDo: Magic constant: 720 is height of the window.
+	attach( change_owner( sprite_b ) )->set_local_position( { 0, 100 } );
+
 	rotate( 90 );
-	set_global_position({ 100.0px, 100.0px } );
+	set_global_position( { 100.0px, 100.0px } );
 }
 
 void Player::update( r32 dt )
 {
-	Sprite::update( dt );
-
 	check_movement_keys();
 	move( velocity * dt );
 	slow_down();

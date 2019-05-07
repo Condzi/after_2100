@@ -9,28 +9,28 @@
 
 namespace con
 {
-bool Drawing_Queue::Drawable::operator<( Drawable const& second ) const
+bool Drawing_Set::Drawable::operator<( Drawable const& second ) const
 {
 	return layer < second.layer;
 }
 
-bool Drawing_Queue::Drawable::operator==( Drawable const& second ) const
+bool Drawing_Set::Drawable::operator==( Drawable const& second ) const
 {
 	return &drawable == &second.drawable;
 }
 
-bool Drawing_Queue::add_drawable( sf::Drawable const& drawable, s32 layer )
+bool Drawing_Set::add_drawable( sf::Drawable const& drawable, s32 layer )
 {
-	return drawables.insert( Drawable{ layer, drawable } ).second;
+	return drawables.emplace( Drawable{ layer, drawable } ).second;
 }
 
-void Drawing_Queue::display( sf::RenderTarget& target )
+void Drawing_Set::display( sf::RenderTarget& target )
 {
 	for ( constant& drawable : drawables )
 		target.draw( drawable.drawable );
 }
 
-void Drawing_Queue::clear()
+void Drawing_Set::clear()
 {
 	drawables.clear();
 }

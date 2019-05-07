@@ -32,9 +32,9 @@ void Application::run()
 		root.update_children( fps_clock.restart().asSeconds() );
 
 		window.clear();
-		drawing_queue.clear();
-		root.draw_children( drawing_queue );
-		drawing_queue.display( window );
+		drawing_set.clear();
+		root.draw_children( drawing_set );
+		drawing_set.display( window );
 		window.display();
 	}
 }

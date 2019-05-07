@@ -12,7 +12,7 @@
 
 namespace con
 {
-class Drawing_Queue final
+class Drawing_Set final
 {
 	struct Drawable final
 	{

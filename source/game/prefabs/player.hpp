@@ -10,7 +10,7 @@
 using namespace con;
 
 class Player final :
-	public Sprite
+	public Node
 {
 	CLASS_DEF( Player );
 

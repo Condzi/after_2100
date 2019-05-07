@@ -5,6 +5,7 @@
 
 #include "pch.hpp"
 
+#include "framework/common/assertions.hpp"
 #include "sprite.hpp"
 
 namespace con
@@ -14,14 +15,16 @@ void Sprite::update( r32 delta )
 	unused( delta );
 
 	sprite.setPosition( get_global_position() );
-	sprite.setRotation( get_rotaton() );
+	sprite.setRotation( get_rotation() );
 	sprite.setScale( get_scale() );
+
+	log_info( "{0}: ({1:.1f}, {2:.1f})", name, get_global_position().x, get_global_position().y );
 }
 
-void Sprite::draw( Drawing_Queue& drawing_queue )
+void Sprite::draw( Drawing_Set& drawing_set )
 {
 	if ( visible )
-		drawing_queue.add_drawable( sprite, layer );
+		report_warning_if( drawing_set.add_drawable( sprite, layer ) returned false );
 }
 
 void Sprite::set_texture( sf::Texture const* texture )

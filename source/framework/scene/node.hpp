@@ -39,7 +39,7 @@ public:
 
 	[[nodiscard]] auto get_global_position() const          -> Point const&;
 	[[nodiscard]] auto get_local_position() const           -> Point const&;
-	[[nodiscard]] auto get_rotaton() const                  -> r32;
+	[[nodiscard]] auto get_rotation() const                  -> r32;
 	[[nodiscard]] auto get_scale() const                    -> Size2 const&;
 
 	[[nodiscard]] auto is_paused() const                    -> bool;
@@ -61,7 +61,7 @@ public:
 	virtual void update( r32 delta ) {}
 	virtual void input( sf::Event const& event ) {}
 	// Use it for drawing own stuff, but prefer Sprite (or Text) node.
-	virtual void draw( Drawing_Queue& drawing_queue ) {}
+	virtual void draw( Drawing_Set& drawing_set ) {}
 
 private:
 	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
@@ -77,6 +77,6 @@ private:
 	void remove_queued_for_delete();
 	void update_children( r32 dt );
 	void handle_input_children( sf::Event const& event );
-	void draw_children( Drawing_Queue& queue );
+	void draw_children( Drawing_Set& queue );
 };
 }

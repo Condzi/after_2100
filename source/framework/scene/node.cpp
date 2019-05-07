@@ -14,7 +14,7 @@ namespace con
 {
 void Node::rotate( r32 deg, bool affect_children )
 {
-	set_rotation( get_rotaton() + deg, affect_children );
+	set_rotation( get_rotation() + deg, affect_children );
 }
 
 void Node::set_rotation( r32 deg, bool affect_children )
@@ -86,7 +86,7 @@ void Node::handle_input_children( sf::Event const& event )
 		child->handle_input_children( event );
 }
 
-void Node::draw_children( Drawing_Queue& queue )
+void Node::draw_children( Drawing_Set& queue )
 {
 	draw( queue );
 
@@ -201,7 +201,7 @@ auto Node::get_global_position() const -> Point const&
 	return position;
 }
 
-auto Node::get_rotaton() const -> r32
+auto Node::get_rotation() const -> r32
 {
 	return angle;
 }
