@@ -5,6 +5,9 @@
 
 
 #include "pch.hpp"
+
+#include <SFML/System/Clock.hpp>
+
 #include "assertions.hpp"
 #include "resources_storage.hpp"
 
@@ -71,6 +74,7 @@ auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font co
 void Resources_Storage::reload()
 {
 	engine_log_info( "Reloading resources." );
+	sf::Clock timer;
 
 	textures.clear();
 	sound_buffers.clear();
@@ -122,7 +126,7 @@ void Resources_Storage::reload()
 		}
 	}
 
-	engine_log_info( "Resources reload end." );
+	engine_log_info( "Resources reload end. It took {0:.3f}s.", timer.getElapsedTime().asSeconds() );
 }
 Resources_Storage& Resources_Storage::get_instance()
 {

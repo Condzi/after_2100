@@ -62,4 +62,4 @@ private:
 };
 }
 
-#define G_Resource_Storage con::Resources_Storage::get_instance()
+#define G_Resources_Storage con::Resources_Storage::get_instance()
