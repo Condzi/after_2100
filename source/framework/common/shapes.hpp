@@ -27,7 +27,10 @@ struct Rectangle_Shape final
 
 struct Circle_Shape final
 {
-	Point position;
+	Point center;
 	r32 radious{ 0 };
 };
+
+bool RectVsRect( Rectangle_Shape const& a, Rectangle_Shape const& b );
+bool RectVsPoint( Rectangle_Shape const& rect, Point const& point );
 }

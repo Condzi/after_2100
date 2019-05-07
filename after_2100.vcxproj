@@ -155,6 +155,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="source\framework\common\shapes.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\framework\common\stl_extensions.cpp">
       <SubType>
       </SubType>

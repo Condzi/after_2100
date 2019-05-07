@@ -56,9 +56,9 @@ inline static auto instantiate()                                   \
 }                                                                  \
 private:
 
-inline con::u32 operator"" px( unsigned long long val )
+inline con::r32 operator"" px( long double val )
 {
-	return static_cast<con::u32>( val );
+	return static_cast<con::r32>( val );
 }
 
 #define is ==

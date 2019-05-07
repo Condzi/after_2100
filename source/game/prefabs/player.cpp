@@ -16,6 +16,7 @@ Player::Player()
 	name = "player";
 	set_texture( G_Resources_Storage.get_texture( "player" ) );
 	rotate( 90 );
+	set_global_position({ 100.0px, 100.0px } );
 }
 
 void Player::update( r32 dt )
@@ -50,8 +51,8 @@ void Player::slow_down()
 	if ( slow_vertical )
 		velocity.y *= SLOWING_MULTIPLIER;
 
-	if ( std::abs( velocity.x ) < 1 )
+	if ( std::fabs( velocity.x ) < 1 )
 		velocity.x = 0;
-	if ( std::abs( velocity.y ) < 1 )
+	if ( std::fabs( velocity.y ) < 1 )
 		velocity.y = 0;
 }
