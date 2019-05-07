@@ -22,9 +22,18 @@ bool force_break( bool condition )
 
 bool report_and_break( spdlog::level::level_enum log_level, bool should_break, bool condition, const char * condition_string, const char * file, s64 line )
 {
-	constexpr const char* MESSAGE{ "\"{}\" failed in file \"{}\" in line {}." };
+	// We don't want C:/the/whole/path/, just the source/path/
+	std::string local_path{ file };
+	local_path = local_path.substr( local_path.find( "source" ) );
+
 	if ( condition ) {
-		Debug_Log::get_instance().engine_logger->log( log_level, MESSAGE, condition_string, file, line );
+
+		Debug_Log::get_instance().engine_logger->log( log_level, "==============================" );
+		Debug_Log::get_instance().engine_logger->log( log_level, "Expression: {}", condition_string );
+		Debug_Log::get_instance().engine_logger->log( log_level, "File: {}", local_path );
+		Debug_Log::get_instance().engine_logger->log( log_level, "Line: {}", line );
+		Debug_Log::get_instance().engine_logger->log( log_level, "==============================" );
+
 
 		force_break( should_break );
 	}

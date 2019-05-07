@@ -61,7 +61,7 @@ void Node::queue_for_delete()
 void Node::remove_queued_for_delete()
 {
 	child_nodes.erase( std::remove_if( child_nodes.begin(), child_nodes.end(),
-					   []( auto const& child ) { return child->queued_for_delete; } ),
+					   []( constant& child ) { return child->queued_for_delete; } ),
 					   child_nodes.end() );
 
 	for ( auto& child : child_nodes )
@@ -113,7 +113,7 @@ auto Node::attach( Node_Ptr&& node_to_attach ) -> Node *const
 		return nullptr;
 	}
 
-	calculation_constant is_already_attached = find( child_nodes, node_to_attach ).found;
+	constant is_already_attached = find( child_nodes, node_to_attach ).found;
 	report_error_if( is_already_attached )
 	{
 		engine_log_error( "Given node is already attached, can't attach again." );
@@ -156,7 +156,7 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 	bool search_for_node{ true };
 
 	auto concatenate_next_name = [&]() {
-		calculation_constant slash_position = path.find( '/' );
+		constant slash_position = path.find( '/' );
 		if ( slash_position == std::string::npos ) {
 			name_to_look = path;
 			search_for_node = false;
@@ -170,8 +170,8 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 	while ( search_for_node ) {
 		concatenate_next_name();
 
-		calculation_constant[found, idx] = find_if( current_node->child_nodes,
-													[&name_to_look]( auto const& child ) {
+		constant[found, idx] = find_if( current_node->child_nodes,
+													[&name_to_look]( constant& child ) {
 			return child->name == name_to_look;
 		} );
 
@@ -186,7 +186,7 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 
 auto Node::get_node( std::string const& path ) -> Node* const
 {
-	calculation_constant node = get_node_or_null( path );
+	constant node = get_node_or_null( path );
 
 	report_error_if( node is nullptr )
 	{
@@ -231,8 +231,8 @@ void Node::move( Vec2 const& vec )
 
 void Node::set_global_position( Point const& new_position )
 {
-	calculation_constant old_position = position;
-	calculation_constant offset = new_position - old_position;
+	constant old_position = position;
+	constant offset = new_position - old_position;
 
 	move( offset );
 }
@@ -245,9 +245,9 @@ void Node::set_local_position( Point const& local_position )
 		return;
 	}
 
-	calculation_constant old_position = position;
-	calculation_constant new_position = parent_node->position + local_position;
-	calculation_constant offset = new_position - old_position;
+	constant old_position = position;
+	constant new_position = parent_node->position + local_position;
+	constant offset = new_position - old_position;
 
 	move( offset );
 }

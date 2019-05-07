@@ -26,7 +26,7 @@ bool Drawing_Queue::add_drawable( sf::Drawable const& drawable, s32 layer )
 
 void Drawing_Queue::display( sf::RenderTarget& target )
 {
-	for ( auto const& drawable : drawables )
+	for ( constant& drawable : drawables )
 		target.draw( drawable.drawable );
 }
 

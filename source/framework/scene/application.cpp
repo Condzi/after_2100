@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "framework/scene/application.hpp"
+#include "framework/common/resources_storage.hpp"
 
 namespace con
 {
@@ -13,6 +14,8 @@ void Application::initialize( u32 window_width, u32 window_height, u32 fps, std:
 {
 	window.create( { window_width, window_height }, title, sf::Style::Close );
 	window.setFramerateLimit( fps );
+
+	G_Resource_Storage.reload();
 }
 
 void Application::run()
