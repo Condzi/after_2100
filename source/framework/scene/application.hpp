@@ -21,7 +21,8 @@ public:
 	void run();
 
 	// @ToDo: Probably somewhere else?
-	Root* get_root();
+	auto get_root()                -> Root&;
+	auto get_window() const        -> sf::RenderWindow const&;
 
 	void exit_game();
 
@@ -36,3 +37,7 @@ private:
 	Root root;
 };
 }
+
+#define G_App con::Application::get_instance()
+#define G_Window G_App.get_window()
+#define G_Root G_App.get_root()

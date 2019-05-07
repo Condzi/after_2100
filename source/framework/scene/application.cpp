@@ -35,9 +35,14 @@ void Application::run()
 	}
 }
 
-Root* Application::get_root()
+auto Application::get_root() -> Root&
 {
-	return &root;
+	return root;
+}
+
+auto Application::get_window() const -> sf::RenderWindow const&
+{
+	return window;
 }
 
 void Application::exit_game()

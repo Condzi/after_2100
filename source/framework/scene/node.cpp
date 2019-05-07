@@ -148,7 +148,7 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 	Node* current_node{ this };
 
 	if ( string_begins_with( path, "root/" ) ) {
-		current_node = Application::get_instance().get_root();
+		current_node = &G_Root;
 		path = path.substr( 6 ); // "root/" has 6 chars, so just cut it off
 	}
 
