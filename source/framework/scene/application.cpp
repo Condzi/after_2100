@@ -28,7 +28,9 @@ void Application::run()
 		root.update_children( fps_clock.restart().asSeconds() );
 
 		window.clear();
-		root.draw_children( window );
+		drawing_queue.clear();
+		root.draw_children( drawing_queue );
+		drawing_queue.display( window );
 		window.display();
 	}
 }

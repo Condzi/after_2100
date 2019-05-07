@@ -7,7 +7,7 @@
 
 #include "framework/scene/node.hpp"
 #include "framework/common/assertions.hpp"
-#include "framework/common/find.hpp"
+#include "framework/common/stl_extensions.hpp"
 #include "framework/scene/application.hpp"
 
 namespace con
@@ -86,12 +86,12 @@ void Node::handle_input_children( sf::Event const& event )
 		child->handle_input_children( event );
 }
 
-void Node::draw_children( sf::RenderWindow& window )
+void Node::draw_children( Drawing_Queue& queue )
 {
-	draw( window );
+	draw( queue );
 
 	for ( auto& child : child_nodes )
-		child->draw_children( window );
+		child->draw_children( queue );
 }
 
 auto Node::get_local_position() const -> Point const&

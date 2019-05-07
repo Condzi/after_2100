@@ -31,6 +31,7 @@ private:
 	Application() = default;
 
 	sf::RenderWindow window;
+	Drawing_Queue drawing_queue;
 	bool exit = false;
 	Root root;
 };

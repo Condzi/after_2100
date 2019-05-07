@@ -21,6 +21,7 @@ template <typename TContainer, typename TValue>
 template <typename TContainer, typename TLambda>
 [[nodiscard]] Find_Result find_if( TContainer const& container, TLambda&& lambda );
 
+bool string_begins_with( std::string const& string, std::string const& prefix );
 }
 
-#include "find.inl"
+#include "stl_extensions.inl"

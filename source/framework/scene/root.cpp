@@ -25,5 +25,15 @@ void Root::update( r32 delta )
 
 		engine_log_info( "+++++ FPS: {0:.1f} +++++", 1 / delta );
 	}
+
+	debug_shape.setPosition( static_cast<sf::Vector2f>(sf::Mouse::getPosition()) );
+}
+
+void Root::draw( Drawing_Queue& queue )
+{
+	// this should be in ctor:
+	debug_shape.setFillColor( sf::Color::Red );
+
+	queue.add_drawable( debug_shape, 0 );
 }
 }

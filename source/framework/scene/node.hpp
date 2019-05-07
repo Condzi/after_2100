@@ -8,6 +8,7 @@
 #include "pch.hpp"
 
 #include "framework/common/vec2.hpp"
+#include "framework/common/drawing_set.hpp"
 
 namespace sf
 {
@@ -20,6 +21,8 @@ namespace con
 class Node
 {
 	CLASS_DEF( Node );
+
+	friend class Application;
 
 public:
 	using Node_Ptr = std::unique_ptr<Node>;
@@ -56,8 +59,8 @@ public:
 
 	virtual void update( r32 delta ) {}
 	virtual void handle_input( sf::Event const& event ) {}
-	// @ToDo: Use it to add a Drawable object (which has layer and sf::Drawable ptr) to a storage instead.
-	virtual void draw( sf::RenderWindow& window ) {}
+	// Use it for drawing own stuff, but prefer Sprite (or Text) node.
+	virtual void draw( Drawing_Queue& qeueue ) {}
 
 private:
 	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
@@ -70,11 +73,9 @@ private:
 	bool queued_for_delete{ false };
 	bool paused{ false };
 
-	// @ToDo: public is debug only
-public:
 	void remove_queued_for_delete();
 	void update_children( r32 dt );
 	void handle_input_children( sf::Event const& event );
-	void draw_children( sf::RenderWindow& window );
+	void draw_children( Drawing_Queue& queue );
 };
 }

@@ -12,6 +12,7 @@
 #include <fstream>
 #include <memory>
 #include <iterator>
+#include <set>
 #include <vector>
 
 #include <nlohmann/json.hpp>
@@ -55,9 +56,9 @@ inline static auto instantiate()                                   \
 }                                                                  \
 private:
 
-inline bool string_begins_with( std::string const& string, std::string const& prefix )
+inline con::s32 operator"" px( unsigned long long val )
 {
-	return string.substr( prefix.size() ) == prefix;
+	return static_cast<con::s32>( val );
 }
 
 #define is ==

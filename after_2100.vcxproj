@@ -97,7 +97,11 @@
   <ItemGroup>
     <ClInclude Include="source\framework\common\assertions.hpp" />
     <ClInclude Include="source\framework\common\debug_log.hpp" />
-    <ClInclude Include="source\framework\common\find.hpp">
+    <ClInclude Include="source\framework\common\drawing_set.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\framework\common\stl_extensions.hpp">
       <SubType>
       </SubType>
     </ClInclude>
@@ -123,7 +127,11 @@
   <ItemGroup>
     <ClCompile Include="source\framework\common\assertions.cpp" />
     <ClCompile Include="source\framework\common\debug_log.cpp" />
-    <ClCompile Include="source\framework\common\find.cpp">
+    <ClCompile Include="source\framework\common\drawing_set.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\framework\common\stl_extensions.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -150,7 +158,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\framework\common\find.inl">
+    <None Include="source\framework\common\stl_extensions.inl">
       <SubType>
       </SubType>
     </None>
