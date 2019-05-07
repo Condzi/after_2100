@@ -39,7 +39,7 @@ void Application::run()
 	}
 }
 
-auto Application::get_root() -> Root&
+auto Application::get_root() -> Root &
 {
 	return root;
 }
@@ -47,6 +47,11 @@ auto Application::get_root() -> Root&
 auto Application::get_window() const -> sf::RenderWindow const&
 {
 	return window;
+}
+
+auto Application::get_window_size() const -> Size2
+{
+	return static_cast<Size2>( window.getSize() );
 }
 
 void Application::exit_game()

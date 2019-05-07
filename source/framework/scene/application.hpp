@@ -22,7 +22,9 @@ public:
 
 	// @ToDo: Probably somewhere else?
 	auto get_root()                -> Root&;
+	// May be confusing:
 	auto get_window() const        -> sf::RenderWindow const&;
+	auto get_window_size() const   -> Size2;
 
 	void exit_game();
 

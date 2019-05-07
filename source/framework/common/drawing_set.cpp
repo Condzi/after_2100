@@ -21,7 +21,7 @@ bool Drawing_Set::Drawable::operator==( Drawable const& second ) const
 
 bool Drawing_Set::add_drawable( sf::Drawable const& drawable, s32 layer )
 {
-	return drawables.emplace( Drawable{ layer, drawable } ).second;
+	return drawables.emplace( Drawable{ layer, drawable } ) != drawables.end();
 }
 
 void Drawing_Set::display( sf::RenderTarget& target )

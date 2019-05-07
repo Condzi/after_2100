@@ -17,8 +17,6 @@ void Sprite::update( r32 delta )
 	sprite.setPosition( get_global_position() );
 	sprite.setRotation( get_rotation() );
 	sprite.setScale( get_scale() );
-
-	log_info( "{0}: ({1:.1f}, {2:.1f})", name, get_global_position().x, get_global_position().y );
 }
 
 void Sprite::draw( Drawing_Set& drawing_set )

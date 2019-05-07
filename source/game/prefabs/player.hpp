@@ -25,6 +25,11 @@ private:
 	Vec2 velocity;
 	bool slow_horizontal{ true }, slow_vertical{ true };
 
+	// For illusion (when player go up and appears from bottom)
+	Node* sprite_a;
+	Node* sprite_b;
+
+	void update_illusion();
 	void check_movement_keys();
 	void slow_down();
 

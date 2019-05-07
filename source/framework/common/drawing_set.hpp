@@ -29,6 +29,6 @@ public:
 	void display( sf::RenderTarget& target );
 
 private:
-	std::set<Drawable> drawables;
+	std::multiset<Drawable> drawables;
 };
 }
