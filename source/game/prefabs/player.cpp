@@ -20,7 +20,6 @@ Player::Player()
 	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
 	spr_a->name = "sprite_a";
 
-	// @ToDo: After rotation they are inverted. Set the correct origin.
 	auto sprite_size = spr_a->get_global_bounds().size;
 	spr_a->set_transformation_origin( sprite_size * 0.5 );
 
@@ -34,6 +33,7 @@ Player::Player()
 
 	rotate( 90.0deg );
 
+	// After rotating by 90deg width gets swapped with height.
 	sprite_a->set_local_position( { sprite_size.height / 2, 0.0px } );
 	sprite_b->set_local_position( { sprite_size.height / 2, 0.0px } );
 

@@ -10,7 +10,7 @@
 
 namespace con
 {
-void Application::initialize( u32 window_width, u32 window_height, u32 fps, std::string const & title )
+void Application::initialize( u32 window_width, u32 window_height, u32 fps, std::string const& title )
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
@@ -40,6 +40,8 @@ void Application::run()
 		drawing_set.display( window );
 		window.display();
 	}
+
+	engine_log_info( "Exiting game loop..." );
 }
 
 auto Application::get_root() -> Root &
