@@ -94,6 +94,8 @@ void Resources_Storage::reload()
 			engine_log_error( "The texture \"{}\" can't be loaded from \"{}\".", name, path );
 			textures[name].is_valid = false;
 		}
+
+		texture.setSmooth( true );
 	}
 
 	for ( constant[name, path] : resources_data.sound_buffers ) {

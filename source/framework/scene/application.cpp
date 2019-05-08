@@ -12,7 +12,10 @@ namespace con
 {
 void Application::initialize( u32 window_width, u32 window_height, u32 fps, std::string const & title )
 {
-	window.create( { window_width, window_height }, title, sf::Style::Close );
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+
+	window.create( { window_width, window_height }, title, sf::Style::Close, settings );
 	window.setFramerateLimit( fps );
 
 	G_Resources_Storage.reload();
