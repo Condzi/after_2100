@@ -33,18 +33,7 @@ public:
 	virtual ~Node() = default;
 
 	template <typename TNode>
-	[[nodiscard]] auto cast_to()                            -> TNode *const
-	{
-		static_assert( std::is_base_of_v<Node, TNode> );
-
-		auto casted = dynamic_cast<TNode*>( this );
-		report_error_if( casted is nullptr )
-		{
-			engine_log_error( "Error casting \"{}\" => \"{}\".", get_class_name(), TNode::get_class_name_static() );
-		}
-
-		return casted;
-	}
+	[[nodiscard]] auto cast_to()                            -> TNode *const;
 
 	[[nodiscard]] auto attach( Node_Ptr&& node_to_attach )  -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
@@ -94,3 +83,5 @@ private:
 	void draw_children( Drawing_Set& queue );
 };
 }
+
+#include "node.inl"
