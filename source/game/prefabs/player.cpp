@@ -20,7 +20,8 @@ Player::Player()
 	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
 	spr_a->name = "sprite_a";
 
-	constant sprite_size = spr_a->get_global_bounds().size;
+	// @ToDo: After rotation they are inverted. Set the correct origin.
+	auto sprite_size = spr_a->get_global_bounds().size;
 	spr_a->set_transformation_origin( sprite_size * 0.5 );
 
 	sprite_a = attach( change_owner( spr_a ) );
@@ -33,7 +34,6 @@ Player::Player()
 
 	rotate( 90.0deg );
 
-	// Sprite is rotated, so we use it height instead of width.
 	sprite_a->set_local_position( { sprite_size.height / 2, 0.0px } );
 	sprite_b->set_local_position( { sprite_size.height / 2, 0.0px } );
 
@@ -47,6 +47,7 @@ void Player::update( r32 dt )
 	move( velocity * dt );
 	correct_for_boundary_collision();
 	slow_down();
+	accelerate( dt );
 	update_tilt_transformation();
 }
 
@@ -72,24 +73,45 @@ void Player::update_illusion()
 
 void Player::check_movement_keys()
 {
+	acceleration_direction = Vec2::ZERO();
+
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )
-		velocity.x = -VELOCITY_MAX;
+		acceleration_direction += Vec2::LEFT();
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
-		velocity.x = VELOCITY_MAX;
+		acceleration_direction += Vec2::RIGHT();
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) )
-		velocity.y = -VELOCITY_MAX;
+		acceleration_direction += Vec2::UP();
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
-		velocity.y = VELOCITY_MAX;
+		acceleration_direction += Vec2::DOWN();
 }
 
 void Player::slow_down()
 {
-	velocity *= SLOWING_MULTIPLIER;
+	if ( acceleration_direction.x is 0 ) {
+		velocity.x *= SLOWING_MULTIPLIER;
+		if ( std::fabs( velocity.x ) < 1 )
+			velocity.x = 0;
+	}
+	if ( acceleration_direction.y is 0 ) {
+		velocity.y *= SLOWING_MULTIPLIER;
+		if ( std::fabs( velocity.y ) < 1 )
+			velocity.y = 0;
+	}
+}
 
-	if ( std::fabs( velocity.x ) < 1 )
-		velocity.x = 0;
-	if ( std::fabs( velocity.y ) < 1 )
-		velocity.y = 0;
+void Player::accelerate( r32 dt )
+{
+	velocity += acceleration_direction * VELOCITY_MAX * ACCELERATION_MULTIPLIER;
+
+	if ( velocity.x < -VELOCITY_MAX )
+		velocity.x = -VELOCITY_MAX;
+	if ( velocity.x > VELOCITY_MAX )
+		velocity.x = VELOCITY_MAX;
+
+	if ( velocity.y < -VELOCITY_MAX )
+		velocity.y = -VELOCITY_MAX;
+	if ( velocity.y > VELOCITY_MAX )
+		velocity.y = VELOCITY_MAX;
 }
 
 void Player::correct_for_boundary_collision()
@@ -98,6 +120,7 @@ void Player::correct_for_boundary_collision()
 	constant window_width = G_App.get_window_size().width;
 	constant sprite_width = sprite_a->cast_to<Sprite>()->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
+	log_info( "{} vs {}", x_pos, sprite_a->get_global_position().x );
 	// y_pos doesn't matter since sprites has it own individual position, 
 	// but it's still more clear if we set it as it was.
 	constant y_pos = get_global_position().y;
@@ -120,15 +143,8 @@ void Player::update_tilt_transformation()
 	// Doesn't matter from whitch sprite we are getting the values.
 	auto [pitch, yaw, roll] = spr_a.get_rotation_3d();
 
-	if ( velocity.x != 0 )
-		pitch = velocity.x * 0.12;
-	if ( velocity.y != 0 )
-		yaw = velocity.y * 0.12;
-
-	// @Bugfix: When x and y > 0 then yaw is pointed in wrong direction.
-	// This solves the problem.
-	//if ( velocity.x > 0 and velocity.y > 0 )
-	//	pitch *= -1;
+	pitch = velocity.x * TILT_MULTIPLIER;
+	yaw = velocity.y * TILT_MULTIPLIER;
 
 	spr_a.set_rotation_3d( pitch, yaw, roll );
 	spr_b.set_rotation_3d( pitch, yaw, roll );

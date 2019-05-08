@@ -24,6 +24,10 @@ public:
 private:
 	static constexpr r32 VELOCITY_MAX = 200;
 	static constexpr r32 SLOWING_MULTIPLIER = 0.86;
+	static constexpr r32 ACCELERATION_MULTIPLIER = 0.1;
+	static constexpr r32 TILT_MULTIPLIER = 0.09;
+
+	Vec2 acceleration_direction;
 	Vec2 velocity;
 
 	// For illusion (when player go up and appears from bottom)
@@ -33,6 +37,7 @@ private:
 	void update_illusion();
 	void check_movement_keys();
 	void slow_down();
+	void accelerate( r32 dt );
 	void correct_for_boundary_collision();
 	void update_tilt_transformation();
 
