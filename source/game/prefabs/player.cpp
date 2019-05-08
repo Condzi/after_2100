@@ -20,20 +20,24 @@ Player::Player()
 	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
 	spr_a->name = "sprite_a";
 
-	// After rotation by 90deg we have to offset it position.
-	constant sprite_height = spr_a->get_global_bounds().size.height;
+	constant sprite_size = spr_a->get_global_bounds().size;
+	spr_a->set_transformation_origin( sprite_size * 0.5 );
 
 	sprite_a = attach( change_owner( spr_a ) );
 
 	auto spr_b = Sprite::instantiate();
 	spr_b->name = "sprite_b";
 	spr_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
+	spr_b->set_transformation_origin( sprite_size * 0.5 );
 	sprite_b = attach( change_owner( spr_b ) );
 
 	rotate( 90.0deg );
 
-	sprite_a->set_local_position( { sprite_height, 0.0px } );
-	sprite_b->set_local_position( { sprite_height, 0.0px } );
+	// Sprite is rotated, so we use it height instead of width.
+	sprite_a->set_local_position( { sprite_size.height / 2, 0.0px } );
+	sprite_b->set_local_position( { sprite_size.height / 2, 0.0px } );
+
+	set_global_position( { 200.0px,200.0px } );
 }
 
 void Player::update( r32 dt )
@@ -43,6 +47,7 @@ void Player::update( r32 dt )
 	move( velocity * dt );
 	correct_for_boundary_collision();
 	slow_down();
+	update_tilt_transformation();
 }
 
 void Player::update_illusion()
@@ -89,6 +94,7 @@ void Player::slow_down()
 
 void Player::correct_for_boundary_collision()
 {
+
 	constant window_width = G_App.get_window_size().width;
 	constant sprite_width = sprite_a->cast_to<Sprite>()->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
@@ -104,4 +110,26 @@ void Player::correct_for_boundary_collision()
 		velocity.x = 0;
 		set_global_position( { window_width - sprite_width, y_pos } );
 	}
+}
+
+void Player::update_tilt_transformation()
+{
+	Sprite& spr_a = *sprite_a->cast_to<Sprite>();
+	Sprite& spr_b = *sprite_b->cast_to<Sprite>();
+
+	// Doesn't matter from whitch sprite we are getting the values.
+	auto [pitch, yaw, roll] = spr_a.get_rotation_3d();
+
+	if ( velocity.x != 0 )
+		pitch = velocity.x * 0.12;
+	if ( velocity.y != 0 )
+		yaw = velocity.y * 0.12;
+
+	// @Bugfix: When x and y > 0 then yaw is pointed in wrong direction.
+	// This solves the problem.
+	//if ( velocity.x > 0 and velocity.y > 0 )
+	//	pitch *= -1;
+
+	spr_a.set_rotation_3d( pitch, yaw, roll );
+	spr_b.set_rotation_3d( pitch, yaw, roll );
 }

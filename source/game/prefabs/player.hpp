@@ -34,5 +34,6 @@ private:
 	void check_movement_keys();
 	void slow_down();
 	void correct_for_boundary_collision();
+	void update_tilt_transformation();
 
 };
