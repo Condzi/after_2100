@@ -32,8 +32,8 @@ Player::Player()
 
 	rotate( 90 );
 
-	sprite_a->set_local_position( { sprite_height, 0 } );
-	sprite_b->set_local_position( { sprite_height, 0 } );
+	sprite_a->set_local_position( { sprite_height, 0.0px } );
+	sprite_b->set_local_position( { sprite_height, 0.0px } );
 
 	set_global_position( { 0.0px, 0.0px } );
 }
@@ -77,18 +77,11 @@ void Player::check_movement_keys()
 		velocity.y = -VELOCITY_MAX;
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
 		velocity.y = VELOCITY_MAX;
-
-	// Value other than 0 is true.
-	slow_horizontal = velocity.x;
-	slow_vertical = velocity.y;
 }
 
 void Player::slow_down()
 {
-	if ( slow_horizontal )
-		velocity.x *= SLOWING_MULTIPLIER;
-	if ( slow_vertical )
-		velocity.y *= SLOWING_MULTIPLIER;
+	velocity *= SLOWING_MULTIPLIER;
 
 	if ( std::fabs( velocity.x ) < 1 )
 		velocity.x = 0;
@@ -106,13 +99,11 @@ void Player::correct_for_boundary_collision()
 	constant y_pos = get_global_position().y;
 	constant x_pos_max = x_pos + sprite_width;
 
-	if ( x_pos <= 0 ) {
+	if ( x_pos <= 0.0px ) {
 		velocity.x = 0;
 		set_global_position( { 0.0px, y_pos } );
 	} else if ( x_pos_max >= window_width ) {
 		velocity.x = 0;
 		set_global_position( { window_width - sprite_width, y_pos } );
 	}
-
-	log_info( "x_pos = {0:.1f}     x_pos_max = {1:.1f}", x_pos, x_pos_max );
 }

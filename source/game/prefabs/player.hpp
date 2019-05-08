@@ -25,8 +25,6 @@ private:
 	static constexpr r32 VELOCITY_MAX = 200;
 	static constexpr r32 SLOWING_MULTIPLIER = 0.86;
 	Vec2 velocity;
-	// @ToDo: Probably boilerplate - we always slow the ship.
-	bool slow_horizontal{ true }, slow_vertical{ true };
 
 	// For illusion (when player go up and appears from bottom)
 	Node* sprite_a;
