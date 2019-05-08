@@ -30,7 +30,7 @@ Player::Player()
 	spr_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
 	sprite_b = attach( change_owner( spr_b ) );
 
-	rotate( 90 );
+	rotate( 90.0deg );
 
 	sprite_a->set_local_position( { sprite_height, 0.0px } );
 	sprite_b->set_local_position( { sprite_height, 0.0px } );

@@ -61,6 +61,14 @@ inline con::r32 operator"" px( long double val )
 	return static_cast<con::r32>( val );
 }
 
+// Automaticly sets correct degrees value (400 -> 400 - 360 = 40)
+inline con::r32 operator"" deg( long double val )
+{
+	auto const as_integer = static_cast<con::s32>( val );
+
+	return static_cast<con::r32>( val ) - 360 * ( as_integer % 360 );
+}
+
 #define is ==
 #define is_not !=
 #define returned is
