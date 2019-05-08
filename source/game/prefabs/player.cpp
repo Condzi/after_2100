@@ -34,8 +34,6 @@ Player::Player()
 
 	sprite_a->set_local_position( { sprite_height, 0.0px } );
 	sprite_b->set_local_position( { sprite_height, 0.0px } );
-
-	set_global_position( { 0.0px, 0.0px } );
 }
 
 void Player::update( r32 dt )
@@ -92,7 +90,7 @@ void Player::slow_down()
 void Player::correct_for_boundary_collision()
 {
 	constant window_width = G_App.get_window_size().width;
-	constant sprite_width = dynamic_cast<Sprite*>( sprite_a )->get_global_bounds().size.width;
+	constant sprite_width = sprite_a->cast_to<Sprite>()->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
 	// y_pos doesn't matter since sprites has it own individual position, 
 	// but it's still more clear if we set it as it was.

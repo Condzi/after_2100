@@ -7,6 +7,7 @@
 
 #include "pch.hpp"
 
+#include "framework/common/assertions.hpp"
 #include "framework/common/vec2.hpp"
 #include "framework/common/drawing_set.hpp"
 
@@ -31,7 +32,20 @@ public:
 
 	virtual ~Node() = default;
 
-	// @ToDo: template the getter methods to return valid Node instead of ptr and then cast?s
+	template <typename TNode>
+	[[nodiscard]] auto cast_to()                            -> TNode *const
+	{
+		static_assert( std::is_base_of_v<Node, TNode> );
+
+		auto casted = dynamic_cast<TNode*>( this );
+		report_error_if( casted is nullptr )
+		{
+			engine_log_error( "Error casting \"{}\" => \"{}\".", get_class_name(), TNode::get_class_name_static() );
+		}
+
+		return casted;
+	}
+
 	[[nodiscard]] auto attach( Node_Ptr&& node_to_attach )  -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node *const;
@@ -39,7 +53,7 @@ public:
 
 	[[nodiscard]] auto get_global_position() const          -> Point const&;
 	[[nodiscard]] auto get_local_position() const           -> Point const&;
-	[[nodiscard]] auto get_rotation() const                  -> r32;
+	[[nodiscard]] auto get_rotation() const                 -> r32;
 	[[nodiscard]] auto get_scale() const                    -> Size2 const&;
 
 	[[nodiscard]] auto is_paused() const                    -> bool;
@@ -67,9 +81,9 @@ private:
 	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
 	std::vector<Node_Ptr> child_nodes;
 
-	Point position{ 0, 0 };
+	Point position{ 0.0px, 0.0px };
 	Size2 scale{ 1, 1 };
-	r32 angle{ 0 };
+	r32 angle{ 0.0deg };
 
 	bool queued_for_delete{ false };
 	bool paused{ false };

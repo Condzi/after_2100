@@ -6,7 +6,6 @@
 #include "pch.hpp"
 
 #include "framework/scene/node.hpp"
-#include "framework/common/assertions.hpp"
 #include "framework/common/stl_extensions.hpp"
 #include "framework/scene/application.hpp"
 
