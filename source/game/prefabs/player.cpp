@@ -103,15 +103,11 @@ void Player::accelerate( r32 dt )
 {
 	velocity += acceleration_direction * VELOCITY_MAX * ACCELERATION_MULTIPLIER;
 
-	if ( velocity.x < -VELOCITY_MAX )
-		velocity.x = -VELOCITY_MAX;
-	if ( velocity.x > VELOCITY_MAX )
-		velocity.x = VELOCITY_MAX;
+	if ( std::fabs( velocity.x ) > VELOCITY_MAX )
+		velocity.x = VELOCITY_MAX * acceleration_direction.x;
 
-	if ( velocity.y < -VELOCITY_MAX )
-		velocity.y = -VELOCITY_MAX;
-	if ( velocity.y > VELOCITY_MAX )
-		velocity.y = VELOCITY_MAX;
+	if ( std::fabs( velocity.y ) > VELOCITY_MAX )
+		velocity.y = VELOCITY_MAX * acceleration_direction.y;
 }
 
 void Player::correct_for_boundary_collision()
@@ -120,19 +116,16 @@ void Player::correct_for_boundary_collision()
 	constant window_width = G_App.get_window_size().width;
 	constant sprite_width = sprite_a->cast_to<Sprite>()->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
-	log_info( "{} vs {}", x_pos, sprite_a->get_global_position().x );
 	// y_pos doesn't matter since sprites has it own individual position, 
 	// but it's still more clear if we set it as it was.
 	constant y_pos = get_global_position().y;
 	constant x_pos_max = x_pos + sprite_width;
 
-	if ( x_pos <= 0.0px ) {
-		velocity.x = 0;
+	if ( x_pos <= 0.0px )
 		set_global_position( { 0.0px, y_pos } );
-	} else if ( x_pos_max >= window_width ) {
-		velocity.x = 0;
+	else if ( x_pos_max >= window_width )
 		set_global_position( { window_width - sprite_width, y_pos } );
-	}
+
 }
 
 void Player::update_tilt_transformation()
