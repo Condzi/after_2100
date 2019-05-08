@@ -10,7 +10,7 @@
 using namespace con;
 
 // @Info: Because of the illusion - the player position is split in two: for sprite_a and sprite_b.
-// It's main position (get_global_position) should not be used.
+// It's main position (get_global_position.y) should not be used.
 class Player final :
 	public Node
 {
@@ -25,6 +25,7 @@ private:
 	static constexpr r32 VELOCITY_MAX = 200;
 	static constexpr r32 SLOWING_MULTIPLIER = 0.86;
 	Vec2 velocity;
+	// @ToDo: Probably boilerplate - we always slow the ship.
 	bool slow_horizontal{ true }, slow_vertical{ true };
 
 	// For illusion (when player go up and appears from bottom)
@@ -34,5 +35,6 @@ private:
 	void update_illusion();
 	void check_movement_keys();
 	void slow_down();
+	void correct_for_boundary_collision();
 
 };

@@ -19,6 +19,10 @@ Player::Player()
 	auto spr_a = Sprite::instantiate();
 	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
 	spr_a->name = "sprite_a";
+
+	// After rotation by 90deg we have to offset it position.
+	constant sprite_height = spr_a->get_global_bounds().size.height;
+
 	sprite_a = attach( change_owner( spr_a ) );
 
 	auto spr_b = Sprite::instantiate();
@@ -27,7 +31,11 @@ Player::Player()
 	sprite_b = attach( change_owner( spr_b ) );
 
 	rotate( 90 );
-	set_global_position( { 100.0px, 100.0px } );
+
+	sprite_a->set_local_position( { sprite_height, 0 } );
+	sprite_b->set_local_position( { sprite_height, 0 } );
+
+	set_global_position( { 0.0px, 0.0px } );
 }
 
 void Player::update( r32 dt )
@@ -35,6 +43,7 @@ void Player::update( r32 dt )
 	check_movement_keys();
 	update_illusion();
 	move( velocity * dt );
+	correct_for_boundary_collision();
 	slow_down();
 }
 
@@ -85,4 +94,25 @@ void Player::slow_down()
 		velocity.x = 0;
 	if ( std::fabs( velocity.y ) < 1 )
 		velocity.y = 0;
+}
+
+void Player::correct_for_boundary_collision()
+{
+	constant window_width = G_App.get_window_size().width;
+	constant sprite_width = dynamic_cast<Sprite*>( sprite_a )->get_global_bounds().size.width;
+	constant x_pos = get_global_position().x;
+	// y_pos doesn't matter since sprites has it own individual position, 
+	// but it's still more clear if we set it as it was.
+	constant y_pos = get_global_position().y;
+	constant x_pos_max = x_pos + sprite_width;
+
+	if ( x_pos <= 0 ) {
+		velocity.x = 0;
+		set_global_position( { 0.0px, y_pos } );
+	} else if ( x_pos_max >= window_width ) {
+		velocity.x = 0;
+		set_global_position( { window_width - sprite_width, y_pos } );
+	}
+
+	log_info( "x_pos = {0:.1f}     x_pos_max = {1:.1f}", x_pos, x_pos_max );
 }
