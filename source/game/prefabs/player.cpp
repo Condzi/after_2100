@@ -17,19 +17,18 @@ Player::Player()
 	name = "player";
 
 	auto spr_a = Sprite::instantiate();
-	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
-	spr_a->name = "sprite_a";
-
-	auto sprite_size = spr_a->get_global_bounds().size;
-	spr_a->set_transformation_origin( sprite_size * 0.5 );
-
-	sprite_a = attach( change_owner( spr_a ) );
-
 	auto spr_b = Sprite::instantiate();
+	spr_a->name = "sprite_a";
 	spr_b->name = "sprite_b";
+	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
 	spr_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
+
+	constant sprite_size = spr_a->get_global_bounds().size;
 	spr_b->set_transformation_origin( sprite_size * 0.5 );
-	sprite_b = attach( change_owner( spr_b ) );
+	spr_a->set_transformation_origin( sprite_size * 0.5 );
+	
+	sprite_a = attach( change_owner( spr_a ) )->cast_to<Sprite>();
+	sprite_b = attach( change_owner( spr_b ) )->cast_to<Sprite>();
 
 	rotate( 90.0deg );
 
@@ -43,9 +42,9 @@ Player::Player()
 void Player::update( r32 dt )
 {
 	check_movement_keys();
-	update_illusion();
 	move( velocity * dt );
 	correct_for_boundary_collision();
+	update_illusion();
 	slow_down();
 	accelerate( dt );
 	update_tilt_transformation();
@@ -54,8 +53,8 @@ void Player::update( r32 dt )
 void Player::update_illusion()
 {
 	// Sprite that is visible on the screen.
-	Node* main_sprite{ sprite_a };
-	Node* mirror_sprite{ sprite_b };
+	Sprite* main_sprite{ sprite_a };
+	Sprite* mirror_sprite{ sprite_b };
 	const Rectangle_Shape window{ {0,0}, G_App.get_window_size() };
 
 	if ( RectVsPoint( window, sprite_b->get_global_position() ) is true )
@@ -112,33 +111,28 @@ void Player::accelerate( r32 dt )
 
 void Player::correct_for_boundary_collision()
 {
-
 	constant window_width = G_App.get_window_size().width;
-	constant sprite_width = sprite_a->cast_to<Sprite>()->get_global_bounds().size.width;
+	constant sprite_width = sprite_a->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
+	constant x_pos_max = x_pos + sprite_width;
 	// y_pos doesn't matter since sprites has it own individual position, 
 	// but it's still more clear if we set it as it was.
 	constant y_pos = get_global_position().y;
-	constant x_pos_max = x_pos + sprite_width;
 
 	if ( x_pos <= 0.0px )
 		set_global_position( { 0.0px, y_pos } );
 	else if ( x_pos_max >= window_width )
 		set_global_position( { window_width - sprite_width, y_pos } );
-
 }
 
 void Player::update_tilt_transformation()
 {
-	Sprite& spr_a = *sprite_a->cast_to<Sprite>();
-	Sprite& spr_b = *sprite_b->cast_to<Sprite>();
-
 	// Doesn't matter from whitch sprite we are getting the values.
-	auto [pitch, yaw, roll] = spr_a.get_rotation_3d();
+	auto [pitch, yaw, roll] = sprite_a->get_rotation_3d();
 
 	pitch = velocity.x * TILT_MULTIPLIER;
 	yaw = velocity.y * TILT_MULTIPLIER;
 
-	spr_a.set_rotation_3d( pitch, yaw, roll );
-	spr_b.set_rotation_3d( pitch, yaw, roll );
+	sprite_a->set_rotation_3d( pitch, yaw, roll );
+	sprite_b->set_rotation_3d( pitch, yaw, roll );
 }

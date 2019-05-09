@@ -31,8 +31,8 @@ private:
 	Vec2 velocity;
 
 	// For illusion (when player go up and appears from bottom)
-	Node* sprite_a;
-	Node* sprite_b;
+	Sprite* sprite_a;
+	Sprite* sprite_b;
 
 	void update_illusion();
 	void check_movement_keys();
@@ -40,5 +40,4 @@ private:
 	void accelerate( r32 dt );
 	void correct_for_boundary_collision();
 	void update_tilt_transformation();
-
 };

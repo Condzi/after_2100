@@ -18,7 +18,7 @@ void Node::rotate( r32 deg, bool affect_children )
 
 void Node::set_rotation( r32 deg, bool affect_children )
 {
-	angle = deg - 360 * ( static_cast<s32>( deg ) % 360 );
+	angle = deg;
 
 	if ( affect_children )
 		for ( auto& child : child_nodes )
@@ -156,7 +156,7 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 
 	auto concatenate_next_name = [&]() {
 		constant slash_position = path.find( '/' );
-		if ( slash_position == std::string::npos ) {
+		if ( slash_position is std::string::npos ) {
 			name_to_look = path;
 			search_for_node = false;
 			return;
@@ -170,7 +170,7 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 		concatenate_next_name();
 
 		constant[found, idx] = find_if( current_node->child_nodes,
-													[&name_to_look]( constant& child ) {
+										[&name_to_look]( constant& child ) {
 			return child->name == name_to_look;
 		} );
 

@@ -46,7 +46,7 @@ r32 Vec2::angle() const
 void Vec2::normalize()
 {
 	r32 const len{ length() };
-	report_warning_if( len == 0 )
+	report_warning_if( len is 0 )
 	{
 		x = y = 0;
 	} else {
