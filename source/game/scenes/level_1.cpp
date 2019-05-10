@@ -32,11 +32,12 @@ Level_1::Level_1()
 	Path_Follower& follower = *path.attach( Path_Follower::instantiate() )->cast_to<Path_Follower>();
 
 	follower.set_path( path );
-	
+
 	///////////////////////////////
 	Sprite& sprite = *follower.attach( Sprite::instantiate() )->cast_to<Sprite>();
 
 	sprite.set_texture( G_Resources_Storage.get_texture( "enemy_1" ) );
+	sprite.rotate( -90.0deg );
 
-	follower.start_following(100);
+	follower.start_following( 200 );
 }

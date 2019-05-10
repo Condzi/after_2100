@@ -24,7 +24,8 @@ public:
 
 	auto calculate_length() const -> r32;
 
-	void draw( Drawing_Set& set );
+	void input( sf::Event const& event ) override;
+	void draw( Drawing_Set& set ) override;
 
 private:
 	sf::VertexArray visual_representation{ sf::LinesStrip };
@@ -40,10 +41,12 @@ public:
 	r32 minimum_distance{ 50.0px };
 	r32 steering_force{ 200 };
 	r32 mass = 100;
+	r32 max_velocity{ 200 };
 
-	void start_following( r32 max_velocity_ );
+	void start_following();
 	void stop_following();
 
+	auto get_velocity() const -> Vec2 const&;
 	auto get_is_following() const -> bool;
 	auto is_finished() const -> bool;
 
@@ -52,8 +55,7 @@ public:
 	void update( r32 dt ) override;
 
 private:
-	r32 max_velocity{ 0 };
-	Vec2 current_velocity;
+	Vec2 velocity;
 	const Path* path_to_follow{ nullptr };
 	s32 current_target_id{ 0 };
 	bool is_following{ false };
