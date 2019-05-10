@@ -25,7 +25,7 @@ Level_1::Level_1()
 	path.points.emplace_back( Point{ 1280.0px, 360.0px } );
 	path.points.emplace_back( Point{ 960.0px,  480.0px } );
 	path.points.emplace_back( Point{ 640.0px,  240.0px } );
-	path.points.emplace_back( Point{ 0.0px,    400.0px } );
+	path.points.emplace_back( Point{ 320.0px,    400.0px } );
 	path.points.emplace_back( Point{ 0.0px,    360.0px } );
 
 	///////////////////////////////

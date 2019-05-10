@@ -43,7 +43,7 @@ r32 Vec2::angle() const
 	return std::atan2f( y, x );
 }
 
-auto Vec2::normalize() -> Vec2&
+auto Vec2::normalize() -> Vec2 &
 {
 	r32 const len{ length() };
 	report_warning_if( len is 0 )
@@ -117,5 +117,18 @@ Vec2 Vec2::operator-( Vec2 const& rhs ) const
 Vec2 Vec2::operator*( Vec2 const& rhs ) const
 {
 	return Vec2( x, y ) *= rhs;
+}
+
+Vec2 truncate( Vec2 const& in, r32 max )
+{
+	Vec2 truncated{ in };
+
+	if ( in.x > max )
+		truncated.x = max;
+
+	if ( in.y > max )
+		truncated.y = max;
+
+	return truncated;
 }
 }

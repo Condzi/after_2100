@@ -46,6 +46,10 @@ void Path_Follower::start_following( r32 max_velocity_ )
 	{
 		return;
 	}
+	report_error_if( path_to_follow->points.empty() )
+	{
+		return;
+	}
 	report_error_if( max_velocity_ <= 0 )
 	{
 		return;
@@ -53,6 +57,8 @@ void Path_Follower::start_following( r32 max_velocity_ )
 
 	// v = s*t
 	max_velocity = max_velocity_;
+
+	set_global_position( path_to_follow->points.front() );
 
 	is_following = true;
 }
@@ -71,14 +77,13 @@ auto Path_Follower::get_is_following() const -> bool
 
 auto Path_Follower::is_finished() const -> bool
 {
-	return ( current_target_id is path_to_follow->points.size() - 1 );
+	return ( current_target_id is path_to_follow->points.size() );
 }
 
 void Path_Follower::set_path( Path const& path )
 {
 	path_to_follow = &path;
 }
-
 
 void Path_Follower::update( r32 dt )
 {
@@ -99,7 +104,11 @@ void Path_Follower::update( r32 dt )
 	if ( is_finished() )
 		is_following = false;
 
-	constant velocity_to_apply = Vec2{ target_position - current_position }.normalize() * max_velocity;
-	move( velocity_to_apply * dt );
+	constant desired_velocity = Vec2{ target_position - current_position }.normalize() * max_velocity;
+	constant steering = truncate( desired_velocity - current_velocity, steering_force ) * ( 1/mass );
+
+	current_velocity = truncate( current_velocity + steering, max_velocity );
+
+	move( current_velocity * dt );
 }
 }
