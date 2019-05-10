@@ -43,7 +43,7 @@ r32 Vec2::angle() const
 	return std::atan2f( y, x );
 }
 
-void Vec2::normalize()
+auto Vec2::normalize() -> Vec2&
 {
 	r32 const len{ length() };
 	report_warning_if( len is 0 )
@@ -54,6 +54,8 @@ void Vec2::normalize()
 		x *= inv_length;
 		y *= inv_length;
 	}
+
+	return *this;
 }
 
 Vec2::operator sf::Vector2f() const
