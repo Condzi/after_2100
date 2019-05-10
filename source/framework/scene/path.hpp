@@ -7,6 +7,8 @@
 
 #include "node.hpp"
 
+#include <SFML/Graphics/VertexArray.hpp>
+
 namespace con
 {
 class Path :
@@ -25,7 +27,7 @@ public:
 	void draw( Drawing_Set& set );
 
 private:
-	sf::VertexArray visual_representation{ sf::Lines };
+	sf::VertexArray visual_representation{ sf::LinesStrip };
 };
 
 class Path_Follower :

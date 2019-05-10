@@ -5,8 +5,6 @@
 
 #include "pch.hpp"
 
-#include <SFML/Graphics/VertexArray.hpp>
-
 #include "framework/common/drawing_set.hpp"
 
 #include "path.hpp"
