@@ -55,6 +55,7 @@ void Path_Follower::stop_following()
 {
 	report_warning_if( is_following is false );
 
+	velocity = Vec2::ZERO();
 	is_following = false;
 }
 

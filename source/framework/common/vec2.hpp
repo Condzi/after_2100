@@ -25,14 +25,16 @@ public:
 		r32 height;
 	};
 
-	[[nodiscard]] constexpr static Vec2 ZERO() { return { 0, 0 }; };
-	[[nodiscard]] constexpr static Vec2 LEFT() { return { -1, 0 }; };
+	[[nodiscard]] constexpr static Vec2 ZERO()  { return { 0, 0 }; };
+	[[nodiscard]] constexpr static Vec2 LEFT()  { return { -1, 0 }; };
 	[[nodiscard]] constexpr static Vec2 RIGHT() { return { 1, 0 }; };
-	[[nodiscard]] constexpr static Vec2 UP() { return { 0, -1 }; };
-	[[nodiscard]] constexpr static Vec2 DOWN() { return { 0, 1 }; };
+	[[nodiscard]] constexpr static Vec2 UP()    { return { 0, -1 }; };
+	[[nodiscard]] constexpr static Vec2 DOWN()  { return { 0, 1 }; };
 
 	constexpr Vec2() = default;
 	constexpr Vec2( r32 x_, r32 y_ ) : x( x_ ), y( y_ ) {}
+	template <typename T>
+	constexpr Vec2( T x_, T y_ ) : x( static_cast<r32>( x_ ) ), y( static_cast<r32>( y_ ) ) {}
 	Vec2( sf::Vector2f const& vec ) : x( vec.x ), y( vec.y ) {}
 	template <typename T>
 	Vec2( sf::Vector2<T> const& vec ) : Vec2( static_cast<sf::Vector2f>( vec ) ) {}

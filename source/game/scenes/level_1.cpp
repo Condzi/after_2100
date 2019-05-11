@@ -11,6 +11,7 @@
 
 #include "framework/scene/path.hpp"
 #include "framework/common/resources_storage.hpp"
+#include "framework/scene/application.hpp"
 
 Level_1::Level_1()
 {
@@ -23,10 +24,19 @@ Level_1::Level_1()
 	Path& path = *attach( Path::instantiate() )->cast_to<Path>();
 	path.draw_path = true;
 
-	path.points.emplace_back( Point{ 1280.0px, 600.0px } );
-	path.points.emplace_back( Point{ 800.0px,  600.0px } );
-	path.points.emplace_back( Point{ 800.0px,  200.0px } );
-	path.points.emplace_back( Point{ -100.0px, 200.0px } );
+	constant w = G_App.get_window_size().width;
+	constant h = G_App.get_window_size().height;
+
+	path.points.emplace_back( Point{ w * 1.1,   h * 0.5 } );
+
+	for ( s32 i = 0; i < 5; i++ ) {
+		path.points.emplace_back( Point{ w * ( 0.95 - 0.20*i ),  h * 0.5 } );
+		path.points.emplace_back( Point{ w * ( 0.95 - 0.20*i ),  h * 0.1 } );
+		path.points.emplace_back( Point{ w * ( 0.85 - 0.20*i ),  h * 0.1 } );
+		path.points.emplace_back( Point{ w * ( 0.85 - 0.20*i ),  h * 0.9 } );
+		path.points.emplace_back( Point{ w * ( 0.92 - 0.20*i ),  h * 0.7 } );
+		path.points.emplace_back( Point{ w * ( 0.80 - 0.20*i ),  h * 0.5 } );
+	}
 
 	///////////////////////////////
 	Enemy_Base& enemy = *attach( Enemy_Base::instantiate() )->cast_to<Enemy_Base>();
