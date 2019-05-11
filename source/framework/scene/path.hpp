@@ -22,8 +22,6 @@ public:
 	s32 layer{ 0 };
 	bool draw_path{ false };
 
-	auto calculate_length() const -> r32;
-
 	void input( sf::Event const& event ) override;
 	void draw( Drawing_Set& set ) override;
 
@@ -38,10 +36,10 @@ class Path_Follower :
 
 public:
 	// If reached then go to next point.
-	r32 minimum_distance{ 50.0px };
+	r32 minimum_distance{ 20.0px };
 	r32 steering_force{ 200 };
-	r32 mass = 100;
-	r32 max_velocity{ 200 };
+	r32 steering_authority{ 0.06 };
+	r32 max_velocity{ 160 };
 
 	void start_following();
 	void stop_following();
@@ -56,7 +54,7 @@ public:
 
 private:
 	Vec2 velocity;
-	const Path* path_to_follow{ nullptr };
+	Path const* path_to_follow{ nullptr };
 	s32 current_target_id{ 0 };
 	bool is_following{ false };
 };

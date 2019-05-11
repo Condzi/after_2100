@@ -13,20 +13,6 @@
 
 namespace con
 {
-auto Path::calculate_length() const -> r32
-{
-	r32 length{ 0 };
-
-	Point previous_point;
-
-	for ( constant& point : points ) {
-		length += previous_point.distance( point );
-		previous_point = point;
-	}
-
-	return length;
-}
-
 void Path::input( sf::Event const& event )
 {
 	if ( event.type == sf::Event::KeyReleased )
@@ -103,20 +89,12 @@ void Path_Follower::update( r32 dt )
 		return;
 	}
 
-	report_error_if( mass is 0 )
-	{
-		engine_log_error( "'mass' value used in Path_Follower is used in division and can't be 0." );
-		stop_following();
-		return;
-	}
-
 	report_error_if( max_velocity <= 0 )
 	{
 		engine_log_error( "'max_velocity' has to be positive, like you :)" );
 		stop_following();
 		return;
 	}
-
 
 	constant target_position{ path_to_follow->points[current_target_id] };
 	constant current_position{ get_global_position() };
@@ -128,7 +106,7 @@ void Path_Follower::update( r32 dt )
 		is_following = false;
 
 	constant desired_velocity = Vec2{ target_position - current_position }.normalize() * max_velocity;
-	constant steering = truncate( desired_velocity - velocity, steering_force ) * ( 1/mass );
+	constant steering = truncate( desired_velocity - velocity, steering_force ) * steering_authority;
 
 	velocity = truncate( velocity + steering, max_velocity );
 

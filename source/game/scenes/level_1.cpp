@@ -22,11 +22,10 @@ Level_1::Level_1()
 	Path& path = *attach( Path::instantiate() )->cast_to<Path>();
 	path.draw_path = true;
 
-	path.points.emplace_back( Point{ 1280.0px, 360.0px } );
-	path.points.emplace_back( Point{ 960.0px,  480.0px } );
-	path.points.emplace_back( Point{ 640.0px,  240.0px } );
-	path.points.emplace_back( Point{ 320.0px,    400.0px } );
-	path.points.emplace_back( Point{ 0.0px,    360.0px } );
+	path.points.emplace_back( Point{ 1280.0px, 600.0px } );
+	path.points.emplace_back( Point{ 800.0px,  600.0px } );
+	path.points.emplace_back( Point{ 800.0px,  200.0px } );
+	path.points.emplace_back( Point{ -100.0px, 200.0px } );
 
 	///////////////////////////////
 	Path_Follower& follower = *path.attach( Path_Follower::instantiate() )->cast_to<Path_Follower>();
@@ -37,7 +36,8 @@ Level_1::Level_1()
 	Sprite& sprite = *follower.attach( Sprite::instantiate() )->cast_to<Sprite>();
 
 	sprite.set_texture( G_Resources_Storage.get_texture( "enemy_1" ) );
+	sprite.set_transformation_origin( sprite.get_global_bounds().size * 0.5 );
 	sprite.rotate( -90.0deg );
 
-	follower.start_following( 200 );
+	follower.start_following();
 }
