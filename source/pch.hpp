@@ -68,7 +68,7 @@ inline constexpr con::r32 operator"" sec( long double val )
 // Automaticly sets correct degrees value (400 -> 400 - 360 = 40)
 inline constexpr con::r32 operator"" deg( long double val )
 {
-	auto const as_integer = static_cast<con::s32>( val );
+	auto const as_integer{ static_cast<con::s32>( val ) };
 
 	return static_cast<con::r32>( val ) - 360 * ( as_integer % 360 );
 }

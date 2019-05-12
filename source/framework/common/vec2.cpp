@@ -46,8 +46,7 @@ r32 Vec2::angle() const
 auto Vec2::normalize() -> Vec2 &
 {
 	r32 const len{ length() };
-	if( len is 0 )
-	{
+	if ( len is 0 ) {
 		*this = Vec2::ZERO();
 	} else {
 		r32 inv_length{ 1 / len };

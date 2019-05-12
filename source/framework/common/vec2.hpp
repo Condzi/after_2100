@@ -56,12 +56,12 @@ public:
 
 	[[nodiscard]] Vec2 operator-() const;
 
-	[[nodiscard]] Vec2& operator*=( r32 scalar );
+	Vec2& operator*=( r32 scalar );
 	[[nodiscard]] Vec2 operator*( r32 scalar ) const;
 
-	[[nodiscard]] Vec2& operator+=( Vec2 const& rhs );
-	[[nodiscard]] Vec2& operator-=( Vec2 const& rhs );
-	[[nodiscard]] Vec2& operator*=( Vec2 const& rhs );
+	Vec2& operator+=( Vec2 const& rhs );
+	Vec2& operator-=( Vec2 const& rhs );
+	Vec2& operator*=( Vec2 const& rhs );
 	[[nodiscard]] Vec2 operator+( Vec2 const& rhs ) const;
 	[[nodiscard]] Vec2 operator-( Vec2 const& rhs ) const;
 	[[nodiscard]] Vec2 operator*( Vec2 const& rhs ) const;
