@@ -36,7 +36,7 @@ class Path_Follower :
 
 public:
 	// If reached then go to next point.
-	r32 minimum_distance{ 20.0px };
+	r32 minimum_distance{ 25.0px };
 	r32 steering_force{ 200 };
 	r32 steering_authority{ 0.06 };
 	r32 max_velocity{ 160 };
@@ -44,9 +44,9 @@ public:
 	void start_following();
 	void stop_following();
 
-	auto get_velocity() const -> Vec2 const&;
+	auto get_velocity() const     -> Vec2 const&;
 	auto get_is_following() const -> bool;
-	auto is_finished() const -> bool;
+	auto is_finished() const      -> bool;
 
 	void set_path( Path const& path );
 

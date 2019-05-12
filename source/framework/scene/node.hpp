@@ -35,7 +35,7 @@ public:
 	template <typename TNode>
 	[[nodiscard]] auto cast_to()                            -> TNode *const;
 
-	[[nodiscard]] auto attach( Node_Ptr&& node_to_attach )  -> Node *const;
+	auto attach( Node_Ptr&& node_to_attach )                -> Node *const;
 	[[nodiscard]] auto get_parent()                         -> Node *const;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node *const;
 	[[nodiscard]] auto get_node( std::string const& path )  -> Node *const;

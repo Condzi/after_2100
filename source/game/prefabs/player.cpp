@@ -16,25 +16,23 @@ Player::Player()
 {
 	name = "player";
 
-	auto spr_a = Sprite::instantiate();
-	auto spr_b = Sprite::instantiate();
-	spr_a->name = "sprite_a";
-	spr_b->name = "sprite_b";
-	spr_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
-	spr_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
+	sprite_a = attach( Sprite::instantiate() )->cast_to<Sprite>();
+	sprite_b = attach( Sprite::instantiate() )->cast_to<Sprite>();
+	sprite_a->name = "sprite_a";
+	sprite_b->name = "sprite_b";
+	sprite_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
+	sprite_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
 
-	constant sprite_size = spr_a->get_global_bounds().size;
-	spr_b->set_transformation_origin( sprite_size * 0.5 );
-	spr_a->set_transformation_origin( sprite_size * 0.5 );
-	
-	sprite_a = attach( change_owner( spr_a ) )->cast_to<Sprite>();
-	sprite_b = attach( change_owner( spr_b ) )->cast_to<Sprite>();
-
-	rotate( 90.0deg );
-
+	constant sprite_size = sprite_a->get_global_bounds().size;
 	// After rotating by 90deg width gets swapped with height.
 	sprite_a->set_local_position( { sprite_size.height / 2, 0.0px } );
 	sprite_b->set_local_position( { sprite_size.height / 2, 0.0px } );
+
+	sprite_b->set_transformation_origin( sprite_size * 0.5 );
+	sprite_a->set_transformation_origin( sprite_size * 0.5 );
+
+	rotate( 90.0deg );
+
 
 	set_global_position( { 200.0px,200.0px } );
 }

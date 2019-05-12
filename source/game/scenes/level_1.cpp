@@ -7,7 +7,7 @@
 
 #include "level_1.hpp"
 #include "game/prefabs/player.hpp"
-#include "game/prefabs/enemy_base.hpp"
+#include "game/prefabs/enemy_spawner.hpp"
 
 #include "framework/scene/path.hpp"
 #include "framework/common/resources_storage.hpp"
@@ -38,9 +38,13 @@ Level_1::Level_1()
 		path.points.emplace_back( Point{ w * ( 0.80 - 0.20*i ),  h * 0.5 } );
 	}
 
-	///////////////////////////////
-	Enemy_Base& enemy = *attach( Enemy_Base::instantiate() )->cast_to<Enemy_Base>();
+	path.points.emplace_back( Point{ w * -0.1,   h * 0.5 } );
 
-	enemy.set_path( path );
-	enemy.start_following();
+	///////////////////////////////
+	Enemy_Spawner& spawner = *attach( Enemy_Spawner::instantiate() )->cast_to<Enemy_Spawner>();
+	spawner.set_path( path );
+	spawner.set_enemy_type<Enemy_Base>();
+	spawner.start();
+	spawner.spawn_interval = 1.5sec;
+	spawner.set_spawn_limit( 8 );
 }

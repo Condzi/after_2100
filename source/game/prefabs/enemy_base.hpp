@@ -20,7 +20,7 @@ public:
 	void update( r32 dt ) override;
 
 private:
-	static constexpr r32 TILT_MULTIPLIER = 0.17;
+	static constexpr r32 TILT_MULTIPLIER = 0.18;
 
 	void update_tilt_transformation();
 };

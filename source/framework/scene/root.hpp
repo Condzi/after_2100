@@ -29,7 +29,6 @@ private:
 	Node_Ptr pending_scene{ nullptr };
 
 	r32 time_since_update{ 0 };
-	// in seconds
-	static constexpr r32 fps_update_interval{ 5 };
+	static constexpr r32 fps_update_interval{ 5.0sec };
 };
 }
