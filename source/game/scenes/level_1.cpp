@@ -45,6 +45,6 @@ Level_1::Level_1()
 	spawner.set_path( path );
 	spawner.set_enemy_type<Enemy_Base>();
 	spawner.start();
-	spawner.spawn_interval = 1.5sec;
+	spawner.spawn_interval = 1.9sec;
 	spawner.set_spawn_limit( 8 );
 }

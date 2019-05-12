@@ -67,12 +67,12 @@ public:
 	virtual void draw( Drawing_Set& drawing_set ) {}
 
 private:
-	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
 	std::vector<Node_Ptr> child_nodes;
+	Node*                 parent_node{ nullptr }; // The most outside nodes don't have parents.
 
 	Point position{ 0.0px, 0.0px };
 	Size2 scale{ 1, 1 };
-	r32 angle{ 0.0deg };
+	r32   angle{ 0.0deg };
 
 	bool queued_for_delete{ false };
 	bool paused{ false };

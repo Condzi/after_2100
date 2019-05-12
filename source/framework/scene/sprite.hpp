@@ -24,7 +24,7 @@ class Sprite :
 
 public:
 	bool visible{ true };
-	s32 layer{ 0 };
+	s32  layer{ 0 };
 
 	void update( r32 delta ) override;
 	void draw( Drawing_Set& drawing_set ) override;

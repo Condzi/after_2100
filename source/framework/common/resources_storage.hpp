@@ -40,20 +40,23 @@ class Resources_Storage final
 	};
 
 public:
-	[[nodiscard]] auto get_texture( std::string const& name ) const        -> sf::Texture const* const;
-	[[nodiscard]] auto get_sound_buffer( std::string const& name ) const   -> sf::SoundBuffer const* const;
-	[[nodiscard]] auto get_music( std::string const& name )                -> sf::Music * const;
-	[[nodiscard]] auto get_font( std::string const& name ) const           -> sf::Font const* const;
+	[[nodiscard]] auto get_texture( std::string const& name ) const      -> sf::Texture const* const;
+	[[nodiscard]] auto get_sound_buffer( std::string const& name ) const -> sf::SoundBuffer const* const;
+	[[nodiscard]] auto get_music( std::string const& name )              -> sf::Music * const;
+	[[nodiscard]] auto get_font( std::string const& name ) const         -> sf::Font const* const;
 
 	void reload();
 
 	static Resources_Storage& get_instance();
 
 private:
-	std::unordered_map<std::string, Resource_Validation_Wrapper<sf::Texture>> textures;
-	std::unordered_map<std::string, Resource_Validation_Wrapper<sf::SoundBuffer>> sound_buffers;
-	std::unordered_map<std::string, Resource_Validation_Wrapper<sf::Music>> music;
-	std::unordered_map<std::string, Resource_Validation_Wrapper<sf::Font>> fonts;
+	template <typename TResource>
+	using Storage = std::unordered_map<std::string, Resource_Validation_Wrapper<TResource>>;
+
+	Storage<sf::Texture>     textures;
+	Storage<sf::SoundBuffer> sound_buffers;
+	Storage<sf::Music>       music;
+	Storage<sf::Font>        fonts;
 
 	// they call me a madman...
 	Resources_Data resources_data{

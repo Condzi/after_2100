@@ -53,9 +53,9 @@ public:
 	void update( r32 dt ) override;
 
 private:
-	Vec2 velocity;
 	Path const* path_to_follow{ nullptr };
-	s32 current_target_id{ 0 };
-	bool is_following{ false };
+	Vec2        velocity;
+	s32         current_target_id{ 0 };
+	bool        is_following{ false };
 };
 }

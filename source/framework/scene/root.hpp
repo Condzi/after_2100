@@ -25,10 +25,10 @@ public:
 	void change_scene( Node_Ptr&& scene );
 
 private:
-	Node* active_scene{ nullptr };
-	Node_Ptr pending_scene{ nullptr };
+	Node*                active_scene{ nullptr };
+	Node_Ptr             pending_scene{ nullptr };
+	r32                  time_since_update{ 0 };
 
-	r32 time_since_update{ 0 };
 	static constexpr r32 fps_update_interval{ 5.0sec };
 };
 }

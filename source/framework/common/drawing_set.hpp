@@ -25,7 +25,7 @@ class Drawing_Set final
 
 public:
 	void clear();
-	bool add_drawable( sf::Drawable const& drawable, s32 layer );
+	auto add_drawable( sf::Drawable const& drawable, s32 layer ) -> bool;
 	void display( sf::RenderTarget& target );
 
 private:
