@@ -238,6 +238,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="source\framework\common\signal.inl">
+      <SubType>
+      </SubType>
+    </None>
     <None Include="source\framework\common\stl_extensions.inl">
       <SubType>
       </SubType>

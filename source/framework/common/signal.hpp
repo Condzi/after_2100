@@ -39,26 +39,14 @@ class Signal final :
 	};
 
 public:
-	void bond( Node const& node, Function&& function )
-	{
-		subscribers.emplace_back( node, function );
-	}
-
-	void notify( TArgs&& ...args )
-	{
-		for ( auto& sub : subscribers )
-			sub.function_to_call( std::forward<TArgs>( args )... );
-	}
-
+	void bond( Node const& node, Function&& function );
+	void notify( TArgs&& ...args );
 
 private:
 	std::vector<Subscriber> subscribers;
 
-	void remove_invalid_subscribers() override
-	{
-		remove_if( subscribers, []( constant& subscriber ) {
-			return subscriber.bonded_node.is_queued_for_delete();
-		} );
-	}
+	void remove_invalid_subscribers() override;
 };
 }
+
+#include "signal.inl"
