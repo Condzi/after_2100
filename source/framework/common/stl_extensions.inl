@@ -34,4 +34,13 @@ Find_Result find_if( TContainer const& container, TLambda&& lambda )
 
 	return { true, idx };
 }
+
+template <typename TContainer, typename TLambda>
+void remove_if( TContainer const& container, TLambda&& lambda )
+{
+	constant begin = container.begin();
+	constant end = container.end();
+
+	container.erase( std::remove_if( begin, end, change_owner( lambda ) ), end );
+}
 }
