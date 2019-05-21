@@ -7,6 +7,7 @@
 
 #include "framework/scene/application.hpp"
 #include "framework/common/resources_storage.hpp"
+#include "framework/common/stl_extensions.hpp"
 
 namespace con
 {
@@ -31,6 +32,9 @@ void Application::run()
 			root.handle_input_children( event );
 		}
 
+		for ( auto signal : signals )
+			signal->remove_invalid_subscribers();
+
 		root.remove_queued_for_delete();
 		root.update_children( fps_clock.restart().asSeconds() );
 
@@ -42,6 +46,32 @@ void Application::run()
 	}
 
 	engine_log_info( "Exiting game loop..." );
+}
+
+void Application::_add_signal( priv::Signal_Base* signal_to_add )
+{
+	constant[found, idx] = find( signals, signal_to_add );
+
+	report_error_if( found )
+	{
+		engine_log_error( "Trying to add already added signal. Duplicate found at index {}.", idx );
+		return;
+	}
+
+	signals.emplace_back( signal_to_add );
+}
+
+void Application::_remove_signal( priv::Signal_Base* signal_to_remove )
+{
+	constant[found, idx] = find( signals, signal_to_remove );
+
+	report_error_if( not found )
+	{
+		engine_log_error( "Trying to remove non existing signal." );
+		return;
+	}
+
+	signals.erase( signals.begin() + idx );
 }
 
 auto Application::get_root() -> Root &

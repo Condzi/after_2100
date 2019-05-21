@@ -8,6 +8,7 @@
 #include "pch.hpp"
 
 #include "root.hpp"
+#include "framework/common/signal.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
@@ -19,6 +20,10 @@ class Application final
 public:
 	void initialize( u32 window_width, u32 window_height, u32 fps, std::string const& title );
 	void run();
+
+	// Internal:
+	void _add_signal( priv::Signal_Base* signal_to_add );
+	void _remove_signal( priv::Signal_Base* signal_to_remove );
 
 	// @ToDo: Probably somewhere else?
 	auto get_root()              -> Root &;
@@ -37,6 +42,8 @@ private:
 	Drawing_Set      drawing_set;
 	bool             exit{ false };
 	Root             root;
+
+	std::vector<priv::Signal_Base*> signals;
 };
 }
 
