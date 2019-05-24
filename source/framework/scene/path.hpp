@@ -6,6 +6,7 @@
 #pragma once
 
 #include "node.hpp"
+#include "framework/common/signal.hpp"
 
 #include <SFML/Graphics/VertexArray.hpp>
 
@@ -35,6 +36,8 @@ class Path_Follower :
 	CLASS_DEF( Path_Follower );
 
 public:
+	Signal<> s_on_finish_following;
+
 	// If reached then go to next point.
 	r32 minimum_distance{ 25.0px };
 	r32 steering_force{ 200 };

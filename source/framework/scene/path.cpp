@@ -104,7 +104,10 @@ void Path_Follower::update( r32 dt )
 		current_target_id++;
 
 	if ( is_finished() )
+	{
 		is_following = false;
+		s_on_finish_following.notify();
+	}
 
 	constant desired_velocity = Vec2{ target_position - current_position }.normalize() * max_velocity;
 	constant steering = truncate( desired_velocity - velocity, steering_force ) * steering_authority;
