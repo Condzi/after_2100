@@ -28,11 +28,10 @@ Player::Player()
 	sprite_a->set_local_position( { sprite_size.height / 2, 0.0px } );
 	sprite_b->set_local_position( { sprite_size.height / 2, 0.0px } );
 
-	sprite_b->set_transformation_origin( sprite_size * 0.5 );
 	sprite_a->set_transformation_origin( sprite_size * 0.5 );
+	sprite_b->set_transformation_origin( sprite_size * 0.5 );
 
 	rotate( 90.0deg );
-
 
 	set_global_position( { 200.0px,200.0px } );
 }

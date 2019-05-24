@@ -121,7 +121,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="source\framework\common\rgba.hpp" />
     <ClInclude Include="source\framework\common\vec2.hpp" />
     <ClInclude Include="source\framework\scene\application.hpp">
       <SubType>
@@ -191,7 +190,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="source\framework\common\rgba.cpp" />
     <ClCompile Include="source\framework\common\vec2.cpp" />
     <ClCompile Include="source\framework\scene\application.cpp">
       <SubType>
