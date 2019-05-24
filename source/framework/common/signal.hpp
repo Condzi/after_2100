@@ -8,6 +8,7 @@
 #include "pch.hpp"
 
 #include "framework/scene/node.hpp"
+#include "framework/common/stl_extensions.hpp"
 
 namespace con
 {
@@ -17,9 +18,6 @@ namespace priv
 class Signal_Base
 {
 public:
-	Signal_Base( Signal_Base const& ) = delete;
-	Signal_Base& operator=( Signal_Base const& ) = delete;
-
 	Signal_Base();
 	~Signal_Base();
 
@@ -34,12 +32,14 @@ class Signal final :
 
 	struct Subscriber final
 	{
-		Node const& bonded_node;
+		Node* bonded_node;
 		Function function_to_call;
+
+		Subscriber( Node& node, Function&& f );
 	};
 
 public:
-	void bond( Node const& node, Function&& function );
+	void bond( Node& node, Function&& function );
 	void notify( TArgs&& ...args );
 
 private:

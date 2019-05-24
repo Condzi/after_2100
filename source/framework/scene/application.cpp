@@ -95,8 +95,11 @@ void Application::exit_game()
 }
 Application& Application::get_instance()
 {
-	static Application instance;
+	// @Hack: Prevent from destroying on exit.
+	// When signal wanted to detach from G__App and App was destroyed,
+	// a new instance had been made that caused bugs.
+	static Application* instance = new Application;
 
-	return instance;
+	return *instance;
 }
 }
