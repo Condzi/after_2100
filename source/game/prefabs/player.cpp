@@ -54,7 +54,7 @@ void Player::update_illusion()
 	Sprite* mirror_sprite{ sprite_b };
 	const Rectangle_Shape window{ {0,0}, G_App.get_window_size() };
 
-	if ( RectVsPoint( window, sprite_b->get_global_position() ) is true )
+	if ( rect_vs_point( window, sprite_b->get_global_position() ) is true )
 		std::swap( main_sprite, mirror_sprite );
 
 	Vec2 pos_to_set = main_sprite->get_global_position();

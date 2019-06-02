@@ -42,6 +42,7 @@ public:
 	[[nodiscard]] r32 length() const;
 	[[nodiscard]] r32 length_squared() const;
 	[[nodiscard]] r32 distance( Vec2 const& second ) const;
+	[[nodiscard]] r32 distance_squared( Vec2 const& second ) const;
 	[[nodiscard]] r32 dot( Vec2 const& second ) const;
 	[[nodiscard]] r32 cross( Vec2 const& second ) const;
 	[[nodiscard]] r32 angle() const;
