@@ -28,7 +28,7 @@ void Path::draw( Drawing_Set& set )
 	visual_representation.resize( points.size() );
 
 	for ( size_t i = 0; i < points.size(); i++ )
-		visual_representation[i] = sf::Vertex{ points[i], sf::Color::Red };
+		visual_representation[i] = sf::Vertex{ points[i], visual_representation_color };
 
 	set.add_drawable( visual_representation, layer );
 }

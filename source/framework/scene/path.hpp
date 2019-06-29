@@ -17,11 +17,11 @@ class Path :
 {
 	CLASS_DEF( Path );
 
-
 public:
 	std::vector<Point> points;
 	s32 layer{ 0 };
 	bool draw_path{ false };
+	sf::Color visual_representation_color{ sf::Color::Red };
 
 	void input( sf::Event const& event ) override;
 	void draw( Drawing_Set& set ) override;
