@@ -28,6 +28,9 @@ public:
 
 	s32       collision_layer{ 0 };
 
+	Area();
+	~Area();
+
 	void set_circle_shape( Circle_Shape const& circle );
 	void set_rectangle_shape( Rectangle_Shape const& rectangle );
 

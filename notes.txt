@@ -1,4 +1,4 @@
 Session 1:
-* Area2D => 1 Shape (Circle / Rectangle)
-* Update in Root?
-* move beggining of lambdas ('[]()') to new line for cleaner formatting
+x* Area2D => 1 Shape (Circle / Rectangle)
+x* Update in Root?
+x* move beggining of lambdas ('[]()') to new line for cleaner formatting

@@ -8,6 +8,7 @@
 #include "framework/scene/application.hpp"
 #include "framework/common/resources_storage.hpp"
 #include "framework/common/stl_extensions.hpp"
+#include "framework/scene/area_overleaping_checker.hpp"
 
 namespace con
 {
@@ -37,6 +38,8 @@ void Application::run()
 
 		root.remove_queued_for_delete();
 		root.update_children( fps_clock.restart().asSeconds() );
+
+		G_Area_Overleaping_Checker.update();
 
 		window.clear();
 		drawing_set.clear();
@@ -96,7 +99,7 @@ void Application::exit_game()
 Application& Application::get_instance()
 {
 	// @Hack: Prevent from destroying on exit.
-	// When signal wanted to detach from G__App and App was destroyed,
+	// When signal wanted to detach from G_App and App was destroyed,
 	// a new instance had been made that caused bugs.
 	static Application* instance = new Application;
 

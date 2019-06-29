@@ -6,9 +6,22 @@
 #include "pch.hpp"
 
 #include "area.hpp"
+#include "area_overleaping_checker.hpp"
 
 namespace con
 {
+Area::Area()
+{
+	name = "area";
+
+	G_Area_Overleaping_Checker.register_area( this );
+}
+
+Area::~Area()
+{
+	G_Area_Overleaping_Checker.unregister_area( this );
+}
+
 void Area::set_circle_shape( Circle_Shape const& circle )
 {
 	shape_set = true;
