@@ -104,7 +104,7 @@ auto Node::get_local_position() const -> Point const&
 	return position - parent_node->position;
 }
 
-auto Node::attach( Node_Ptr&& node_to_attach ) -> Node *const
+auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 {
 	report_error_if( node_to_attach is nullptr )
 	{
@@ -126,13 +126,13 @@ auto Node::attach( Node_Ptr&& node_to_attach ) -> Node *const
 	}
 
 	node_to_attach->parent_node = this;
-	Node *const return_value = node_to_attach.get();
+	Node* const return_value = node_to_attach.get();
 	child_nodes.emplace_back() = change_owner( node_to_attach );
 
 	return return_value;
 }
 
-auto Node::get_parent() -> Node *const
+auto Node::get_parent() -> Node* const
 {
 	return parent_node;
 }
@@ -154,7 +154,8 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 	std::string name_to_look;
 	bool search_for_node{ true };
 
-	auto concatenate_next_name = [&]() {
+	auto concatenate_next_name =
+		[&]() {
 		constant slash_position = path.find( '/' );
 		if ( slash_position is std::string::npos ) {
 			name_to_look = path;
@@ -171,8 +172,8 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 
 		constant[found, idx] = find_if( current_node->child_nodes,
 										[&name_to_look]( constant& child ) {
-			return child->name == name_to_look;
-		} );
+											return child->name == name_to_look;
+										} );
 
 		if ( not found )
 			return nullptr;

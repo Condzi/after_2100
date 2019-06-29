@@ -28,8 +28,9 @@ void Signal<TArgs...>::notify( TArgs&& ...args )
 template <typename ...TArgs>
 void Signal<TArgs...>::remove_invalid_subscribers()
 {
-	remove_if( subscribers, []( constant& subscriber ) {
-		return subscriber.bonded_node->is_queued_for_delete();
-	} );
+	remove_if( subscribers,
+			   []( constant& subscriber ) {
+				   return subscriber.bonded_node->is_queued_for_delete();
+			   } );
 }
 }
