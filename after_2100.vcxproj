@@ -126,6 +126,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="source\framework\scene\area.hpp" />
     <ClInclude Include="source\framework\scene\node.hpp">
       <SubType>
       </SubType>
@@ -195,6 +196,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="source\framework\scene\area.cpp" />
     <ClCompile Include="source\framework\scene\node.cpp">
       <SubType>
       </SubType>
