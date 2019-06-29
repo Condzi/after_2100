@@ -4,6 +4,8 @@
 */
 
 #include "pch.hpp"
+
+#include "assertions.hpp"
 #include "shapes.hpp"
 
 namespace con
@@ -51,4 +53,34 @@ bool circle_vs_point( Circle_Shape const& circle, Point const& point )
 
 	return distance_squared <= radious_squared;
 }
+
+bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b )
+{
+	struct Shape_Cases_Visitor final
+	{
+		bool operator()( Rectangle_Shape const& a, Rectangle_Shape const& b ) const
+		{
+			return rect_vs_rect( a, b );
+		}
+
+		bool operator()( Circle_Shape const& a, Circle_Shape const& b ) const
+		{
+			return circle_vs_circle( a, b );
+		}
+
+		bool operator()( Circle_Shape const& a, Rectangle_Shape const& b ) const
+		{
+			return circle_vs_rect( a, b );
+		}
+
+		bool operator()( Rectangle_Shape const& a, Circle_Shape const& b ) const
+		{
+			return circle_vs_rect( b, a );
+		}
+
+	};
+
+	return std::visit( Shape_Cases_Visitor{}, a, b );
+}
+
 }

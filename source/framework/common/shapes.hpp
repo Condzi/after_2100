@@ -31,9 +31,13 @@ struct Circle_Shape final
 	r32   radious{ 0 };
 };
 
+using Shape_Variant = std::variant<Rectangle_Shape, Circle_Shape>;
+
 bool rect_vs_rect( Rectangle_Shape const& a, Rectangle_Shape const& b );
 bool rect_vs_point( Rectangle_Shape const& rect, Point const& point );
 bool circle_vs_circle( Circle_Shape const& a, Circle_Shape const& b );
 bool circle_vs_rect( Circle_Shape const& circle, Rectangle_Shape const& rect );
 bool circle_vs_point( Circle_Shape const& circle, Point const& point );
+
+bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b );
 }

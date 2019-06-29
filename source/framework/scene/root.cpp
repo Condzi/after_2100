@@ -19,6 +19,7 @@ void Root::input( sf::Event const& event )
 
 void Root::update( r32 delta )
 {
+	// @ToDo: Update physics here.
 	if ( active_scene is nullptr and pending_scene is_not nullptr ) 
 		active_scene = attach( change_owner( pending_scene ) );
 

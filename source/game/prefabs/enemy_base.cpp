@@ -21,7 +21,6 @@ Enemy_Base::Enemy_Base()
 	s_on_finish_following.bond( *this, [&]() {
 		queue_for_delete();
 	} );
-
 }
 
 void Enemy_Base::update( r32 dt )

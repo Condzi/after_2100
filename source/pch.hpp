@@ -13,6 +13,7 @@
 #include <memory>
 #include <iterator>
 #include <set>
+#include <variant>
 #include <vector>
 
 #include <nlohmann/json.hpp>
@@ -80,4 +81,3 @@ inline constexpr con::r32 operator"" deg( long double val )
 #define change_owner( uptr ) std::move( uptr )
 #define pass int{0}
 #define unused( x ) ( ( void )( x ) )
-

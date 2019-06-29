@@ -1,0 +1,3 @@
+Session 1:
+* Area2D => 1 Shape (Circle / Rectangle)
+* Update in Root?
