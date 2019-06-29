@@ -6,6 +6,7 @@
 #pragma once
 
 #include "framework/scene/sprite.hpp"
+#include "framework/scene/area.hpp"
 
 using namespace con;
 
@@ -33,6 +34,10 @@ private:
 	// For illusion (when player go up and appears from bottom)
 	Sprite* sprite_a;
 	Sprite* sprite_b;
+	
+	// Children of sprites.
+	Area* hitbox_a;
+	Area* hitbox_b;
 
 	void update_illusion();
 	void check_movement_keys();

@@ -34,6 +34,12 @@ Player::Player()
 	rotate( 90.0deg );
 
 	set_global_position( { 200.0px,200.0px } );
+
+	hitbox_a = sprite_a->attach( Area::instantiate() )->cast_to<Area>();
+	hitbox_b = sprite_b->attach( Area::instantiate() )->cast_to<Area>();
+
+	hitbox_a->draw_shape = true;
+	hitbox_b->draw_shape = true;
 }
 
 void Player::update( r32 dt )
@@ -132,4 +138,7 @@ void Player::update_tilt_transformation()
 
 	sprite_a->set_rotation_3d( pitch, yaw, roll );
 	sprite_b->set_rotation_3d( pitch, yaw, roll );
+
+	hitbox_a->set_rectangle_shape( sprite_a->get_global_bounds() );
+	hitbox_b->set_rectangle_shape( sprite_b->get_global_bounds() );
 }
