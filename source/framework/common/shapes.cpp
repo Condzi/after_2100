@@ -56,31 +56,19 @@ bool circle_vs_point( Circle_Shape const& circle, Point const& point )
 
 bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b )
 {
-	struct Shape_Cases_Visitor final
-	{
-		bool operator()( Rectangle_Shape const& a, Rectangle_Shape const& b ) const
-		{
+	return std::visit( visitor_overload{	   
+		[]( Rectangle_Shape const& a, Rectangle_Shape const& b ) {
 			return rect_vs_rect( a, b );
-		}
-
-		bool operator()( Circle_Shape const& a, Circle_Shape const& b ) const
-		{
+		},
+		[]( Circle_Shape const& a, Circle_Shape const& b ) {
 			return circle_vs_circle( a, b );
-		}
-
-		bool operator()( Circle_Shape const& a, Rectangle_Shape const& b ) const
-		{
+		},
+		[]( Circle_Shape const& a, Rectangle_Shape const& b ) {
 			return circle_vs_rect( a, b );
-		}
-
-		bool operator()( Rectangle_Shape const& a, Circle_Shape const& b ) const
-		{
+		},
+		[]( Rectangle_Shape const& a, Circle_Shape const& b ) {
 			return circle_vs_rect( b, a );
-		}
-
-	};
-
-	return std::visit( Shape_Cases_Visitor{}, a, b );
+		} }, a, b );
 }
 
 }

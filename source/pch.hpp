@@ -81,3 +81,10 @@ inline constexpr con::r32 operator"" deg( long double val )
 #define change_owner( uptr ) std::move( uptr )
 #define pass int{0}
 #define unused( x ) ( ( void )( x ) )
+
+namespace con
+{
+// Helps with std::variant visiting. provides possibility to pass multiple lambdas. see: https://en.cppreference.com/w/cpp/utility/variant/visit
+template<class... Ts> struct visitor_overload : Ts... { using Ts::operator()...; };
+template<class... Ts> visitor_overload(Ts...) -> visitor_overload<Ts...>;
+}
