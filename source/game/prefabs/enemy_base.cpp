@@ -20,7 +20,6 @@ Enemy_Base::Enemy_Base()
 	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
 	hitbox->draw_shape = true;
 	hitbox->shape_color = sf::Color::Cyan;
-	hitbox->s_area_entered.bond( *this, []( auto& ) {log_info( "enemy hitbox triggered" ); } );
 
 	s_on_finish_following.bond( *this,
 								[&]() {

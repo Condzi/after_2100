@@ -40,9 +40,6 @@ Player::Player()
 
 	hitbox_a->draw_shape = true;
 	hitbox_b->draw_shape = true;
-
-	hitbox_a->s_area_entered.bond( *this, []( auto& ) {log_info( "player hitbox_a triggered" ); } );
-	hitbox_b->s_area_entered.bond( *this, []( auto& ) {log_info( "player hitbox_b triggered" ); } );
 }
 
 void Player::update( r32 dt )
