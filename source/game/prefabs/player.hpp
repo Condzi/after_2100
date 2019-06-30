@@ -7,6 +7,7 @@
 
 #include "framework/scene/sprite.hpp"
 #include "framework/scene/area.hpp"
+#include "health.hpp"
 
 using namespace con;
 
@@ -38,6 +39,8 @@ private:
 	// Children of sprites.
 	Area* hitbox_a;
 	Area* hitbox_b;
+
+	Health* health;
 
 	void update_illusion();
 	void check_movement_keys();

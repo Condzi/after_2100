@@ -40,6 +40,8 @@ Player::Player()
 
 	hitbox_a->draw_shape = true;
 	hitbox_b->draw_shape = true;
+
+	health = attach( Health::instantiate() )->cast_to<Health>();
 }
 
 void Player::update( r32 dt )

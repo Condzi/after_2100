@@ -21,6 +21,8 @@ Enemy_Base::Enemy_Base()
 	hitbox->draw_shape = true;
 	hitbox->shape_color = sf::Color::Cyan;
 
+	health = attach( Health::instantiate() )->cast_to<Health>();
+
 	s_on_finish_following.bond( *this,
 								[&]() {
 									queue_for_delete();

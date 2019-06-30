@@ -9,6 +9,8 @@
 #include "framework/scene/sprite.hpp"
 #include "framework/scene/area.hpp"
 
+#include "health.hpp"
+
 using namespace con;
 
 class Enemy_Base :
@@ -24,6 +26,7 @@ public:
 protected:
 	Sprite* sprite;
 	Area*   hitbox;
+	Health* health;
 
 private:
 	static constexpr r32 TILT_MULTIPLIER = 0.18;
