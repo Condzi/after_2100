@@ -19,7 +19,7 @@ void Signal<TArgs...>::bond( Node& node, Function&& function )
 }
 
 template <typename ...TArgs>
-void Signal<TArgs...>::notify( TArgs&& ...args )
+void Signal<TArgs...>::notify( TArgs ...args )
 {
 	for ( auto& sub : subscribers )
 		sub.function_to_call( std::forward<TArgs>( args )... );

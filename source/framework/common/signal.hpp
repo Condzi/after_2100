@@ -40,7 +40,7 @@ class Signal final :
 
 public:
 	void bond( Node& node, Function&& function );
-	void notify( TArgs&& ...args );
+	void notify( TArgs ...args );
 
 private:
 	std::vector<Subscriber> subscribers;
