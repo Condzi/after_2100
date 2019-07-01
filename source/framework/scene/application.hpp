@@ -36,14 +36,16 @@ public:
 	static Application& get_instance();
 
 private:
-	Application() = default;
-
 	sf::RenderWindow window;
 	Drawing_Set      drawing_set;
 	bool             exit{ false };
 	Root             root;
 
 	std::vector<priv::Signal_Base*> signals;
+
+	Application() = default;
+
+	void handle_debug_keys( sf::Event const& event );
 };
 }
 

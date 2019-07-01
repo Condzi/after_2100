@@ -22,7 +22,6 @@ Level_1::Level_1()
 
 	///////////////////////////////
 	Path& path = *attach( Path::instantiate() )->cast_to<Path>();
-	path.draw_path = true;
 
 	constant w = G_App.get_window_size().width;
 	constant h = G_App.get_window_size().height;

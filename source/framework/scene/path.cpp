@@ -13,16 +13,9 @@
 
 namespace con
 {
-void Path::input( sf::Event const& event )
-{
-	if ( event.type == sf::Event::KeyReleased )
-		if ( event.key.code == sf::Keyboard::F1 )
-			draw_path = !draw_path;
-}
-
 void Path::draw( Drawing_Set& set )
 {
-	if ( not draw_path )
+	if ( G_Debug_Flags.draw_paths is false )
 		return;
 
 	visual_representation.resize( points.size() );

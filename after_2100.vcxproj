@@ -96,6 +96,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\framework\common\assertions.hpp" />
+    <ClInclude Include="source\framework\common\debug_flags.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\framework\common\debug_log.hpp" />
     <ClInclude Include="source\framework\common\drawing_set.hpp">
       <SubType>
@@ -178,6 +182,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\framework\common\assertions.cpp" />
+    <ClCompile Include="source\framework\common\debug_flags.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\framework\common\debug_log.cpp" />
     <ClCompile Include="source\framework\common\drawing_set.cpp">
       <SubType>

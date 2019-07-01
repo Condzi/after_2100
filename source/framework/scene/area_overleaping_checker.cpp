@@ -59,7 +59,6 @@ void Area_Overleaping_Checker::update()
 			area_a.s_area_entered.notify( area_b );
 			area_b.s_area_entered.notify( area_a );
 		}
-
 	}
 }
 

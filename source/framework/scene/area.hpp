@@ -21,8 +21,8 @@ class Area :
 public:
 	// when other area enters
 	Signal<Area&> s_area_entered;
-
-	bool      draw_shape{ false };
+	
+	// For debug:
 	sf::Color shape_color{ sf::Color::Red };
 	s32       layer{ 0 };
 

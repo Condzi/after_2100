@@ -31,6 +31,7 @@ void Application::run()
 	while ( not exit ) {
 		while ( window.pollEvent( event ) ) {
 			root.handle_input_children( event );
+			handle_debug_keys( event );
 		}
 
 		for ( auto signal : signals )
@@ -104,5 +105,22 @@ Application& Application::get_instance()
 	static Application* instance = new Application;
 
 	return *instance;
+}
+void con::Application::handle_debug_keys( sf::Event const& event )
+{
+	if ( event.type != sf::Event::EventType::KeyPressed )
+		return;
+
+	// use switch instead?
+	if ( event.key.code == sf::Keyboard::F1 )
+		G_Debug_Flags.enable_all();
+	if ( event.key.code == sf::Keyboard::F2 )
+		G_Debug_Flags.disable_all();
+
+	// Toggle on/off.
+	if ( event.key.code == sf::Keyboard::F3 )
+		G_Debug_Flags.draw_areas = !G_Debug_Flags.draw_areas;
+	if ( event.key.code == sf::Keyboard::F4 )
+		G_Debug_Flags.draw_paths = !G_Debug_Flags.draw_paths;
 }
 }

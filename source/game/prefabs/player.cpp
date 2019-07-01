@@ -38,9 +38,6 @@ Player::Player()
 	hitbox_a = sprite_a->attach( Area::instantiate() )->cast_to<Area>();
 	hitbox_b = sprite_b->attach( Area::instantiate() )->cast_to<Area>();
 
-	hitbox_a->draw_shape = true;
-	hitbox_b->draw_shape = true;
-
 	hitbox_a->name = hitbox_b->name = "player_hitbox";
 
 	health = attach( Health::instantiate() )->cast_to<Health>();

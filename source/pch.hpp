@@ -5,7 +5,6 @@
 
 #pragma once
 
-
 #include <iostream>
 #include <unordered_map>
 #include <filesystem>
@@ -19,6 +18,7 @@
 #include <nlohmann/json.hpp>
 
 #include "framework/common/debug_log.hpp"
+#include "framework/common/debug_flags.hpp"
 
 // Probably from spdlog.
 #undef TRANSPARENT
@@ -38,6 +38,7 @@ using u64 = uint64_t;
 using r32 = float;
 using r64 = double;
 }
+
 #define CLASS_DEF( class_ )                                        \
 public:                                                            \
                                                                    \

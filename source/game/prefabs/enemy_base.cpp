@@ -18,7 +18,6 @@ Enemy_Base::Enemy_Base()
 	sprite->rotate( -90.0deg );
 
 	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
-	hitbox->draw_shape = true;
 	hitbox->shape_color = sf::Color::Cyan;
 	hitbox->name = "enemy_hitbox";
 
