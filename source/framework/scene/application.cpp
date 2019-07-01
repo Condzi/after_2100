@@ -111,16 +111,37 @@ void con::Application::handle_debug_keys( sf::Event const& event )
 	if ( event.type != sf::Event::EventType::KeyPressed )
 		return;
 
-	// use switch instead?
-	if ( event.key.code == sf::Keyboard::F1 )
+	switch ( event.key.code ) {
+	case sf::Keyboard::Escape:
+	{
+		exit_game();
+		break;
+	}
+	case sf::Keyboard::F1:
+	{
 		G_Debug_Flags.enable_all();
-	if ( event.key.code == sf::Keyboard::F2 )
+		engine_log_info( "Debug: enable all." );
+		break;
+	}
+	case sf::Keyboard::F2:
+	{
 		G_Debug_Flags.disable_all();
-
-	// Toggle on/off.
-	if ( event.key.code == sf::Keyboard::F3 )
+		engine_log_info( "Debug: disable all." );
+		break;
+	}
+	case sf::Keyboard::F3:
+	{
 		G_Debug_Flags.draw_areas = !G_Debug_Flags.draw_areas;
-	if ( event.key.code == sf::Keyboard::F4 )
+
+		engine_log_info( "Debug: toggle draw_areas." );
+		break;
+	}
+	case sf::Keyboard::F4:
+	{
 		G_Debug_Flags.draw_paths = !G_Debug_Flags.draw_paths;
+		engine_log_info( "Debug: toggle draw_paths." );
+		break;
+	}
+	}
 }
 }
