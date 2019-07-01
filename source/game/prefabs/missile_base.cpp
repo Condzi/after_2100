@@ -10,6 +10,9 @@
 Missile_Base::Missile_Base()
 {
 	name = "unnamed_missile";
+	// We don't want to move missile with parent.
+	// (Missile is child of Missile_Spawner, which is child of Player or Enemy)
+	move_with_parent = false;
 
 	hitbox = attach( Area::instantiate() )->cast_to<Area>();
 	hitbox->name = "unnamed_missile_hitbox";

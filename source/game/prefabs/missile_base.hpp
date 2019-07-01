@@ -23,4 +23,3 @@ public:
 
 	Missile_Base();
 };
-	

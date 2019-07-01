@@ -19,7 +19,7 @@ public:
 	void set_enemy_type()
 	{
 		static_assert( std::is_base_of_v<Enemy_Base, TEnemy> );
-		spawning_function = [this]() -> Enemy_Base & {
+		spawning_function = [this]() -> Enemy_Base& {
 			return *attach( TEnemy::instantiate() )->cast_to<Enemy_Base>();
 		};
 	}
@@ -39,7 +39,7 @@ public:
 	void update( r32 delta ) override;
 
 private:
-	using Spawning_Function = std::function<Enemy_Base&( )>;
+	using Spawning_Function = std::function<Enemy_Base&()>;
 
 	Spawning_Function spawning_function;
 	Path const*       path_to_follow{ nullptr };

@@ -97,6 +97,7 @@ void Application::exit_game()
 {
 	exit = true;
 }
+
 Application& Application::get_instance()
 {
 	// @Hack: Prevent from destroying on exit.
@@ -106,7 +107,8 @@ Application& Application::get_instance()
 
 	return *instance;
 }
-void con::Application::handle_debug_keys( sf::Event const& event )
+
+void Application::handle_debug_keys( sf::Event const& event )
 {
 	if ( event.type != sf::Event::EventType::KeyPressed )
 		return;

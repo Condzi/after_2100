@@ -226,7 +226,8 @@ void Node::move( Vec2 const& vec )
 	position += vec;
 
 	for ( auto& child : child_nodes )
-		child->move( vec );
+		if ( child->move_with_parent )
+			child->move( vec );
 }
 
 void Node::set_global_position( Point const& new_position )

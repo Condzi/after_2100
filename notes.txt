@@ -1,8 +1,9 @@
 Session 2:
-* Missiles, health, explosions
+* Missiles, health, explosions:
+    * missile shooter and timed missile shooter nodes.
 * partciles maybe now or later (decide?)
 * make input binding be easy to change?
-* debug overseer with flags    
+x* debug overseer with flags    
 
 ==========
 Session 1:

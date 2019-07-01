@@ -29,6 +29,7 @@ public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
 	std::string name{ "unnamed_node" };
+	bool        move_with_parent{ true };
 
 	virtual ~Node() = default;
 
