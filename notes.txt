@@ -1,3 +1,6 @@
+!* spawning problem - it should be done before update() - add spawning queue or something. now it causes 
+bugs with shooting - areas are in same position and it detects collision, where in next frame there are in
+correct postions.
 * better names for nodes (especially hitbox's names are inconsistent)
 * figure out where deal damage (in which hitbox signal?)
 * in Signal::bond() use Node* instead Node& because we always have to deref the pointer which is 

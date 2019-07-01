@@ -32,9 +32,7 @@ void Health::set_max( s32 max_value )
 	}
 
 	max_hp = max_value;
-
-	if ( current_hp > max_hp )
-		current_hp = max_hp;
+	current_hp = max_hp;
 }
 
 bool Health::is_dead() const
@@ -63,7 +61,7 @@ void Health::damage( s32 value, Node* dealer )
 	current_hp -= value;
 	s_damage.notify( value, dealer );
 
-	if ( current_hp < 0 ) {
+	if ( current_hp <= 0 ) {
 		current_hp = 0;
 		s_dead.notify();
 	}

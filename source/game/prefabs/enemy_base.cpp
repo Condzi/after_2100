@@ -28,7 +28,7 @@ Enemy_Base::Enemy_Base()
 
 	health = attach( Health::instantiate() )->cast_to<Health>();
 	health->set_max( 2 );
-	health->s_dead.bond( *this, [this] {queue_for_delete(); } );
+	health->s_dead.bond( *this, [this] { queue_for_delete(); } );
 
 	s_on_finish_following.bond( *this,
 								[&]() {

@@ -8,6 +8,8 @@
 #include "framework/scene/sprite.hpp"
 #include "framework/scene/area.hpp"
 #include "health.hpp"
+#include "player_missile.hpp"
+#include "missile_shooter.hpp"
 
 using namespace con;
 
@@ -35,6 +37,10 @@ private:
 	// For illusion (when player go up and appears from bottom)
 	Sprite* sprite_a;
 	Sprite* sprite_b;
+
+	// Children of sprite_a and _b
+	Missile_Shooter* gun_a;
+	Missile_Shooter* gun_b;
 	
 	// Children of sprites.
 	Area* hitbox_a;
