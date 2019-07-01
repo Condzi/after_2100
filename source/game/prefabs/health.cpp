@@ -9,6 +9,11 @@
 
 #include <SFML/System/Time.hpp>
 
+Health::Health()
+{
+	name = "health";
+}
+
 auto Health::get_max() const -> s32
 {
 	return max_hp;

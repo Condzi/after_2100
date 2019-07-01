@@ -23,6 +23,8 @@ public:
 	Signal<>           s_refill;
 	Signal<>           s_dead;
 
+	Health();
+
 	bool is_immoral{ false };
 
 	auto get_max() const     -> s32;
