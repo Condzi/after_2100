@@ -6,10 +6,13 @@
 
 #include "missile_base.hpp"
 
+#include <SFML/System/Time.hpp>
+
 using namespace con;
 
 // @Info: It has to be a parent of player or enemy.
 // Use set_local_position to set origin of the missile.
+// Doesn't shoot automaticly - it should have some cooldown time.
 class Missile_Shooter :
 	public Node
 {
@@ -23,13 +26,23 @@ public:
 		};
 	}
 
-	void set_horizontal_velocity( r32 velocity );
+	void set_horizontal_velocity( r32 velocity ); 
+	void set_cooldown_time( sf::Time const& time );
 
+	[[nodiscard]] auto get_cooldown_time() const        -> sf::Time const&;
+	[[nodiscard]] auto get_time_to_next_shot() const -> sf::Time const&;
+
+	bool get_is_ready_to_shoot() const;
 	void shoot();
+
+	void update( r32 delta ) override;
 
 private:
 	using Spawning_Function = std::function<Missile_Base&()>;
 
 	Spawning_Function spawning_function;
 	r32               horizontal_velocity;
+	sf::Time          cooldown_time;
+	sf::Time          time_to_next_shot;
+	bool              is_ready_to_shoot{ true };
 };
