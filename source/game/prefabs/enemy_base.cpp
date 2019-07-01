@@ -20,9 +20,10 @@ Enemy_Base::Enemy_Base()
 	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
 	hitbox->draw_shape = true;
 	hitbox->shape_color = sf::Color::Cyan;
+	hitbox->name = "enemy_hitbox";
 
 	health = attach( Health::instantiate() )->cast_to<Health>();
-
+	
 	s_on_finish_following.bond( *this,
 								[&]() {
 									queue_for_delete();

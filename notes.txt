@@ -1,3 +1,10 @@
+Session 2:
+* Missiles, health, explosions
+* partciles maybe now or later (decide?)
+* make input binding be easy to change?
+* debug overseer with flags    
+
+==========
 Session 1:
 x* Area2D => 1 Shape (Circle / Rectangle)
 x* Update in Root?
