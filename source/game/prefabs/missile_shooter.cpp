@@ -12,9 +12,9 @@ void Missile_Shooter::set_horizontal_velocity( r32 velocity )
 	horizontal_velocity = velocity;
 }
 
-void Missile_Shooter::set_cooldown_time( sf::Time const& time )
+void Missile_Shooter::set_cooldown_time( r32 seconds )
 {
-	cooldown_time = time;
+	cooldown_time = sf::seconds( seconds );
 }
 
 auto Missile_Shooter::get_cooldown_time() const -> sf::Time const&
@@ -34,6 +34,18 @@ bool Missile_Shooter::get_is_ready_to_shoot() const
 
 void Missile_Shooter::shoot()
 {
+	report_warning_if( !spawning_function )
+	{
+		log_warning( "No spawning_function set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
+		return;
+	}
+
+	report_warning_if( horizontal_velocity is 0 )
+	{
+		log_warning( "No horizontal_velocity set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
+		return;
+	}
+
 	if ( is_ready_to_shoot is false )
 		return;
 
@@ -48,8 +60,9 @@ void Missile_Shooter::shoot()
 
 void Missile_Shooter::update( r32 delta )
 {
-	if ( time_to_next_shot.asSeconds() - delta <= 0  ) {
+	if ( time_to_next_shot.asSeconds() - delta <= 0 ) {
 		time_to_next_shot = sf::Time::Zero;
 		is_ready_to_shoot = true;
-	}
+	} else
+		time_to_next_shot -= sf::seconds( delta );
 }

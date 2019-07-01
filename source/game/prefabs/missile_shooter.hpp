@@ -16,6 +16,8 @@ using namespace con;
 class Missile_Shooter :
 	public Node
 {
+	CLASS_DEF( Missile_Shooter );
+
 public:
 	template <typename TMissile>
 	void set_missile_type()
@@ -27,9 +29,9 @@ public:
 	}
 
 	void set_horizontal_velocity( r32 velocity ); 
-	void set_cooldown_time( sf::Time const& time );
+	void set_cooldown_time( r32 seconds );
 
-	[[nodiscard]] auto get_cooldown_time() const        -> sf::Time const&;
+	[[nodiscard]] auto get_cooldown_time() const     -> sf::Time const&;
 	[[nodiscard]] auto get_time_to_next_shot() const -> sf::Time const&;
 
 	bool get_is_ready_to_shoot() const;
