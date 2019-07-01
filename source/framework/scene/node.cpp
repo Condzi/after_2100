@@ -55,6 +55,9 @@ void Node::set_pause( bool val, bool affect_children )
 void Node::queue_for_delete()
 {
 	queued_for_delete = true;
+
+	for ( auto& child : child_nodes )
+		child->queue_for_delete()
 }
 
 void Node::remove_queued_for_delete()
