@@ -45,6 +45,11 @@ void Sprite::set_transformation_origin( Point const& point )
 
 auto Sprite::get_global_bounds() const -> Rectangle_Shape
 {
+	// @ToDo: add s_position_change or s_move and there change the position.
+	// The problem is that when position is changing in Sprite, the sf::Sprite3d is updated
+	// only in next frame. 
+	const_cast<sf::Sprite3d&>( sprite ).setPosition( get_global_position() );
+
 	return sprite.getGlobalBounds();
 }
 
