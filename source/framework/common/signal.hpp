@@ -35,11 +35,11 @@ class Signal final :
 		Node* bonded_node;
 		Function function_to_call;
 
-		Subscriber( Node& node, Function&& f );
+		Subscriber( Node* node, Function&& f );
 	};
 
 public:
-	void bond( Node& node, Function&& function );
+	void bond( Node* node, Function&& function );
 	void notify( TArgs ...args );
 
 private:

@@ -20,7 +20,7 @@ Enemy_Base::Enemy_Base()
 	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
 	hitbox->name = "enemy_base_hitbox";
-	hitbox->s_area_entered.bond( *this,
+	hitbox->s_area_entered.bond( this,
 								 [this]( Area& second ) {
 									 if ( second.name == "hitbox_missile_player" )
 										 health->damage( 1 );
@@ -28,9 +28,9 @@ Enemy_Base::Enemy_Base()
 
 	health = attach( Health::instantiate() )->cast_to<Health>();
 	health->set_max( 2 );
-	health->s_dead.bond( *this, [this] { queue_for_delete(); } );
+	health->s_dead.bond( this, [this] { queue_for_delete(); } );
 
-	s_on_finish_following.bond( *this,
+	s_on_finish_following.bond( this,
 								[&]() {
 									queue_for_delete();
 								} );

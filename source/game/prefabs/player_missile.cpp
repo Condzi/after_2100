@@ -15,7 +15,7 @@ Player_Missile::Player_Missile()
 	name = "missile_player";
 	hitbox->name = "hitbox_missile_player";
 	sprite->set_texture( G_Resources_Storage.get_texture( "missile_player" ) );
-	hitbox->s_area_entered.bond( *this,
+	hitbox->s_area_entered.bond( this,
 								 [this]( Area& second ) {
 									 if ( second.name != "player_hitbox" and second.name != "hitbox_missile_player" )
 										 // @ToDo: fancy explosion

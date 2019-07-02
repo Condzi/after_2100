@@ -7,13 +7,13 @@ namespace con
 {
 
 template<typename ...TArgs>
-inline Signal<TArgs...>::Subscriber::Subscriber( Node& node, Function&& f ) :
-	bonded_node( &node ),
+inline Signal<TArgs...>::Subscriber::Subscriber( Node* node, Function&& f ) :
+	bonded_node( node ),
 	function_to_call( std::forward<Function>( f ) )
 {}
 
 template <typename ...TArgs>
-void Signal<TArgs...>::bond( Node& node, Function&& function )
+void Signal<TArgs...>::bond( Node* node, Function&& function )
 {
 	subscribers.emplace_back( node, std::forward<Function>( function ) );
 }
