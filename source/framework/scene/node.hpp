@@ -29,7 +29,9 @@ class Node
 public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
-	Signal<> s_destroy;
+	Signal<>     s_destroy;
+	// When node moces. Vec2 is the new position.
+	Signal<Vec2> s_move;
 
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };

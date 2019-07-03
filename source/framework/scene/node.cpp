@@ -236,6 +236,7 @@ auto Node::get_scale() const -> Size2 const&
 void Node::move( Vec2 const& vec )
 {
 	position += vec;
+	s_move.emit( position );
 
 	for ( auto& child : child_nodes )
 		if ( child->move_with_parent )
