@@ -11,7 +11,7 @@ auto Signal<TArgs...>::connect( Function function ) -> Disconnector
 	unique_id_counter++;
 	functions[unique_id_counter] = function;
 
-	return [&functions, pos = unique_id_counter] {
+	return [this, pos = unique_id_counter] {
 		functions.erase( pos );
 	};
 }
