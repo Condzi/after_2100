@@ -18,7 +18,9 @@ class Signal final
 	using Function = std::function<void( TArgs... )>;
 
 public:
-	[[nodiscard]] auto connect( Function&& function ) -> std::function<void()>;
+	using Disconnector = std::function<void()>;
+
+	[[nodiscard]] auto connect( Function function ) -> Disconnector;
 
 	void emit( TArgs ...args );
 

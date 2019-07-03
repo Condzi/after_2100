@@ -10,6 +10,7 @@
 #include "framework/common/assertions.hpp"
 #include "framework/common/vec2.hpp"
 #include "framework/common/drawing_set.hpp"
+#include "framework/common/signal.hpp"
 
 namespace sf
 {
@@ -28,10 +29,12 @@ class Node
 public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
+	Signal<> s_destroy;
+
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
 
-	virtual ~Node() = default;
+	virtual ~Node();
 
 	template <typename TNode>
 	[[nodiscard]] auto cast_to()                            -> TNode *const;
@@ -61,6 +64,14 @@ public:
 
 	void set_pause( bool val, bool affect_children = true );
 	void queue_for_delete();
+
+	// Example:
+	// auto disconnector = signal.connect([]{...});
+	// node.bond_disconnector(disconnector);
+	//
+	// Use it when function connected to the signal will be invalidated
+	// after destruction of the node.
+	void bond_disconnector( std::function<void()> disconnector );
 
 	virtual void update( r32 delta ) {}
 	virtual void input( sf::Event const& event ) {}

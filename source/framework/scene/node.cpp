@@ -60,6 +60,13 @@ void Node::queue_for_delete()
 		child->queue_for_delete();
 }
 
+void Node::bond_disconnector( std::function<void()> disconnector )
+{
+	auto dc = s_destroy.connect( disconnector );
+	// lifetime of connected disconnector is same as s_destroy signal, so it shouldn't make any problems.
+	unused( dc );
+}
+
 void Node::remove_queued_for_delete()
 {
 	child_nodes.erase( std::remove_if( child_nodes.begin(), child_nodes.end(),
@@ -133,6 +140,11 @@ auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 	child_nodes.emplace_back() = change_owner( node_to_attach );
 
 	return return_value;
+}
+
+Node::~Node()
+{
+	s_destroy.emit();
 }
 
 auto Node::get_parent() -> Node* const
