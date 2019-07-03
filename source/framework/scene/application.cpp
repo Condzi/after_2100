@@ -52,7 +52,7 @@ void Application::run()
 	engine_log_info( "Exiting game loop..." );
 }
 
-void Application::_add_signal( priv::Signal_Base* signal_to_add )
+void Application::_register_signal( priv::Signal_Base* signal_to_add )
 {
 	constant[found, idx] = find( signals, signal_to_add );
 
@@ -65,7 +65,7 @@ void Application::_add_signal( priv::Signal_Base* signal_to_add )
 	signals.emplace_back( signal_to_add );
 }
 
-void Application::_remove_signal( priv::Signal_Base* signal_to_remove )
+void Application::_unregister_signal( priv::Signal_Base* signal_to_remove )
 {
 	constant[found, idx] = find( signals, signal_to_remove );
 

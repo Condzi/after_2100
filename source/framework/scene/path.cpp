@@ -99,7 +99,7 @@ void Path_Follower::update( r32 dt )
 	if ( is_finished() )
 	{
 		is_following = false;
-		s_on_finish_following.notify();
+		s_on_finish_following.emit();
 	}
 
 	constant desired_velocity = Vec2{ target_position - current_position }.normalize() * max_velocity;

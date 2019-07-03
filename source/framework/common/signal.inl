@@ -5,32 +5,22 @@
 
 namespace con
 {
-
-template<typename ...TArgs>
-inline Signal<TArgs...>::Subscriber::Subscriber( Node* node, Function&& f ) :
-	bonded_node( node ),
-	function_to_call( std::forward<Function>( f ) )
-{}
-
 template <typename ...TArgs>
-void Signal<TArgs...>::bond( Node* node, Function&& function )
+auto Signal<TArgs...>::bond( Function&& function ) -> std::function<void()>
 {
-	subscribers.emplace_back( node, std::forward<Function>( function ) );
+	functions.emplace_back( std::forward<Function>( function ) );
+
+	size_t idx = functions.size()-1;
+
+	return [&functions, idx] {
+		functions.erase( functions.begin() + idx );
+	}
 }
 
 template <typename ...TArgs>
-void Signal<TArgs...>::notify( TArgs ...args )
+void Signal<TArgs...>::emit( TArgs ...args )
 {
-	for ( auto& sub : subscribers )
-		sub.function_to_call( std::forward<TArgs>( args )... );
-}
-
-template <typename ...TArgs>
-void Signal<TArgs...>::remove_invalid_subscribers()
-{
-	remove_if( subscribers,
-			   []( constant& subscriber ) {
-				   return subscriber.bonded_node->is_queued_for_delete();
-			   } );
+	for ( auto& f : functions )
+		f( std::forward<TArgs>( args )... );
 }
 }

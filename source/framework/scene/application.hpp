@@ -22,8 +22,8 @@ public:
 	void run();
 
 	// Internal:
-	void _add_signal( priv::Signal_Base* signal_to_add );
-	void _remove_signal( priv::Signal_Base* signal_to_remove );
+	void _register_signal( priv::Signal_Base* signal_to_add );
+	void _unregister_signal( priv::Signal_Base* signal_to_remove );
 
 	// @ToDo: Probably somewhere else?
 	auto get_root()              -> Root &;

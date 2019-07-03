@@ -7,45 +7,22 @@
 
 #include "pch.hpp"
 
-#include "framework/scene/node.hpp"
-#include "framework/common/stl_extensions.hpp"
-
 namespace con
 {
-namespace priv
-{
-// Used by G_App to keep track of invalid signals and invalid subscribers in that signals.
-class Signal_Base
-{
-public:
-	Signal_Base();
-	~Signal_Base();
 
-	virtual void remove_invalid_subscribers() = 0;
-};
-}
+// bond(...) returns function which has to be called when given funciton is invalidated.
+// for example when node is being destroyed.
 template <typename ...TArgs>
-class Signal final :
-	public priv::Signal_Base
+class Signal final 
 {
 	using Function = std::function<void( TArgs... )>;
 
-	struct Subscriber final
-	{
-		Node* bonded_node;
-		Function function_to_call;
-
-		Subscriber( Node* node, Function&& f );
-	};
-
 public:
-	void bond( Node* node, Function&& function );
-	void notify( TArgs ...args );
+	[[nodiscard]] auto bond( Function&& function ) -> std::function<void()>;
+	void emit( TArgs ...args );
 
 private:
-	std::vector<Subscriber> subscribers;
-
-	void remove_invalid_subscribers() override;
+	std::vector<Function> functions;
 };
 }
 

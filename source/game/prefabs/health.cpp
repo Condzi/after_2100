@@ -50,7 +50,7 @@ void Health::heal( s32 value, Node* healer )
 	current_hp += health_to_add;
 
 	// idk if we should pass value or health_to_add?
-	s_heal.notify( value, healer );
+	s_heal.emit( value, healer );
 }
 
 void Health::damage( s32 value, Node* dealer )
@@ -59,17 +59,17 @@ void Health::damage( s32 value, Node* dealer )
 		return;
 
 	current_hp -= value;
-	s_damage.notify( value, dealer );
+	s_damage.emit( value, dealer );
 
 	if ( current_hp <= 0 ) {
 		current_hp = 0;
-		s_dead.notify();
+		s_dead.emit();
 	}
 }
 
 void Health::refill()
 {
-	s_refill.notify();
+	s_refill.emit();
 
 	current_hp = max_hp;
 }

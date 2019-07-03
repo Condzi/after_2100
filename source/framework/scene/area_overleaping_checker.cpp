@@ -57,8 +57,8 @@ void Area_Overleaping_Checker::update()
 			if ( shape_vs_shape( shape_a, shape_b ) returned false )
 				continue;
 
-			area_a.s_area_entered.notify( area_b );
-			area_b.s_area_entered.notify( area_a );
+			area_a.s_area_entered.emit( area_b );
+			area_b.s_area_entered.emit( area_a );
 		}
 	}
 }
