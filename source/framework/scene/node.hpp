@@ -34,7 +34,7 @@ public:
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
 
-	virtual ~Node();
+	virtual ~Node() = default;
 
 	template <typename TNode>
 	[[nodiscard]] auto cast_to()                            -> TNode *const;

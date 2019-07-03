@@ -11,6 +11,8 @@
 
 Enemy_Base::Enemy_Base()
 {
+	name = "enemy_base";
+
 	sprite = attach( Sprite::instantiate() )->cast_to<Sprite>();
 	sprite->name = "sprite";
 	sprite->set_texture( G_Resources_Storage.get_texture( "enemy_1" ) );
@@ -20,20 +22,21 @@ Enemy_Base::Enemy_Base()
 	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
 	hitbox->name = "enemy_base_hitbox";
-	hitbox->s_area_entered.bond( this,
-								 [this]( Area& second ) {
-									 if ( second.name == "hitbox_missile_player" )
-										 health->damage( 1 );
-								 } );
+
+	bond_disconnector( hitbox->s_area_entered.connect(
+		[this]( Area& second ) {
+			if ( second.name == "hitbox_missile_player" )
+				health->damage( 1 );
+		} ) );
 
 	health = attach( Health::instantiate() )->cast_to<Health>();
 	health->set_max( 2 );
-	health->s_dead.bond( this, [this] { queue_for_delete(); } );
+	bond_disconnector( health->s_dead.connect( [this] { queue_for_delete(); } ) );
 
-	s_on_finish_following.bond( this,
-								[&]() {
-									queue_for_delete();
-								} );
+	bond_disconnector( s_on_finish_following.connect(
+		[&] {
+			queue_for_delete();
+		} ) );
 }
 
 void Enemy_Base::update( r32 dt )

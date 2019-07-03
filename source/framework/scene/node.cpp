@@ -54,6 +54,8 @@ void Node::set_pause( bool val, bool affect_children )
 
 void Node::queue_for_delete()
 {
+	s_destroy.emit();
+
 	queued_for_delete = true;
 
 	for ( auto& child : child_nodes )
@@ -140,11 +142,6 @@ auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 	child_nodes.emplace_back() = change_owner( node_to_attach );
 
 	return return_value;
-}
-
-Node::~Node()
-{
-	s_destroy.emit();
 }
 
 auto Node::get_parent() -> Node* const

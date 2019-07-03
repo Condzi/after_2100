@@ -15,12 +15,13 @@ Player_Missile::Player_Missile()
 	name = "missile_player";
 	hitbox->name = "hitbox_missile_player";
 	sprite->set_texture( G_Resources_Storage.get_texture( "missile_player" ) );
-	hitbox->s_area_entered.bond( this,
-								 [this]( Area& second ) {
-									 if ( second.name != "player_hitbox" and second.name != "hitbox_missile_player" )
-										 // @ToDo: fancy explosion
- 										queue_for_delete();
-								 } );
+
+	bond_disconnector( hitbox->s_area_entered.connect(
+		[this]( Area& second ) {
+			if ( second.name != "player_hitbox" and second.name != "hitbox_missile_player" )
+				// @ToDo: fancy explosion
+				queue_for_delete();
+		} ) );
 }
 
 void Player_Missile::update( r32 delta )
@@ -29,7 +30,7 @@ void Player_Missile::update( r32 delta )
 	hitbox->set_rectangle_shape( bounds );
 
 	// The missile has flown off screen
-	if ( bounds.position.x > G_App.get_window_size().x ) 
+	if ( bounds.position.x > G_App.get_window_size().x )
 		queue_for_delete();
 
 	move( velocity * delta );
