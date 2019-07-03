@@ -18,11 +18,13 @@ class Signal final
 	using Function = std::function<void( TArgs... )>;
 
 public:
-	[[nodiscard]] auto bond( Function&& function ) -> std::function<void()>;
+	[[nodiscard]] auto connect( Function&& function ) -> std::function<void()>;
+
 	void emit( TArgs ...args );
 
 private:
-	std::vector<Function> functions;
+	size_t                               unique_id_counter{ 0 };
+	std::unordered_map<size_t, Function> functions;
 };
 }
 

@@ -6,14 +6,13 @@
 namespace con
 {
 template <typename ...TArgs>
-auto Signal<TArgs...>::bond( Function&& function ) -> std::function<void()>
+auto Signal<TArgs...>::connect( Function&& function ) -> std::function<void()>
 {
-	functions.emplace_back( std::forward<Function>( function ) );
-
-	size_t idx = functions.size()-1;
-
-	return [&functions, idx] {
-		functions.erase( functions.begin() + idx );
+	unique_id_counter++;
+	functions[unique_id_counter] = function;
+	
+	return [&functions, pos = unique_id_counter] {
+		functions.erase( pos );
 	}
 }
 
