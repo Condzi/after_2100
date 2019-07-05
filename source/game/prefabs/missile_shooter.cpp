@@ -66,3 +66,17 @@ void Missile_Shooter::update( r32 delta )
 	} else
 		time_to_next_shot -= sf::seconds( delta );
 }
+
+void Missile_Shooter::draw( Drawing_Set& drawing_set )
+{
+	if ( G_Debug_Flags.draw_missile_shooters is false )
+		return;
+
+	visual_representation.setPosition( get_global_position() );
+	visual_representation.setFillColor( sf::Color::Transparent );
+	visual_representation.setOutlineColor( debug_circle_color );
+	visual_representation.setOutlineThickness( -2.0px );
+	visual_representation.setRadius( debug_circle_radious );
+
+	drawing_set.add_drawable( visual_representation, debug_circle_layer );
+}

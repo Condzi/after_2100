@@ -115,6 +115,12 @@ void Application::handle_debug_keys( sf::Event const& event )
 		engine_log_info( "Debug: toggle draw_paths." );
 		break;
 	}
+	case sf::Keyboard::F5:
+	{
+		G_Debug_Flags.draw_missile_shooters = !G_Debug_Flags.draw_missile_shooters;
+		engine_log_info( "Debug: toggle draw_missile_shooters." );
+		break;
+	}
 	}
 }
 }

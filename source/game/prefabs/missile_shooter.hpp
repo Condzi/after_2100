@@ -12,22 +12,26 @@ using namespace con;
 
 // @Info: It has to be a parent of player or enemy.
 // Use set_local_position to set origin of the missile.
-class Missile_Shooter :
+class Missile_Shooter final :
 	public Node
 {
 	CLASS_DEF( Missile_Shooter );
 
 public:
+	sf::Color debug_circle_color{ sf::Color::Green };
+	r32       debug_circle_radious{ 10.80px };
+	s32       debug_circle_layer{ 0 };
+
 	template <typename TMissile>
 	void set_missile_type()
 	{
 		static_assert( std::is_base_of_v<Missile_Base, TMissile> );
-		spawning_function = [this]() -> Missile_Base& {
+		spawning_function = [this]() -> Missile_Base & {
 			return *attach( TMissile::instantiate() )->cast_to<Missile_Base>();
 		};
 	}
 
-	void set_horizontal_velocity( r32 velocity ); 
+	void set_horizontal_velocity( r32 velocity );
 	void set_cooldown_time( r32 seconds );
 
 	[[nodiscard]] auto get_cooldown_time() const     -> sf::Time const&;
@@ -37,13 +41,16 @@ public:
 	void shoot();
 
 	void update( r32 delta ) override;
+	void draw( Drawing_Set& drawing_set ) override;
 
 private:
-	using Spawning_Function = std::function<Missile_Base&()>;
+	using Spawning_Function = std::function<Missile_Base& ( )>;
 
 	Spawning_Function spawning_function;
 	r32               horizontal_velocity;
 	sf::Time          cooldown_time;
 	sf::Time          time_to_next_shot;
 	bool              is_ready_to_shoot{ true };
+
+	sf::CircleShape visual_representation;
 };

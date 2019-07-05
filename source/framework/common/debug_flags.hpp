@@ -16,6 +16,7 @@ class Debug_Flags final
 public:
 	bool draw_areas{ false };
 	bool draw_paths{ false };
+	bool draw_missile_shooters{ false };
 
 	void enable_all();
 	void disable_all();
