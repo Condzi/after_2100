@@ -12,7 +12,6 @@ using namespace con;
 
 // @Info: It has to be a parent of player or enemy.
 // Use set_local_position to set origin of the missile.
-// Doesn't shoot automaticly - it should have some cooldown time.
 class Missile_Shooter :
 	public Node
 {

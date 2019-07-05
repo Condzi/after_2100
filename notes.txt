@@ -2,11 +2,11 @@
 bugs with shooting - areas are in same position and it detects collision, where in next frame there are in
 correct postions.
 x* areas are in 0,0 position for a frame. figure out why
-* better names for nodes (especially hitbox's names are inconsistent)
+x* better names for nodes (especially hitbox's names are inconsistent)
 * figure out where deal damage (in which hitbox signal?)
 x* in Signal::bond() use Node* instead Node& because we always have to deref the pointer which is 
   boilerplate
-* add s_move to Node (maybe some other signals too?)
+x* add s_move to Node (maybe some other signals too?)
 
 Session 2:
 * Missiles, health, explosions:

@@ -15,6 +15,8 @@ class Enemy_Spawner :
 public:
 	r32 spawn_interval{ 2.0sec };
 
+	Enemy_Spawner();
+
 	template <typename TEnemy>
 	void set_enemy_type()
 	{

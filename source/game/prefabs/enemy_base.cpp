@@ -6,7 +6,6 @@
 #include "pch.hpp"
 
 #include "framework/common/resources_storage.hpp"
-
 #include "enemy_base.hpp"
 
 Enemy_Base::Enemy_Base()
@@ -21,7 +20,7 @@ Enemy_Base::Enemy_Base()
 
 	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
-	hitbox->name = "enemy_base_hitbox";
+	hitbox->name = "hitbox_" + name;
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {

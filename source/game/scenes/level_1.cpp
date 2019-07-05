@@ -37,7 +37,7 @@ Level_1::Level_1()
 		path.points.emplace_back( w * ( 0.80 - 0.20*i ),  h * 0.5 );
 	}
 
-	path.points.emplace_back( Point{ w * -0.1,   h * 0.5 } );
+	path.points.emplace_back( Point{ w * -0.1,  h * 0.5 } );
 
 	///////////////////////////////
 	Enemy_Spawner& spawner = *attach( Enemy_Spawner::instantiate() )->cast_to<Enemy_Spawner>();

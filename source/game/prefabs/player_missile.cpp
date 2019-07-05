@@ -18,7 +18,7 @@ Player_Missile::Player_Missile()
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
-			if ( second.name != "player_hitbox" and second.name != "hitbox_missile_player" )
+			if ( second.name != "hitbox_player" and second.name != "hitbox_missile_player" )
 				// @ToDo: fancy explosion
 				queue_for_delete();
 		} ) );

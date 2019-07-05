@@ -7,6 +7,11 @@
 
 #include "enemy_spawner.hpp"
 
+Enemy_Spawner::Enemy_Spawner()
+{
+	name = "enemy_spawner";
+}
+
 void Enemy_Spawner::set_spawn_limit( u32 limit )
 {
 	spawn_limit = limit;

@@ -15,7 +15,7 @@ Missile_Base::Missile_Base()
 	move_with_parent = false;
 
 	hitbox = attach( Area::instantiate() )->cast_to<Area>();
-	hitbox->name = "missile_hitbox";
+	hitbox->name = "hitbox_" + name;
 
 	sprite = attach( Sprite::instantiate() )->cast_to<Sprite>();
 }
