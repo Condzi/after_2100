@@ -43,6 +43,11 @@ void Sprite::set_transformation_origin( Point const& point )
 	sprite.setOrigin( point );
 }
 
+void Sprite::set_texture_rect( Rectangle_Shape const& rect )
+{
+	sprite.setTextureRect( rect );
+}
+
 auto Sprite::get_global_bounds() const -> Rectangle_Shape
 {
 	// @ToDo: add s_position_change or s_move and there change the position.
@@ -73,6 +78,11 @@ auto Sprite::get_sprite_raw() -> sf::Sprite3d &
 auto Sprite::get_transformation_origin() const -> Point
 {
 	return sprite.getOrigin();
+}
+
+auto Sprite::get_texture_rect() -> Rectangle_Shape
+{
+	return sprite.getTextureRect();
 }
 
 }

@@ -1,3 +1,9 @@
+Session 4:
+
+* animations - Frame(size), Settings(frames count, loop, play time, color)
+
+Session 3:
+
 !* spawning problem - it should be done before update() - add spawning queue or something. now it causes 
 bugs with shooting - areas are in same position and it detects collision, where in next frame there are in
 correct postions.

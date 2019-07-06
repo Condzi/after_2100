@@ -72,6 +72,7 @@ void Missile_Shooter::draw( Drawing_Set& drawing_set )
 	if ( G_Debug_Flags.draw_missile_shooters is false )
 		return;
 
+	visual_representation.setOrigin( debug_circle_radious / 2, debug_circle_radious/ 2 );
 	visual_representation.setPosition( get_global_position() );
 	visual_representation.setFillColor( sf::Color::Transparent );
 	visual_representation.setOutlineColor( debug_circle_color );

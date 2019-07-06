@@ -30,7 +30,7 @@ public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
 	Signal<>     s_destroy;
-	// When node moces. Vec2 is the new position.
+	// When node moves. Vec2 is the new position.
 	Signal<Vec2> s_move;
 
 	std::string name{ "unnamed_node" };
@@ -39,12 +39,12 @@ public:
 	virtual ~Node() = default;
 
 	template <typename TNode>
-	[[nodiscard]] auto cast_to()                            -> TNode *const;
+	[[nodiscard]] auto cast_to()                            -> TNode* const;
 
-	auto attach( Node_Ptr&& node_to_attach )                -> Node *const;
-	[[nodiscard]] auto get_parent()                         -> Node *const;
-	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node *const;
-	[[nodiscard]] auto get_node( std::string const& path )  -> Node *const;
+	auto attach( Node_Ptr&& node_to_attach )                -> Node* const;
+	[[nodiscard]] auto get_parent()                         -> Node* const;
+	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node* const;
+	[[nodiscard]] auto get_node( std::string const& path )  -> Node* const;
 
 	[[nodiscard]] auto get_global_position() const          -> Point const&;
 	[[nodiscard]] auto get_local_position() const           -> Point const&;
@@ -82,7 +82,7 @@ public:
 
 private:
 	std::vector<Node_Ptr> child_nodes;
-	Node*                 parent_node{ nullptr }; // The most outside nodes don't have parents.
+	Node* parent_node{ nullptr }; // The most outside nodes don't have parents.
 
 	Point position{ 0.0px, 0.0px };
 	Size2 scale{ 1, 1 };

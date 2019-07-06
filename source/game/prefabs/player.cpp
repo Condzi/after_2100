@@ -33,8 +33,6 @@ Player::Player()
 
 	rotate( 90.0deg );
 
-	set_global_position( { 200.0px,200.0px } );
-
 	gun_a = sprite_a->attach( Missile_Shooter::instantiate() )->cast_to<Missile_Shooter>();
 	gun_b = sprite_b->attach( Missile_Shooter::instantiate() )->cast_to<Missile_Shooter>();
 
@@ -45,8 +43,8 @@ Player::Player()
 	gun_b->set_horizontal_velocity( 500 );
 
 	// Again - after rotating by 90deg, width gets swapped with height.
-	gun_a->set_local_position( { sprite_size.height/2, sprite_size.width / 16 } );
-	gun_b->set_local_position( { sprite_size.height/2, sprite_size.width / 16 } );
+	gun_a->set_local_position( { sprite_size.height/2, 0 } );
+	gun_b->set_local_position( { sprite_size.height/2, 0 } );
 
 	gun_a->set_cooldown_time( 0.25sec );
 	gun_b->set_cooldown_time( 0.25sec );
@@ -57,6 +55,7 @@ Player::Player()
 	hitbox_a->name = hitbox_b->name = "hitbox_" + name;
 
 	health = attach( Health::instantiate() )->cast_to<Health>();
+	set_global_position( { 0, G_Window.getSize().y / 2.0px } );
 }
 
 void Player::update( r32 dt )
