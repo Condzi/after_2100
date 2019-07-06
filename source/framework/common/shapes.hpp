@@ -23,6 +23,12 @@ struct Rectangle_Shape final
 		position( static_cast<r32>( rect.left ), static_cast<r32>( rect.top ) ),
 		size( static_cast<r32>( rect.width ), static_cast<r32>( rect.height ) )
 	{}
+
+	template <typename T>
+	[[nodiscard]] operator sf::Rect<T>() const
+	{
+		return sf::Rect<T>{ position.x, position.y, size.width, size.height };
+	}
 };
 
 struct Circle_Shape final
