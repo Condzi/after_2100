@@ -11,6 +11,35 @@
 
 namespace con
 {
+
+auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
+{
+	report_error_if( node_to_attach is nullptr )
+	{
+		engine_log_error( "Given node is empty, can't attach." );
+		return nullptr;
+	}
+
+	constant is_already_attached = find( child_nodes, node_to_attach ).found;
+	report_error_if( is_already_attached )
+	{
+		engine_log_error( "Given node is already attached, can't attach again." );
+		return nullptr;
+	}
+
+	report_error_if( node_to_attach->parent_node )
+	{
+		engine_log_error( "Given node has a parent already." );
+		return nullptr;
+	}
+
+	node_to_attach->parent_node = this;
+	Node* const return_value = node_to_attach.get();
+	child_nodes.emplace_back() = change_owner( node_to_attach );
+
+	return return_value;
+}
+
 void Node::rotate( r32 deg, bool affect_children )
 {
 	set_rotation( get_rotation() + deg, affect_children );
@@ -114,34 +143,6 @@ auto Node::get_local_position() const -> Point const&
 	}
 
 	return position - parent_node->position;
-}
-
-auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
-{
-	report_error_if( node_to_attach is nullptr )
-	{
-		engine_log_error( "Given node is empty, can't attach." );
-		return nullptr;
-	}
-
-	constant is_already_attached = find( child_nodes, node_to_attach ).found;
-	report_error_if( is_already_attached )
-	{
-		engine_log_error( "Given node is already attached, can't attach again." );
-		return nullptr;
-	}
-
-	report_error_if( node_to_attach->parent_node )
-	{
-		engine_log_error( "Given node has a parent already." );
-		return nullptr;
-	}
-
-	node_to_attach->parent_node = this;
-	Node* const return_value = node_to_attach.get();
-	child_nodes.emplace_back() = change_owner( node_to_attach );
-
-	return return_value;
 }
 
 auto Node::get_parent() -> Node* const

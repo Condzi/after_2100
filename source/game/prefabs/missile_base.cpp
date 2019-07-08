@@ -14,8 +14,8 @@ Missile_Base::Missile_Base()
 	// (Missile is child of Missile_Spawner, which is child of Player or Enemy)
 	move_with_parent = false;
 
-	hitbox = attach( Area::instantiate() )->cast_to<Area>();
+	hitbox = attach<Area>();
 	hitbox->name = "hitbox_" + name;
 
-	sprite = attach( Sprite::instantiate() )->cast_to<Sprite>();
+	sprite = attach<Sprite>();
 }

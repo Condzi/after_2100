@@ -12,13 +12,13 @@ Enemy_Base::Enemy_Base()
 {
 	name = "enemy_base";
 
-	sprite = attach( Sprite::instantiate() )->cast_to<Sprite>();
+	sprite = attach<Sprite>();
 	sprite->name = "sprite";
 	sprite->set_texture( G_Resources_Storage.get_texture( "enemy_1" ) );
 	sprite->set_transformation_origin( sprite->get_global_bounds().size * 0.5 );
 	sprite->rotate( -90.0deg );
 
-	hitbox = sprite->attach( Area::instantiate() )->cast_to<Area>();
+	hitbox = sprite->attach<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
 	hitbox->name = "hitbox_" + name;
 
@@ -28,10 +28,10 @@ Enemy_Base::Enemy_Base()
 				health->damage( 1 );
 		} ) );
 
-	health = attach( Health::instantiate() )->cast_to<Health>();
+	health = attach<Health>();
 	health->set_max( 2 );
 
-	explosion = attach( Animation::instantiate() )->cast_to<Animation>();
+	explosion = attach<Animation>();
 
 	explosion->set_texture( G_Resources_Storage.get_texture( "explosion" ) );
 	explosion->set_duration( 0.5sec );

@@ -13,7 +13,7 @@ Animation::Animation()
 {
 	name = "unnamed_animation";
 
-	sprite = attach( Sprite::instantiate() )->cast_to<Sprite>();
+	sprite = attach<Sprite>();
 	sprite->name = "sprite_to_animate";
 	sprite->visible = false;
 }

@@ -39,9 +39,11 @@ public:
 	virtual ~Node() = default;
 
 	template <typename TNode>
-	[[nodiscard]] auto cast_to()                            -> TNode* const;
+	auto attach()                             -> TNode* const;
+	auto attach( Node_Ptr&& node_to_attach )  -> Node* const;
 
-	auto attach( Node_Ptr&& node_to_attach )                -> Node* const;
+	template <typename TNode>
+	[[nodiscard]] auto cast_to()                            -> TNode* const;
 	[[nodiscard]] auto get_parent()                         -> Node* const;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node* const;
 	[[nodiscard]] auto get_node( std::string const& path )  -> Node* const;

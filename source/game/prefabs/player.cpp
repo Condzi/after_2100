@@ -16,8 +16,8 @@ Player::Player()
 {
 	name = "player";
 
-	sprite_a = attach( Sprite::instantiate() )->cast_to<Sprite>();
-	sprite_b = attach( Sprite::instantiate() )->cast_to<Sprite>();
+	sprite_a = attach<Sprite>();
+	sprite_b = attach<Sprite>();
 	sprite_a->name = "sprite_a";
 	sprite_b->name = "sprite_b";
 	sprite_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
@@ -33,8 +33,8 @@ Player::Player()
 
 	rotate( 90.0deg );
 
-	gun_a = sprite_a->attach( Missile_Shooter::instantiate() )->cast_to<Missile_Shooter>();
-	gun_b = sprite_b->attach( Missile_Shooter::instantiate() )->cast_to<Missile_Shooter>();
+	gun_a = sprite_a->attach<Missile_Shooter>();
+	gun_b = sprite_b->attach<Missile_Shooter>();
 
 	gun_a->set_missile_type<Player_Missile>();
 	gun_b->set_missile_type<Player_Missile>();
@@ -49,12 +49,12 @@ Player::Player()
 	gun_a->set_cooldown_time( 0.25sec );
 	gun_b->set_cooldown_time( 0.25sec );
 
-	hitbox_a = sprite_a->attach( Area::instantiate() )->cast_to<Area>();
-	hitbox_b = sprite_b->attach( Area::instantiate() )->cast_to<Area>();
+	hitbox_a = sprite_a->attach<Area>();
+	hitbox_b = sprite_b->attach<Area>();
 
 	hitbox_a->name = hitbox_b->name = "hitbox_" + name;
 
-	health = attach( Health::instantiate() )->cast_to<Health>();
+	health = attach<Health>();
 	set_global_position( { 0, G_Window.getSize().y / 2.0px } );
 }
 

@@ -5,7 +5,20 @@
 
 namespace con
 {
-template<typename TNode>
+template <typename TNode>
+auto Node::attach() -> TNode* const
+{
+	static_assert( std::is_base_of_v<Node, TNode> );
+
+	auto node_to_attach = TNode::instantiate();
+
+	node_to_attach->parent_node = this;
+	child_nodes.emplace_back() = change_owner( node_to_attach );
+
+	return dynamic_cast<TNode*>( child_nodes.back().get() );
+}
+
+template <typename TNode>
 auto Node::cast_to() -> TNode *const
 {
 	static_assert( std::is_base_of_v<Node, TNode> );

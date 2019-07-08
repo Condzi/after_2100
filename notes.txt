@@ -1,7 +1,7 @@
 Session 4:
 
-* animations - Frame(size), Settings(frames count, loop, play time, color)
-* get rid of syntax: 'attach( Sprite::instantiate() )->cast_to<Sprite>'. make it more: 'attach<Sprite>()'.
+x* animations - Frame(size), Settings(frames count, loop, play time, color)
+x* get rid of syntax: 'attach( Sprite::instantiate() )->cast_to<Sprite>'. make it more: 'attach<Sprite>()'.
 
 
 Session 3:

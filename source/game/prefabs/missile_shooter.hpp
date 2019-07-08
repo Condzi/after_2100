@@ -27,7 +27,7 @@ public:
 	{
 		static_assert( std::is_base_of_v<Missile_Base, TMissile> );
 		spawning_function = [this]() -> Missile_Base & {
-			return *attach( TMissile::instantiate() )->cast_to<Missile_Base>();
+			return *attach<TMissile>();
 		};
 	}
 

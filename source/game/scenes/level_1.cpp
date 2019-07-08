@@ -18,10 +18,10 @@ Level_1::Level_1()
 	name = "level_1";
 	log_info( "{} instantiated.", name );
 
-	attach( Player::instantiate() );
+	attach<Player>();
 
 	///////////////////////////////
-	Path& path = *attach( Path::instantiate() )->cast_to<Path>();
+	Path& path = *attach<Path>();
 
 	constant w = G_App.get_window_size().width;
 	constant h = G_App.get_window_size().height;
@@ -40,7 +40,7 @@ Level_1::Level_1()
 	path.points.emplace_back( Point{ w * -0.1,  h * 0.5 } );
 
 	///////////////////////////////
-	Enemy_Spawner& spawner = *attach( Enemy_Spawner::instantiate() )->cast_to<Enemy_Spawner>();
+	Enemy_Spawner& spawner = *attach<Enemy_Spawner>();
 	spawner.set_path( path );
 	spawner.set_enemy_type<Enemy_Base>();
 	spawner.start();
