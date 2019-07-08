@@ -31,14 +31,8 @@ Enemy_Base::Enemy_Base()
 	health = attach<Health>();
 	health->set_max( 2 );
 
-	explosion = attach<Animation>();
-
-	explosion->set_texture( G_Resources_Storage.get_texture( "explosion" ) );
-	explosion->set_duration( 0.5sec );
-	explosion->set_frames_count( 10 );
-	explosion->set_frame_size( { 128.0px, 128.0px } );
-	//explosion->apply_scale( { 2.0, 2.0 } );
-	explosion->set_local_position( -sprite->get_global_bounds().size);
+	explosion = attach<Explosion>();
+;	explosion->set_local_position( -sprite->get_global_bounds().size );
 
 	bond_disconnector( health->s_dead.connect( [this] { sprite->set_pause( true ); stop_following(); explosion->play(); } ) );
 	bond_disconnector( explosion->s_stop.connect( [this] { queue_for_delete(); } ) );

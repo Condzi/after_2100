@@ -34,7 +34,7 @@ auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 
 	node_to_attach->parent_node = this;
 	Node* const return_value = node_to_attach.get();
-	child_nodes.emplace_back() = change_owner( node_to_attach );
+	child_nodes.push_back( change_owner( node_to_attach ) );
 
 	return return_value;
 }

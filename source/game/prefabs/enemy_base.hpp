@@ -8,8 +8,8 @@
 #include "framework/scene/path.hpp"
 #include "framework/scene/sprite.hpp"
 #include "framework/scene/area.hpp"
-#include "framework/scene/animation.hpp"
 
+#include "explosion.hpp"
 #include "health.hpp"
 
 using namespace con;
@@ -28,7 +28,7 @@ protected:
 	Sprite*    sprite;
 	Area*      hitbox;
 	Health*    health;
-	Animation* explosion;
+	Explosion* explosion;
 
 private:
 	static constexpr r32 TILT_MULTIPLIER = 0.18;

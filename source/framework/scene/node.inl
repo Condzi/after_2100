@@ -11,11 +11,18 @@ auto Node::attach() -> TNode* const
 	static_assert( std::is_base_of_v<Node, TNode> );
 
 	auto node_to_attach = TNode::instantiate();
-
 	node_to_attach->parent_node = this;
-	child_nodes.emplace_back() = change_owner( node_to_attach );
 
-	return dynamic_cast<TNode*>( child_nodes.back().get() );
+	child_nodes.push_back( change_owner( node_to_attach ) );
+
+	TNode* return_val = dynamic_cast<TNode*>( child_nodes.back().get() );
+
+	if( return_val is nullptr )
+	{
+		engine_log_critical( "You forgot CLASS_DEF( class_ ) for this TNode." );
+	}
+
+	return return_val;
 }
 
 template <typename TNode>
