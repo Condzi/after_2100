@@ -10,6 +10,7 @@
 namespace con
 {
 // Better don't change anything when animation is playing.
+// sprite->visible = false until first play.
 class Animation :
 	public Node
 {
@@ -66,5 +67,6 @@ private:
 	// Checks if first frame and last frame will fit in bounds of the texture atlas.
 	bool is_valid() const;
 	void switch_frame();
+	void update_frame();
 };
 }

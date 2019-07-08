@@ -15,6 +15,7 @@ Animation::Animation()
 
 	sprite = attach( Sprite::instantiate() )->cast_to<Sprite>();
 	sprite->name = "sprite_to_animate";
+	sprite->visible = false;
 }
 
 void Animation::set_texture( sf::Texture const* texture )
@@ -109,6 +110,9 @@ void Animation::play()
 
 	status = Status::Playing;
 
+	sprite->visible = true;
+	update_frame();
+	
 	s_play.emit();
 }
 
@@ -146,21 +150,22 @@ void Animation::update_fps()
 
 bool Animation::is_valid() const
 {
-	constant texture_atlas_bounds = Rectangle_Shape{ {0,0}, sprite->get_texture()->getSize() };
+	constant atlas_size = Vec2{ sprite->get_texture()->getSize() };
 	constant first_frame_pos = begin_position;
-	constant last_frame_pos = Vec2{ begin_position.x + frame_size.width * frames_count, begin_position.y };
+	constant last_frame_pos = Vec2{ begin_position.x + frame_size.width * (frames_count-1), begin_position.y };
 
 	constant doesnt_fit_in_atlas = [&]( Vec2 const& point ) {
-		return !rect_vs_point( texture_atlas_bounds, point );
+		return point.x < 0 or point.x > atlas_size.x or
+			point.y < 0 or point.y > atlas_size.y;
 	};
 
 	if ( doesnt_fit_in_atlas( first_frame_pos ) or doesnt_fit_in_atlas( first_frame_pos + frame_size ) ) {
-		engine_log_error( "First frame of animation doesn't fit in the texture atlas. Frame bounds are: {}, {}, {}, {}. Atlas bounds are: 0, 0, {}, {}", first_frame_pos.x, first_frame_pos.y, frame_size.width, frame_size.height, texture_atlas_bounds.size.width, texture_atlas_bounds.size.height );
+		engine_log_error( "First frame of animation doesn't fit in the texture atlas. Frame bounds are: {}, {}, {}, {}. Atlas bounds are: 0, 0, {}, {}", first_frame_pos.x, first_frame_pos.y, frame_size.width, frame_size.height, atlas_size.width, atlas_size.height );
 		return false;
 	}
 
 	if ( doesnt_fit_in_atlas( last_frame_pos ) or doesnt_fit_in_atlas( last_frame_pos + frame_size ) ) {
-		engine_log_error( "Last frame of animation doesn't fit in the texture atlas. Frame bounds are: {}, {}, {}, {}. Atlas bounds are: 0, 0, {}, {}", last_frame_pos.x, last_frame_pos.y, frame_size.width, frame_size.height, texture_atlas_bounds.size.width, texture_atlas_bounds.size.height );
+		engine_log_error( "Last frame of animation doesn't fit in the texture atlas. Frame bounds are: {}, {}, {}, {}. Atlas bounds are: 0, 0, {}, {}", last_frame_pos.x, last_frame_pos.y, frame_size.width, frame_size.height, atlas_size.width, atlas_size.height);
 		return false;
 	}
 
@@ -195,6 +200,11 @@ void Animation::switch_frame()
 			stop();
 	}
 
+	update_frame();
+}
+
+void Animation::update_frame()
+{
 	constant frame_pos = Vec2{ begin_position.x + current_frame * frame_size.x, begin_position.y };
 
 	sprite->set_texture_rect( { frame_pos, frame_size } );
