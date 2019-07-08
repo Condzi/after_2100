@@ -11,7 +11,6 @@
 
 namespace con
 {
-
 auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 {
 	report_error_if( node_to_attach is nullptr )

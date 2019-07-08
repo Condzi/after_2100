@@ -58,6 +58,7 @@ inline static auto instantiate()                                   \
 }                                                                  \
 private:
 
+
 inline constexpr con::r32 operator"" px( long double val )
 {
 	return static_cast<con::r32>( val );
@@ -80,7 +81,6 @@ inline constexpr con::r32 operator"" deg( long double val )
 #define returned is
 #define constant auto const
 #define change_owner( uptr ) std::move( uptr )
-#define pass int{0}
 #define unused( x ) ( ( void )( x ) )
 
 namespace con
