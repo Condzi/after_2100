@@ -44,7 +44,7 @@ auto Enemy_Spawner::get_is_finished() const -> bool
 
 void Enemy_Spawner::start()
 {
-	report_warning_if( is_spawning )
+	if( is_spawning )
 	{
 		log_warning( "Spawner is already started." );
 		return;
@@ -60,7 +60,7 @@ void Enemy_Spawner::start()
 		return;
 	}
 
-	report_error_if( spawning_function is false )
+	if( spawning_function is false )
 	{
 		log_error( "No spawning function set for Enemy_Spawner. (no type was assigned)" );
 		return;
@@ -71,7 +71,7 @@ void Enemy_Spawner::start()
 
 void Enemy_Spawner::stop()
 {
-	report_warning_if( not is_spawning )
+	if( not is_spawning )
 	{
 		log_warning( "Spawner is already not spawning." );
 		return;

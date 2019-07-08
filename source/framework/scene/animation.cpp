@@ -28,7 +28,7 @@ void Animation::set_texture( sf::Texture const* texture )
 
 void Animation::set_begin_position( Point const& pos )
 {
-	report_warning_if( pos.x < 0 or pos.y < 0 )
+	if( pos.x < 0 or pos.y < 0 )
 	{
 		engine_log_warning( "Beggining position of animation frame in texture atlas can't be <0. (value is x={}, y={})", pos.x, pos.y );
 		return;
@@ -39,7 +39,7 @@ void Animation::set_begin_position( Point const& pos )
 
 void Animation::set_frame_size( Size2 const& size )
 {
-	report_warning_if( size.x <= 0 or size.y <= 0 )
+	if( size.x <= 0 or size.y <= 0 )
 	{
 		engine_log_warning( "Size of animation frame in texture atlas can't be <=0. (value is x={}, y={})", size.x, size.y );
 		return;
@@ -50,7 +50,7 @@ void Animation::set_frame_size( Size2 const& size )
 
 void Animation::set_frames_count( u32 count )
 {
-	report_warning_if( count < 1 )
+	if( count < 1 )
 	{
 		engine_log_warning( "Number of animation frames can't be < 1. (value is {})", count );
 		return;
@@ -63,7 +63,7 @@ void Animation::set_frames_count( u32 count )
 
 void Animation::set_duration( r32 sec )
 {
-	report_warning_if( sec <= 0 )
+	if( sec <= 0 )
 	{
 		engine_log_warning( "Duration of animation can't be <=0s. (value is {}s)", sec );
 		return;

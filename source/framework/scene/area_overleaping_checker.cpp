@@ -15,7 +15,7 @@ void Area_Overleaping_Checker::register_area( Area* const area_to_register )
 {
 	constant[found, idx] = find( areas, area_to_register );
 
-	report_error_if( found )
+	if( found )
 	{
 		engine_log_error( "Trying to add already added area. Duplicate found at index {}.", idx );
 		return;
@@ -28,7 +28,7 @@ void Area_Overleaping_Checker::unregister_area( Area* const area_to_unregister )
 {
 	constant[found, idx] = find( areas, area_to_unregister );
 
-	report_error_if( not found )
+	if( not found )
 	{
 		engine_log_error( "Trying to remove non existing area." );
 		return;

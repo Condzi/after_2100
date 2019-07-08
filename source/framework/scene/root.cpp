@@ -38,7 +38,7 @@ void Root::change_scene( Node_Ptr&& scene_to_switch )
 		return;
 	}
 
-	report_warning_if( pending_scene is_not nullptr )
+	if( pending_scene is_not nullptr )
 	{
 		engine_log_warning( "There was one scene that was going to change to ({}). Changing to: {}.", pending_scene->name, scene_to_switch->name );
 	}

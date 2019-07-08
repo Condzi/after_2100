@@ -34,13 +34,13 @@ bool Missile_Shooter::get_is_ready_to_shoot() const
 
 void Missile_Shooter::shoot()
 {
-	report_warning_if( !spawning_function )
+	if( !spawning_function )
 	{
 		log_warning( "No spawning_function set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
 		return;
 	}
 
-	report_warning_if( horizontal_velocity is 0 )
+	if( horizontal_velocity is 0 )
 	{
 		log_warning( "No horizontal_velocity set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
 		return;

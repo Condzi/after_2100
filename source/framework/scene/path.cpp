@@ -83,7 +83,7 @@ void Path_Follower::update( r32 dt )
 		return;
 	}
 
-	report_error_if( max_velocity <= 0 )
+	if( max_velocity <= 0 )
 	{
 		engine_log_error( "'max_velocity' has to be positive, like you :)" );
 		stop_following();
