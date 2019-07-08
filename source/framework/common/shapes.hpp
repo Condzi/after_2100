@@ -27,7 +27,7 @@ struct Rectangle_Shape final
 	template <typename T>
 	[[nodiscard]] operator sf::Rect<T>() const
 	{
-		return sf::Rect<T>{ position.x, position.y, size.width, size.height };
+		return sf::Rect<T>{ static_cast<T>( position.x ), static_cast<T>( position.y ), static_cast<T>( size.width ), static_cast<T>( size.height ) };
 	}
 };
 
