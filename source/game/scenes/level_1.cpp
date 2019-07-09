@@ -46,4 +46,9 @@ Level_1::Level_1()
 	spawner.start();
 	spawner.spawn_interval = 1.9sec;
 	spawner.set_spawn_limit( 8 );
+
+	Sprite* spr = attach<Sprite>();
+
+	spr->set_texture( G_Resources_Storage.get_texture( "space_background" ) );
+	spr->layer = -1;
 }

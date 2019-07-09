@@ -5,7 +5,6 @@
 #pragma once
 
 #include "framework/scene/node.hpp"
-#include "framework/scene/sprite.hpp"
 #include "framework/scene/area.hpp"
 
 using namespace con;
@@ -18,7 +17,6 @@ class Missile_Base :
 
 public:
 	Area*   hitbox;
-	Sprite* sprite;
 	Vec2    velocity;
 
 	Missile_Base();

@@ -4,6 +4,8 @@
 */
 #pragma once
 
+#include "framework/scene/animation.hpp"
+
 #include "missile_base.hpp"
 
 using namespace con;
@@ -17,4 +19,7 @@ public:
 	Player_Missile();
 
 	void update( r32 delta ) override;
+
+private:
+	Animation* missile_animation;
 };

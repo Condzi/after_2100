@@ -32,9 +32,9 @@ Enemy_Base::Enemy_Base()
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
-;	explosion->set_local_position( -sprite->get_global_bounds().size );
+	explosion->set_local_position( -sprite->get_global_bounds().size );
 
-	bond_disconnector( health->s_dead.connect( [this] { sprite->set_pause( true ); stop_following(); explosion->play(); } ) );
+	bond_disconnector( health->s_dead.connect( [this] { sprite->visible = false; stop_following(); explosion->play(); } ) );
 	bond_disconnector( explosion->s_stop.connect( [this] { queue_for_delete(); } ) );
 
 	bond_disconnector( s_on_finish_following.connect(

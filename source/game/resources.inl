@@ -5,10 +5,11 @@
 
 // Textures
 {
-	{ "player",         "resources/player.png" },
-	{ "enemy_1",        "resources/enemy_1.png" },
-	{ "missile_player", "resources/missile_player.png" },
-	{ "explosion",      "resources/explosion.png" }
+	{ "player",           "resources/player.png" },
+	{ "enemy_1",          "resources/enemy_1.png" },
+	{ "missile_player",   "resources/missile_player.png" },
+	{ "explosion",        "resources/explosion.png" },
+	{ "space_background", "resources/space_background.jpg"}
 },
 
 // Sounds

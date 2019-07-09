@@ -16,6 +16,4 @@ Missile_Base::Missile_Base()
 
 	hitbox = attach<Area>();
 	hitbox->name = "hitbox_" + name;
-
-	sprite = attach<Sprite>();
 }
