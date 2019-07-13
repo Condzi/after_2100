@@ -51,9 +51,6 @@ void Camera::stop_shaking()
 
 void Camera::update( r32 dt )
 {
-	if ( shake.trauma > 0 )
-		engine_log_warning( "x: {}  y: {}  angle: {} max angle {}", shake.offset.x, shake.offset.y, shake.angle, shake.MAX_ANGLE );
-
 	update_shake( dt );
 	update_transformations();
 }
