@@ -96,6 +96,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\framework\common\assertions.hpp" />
+    <ClInclude Include="source\framework\common\random.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\framework\scene\camera.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\framework\common\debug_flags.hpp">
       <SubType>
       </SubType>
@@ -198,6 +206,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\framework\common\assertions.cpp" />
+    <ClCompile Include="source\framework\common\random.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\framework\scene\camera.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\framework\common\debug_flags.cpp">
       <SubType>
       </SubType>
