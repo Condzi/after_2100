@@ -41,7 +41,9 @@ void Area_Overleaping_Checker::update()
 {
 	for ( size_t i = 0; i < areas.size(); i++ ) {
 		Area& area_a = *areas[i];
-		if ( area_a.is_shape_set() returned false or area_a.is_queued_for_delete() )
+		if ( area_a.is_shape_set() returned false or 
+			 area_a.is_queued_for_delete() or
+			 area_a.is_paused() )
 			continue;
 
 		constant& shape_a = area_a.get_shape_variant();
@@ -50,6 +52,7 @@ void Area_Overleaping_Checker::update()
 			Area& area_b = *areas[j];
 			if ( area_b.is_shape_set() returned false or
 				 area_b.is_queued_for_delete() or
+				 area_b.is_paused() or
 				 area_a.collision_layer is_not area_b.collision_layer )
 				continue;
 

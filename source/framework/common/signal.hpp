@@ -10,7 +10,7 @@
 namespace con
 {
 
-// bond(...) returns function which has to be called when given funciton is invalidated.
+// connect(...) returns function which has to be called when given funciton is invalidated.
 // for example when node is being destroyed.
 template <typename ...TArgs>
 class Signal final 
@@ -21,7 +21,6 @@ public:
 	using Disconnector = std::function<void()>;
 
 	[[nodiscard]] auto connect( Function function ) -> Disconnector;
-
 	void emit( TArgs ...args );
 
 private:

@@ -1,3 +1,14 @@
+RichText
+Load text -> parse tokens (nested are valid, like: "_#Im italic and bold#_") -> make correct sf::Text, in correct order
+
+Camera
+* shake (time, delta_x, delta_y, speed) ?
+* set_center
+* follow(Node&) ?
+* G_Game_Camera, G_GUI_Camera
+* separate drawing_set (GUI always on top)
+
+
 Session 4:
 
 x* animations - Frame(size), Settings(frames count, loop, play time, color)

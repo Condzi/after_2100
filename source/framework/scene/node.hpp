@@ -30,8 +30,7 @@ public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
 	Signal<>     s_destroy;
-	// When node moves. Vec2 is the new position.
-	Signal<Vec2> s_move;
+	Signal<Vec2> s_move; //< Vec2 is the new position.
 
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
