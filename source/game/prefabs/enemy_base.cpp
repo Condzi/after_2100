@@ -40,7 +40,7 @@ Enemy_Base::Enemy_Base()
 		hitbox->set_pause( true );
 		stop_following();
 		explosion->play();
-		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.2f );
+		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 					   } ) );
 
 	bond_disconnector( explosion->s_stop.connect( [this] { queue_for_delete(); } ) );
