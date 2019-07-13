@@ -12,11 +12,13 @@ namespace con::priv
 void Camera::set_view( sf::View const& v )
 {
 	view = v;
+
+	set_center( v.getCenter() );
 }
 
 void Camera::set_center( Point const& point )
 {
-	set_global_position( point - view.getSize() * 0.5f );
+	set_global_position( point );
 }
 
 auto Camera::get_center() const -> Point
@@ -49,13 +51,14 @@ void Camera::stop_shaking()
 
 void Camera::update( r32 dt )
 {
+	engine_log_warning( "Pos: {}, {} | Size: {}, {}", view.getCenter().x, view.getCenter().y, view.getSize().x, view.getSize().y );
 	update_shake( dt );
 	update_transformations();
 }
 void Camera::update_transformations()
 {
 	view.setRotation( get_rotation() );
-	view.setCenter( get_global_position() + view.getSize() * 2.0f );
+	view.setCenter( get_global_position() );
 }
 
 void Camera::update_shake( r32 dt )

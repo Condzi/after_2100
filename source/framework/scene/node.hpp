@@ -80,6 +80,7 @@ public:
 	virtual void input( sf::Event const& event ) {}
 	// Use it for drawing own stuff, but prefer Sprite (or Text) node.
 	virtual void draw( Drawing_Set& drawing_set ) {}
+	virtual void draw_gui( Drawing_Set& drawing_set ) {}
 
 private:
 	std::vector<Node_Ptr> child_nodes;
@@ -95,7 +96,8 @@ private:
 	void remove_queued_for_delete();
 	void update_children( r32 dt );
 	void handle_input_children( sf::Event const& event );
-	void draw_children( Drawing_Set& queue );
+	void draw_children( Drawing_Set& set );
+	void draw_gui_children( Drawing_Set& set );
 };
 }
 

@@ -125,12 +125,20 @@ void Node::handle_input_children( sf::Event const& event )
 		child->handle_input_children( event );
 }
 
-void Node::draw_children( Drawing_Set& queue )
+void Node::draw_children( Drawing_Set& set )
 {
-	draw( queue );
+	draw( set );
 
 	for ( auto& child : child_nodes )
-		child->draw_children( queue );
+		child->draw_children( set );
+}
+
+void Node::draw_gui_children( Drawing_Set& set )
+{
+	draw_gui( set );
+
+	for ( auto& child : child_nodes )
+		child->draw_gui_children( set );
 }
 
 auto Node::get_local_position() const -> Point const&

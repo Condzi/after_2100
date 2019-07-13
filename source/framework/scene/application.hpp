@@ -8,6 +8,7 @@
 #include "pch.hpp"
 
 #include "root.hpp"
+#include "camera.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
@@ -32,7 +33,12 @@ public:
 
 private:
 	sf::RenderWindow window;
-	Drawing_Set      drawing_set;
+	Drawing_Set      game_drawing_set;
+	Drawing_Set      gui_drawing_set;
+	priv::Camera*    game_camera;
+	priv::Camera*    gui_camera;
+
+
 	bool             exit{ false };
 	Root             root;
 

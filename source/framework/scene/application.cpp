@@ -5,10 +5,10 @@
 
 #include "pch.hpp"
 
-#include "framework/scene/application.hpp"
 #include "framework/common/resources_storage.hpp"
 #include "framework/common/stl_extensions.hpp"
-#include "framework/scene/area_overleaping_checker.hpp"
+#include "application.hpp"
+#include "area_overleaping_checker.hpp"
 
 namespace con
 {
@@ -21,6 +21,16 @@ void Application::initialize( u32 window_width, u32 window_height, u32 fps, std:
 	window.setFramerateLimit( fps );
 
 	G_Resources_Storage.reload();
+
+	game_camera = root.attach<con::priv::Camera>();
+	gui_camera = root.attach<con::priv::Camera>();
+
+	game_camera->name = "game_camera";
+	gui_camera->name = "gui_camera";
+
+	constant view = window.getView();
+	game_camera->set_view( view );
+	gui_camera->set_view( view );
 }
 
 void Application::run()
@@ -39,10 +49,19 @@ void Application::run()
 
 		G_Area_Overleaping_Checker.update();
 
+		game_drawing_set.clear();
+		root.draw_children( game_drawing_set );
+
+		gui_drawing_set.clear();
+		root.draw_gui_children( gui_drawing_set );
+
 		window.clear();
-		drawing_set.clear();
-		root.draw_children( drawing_set );
-		drawing_set.display( window );
+
+		game_drawing_set.display( window );
+		window.setView( gui_camera->get_view() );
+		gui_drawing_set.display( window );
+		window.setView( game_camera->get_view() );
+
 		window.display();
 	}
 
