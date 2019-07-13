@@ -11,7 +11,7 @@
 #include "framework/common/vec2.hpp"
 #include "framework/common/random.hpp"
 
-namespace con::priv
+namespace con
 {
 
 // Deriving from Path_Follower allows for making better
@@ -37,8 +37,8 @@ private:
 	struct
 	{
 		static constexpr r32 MAX_ANGLE    = 10.0deg;
-		static constexpr r32 MAX_OFFSET_X = 10.0px;
-		static constexpr r32 MAX_OFFSET_Y = 10.0px;
+		static constexpr r32 MAX_OFFSET_X = 100.0px;
+		static constexpr r32 MAX_OFFSET_Y = 100.0px;
 		static constexpr r32 TRAUMA_DECREASING_RATE = 0.4;
 
 		r32  trauma;

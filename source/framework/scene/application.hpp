@@ -35,8 +35,8 @@ private:
 	sf::RenderWindow window;
 	Drawing_Set      game_drawing_set;
 	Drawing_Set      gui_drawing_set;
-	priv::Camera*    game_camera;
-	priv::Camera*    gui_camera;
+	Camera*          game_camera;
+	Camera*          gui_camera;
 
 
 	bool             exit{ false };

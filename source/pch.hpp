@@ -71,9 +71,15 @@ inline constexpr con::r32 operator"" sec( long double val )
 // Automaticly sets correct degrees value (400 -> 400 - 360 = 40)
 inline constexpr con::r32 operator"" deg( long double val )
 {
-	auto const as_integer{ static_cast<con::s32>( val ) };
+	if ( val > 360 ) {
+		auto const as_integer{ static_cast<con::s32>( val ) };
+		return static_cast<con::r32>( val ) - 360 * ( as_integer % 360 );
+	}
 
-	return static_cast<con::r32>( val ) - 360 * ( as_integer % 360 );
+	// add support for it if needed
+	if ( val < 0 ) return val / 0;
+
+	return val;
 }
 
 #define is ==
@@ -87,5 +93,5 @@ namespace con
 {
 // Helps with std::variant visiting. provides possibility to pass multiple lambdas. see: https://en.cppreference.com/w/cpp/utility/variant/visit
 template<class... Ts> struct visitor_overload : Ts... { using Ts::operator()...; };
-template<class... Ts> visitor_overload(Ts...) -> visitor_overload<Ts...>;
+template<class... Ts> visitor_overload( Ts... ) -> visitor_overload<Ts...>;
 }

@@ -7,7 +7,7 @@
 
 #include "camera.hpp"
 
-namespace con::priv
+namespace con
 {
 void Camera::set_view( sf::View const& v )
 {
@@ -51,7 +51,9 @@ void Camera::stop_shaking()
 
 void Camera::update( r32 dt )
 {
-	engine_log_warning( "Pos: {}, {} | Size: {}, {}", view.getCenter().x, view.getCenter().y, view.getSize().x, view.getSize().y );
+	if ( shake.trauma > 0 )
+		engine_log_warning( "x: {}  y: {}  angle: {} max angle {}", shake.offset.x, shake.offset.y, shake.angle, shake.MAX_ANGLE );
+
 	update_shake( dt );
 	update_transformations();
 }

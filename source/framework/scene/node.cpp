@@ -168,7 +168,7 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 
 	if ( string_begins_with( path, "root/" ) ) {
 		current_node = &G_Root;
-		path = path.substr( 6 ); // "root/" has 6 chars, so just cut it off
+		path = path.substr( 5 ); // "root/" has 5 chars, so just cut it off
 	}
 
 	std::string name_to_look;

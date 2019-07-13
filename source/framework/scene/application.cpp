@@ -22,8 +22,8 @@ void Application::initialize( u32 window_width, u32 window_height, u32 fps, std:
 
 	G_Resources_Storage.reload();
 
-	game_camera = root.attach<con::priv::Camera>();
-	gui_camera = root.attach<con::priv::Camera>();
+	game_camera = root.attach<Camera>();
+	gui_camera = root.attach<Camera>();
 
 	game_camera->name = "game_camera";
 	gui_camera->name = "gui_camera";
