@@ -13,7 +13,6 @@ class Debug_Log final
 {
 public:
 	static constexpr const char* LOG_FILE_NAME{ "log.txt" };
-	static const bool SPDLOG_INITIALIZATION_ERROR{ false };
 
 	enum Level
 	{

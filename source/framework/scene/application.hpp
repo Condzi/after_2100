@@ -38,13 +38,13 @@ private:
 	Camera*          game_camera;
 	Camera*          gui_camera;
 
-
 	bool             exit{ false };
 	Root             root;
 
 	Application() = default;
 
 	void handle_debug_keys( sf::Event const& event );
+	void render();
 };
 }
 

@@ -48,21 +48,7 @@ void Application::run()
 		root.update_children( fps_clock.restart().asSeconds() );
 
 		G_Area_Overleaping_Checker.update();
-
-		game_drawing_set.clear();
-		root.draw_children( game_drawing_set );
-
-		gui_drawing_set.clear();
-		root.draw_gui_children( gui_drawing_set );
-
-		window.clear();
-
-		game_drawing_set.display( window );
-		window.setView( gui_camera->get_view() );
-		gui_drawing_set.display( window );
-		window.setView( game_camera->get_view() );
-
-		window.display();
+		render();
 	}
 
 	engine_log_info( "Exiting game loop..." );
@@ -140,6 +126,35 @@ void Application::handle_debug_keys( sf::Event const& event )
 		engine_log_info( "Debug: toggle draw_missile_shooters." );
 		break;
 	}
+	/*
+	@ToDo: It's not working now since we are invalidating pointers when reloading resources.
+			We have to make own Texture / Sounds / Font class that holds name of the resource
+			and reloads it too to make it work.
+	case sf::Keyboard::F6:
+	{
+		engine_log_info( "Debug: reload resources." );
+		G_Resources_Storage.reload();
+		break;
 	}
+	*/
+	}
+}
+
+void Application::render()
+{
+	game_drawing_set.clear();
+	root.draw_children( game_drawing_set );
+
+	gui_drawing_set.clear();
+	root.draw_gui_children( gui_drawing_set );
+
+	window.clear();
+
+	game_drawing_set.display( window );
+	window.setView( gui_camera->get_view() );
+	gui_drawing_set.display( window );
+	window.setView( game_camera->get_view() );
+
+	window.display();
 }
 }

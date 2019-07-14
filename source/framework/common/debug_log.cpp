@@ -34,11 +34,9 @@ Debug_Log::Debug_Log()
 
 		engine_logger->flush_on( spdlog::level::level_enum::info );
 		game_logger->flush_on( spdlog::level::level_enum::info );
+
 	} catch ( const std::exception& ex ) {
 		std::cout << "\n\n Error initializing spdlog: " << ex.what() << " \n\n";
-		const_cast<bool&>( SPDLOG_INITIALIZATION_ERROR ) = true;
-
-		break_if( SPDLOG_INITIALIZATION_ERROR );
 	}
 }
 }
