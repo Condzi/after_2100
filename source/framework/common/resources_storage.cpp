@@ -76,16 +76,6 @@ void Resources_Storage::reload()
 	engine_log_info( "Reloading resources." );
 	sf::Clock timer;
 
-	textures.clear();
-	sound_buffers.clear();
-	music.clear();
-	fonts.clear();
-
-	textures.reserve( resources_data.textures.size() );
-	sound_buffers.reserve( resources_data.sound_buffers.size() );
-	music.reserve( resources_data.music.size() );
-	fonts.reserve( resources_data.fonts.size() );
-
 	for ( constant[name, path] : resources_data.textures ) {
 		auto& texture = textures[name].resource;
 

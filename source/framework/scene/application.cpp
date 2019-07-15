@@ -126,17 +126,12 @@ void Application::handle_debug_keys( sf::Event const& event )
 		engine_log_info( "Debug: toggle draw_missile_shooters." );
 		break;
 	}
-	/*
-	@ToDo: It's not working now since we are invalidating pointers when reloading resources.
-			We have to make own Texture / Sounds / Font class that holds name of the resource
-			and reloads it too to make it work.
 	case sf::Keyboard::F6:
 	{
 		engine_log_info( "Debug: reload resources." );
 		G_Resources_Storage.reload();
 		break;
 	}
-	*/
 	}
 }
 
