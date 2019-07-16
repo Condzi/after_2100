@@ -30,21 +30,14 @@ Level_1::Level_1()
 	///////////////////////////////
 	Path& path = *attach<Path>();
 
-	constant w = G_App.get_window_size().width;
-	constant h = G_App.get_window_size().height;
+	constant win_size = G_App.get_window_size();
 
-	path.points.emplace_back( w * 1.1,   h * 0.5 );
+	path.points.emplace_back( win_size * Vec2{ 1.1, 0.5 } );
 
-	for ( s32 i = 0; i < 5; i++ ) {
-		path.points.emplace_back( w * ( 0.95 - 0.20*i ),  h * 0.5 );
-		path.points.emplace_back( w * ( 0.95 - 0.20*i ),  h * 0.1 );
-		path.points.emplace_back( w * ( 0.85 - 0.20*i ),  h * 0.1 );
-		path.points.emplace_back( w * ( 0.80 - 0.20*i ),  h * 0.9 );
-		path.points.emplace_back( w * ( 0.92 - 0.20*i ),  h * 0.7 );
-		path.points.emplace_back( w * ( 0.80 - 0.20*i ),  h * 0.5 );
-	}
+	for ( r32 i = 10; i > 0; i -= 0.05 )
+		path.points.emplace_back( win_size.width * i / 10, win_size.height * sin( i ) * 0.2 + win_size.height * 0.5 );
 
-	path.points.emplace_back( Point{ w * -0.1,  h * 0.5 } );
+	path.points.emplace_back( win_size * Vec2{ -0.1, 0.5 } );
 
 	///////////////////////////////
 	Enemy_Spawner& spawner = *attach<Enemy_Spawner>();

@@ -1,6 +1,10 @@
 RichText
 Load text -> parse tokens (nested are valid, like: "_#Im italic and bold#_") -> make correct sf::Text, in correct order
 
+Dialog system - make a small utility that replaces text with #loc ids when done
+
+In-game console box?
+
 Camera
 * shake (time, delta_x, delta_y, speed) ?
 * set_center

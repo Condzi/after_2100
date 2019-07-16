@@ -42,7 +42,7 @@ public:
 	r32 minimum_distance{ 25.0px };
 	r32 steering_force{ 200 };
 	r32 steering_authority{ 0.06 };
-	r32 max_velocity{ 160 };
+	r32 max_velocity{ 210 };
 
 	void start_following();
 	void stop_following();
