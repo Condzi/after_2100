@@ -38,5 +38,6 @@ public:
 private:
 	sf::Text text;
 	std::string locale_name;
+	sf::String const* locale_string;
 };
 }

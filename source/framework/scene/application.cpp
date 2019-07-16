@@ -134,6 +134,12 @@ void Application::handle_debug_keys( sf::Event const& event )
 		G_Resources_Storage.reload();
 		break;
 	}
+	case sf::Keyboard::F7:
+	{
+		engine_log_info( "Debug: reload locale." );
+		G_Locale.reload();
+		break;
+	}
 	}
 }
 

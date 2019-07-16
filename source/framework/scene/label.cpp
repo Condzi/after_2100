@@ -24,8 +24,6 @@ Label::Label()
 void Label::set_locale( std::string const& name )
 {
 	locale_name = name;
-
-	text.setString( G_Locale.get_string( locale_name ) );
 }
 
 void Label::set_font( std::string const& name )
@@ -70,5 +68,10 @@ void Label::update( r32 dt )
 	text.setPosition( get_global_position() );
 	text.setRotation( get_rotation() );
 	text.setScale( get_scale() );
+
+	if ( locale_name.empty() returned false ) {
+		locale_string = &G_Locale.get_string( locale_name );
+		text.setString( *locale_string );
+	}
 }
 }
