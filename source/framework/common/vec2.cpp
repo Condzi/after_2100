@@ -100,10 +100,10 @@ Vec2& Vec2::operator-=( Vec2 const& rhs )
 	return *this;
 }
 
-Vec2 & Vec2::operator*=( Vec2 const& rhs )
+Vec2& Vec2::operator*=( Vec2 const& rhs )
 {
 	x *= rhs.x;
-	y += rhs.y;
+	y *= rhs.y;
 
 	return *this;
 }
