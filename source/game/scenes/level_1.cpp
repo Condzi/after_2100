@@ -22,7 +22,7 @@ Level_1::Level_1()
 
 	Label& l = *attach<Label>();
 
-	l.set_locale( "#loc1" );
+	l.string.set_locale_name( "#loc1" );
 	l.set_fill_color( sf::Color::Cyan );
 	l.set_global_position( { 200.0px, 200.0px } );
 

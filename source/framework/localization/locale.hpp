@@ -10,14 +10,15 @@ namespace con::priv
 {
 class Locale final
 {
-public:	
+public:
 	static constexpr const char* PATH_TO_LOC_FILE = "resources/loc.json";
 
 	void set_current_language( std::string const& language );
 
-	[[nodiscard]] auto get_current_language() const -> std::string const&;
-	[[nodiscard]] auto get_avaible_languages() const -> std::vector<std::string> const&;
-	[[nodiscard]] auto get_string( std::string const& identifier ) -> sf::String const&;
+	[[nodiscard]] auto get_fallback_string() const           -> sf::String const&;
+	[[nodiscard]] auto get_current_language() const          -> std::string const&;
+	[[nodiscard]] auto get_avaible_languages() const         -> std::vector<std::string> const&;
+	[[nodiscard]] auto get_string( std::string const& name ) -> sf::String const&;
 
 	void reload();
 
@@ -29,7 +30,7 @@ private:
 	std::string              current_language{ "pl" };
 	std::vector<std::string> avaible_languages;
 
-	sf::String                                  fallback_string{ "#loc_error" };
+	sf::String                                  fallback_string{ "#no_loc" };
 	std::unordered_map<std::string, sf::String> strings{ 100 }; // reserving space for 100 pairs
 
 	bool is_language_avaible( std::string const& lang );

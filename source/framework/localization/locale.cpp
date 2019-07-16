@@ -23,6 +23,11 @@ void Locale::set_current_language( std::string const& language )
 		current_language = language;
 }
 
+auto Locale::get_fallback_string() const -> sf::String const&
+{
+	return fallback_string;
+}
+
 auto Locale::get_current_language() const -> std::string const&
 {
 	return current_language;
@@ -33,10 +38,10 @@ auto Locale::get_avaible_languages() const -> std::vector<std::string> const&
 	return avaible_languages;
 }
 
-auto Locale::get_string( std::string const& identifier ) -> sf::String const&
+auto Locale::get_string( std::string const& name ) -> sf::String const&
 {
-	if ( auto it = strings.find( identifier ); it is strings.end() ) {
-		engine_log_error( "Can't find string '{}'.", identifier );
+	if ( auto it = strings.find( name ); it is strings.end() ) {
+		engine_log_error( "Can't find string '{}'.", name );
 		return fallback_string;
 	} else
 		return it->second;

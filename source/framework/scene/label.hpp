@@ -8,6 +8,7 @@
 
 #include "node.hpp"
 #include "framework/common/shapes.hpp"
+#include "framework/localization/localized_string.hpp"
 
 namespace con
 {
@@ -17,17 +18,15 @@ class Label final :
 	CLASS_DEF( Label );
 
 public:
-	s32 layer;
+	Localized_String string;
+	s32 layer{ 0 };
 
 	Label();
 
-	// for example "#loc1" 
-	void set_locale( std::string const& name );
 	void set_font( std::string const& name );
 	void set_character_size( size_t size );
 	void set_fill_color( sf::Color const& color );
 
-	[[nodiscard]] auto get_locale() const         -> std::string const&;
 	[[nodiscard]] auto get_character_size() const -> size_t;
 	[[nodiscard]] auto get_global_bounds() const  -> Rectangle_Shape;
 
@@ -37,7 +36,5 @@ public:
 
 private:
 	sf::Text text;
-	std::string locale_name;
-	sf::String const* locale_string;
 };
 }
