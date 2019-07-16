@@ -71,6 +71,11 @@ auto Application::get_window_size() const -> Size2
 	return static_cast<Size2>( window.getSize() );
 }
 
+auto Application::get_window_bounds() const -> Rectangle_Shape
+{
+	return { {0.0px, 0.0px}, window.getSize() };
+}
+
 void Application::exit_game()
 {
 	exit = true;

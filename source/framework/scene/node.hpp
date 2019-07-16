@@ -11,6 +11,7 @@
 #include "framework/common/vec2.hpp"
 #include "framework/common/drawing_set.hpp"
 #include "framework/common/signal.hpp"
+#include "framework/common/shapes.hpp"
 
 namespace sf
 {
@@ -58,6 +59,9 @@ public:
 	void move( Vec2 const& vec );
 	void set_local_position( Point const& local_position );
 	void set_global_position( Point const& new_position );
+	// if no rect is given then {0,0, win_size.x, win_size.y} is used.
+	void set_absolute_position( Point const& absolute_position );
+	void set_absolute_position( Point const& absolute_position, Rectangle_Shape const& rect );
 
 	void rotate( r32 deg, bool affect_children = true );
 	void set_rotation( r32 deg, bool affect_children = true );

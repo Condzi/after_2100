@@ -9,6 +9,7 @@
 
 #include "root.hpp"
 #include "camera.hpp"
+#include "framework/common/shapes.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
@@ -22,10 +23,11 @@ public:
 	void run();
 
 	// @ToDo: Probably somewhere else?
-	auto get_root()              -> Root &;
+	[[nodiscard]] auto get_root()                -> Root&;
 	// @ToDo: May be confusing:
-	auto get_window() const      -> sf::RenderWindow const&;
-	auto get_window_size() const -> Size2;
+	[[nodiscard]] auto get_window() const        -> sf::RenderWindow const&;
+	[[nodiscard]] auto get_window_size() const   -> Size2;
+	[[nodiscard]] auto get_window_bounds() const -> Rectangle_Shape;
 
 	void exit_game();
 

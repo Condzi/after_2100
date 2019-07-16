@@ -259,6 +259,22 @@ void Node::set_global_position( Point const& new_position )
 	move( offset );
 }
 
+void Node::set_absolute_position( Point const& absolute_position )
+{
+	set_absolute_position( absolute_position, G_App.get_window_bounds() );
+}
+
+void Node::set_absolute_position( Point const& absolute_position, Rectangle_Shape const& rect )
+{
+	report_error_if( absolute_position.x < -1 or absolute_position.x > 1 or
+					 absolute_position.y < -1 or absolute_position.y > 1 )
+	{
+		return;
+	}
+
+	set_global_position( rect.size * absolute_position + rect.position );
+}
+
 void Node::set_local_position( Point const& local_position )
 {
 	report_warning_if( parent_node is nullptr )
