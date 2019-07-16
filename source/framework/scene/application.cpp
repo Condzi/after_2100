@@ -7,6 +7,7 @@
 
 #include "framework/common/resources_storage.hpp"
 #include "framework/common/stl_extensions.hpp"
+#include "framework/localization/locale.hpp"
 #include "application.hpp"
 #include "area_overleaping_checker.hpp"
 
@@ -21,6 +22,7 @@ void Application::initialize( u32 window_width, u32 window_height, u32 fps, std:
 	window.setFramerateLimit( fps );
 
 	G_Resources_Storage.reload();
+	G_Locale.reload();
 
 	game_camera = root.attach<Camera>();
 	gui_camera = root.attach<Camera>();
