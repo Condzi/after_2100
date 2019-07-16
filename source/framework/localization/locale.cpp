@@ -64,8 +64,13 @@ void Locale::reload()
 			constant& key = record.key();
 			constant& value = record.value();
 
-			if ( string_begins_with( key, "#loc" ) )
-				strings[key] = value.at( current_language ).get<std::string>();
+			if ( string_begins_with( key, "#loc" ) ) {
+				sf::String string_to_add;
+				constant ansi_string = value.at( current_language ).get<std::string>();
+				string_to_add = sf::String::fromUtf8( ansi_string.cbegin(), ansi_string.cend() );
+
+				strings[key] = string_to_add;
+			}
 		}
 	}
 	catch ( std::exception const& ex ) {
