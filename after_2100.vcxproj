@@ -96,7 +96,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\framework\common\assertions.hpp" />
+    <ClInclude Include="source\framework\common\percent_position.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\framework\common\random.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\framework\common\typedefs.hpp">
       <SubType>
       </SubType>
     </ClInclude>
@@ -218,6 +226,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\framework\common\assertions.cpp" />
+    <ClCompile Include="source\framework\common\percent_position.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\framework\common\random.cpp">
       <SubType>
       </SubType>

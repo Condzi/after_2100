@@ -22,6 +22,7 @@
 #include "framework/common/typedefs.hpp"
 
 #include "framework/common/vec2.hpp"
+#include "framework/common/percent_position.hpp"
 
 // Probably from spdlog.
 #undef TRANSPARENT

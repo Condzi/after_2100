@@ -24,7 +24,7 @@ Level_1::Level_1()
 
 	l.string.set_locale_name( "#loc1" );
 	l.set_fill_color( sf::Color::Cyan );
-	l.set_absolute_position( { 0.5, 0.5 } );
+	l.set_absolute_position( Percent_Position{ 10.1, 1 } );
 	attach<Player>();
 
 	///////////////////////////////
@@ -35,7 +35,7 @@ Level_1::Level_1()
 	path.points.emplace_back( win_size * Vec2{ 1.1, 0.5 } );
 
 	for ( r32 i = 10; i > 0; i -= 0.05 )
-		path.points.emplace_back( win_size.width * i / 10, win_size.height * sin( i ) * 0.2 + win_size.height * 0.5 );
+		path.points.emplace_back( win_size.width * i / 10, win_size.height * sin( i ) * 0.2f + win_size.height * 0.5f );
 
 	path.points.emplace_back( win_size * Vec2{ -0.1, 0.5 } );
 
