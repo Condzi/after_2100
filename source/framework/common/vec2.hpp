@@ -7,7 +7,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include "pch.hpp"
+#include "framework/common/typedefs.hpp"
 
 namespace con
 {
