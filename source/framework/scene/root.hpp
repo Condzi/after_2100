@@ -19,6 +19,8 @@ class Root final :
 	friend class Application;
 
 public:
+	Root();
+
 	void input( sf::Event const& event ) override;
 	void update( r32 delta ) override;
 
@@ -27,8 +29,10 @@ public:
 private:
 	Node*    active_scene{ nullptr };
 	Node_Ptr pending_scene{ nullptr };
-	r32      time_since_update{ 0 };
 
-	static constexpr r32 fps_update_interval{ 5.0sec };
+	r32          time_since_update{ 0 };
+	class Label* fps_label;
+
+	static constexpr r32 fps_update_interval{ 1.0sec };
 };
 }

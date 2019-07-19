@@ -15,7 +15,6 @@ struct Percent_Position final
 
 	// r64 to get rid of compiler errors when passing 1.2 instead 1.2f.
 	Percent_Position( r64 x_, r64 y_ );
-	Percent_Position( u32 x_, u32 y_ );
 
 	[[nodiscard]] operator Vec2() const;
 };

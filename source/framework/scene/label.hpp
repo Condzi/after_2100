@@ -18,7 +18,7 @@ class Label final :
 	CLASS_DEF( Label );
 
 public:
-	Localized_String string;
+	std::variant<sf::String, Localized_String> string;
 	s32 layer{ 0 };
 
 	Label();

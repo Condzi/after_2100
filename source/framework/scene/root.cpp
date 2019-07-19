@@ -6,11 +6,22 @@
 #include "pch.hpp"
 
 #include "framework/common/assertions.hpp"
+
 #include "root.hpp"
 #include "application.hpp"
+#include "label.hpp"
 
 namespace con
 {
+Root::Root()
+{
+	fps_label = attach<Label>();
+	fps_label->name = "fps_label";
+	fps_label->string = std::string{ "~.~fps" };
+	fps_label->set_pause( true );
+	//fps_label->set_absolute_position( Percent_Position{ 5.0,5.0 } );
+}
+
 void Root::input( sf::Event const& event )
 {
 	if ( event.type is sf::Event::Closed )
@@ -19,7 +30,7 @@ void Root::input( sf::Event const& event )
 
 void Root::update( r32 delta )
 {
-	if ( active_scene is nullptr and pending_scene is_not nullptr ) 
+	if ( active_scene is nullptr and pending_scene is_not nullptr )
 		active_scene = attach( change_owner( pending_scene ) );
 
 	time_since_update += delta;
@@ -27,7 +38,7 @@ void Root::update( r32 delta )
 	if ( time_since_update >= fps_update_interval ) {
 		time_since_update -= fps_update_interval;
 
-		engine_log_info( "+++++ FPS: {0:.1f} +++++", 1 / delta );
+		fps_label->string = std::string{ fmt::format( "{0:.1f} fps", 1/delta ) };
 	}
 }
 
@@ -38,8 +49,7 @@ void Root::change_scene( Node_Ptr&& scene_to_switch )
 		return;
 	}
 
-	if( pending_scene is_not nullptr )
-	{
+	if ( pending_scene is_not nullptr ) {
 		engine_log_warning( "There was one scene that was going to change to ({}). Changing to: {}.", pending_scene->name, scene_to_switch->name );
 	}
 

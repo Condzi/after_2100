@@ -13,21 +13,18 @@ namespace con
 {
 auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 {
-	if( node_to_attach is nullptr )
-	{
+	if ( node_to_attach is nullptr ) {
 		engine_log_error( "Given node is empty, can't attach." );
 		return nullptr;
 	}
 
 	constant is_already_attached = find( child_nodes, node_to_attach ).found;
-	if( is_already_attached )
-	{
+	if ( is_already_attached ) {
 		engine_log_error( "Given node is already attached, can't attach again." );
 		return nullptr;
 	}
 
-	if( node_to_attach->parent_node )
-	{
+	if ( node_to_attach->parent_node ) {
 		engine_log_error( "Given node has a parent already." );
 		return nullptr;
 	}
@@ -127,7 +124,8 @@ void Node::handle_input_children( sf::Event const& event )
 
 void Node::draw_children( Drawing_Set& set )
 {
-	draw( set );
+	if ( not paused )
+		draw( set );
 
 	for ( auto& child : child_nodes )
 		child->draw_children( set );
@@ -135,7 +133,8 @@ void Node::draw_children( Drawing_Set& set )
 
 void Node::draw_gui_children( Drawing_Set& set )
 {
-	draw_gui( set );
+	if ( not paused )
+		draw_gui( set );
 
 	for ( auto& child : child_nodes )
 		child->draw_gui_children( set );
@@ -143,8 +142,7 @@ void Node::draw_gui_children( Drawing_Set& set )
 
 auto Node::get_local_position() const -> Point const&
 {
-	if( parent_node is nullptr )
-	{
+	if ( parent_node is nullptr ) {
 		engine_log_warning( "Can't return local position if there is no parent. Returning (0,0)." );
 		return {};
 	}

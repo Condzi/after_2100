@@ -145,6 +145,13 @@ void Application::handle_debug_keys( sf::Event const& event )
 		G_Locale.reload();
 		break;
 	}
+	case sf::Keyboard::F8:
+	{
+		engine_log_info( "Debug: toggle fps counter." );
+		auto label = G_Root.get_node( "fps_label" );
+		label->set_pause( !label->is_paused() );
+		break;
+	}
 	}
 }
 

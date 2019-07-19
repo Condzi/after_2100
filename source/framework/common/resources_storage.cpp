@@ -122,10 +122,11 @@ void Resources_Storage::reload()
 }
 Resources_Storage& Resources_Storage::get_instance()
 {
-	static Resources_Storage instance;
+	static Resources_Storage* instance = new Resources_Storage;
 
-	return instance;
+	return *instance;
 }
+
 Resources_Storage::Resource_Info::Resource_Info( std::string const& name_, std::string const& path_ ) :
 	name( name_ ), path( path_ )
 {

@@ -22,7 +22,8 @@ Level_1::Level_1()
 
 	Label& l = *attach<Label>();
 
-	l.string.set_locale_name( "#loc1" );
+	l.string = Localized_String{};
+	std::get<Localized_String>( l.string ).set_locale_name( "#loc1" );
 	l.set_fill_color( sf::Color::Cyan );
 	l.set_absolute_position( Percent_Position{ 10.1, 1 } );
 	attach<Player>();

@@ -14,8 +14,6 @@ namespace con
 {
 Label::Label()
 {
-	text.setFont( *G_Resources_Storage.get_font( "default" ) );
-
 	text.setPosition( get_global_position() );
 	text.setRotation( get_rotation() );
 	text.setScale( get_scale() );
@@ -48,6 +46,12 @@ auto Label::get_global_bounds() const -> Rectangle_Shape
 
 void Label::draw_gui( Drawing_Set& set )
 {
+	if ( text.getString().isEmpty() )
+		return;
+
+	if(text.getFont() is nullptr )
+		text.setFont( *G_Resources_Storage.get_font( "default" ) );
+
 	set.add_drawable( text, layer );
 }
 
@@ -59,6 +63,13 @@ void Label::update( r32 dt )
 	text.setRotation( get_rotation() );
 	text.setScale( get_scale() );
 
-	text.setString( string.get_localized_text() );
+	std::visit( visitor_overload{
+		[&]( sf::String const& str ) {
+			text.setString( str );
+		},
+		[&]( Localized_String const& str ) {
+			text.setString( str.get_localized_text() );
+		},
+	}, string );
 }
 }

@@ -15,9 +15,9 @@ namespace con::priv
 {
 Debug_Log& Debug_Log::get_instance()
 {
-	static Debug_Log instance;
+	static Debug_Log* instance = new Debug_Log;
 
-	return instance;
+	return *instance;
 }
 
 Debug_Log::Debug_Log()
