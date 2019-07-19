@@ -12,7 +12,12 @@ using namespace con;
 
 int main()
 {
-	G_App.initialize( 1280, 720, 64, "after_2100" );
+	// Have to split it to G_Window.initialize and G_App.initialize() because
+	// root has fps_counter label that is positioned relative to window that doesn't
+	// exist yet.
+	G_Window.initialize( 1280, 720, 64, "after_2100" );
+
+	G_App.initialize();
 	G_Root.change_scene( Level_1::instantiate() );
 	G_App.run();
 }

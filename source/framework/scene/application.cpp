@@ -8,19 +8,14 @@
 #include "framework/common/resources_storage.hpp"
 #include "framework/common/stl_extensions.hpp"
 #include "framework/localization/locale.hpp"
+#include "framework/common/window.hpp"
 #include "application.hpp"
 #include "area_overleaping_checker.hpp"
 
 namespace con
 {
-void Application::initialize( u32 window_width, u32 window_height, u32 fps, std::string const& title )
+void Application::initialize()
 {
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
-
-	window.create( { window_width, window_height }, title, sf::Style::Close, settings );
-	window.setFramerateLimit( fps );
-
 	G_Resources_Storage.reload();
 	G_Locale.reload();
 
@@ -30,7 +25,7 @@ void Application::initialize( u32 window_width, u32 window_height, u32 fps, std:
 	game_camera->name = "game_camera";
 	gui_camera->name = "gui_camera";
 
-	constant view = window.getView();
+	constant view = G_Window.get_raw_window().getView();
 	game_camera->set_view( view );
 	gui_camera->set_view( view );
 }
@@ -41,7 +36,7 @@ void Application::run()
 	sf::Event event;
 
 	while ( not exit ) {
-		while ( window.pollEvent( event ) ) {
+		while ( G_Window.get_raw_window().pollEvent( event ) ) {
 			root.handle_input_children( event );
 			handle_debug_keys( event );
 		}
@@ -59,21 +54,6 @@ void Application::run()
 auto Application::get_root() -> Root &
 {
 	return root;
-}
-
-auto Application::get_window() const -> sf::RenderWindow const&
-{
-	return window;
-}
-
-auto Application::get_window_size() const -> Size2
-{
-	return static_cast<Size2>( window.getSize() );
-}
-
-auto Application::get_window_bounds() const -> Rectangle_Shape
-{
-	return { {0.0px, 0.0px}, window.getSize() };
 }
 
 void Application::exit_game()
@@ -162,6 +142,8 @@ void Application::render()
 
 	gui_drawing_set.clear();
 	root.draw_gui_children( gui_drawing_set );
+
+	auto& window = G_Window.get_raw_window();
 
 	window.clear();
 

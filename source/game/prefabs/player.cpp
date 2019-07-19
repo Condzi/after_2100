@@ -55,7 +55,7 @@ Player::Player()
 	hitbox_a->name = hitbox_b->name = "hitbox_" + name;
 
 	health = attach<Health>();
-	set_global_position( { 0, G_Window.getSize().y / 2.0px } );
+	set_global_position( { 0, G_Window.get_size().y / 2.0px } );
 }
 
 void Player::update( r32 dt )
@@ -74,7 +74,7 @@ void Player::update_illusion()
 	// Sprite that is visible on the screen.
 	Sprite* main_sprite{ sprite_a };
 	Sprite* mirror_sprite{ sprite_b };
-	const Rectangle_Shape window{ {0,0}, G_App.get_window_size() };
+	const Rectangle_Shape window{ {0,0}, G_Window.get_size() };
 
 	if ( rect_vs_point( window, sprite_b->get_global_position() ) is true )
 		std::swap( main_sprite, mirror_sprite );
@@ -137,7 +137,7 @@ void Player::accelerate( r32 dt )
 
 void Player::correct_for_boundary_collision()
 {
-	constant window_width = G_App.get_window_size().width;
+	constant window_width = G_Window.get_size().width;
 	constant sprite_width = sprite_a->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
 	constant x_pos_max = x_pos + sprite_width;

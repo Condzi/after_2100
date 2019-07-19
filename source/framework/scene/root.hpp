@@ -33,6 +33,6 @@ private:
 	r32          time_since_update{ 0 };
 	class Label* fps_label;
 
-	static constexpr r32 fps_update_interval{ 1.0sec };
+	static constexpr r32 fps_update_interval{ 0.1sec };
 };
 }

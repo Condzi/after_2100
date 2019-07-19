@@ -41,7 +41,7 @@ void Player_Missile::update( r32 delta )
 	hitbox->set_rectangle_shape( bounds );
 
 	// The missile has flown off screen
-	if ( bounds.position.x > G_App.get_window_size().x )
+	if ( bounds.position.x > G_Window.get_size().x )
 		queue_for_delete();
 
 	move( velocity * delta );

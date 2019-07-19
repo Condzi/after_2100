@@ -31,7 +31,7 @@ Level_1::Level_1()
 	///////////////////////////////
 	Path& path = *attach<Path>();
 
-	constant win_size = G_App.get_window_size();
+	constant win_size = G_Window.get_size();
 
 	path.points.emplace_back( win_size * Vec2{ 1.1, 0.5 } );
 

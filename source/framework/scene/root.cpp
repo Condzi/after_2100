@@ -19,7 +19,7 @@ Root::Root()
 	fps_label->name = "fps_label";
 	fps_label->string = std::string{ "~.~fps" };
 	fps_label->set_pause( true );
-	//fps_label->set_absolute_position( Percent_Position{ 5.0,5.0 } );
+	fps_label->set_absolute_position( Percent_Position{ 1.0,1.0 } );
 }
 
 void Root::input( sf::Event const& event )
