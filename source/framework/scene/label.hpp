@@ -31,7 +31,6 @@ public:
 	[[nodiscard]] auto get_global_bounds() const  -> Rectangle_Shape;
 
 	void draw_gui( Drawing_Set& set ) override;
-
 	void update( r32 dt) override;
 
 private:

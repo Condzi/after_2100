@@ -68,8 +68,8 @@ auto Sprite::get_rotation_3d() const -> Rotation3D
 	constant[pitch, yaw, roll] = sprite.getRotation3d();
 
 	return { pitch, yaw, roll };
-
 }
+
 auto Sprite::get_sprite_raw() -> sf::Sprite3d &
 {
 	return sprite;
