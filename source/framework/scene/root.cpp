@@ -22,6 +22,7 @@ Root::Root()
 
 	bond_disconnector( s_update.connect(
 		[this]( r32 dt ) {
+			unused( dt );
 			// Negation because then flag is false then we don't want to display the label
 			fps_label->set_pause( !G_Debug_Flags.display_fps );
 		} ) );
@@ -40,8 +41,8 @@ void Root::update( r32 delta )
 
 	time_since_update += delta;
 
-	if ( time_since_update >= fps_update_interval ) {
-		time_since_update -= fps_update_interval;
+	if ( time_since_update >= FPS_UPDATE_INTERVAL ) {
+		time_since_update -= FPS_UPDATE_INTERVAL;
 
 		fps_label->string = std::string{ fmt::format( "{0:.1f} fps", 1/delta ) };
 	}
