@@ -11,12 +11,12 @@ namespace con::priv
 {
 void Debug_Flags::enable_all()
 {
-	draw_areas = draw_paths = draw_missile_shooters = true;
+	draw_areas = draw_paths = draw_missile_shooters = display_fps = true;
 }
 
 void Debug_Flags::disable_all()
 {
-	draw_areas = draw_paths = draw_missile_shooters = false;
+	draw_areas = draw_paths = draw_missile_shooters = display_fps = false;
 }
 
 Debug_Flags& Debug_Flags::get_instance()

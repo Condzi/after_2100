@@ -17,6 +17,7 @@ public:
 	bool draw_areas{ false };
 	bool draw_paths{ false };
 	bool draw_missile_shooters{ false };
+	bool display_fps{ false };
 
 	void enable_all();
 	void disable_all();

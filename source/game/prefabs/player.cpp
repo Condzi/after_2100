@@ -55,7 +55,7 @@ Player::Player()
 	hitbox_a->name = hitbox_b->name = "hitbox_" + name;
 
 	health = attach<Health>();
-	set_global_position( { 0, G_Window.get_size().y / 2.0px } );
+	set_absolute_position( Percent_Position{ 0, 50 } );
 }
 
 void Player::update( r32 dt )

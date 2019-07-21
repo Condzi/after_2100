@@ -106,8 +106,10 @@ void Node::remove_queued_for_delete()
 
 void Node::update_children( r32 dt )
 {
-	if ( not paused )
+	if ( not paused ) 		{
+		s_update.emit( dt );
 		update( dt );
+	}
 
 	for ( auto& child : child_nodes )
 		child->update_children( dt );

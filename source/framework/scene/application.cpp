@@ -127,9 +127,8 @@ void Application::handle_debug_keys( sf::Event const& event )
 	}
 	case sf::Keyboard::F8:
 	{
-		engine_log_info( "Debug: toggle fps counter." );
-		auto label = G_Root.get_node( "fps_label" );
-		label->set_pause( !label->is_paused() );
+		G_Debug_Flags.display_fps = !G_Debug_Flags.display_fps;
+		engine_log_info( "Debug: toggle display_fps." );
 		break;
 	}
 	}

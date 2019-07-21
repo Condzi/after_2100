@@ -18,8 +18,13 @@ Root::Root()
 	fps_label = attach<Label>();
 	fps_label->name = "fps_label";
 	fps_label->string = std::string{ "~.~fps" };
-	fps_label->set_pause( true );
 	fps_label->set_absolute_position( Percent_Position{ 1.0,1.0 } );
+
+	bond_disconnector( s_update.connect(
+		[this]( r32 dt ) {
+			// Negation because then flag is false then we don't want to display the label
+			fps_label->set_pause( !G_Debug_Flags.display_fps );
+		} ) );
 }
 
 void Root::input( sf::Event const& event )

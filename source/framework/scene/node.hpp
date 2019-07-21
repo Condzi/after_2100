@@ -33,6 +33,7 @@ public:
 
 	Signal<>     s_destroy;
 	Signal<Vec2> s_move; //< Vec2 is the new position.
+	Signal<r32>  s_update; //< r32 is delta time
 
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
