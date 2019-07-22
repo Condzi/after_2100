@@ -17,6 +17,7 @@ class Image :
 	CLASS_DEF( Image );
 	
 public:
+	bool visible{ true };
 	s32 layer{ 0 };
 
 	void set_texture( sf::Texture const* texture );

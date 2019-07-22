@@ -20,7 +20,8 @@ void Image::update( r32 dt )
 
 void Image::draw_gui( Drawing_Set& set )
 {
-	set.add_drawable( sprite, layer );
+	if ( visible )
+		set.add_drawable( sprite, layer );
 }
 
 void Image::set_texture( sf::Texture const* texture )
