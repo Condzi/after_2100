@@ -20,6 +20,7 @@ class Label final :
 public:
 	std::variant<sf::String, Localized_String> string;
 	s32 layer{ 0 };
+	bool visible{ true };
 
 	Label();
 

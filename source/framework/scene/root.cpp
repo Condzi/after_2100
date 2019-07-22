@@ -23,8 +23,7 @@ Root::Root()
 	bond_disconnector( s_update.connect(
 		[this]( r32 dt ) {
 			unused( dt );
-			// Negation because then flag is false then we don't want to display the label
-			fps_label->set_pause( !G_Debug_Flags.display_fps );
+			fps_label->visible = G_Debug_Flags.display_fps;
 		} ) );
 }
 

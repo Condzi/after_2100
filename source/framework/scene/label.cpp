@@ -46,10 +46,11 @@ auto Label::get_global_bounds() const -> Rectangle_Shape
 
 void Label::draw_gui( Drawing_Set& set )
 {
-	if ( text.getString().isEmpty() )
+	if ( not visible or 
+		 text.getString().isEmpty() )
 		return;
 
-	if(text.getFont() is nullptr )
+	if( text.getFont() is nullptr )
 		text.setFont( *G_Resources_Storage.get_font( "default" ) );
 
 	set.add_drawable( text, layer );
