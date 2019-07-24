@@ -47,9 +47,9 @@ public:
 	void start_following();
 	void stop_following();
 
-	auto get_velocity() const     -> Vec2 const&;
-	auto get_is_following() const -> bool;
-	auto is_finished() const      -> bool;
+	auto get_velocity() const -> Vec2 const&;
+	auto is_following() const -> bool;
+	auto is_finished() const  -> bool;
 
 	void set_path( Path const& path );
 
@@ -59,6 +59,6 @@ private:
 	Path const* path_to_follow{ nullptr };
 	Vec2        velocity;
 	s32         current_target_id{ 0 };
-	bool        is_following{ false };
+	bool        following{ false };
 };
 }

@@ -32,19 +32,19 @@ auto Enemy_Spawner::get_already_spawned_count() const -> u32
 	return already_spawned_count;
 }
 
-auto Enemy_Spawner::get_is_spawning() const -> bool
+auto Enemy_Spawner::is_spawning() const -> bool
 {
-	return is_spawning;
+	return spawning;
 }
 
-auto Enemy_Spawner::get_is_finished() const -> bool
+auto Enemy_Spawner::is_finished() const -> bool
 {
 	return spawn_limit > 0 and already_spawned_count == spawn_limit;
 }
 
 void Enemy_Spawner::start()
 {
-	if( is_spawning )
+	if( spawning )
 	{
 		log_warning( "Spawner is already started." );
 		return;
@@ -66,18 +66,18 @@ void Enemy_Spawner::start()
 		return;
 	}
 
-	is_spawning = true;
+	spawning = true;
 }
 
 void Enemy_Spawner::stop()
 {
-	if( not is_spawning )
+	if( not spawning )
 	{
 		log_warning( "Spawner is already not spawning." );
 		return;
 	}
 
-	is_spawning = false;
+	spawning = false;
 }
 
 void Enemy_Spawner::reset()
@@ -88,7 +88,7 @@ void Enemy_Spawner::reset()
 
 void Enemy_Spawner::update( r32 delta )
 {
-	if ( is_spawning is false or get_is_finished() returned true )
+	if ( spawning is false or is_finished() returned true )
 		return;
 
 	time_since_last_spawn += delta;
@@ -102,6 +102,6 @@ void Enemy_Spawner::update( r32 delta )
 		enemy.start_following();
 	}
 
-	if ( get_is_finished() )
+	if ( is_finished() )
 		stop();
 }

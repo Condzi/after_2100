@@ -40,7 +40,7 @@ public:
 	[[nodiscard]] auto get_duration() const      -> r32;
 	[[nodiscard]] auto get_eleapsed_time() const -> r32;
 	[[nodiscard]] auto get_status() const        -> Status;
-	[[nodiscard]] auto get_is_looped() const     -> bool;
+	[[nodiscard]] auto is_looped() const         -> bool;
 
 	void play();
 	void pause();
@@ -52,7 +52,7 @@ public:
 private:
 	Status status{ Stopped };
 
-	bool  is_looped{ false };
+	bool  looped{ false };
 	Point begin_position;
 	Size2 frame_size;
 	u32   frames_count;

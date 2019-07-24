@@ -76,7 +76,7 @@ void Animation::set_duration( r32 sec )
 
 void Animation::set_is_looped( bool val )
 {
-	is_looped = val;
+	looped = val;
 }
 
 auto Animation::get_duration() const -> r32
@@ -94,9 +94,9 @@ auto Animation::get_status() const -> Status
 	return status;
 }
 
-auto Animation::get_is_looped() const -> bool
+auto Animation::is_looped() const -> bool
 {
-	return is_looped;
+	return looped;
 }
 
 void Animation::play()
@@ -192,7 +192,7 @@ void Animation::switch_frame()
 	current_frame++;
 
 	if ( current_frame is frames_count ) {
-		if ( is_looped ) 			{
+		if ( looped ) 			{
 			current_frame = 0;
 			eleapsed = 0;
 		}

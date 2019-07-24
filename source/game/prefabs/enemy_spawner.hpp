@@ -31,8 +31,8 @@ public:
 
 	[[nodiscard]] auto get_spawn_limit() const           -> u32;
 	[[nodiscard]] auto get_already_spawned_count() const -> u32;
-	[[nodiscard]] auto get_is_spawning() const           -> bool;
-	[[nodiscard]] auto get_is_finished() const           -> bool;
+	[[nodiscard]] auto is_spawning() const               -> bool;
+	[[nodiscard]] auto is_finished() const               -> bool;
 
 	void start();
 	void stop();
@@ -48,5 +48,5 @@ private:
 	r32               time_since_last_spawn{ 0 };
 	u32               spawn_limit{ 0 };
 	u32               already_spawned_count{ 0 };
-	bool              is_spawning{ false };
+	bool              spawning{ false };
 };

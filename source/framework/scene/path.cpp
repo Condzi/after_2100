@@ -28,7 +28,7 @@ void Path::draw( Drawing_Set& set )
 
 void Path_Follower::start_following()
 {
-	report_warning_if( is_following );
+	report_warning_if( following );
 
 	report_error_if( path_to_follow is nullptr )
 	{
@@ -41,15 +41,15 @@ void Path_Follower::start_following()
 
 	set_global_position( path_to_follow->points.front() );
 
-	is_following = true;
+	following = true;
 }
 
 void Path_Follower::stop_following()
 {
-	report_warning_if( is_following is false );
+	report_warning_if( following is false );
 
 	velocity = Vec2::ZERO();
-	is_following = false;
+	following = false;
 }
 
 auto Path_Follower::get_velocity() const -> Vec2 const &
@@ -57,9 +57,9 @@ auto Path_Follower::get_velocity() const -> Vec2 const &
 	return velocity;
 }
 
-auto Path_Follower::get_is_following() const -> bool
+auto Path_Follower::is_following() const -> bool
 {
-	return is_following;
+	return following;
 }
 
 auto Path_Follower::is_finished() const -> bool
@@ -74,7 +74,7 @@ void Path_Follower::set_path( Path const& path )
 
 void Path_Follower::update( r32 dt )
 {
-	if ( not is_following )
+	if ( not following )
 		return;
 
 	report_error_if( path_to_follow is nullptr )
@@ -98,7 +98,7 @@ void Path_Follower::update( r32 dt )
 
 	if ( is_finished() )
 	{
-		is_following = false;
+		following = false;
 		s_on_finish_following.emit();
 	}
 
