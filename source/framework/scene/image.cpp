@@ -7,6 +7,8 @@
 
 #include "image.hpp"
 
+#include "framework/common/resources_storage.hpp"
+
 namespace con
 {
 void Image::update( r32 dt )
@@ -24,12 +26,17 @@ void Image::draw_gui( Drawing_Set& set )
 		set.add_drawable( sprite, layer );
 }
 
-void Image::set_texture( sf::Texture const* texture )
+void Image::set_texture_from_pointer( sf::Texture const* texture )
 {
 	if ( texture is nullptr )
 		return;
 
 	sprite.setTexture( *texture );
+}
+
+void Image::set_texture_from_name( std::string const& name )
+{
+	set_texture_from_pointer( G_Resources_Storage.get_texture( name ) );
 }
 
 void Image::set_transformation_origin( Point const& point )

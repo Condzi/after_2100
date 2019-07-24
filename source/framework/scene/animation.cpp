@@ -5,6 +5,7 @@
 
 #include "pch.hpp"
 
+#include "framework/common/resources_storage.hpp"
 #include "animation.hpp"
 
 namespace con
@@ -18,12 +19,14 @@ Animation::Animation()
 	sprite->visible = false;
 }
 
-void Animation::set_texture( sf::Texture const* texture )
+void Animation::set_texture_from_pointer( sf::Texture const* texture )
 {
-	if ( texture is nullptr )
-		return;
+	sprite->set_texture_from_pointer( texture );
+}
 
-	sprite->set_texture( texture );
+void Animation::set_texture_from_name( std::string const& name )
+{
+	set_texture_from_pointer( G_Resources_Storage.get_texture( name ) );
 }
 
 void Animation::set_begin_position( Point const& pos )

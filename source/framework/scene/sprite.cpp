@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "framework/common/assertions.hpp"
+#include "framework/common/resources_storage.hpp"
 #include "sprite.hpp"
 
 namespace con
@@ -25,12 +26,17 @@ void Sprite::draw( Drawing_Set& drawing_set )
 		report_warning_if( drawing_set.add_drawable( sprite, layer ) returned false );
 }
 
-void Sprite::set_texture( sf::Texture const* texture )
+void Sprite::set_texture_from_pointer( sf::Texture const* texture )
 {
 	if ( texture is nullptr )
 		return;
 
 	sprite.setTexture( *texture );
+}
+
+void Sprite::set_texture_from_name( std::string const& name )
+{
+	set_texture_from_pointer( G_Resources_Storage.get_texture( name ) );
 }
 
 void Sprite::set_rotation_3d( r32 pitch, r32 yaw, r32 roll )

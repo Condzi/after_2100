@@ -17,7 +17,7 @@ Player_Missile::Player_Missile()
 
 	missile_animation = attach<Animation>();
 
-	missile_animation->set_texture( G_Resources_Storage.get_texture( "missile_player" ) );
+	missile_animation->set_texture_from_pointer( G_Resources_Storage.get_texture( "missile_player" ) );
 	missile_animation->set_is_looped( true );
 	missile_animation->set_frame_size( { 178, 363 } );
 	missile_animation->set_frames_count( 3 );

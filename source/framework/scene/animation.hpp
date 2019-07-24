@@ -30,7 +30,8 @@ public:
 
 	Animation();
 
-	void set_texture( sf::Texture const* texture );
+	void set_texture_from_pointer( sf::Texture const* texture );
+	void set_texture_from_name( std::string const& name );
 	void set_begin_position( Point const& pos );
 	void set_frame_size( Size2 const& size );
 	void set_frames_count( u32 count );

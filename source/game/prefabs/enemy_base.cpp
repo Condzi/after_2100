@@ -15,7 +15,7 @@ Enemy_Base::Enemy_Base()
 
 	sprite = attach<Sprite>();
 	sprite->name = "sprite";
-	sprite->set_texture( G_Resources_Storage.get_texture( "enemy_1" ) );
+	sprite->set_texture_from_pointer( G_Resources_Storage.get_texture( "enemy_1" ) );
 	sprite->set_transformation_origin( sprite->get_global_bounds().size * 0.5 );
 	sprite->rotate( -90.0deg );
 

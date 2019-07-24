@@ -20,8 +20,8 @@ Player::Player()
 	sprite_b = attach<Sprite>();
 	sprite_a->name = "sprite_a";
 	sprite_b->name = "sprite_b";
-	sprite_a->set_texture( G_Resources_Storage.get_texture( "player" ) );
-	sprite_b->set_texture( G_Resources_Storage.get_texture( "player" ) );
+	sprite_a->set_texture_from_pointer( G_Resources_Storage.get_texture( "player" ) );
+	sprite_b->set_texture_from_pointer( G_Resources_Storage.get_texture( "player" ) );
 
 	constant sprite_size = sprite_a->get_global_bounds().size;
 	// After rotating by 90deg width gets swapped with height.

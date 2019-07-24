@@ -11,16 +11,17 @@
 namespace con
 {
 // GUI version of Sprite
-class Image : 
+class Image :
 	public Node
 {
 	CLASS_DEF( Image );
-	
+
 public:
 	bool visible{ true };
-	s32 layer{ 0 };
+	s32  layer{ 0 };
 
-	void set_texture( sf::Texture const* texture );
+	void set_texture_from_pointer( sf::Texture const* texture );
+	void set_texture_from_name( std::string const& name );
 	void set_transformation_origin( Point const& point );
 	void set_texture_rect( Rectangle_Shape const& rect );
 
