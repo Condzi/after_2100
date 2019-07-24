@@ -14,7 +14,7 @@ inline void GUI_String::update_locale_parameters( TArgs ...args )
 		string = fmt::format( wstring, std::forward<TArgs>( args )... );
 	}
 	catch ( std::exception const& ex ) {
-		engine_log_error( "Error formating locale string." );
+		engine_log_error( "Error formating locale string: \"{}\".", ex.what() );
 		string = wstring;
 	}
 }
