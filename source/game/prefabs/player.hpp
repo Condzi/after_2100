@@ -26,7 +26,7 @@ public:
 	void update( r32 dt ) override;
 
 private:
-	static constexpr r32 VELOCITY_MAX = 200;
+	static constexpr r32 VELOCITY_MAX = 280;
 	static constexpr r32 SLOWING_MULTIPLIER = 0.86;
 	static constexpr r32 ACCELERATION_MULTIPLIER = 0.1;
 	static constexpr r32 TILT_MULTIPLIER = 0.09;
