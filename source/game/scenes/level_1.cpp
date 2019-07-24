@@ -50,6 +50,6 @@ Level_1::Level_1()
 
 	Sprite* spr = attach<Sprite>();
 
-	spr->set_texture_from_pointer( G_Resources_Storage.get_texture( "space_background" ) );
+	spr->set_texture_from_name( "space_background" );
 	spr->layer = -1;
 }
