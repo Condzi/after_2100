@@ -51,7 +51,7 @@ auto Resources_Storage::get_music( std::string const& name ) -> sf::Music * cons
 	if ( result == music.end() )
 		engine_log_error( "Can't find music \"{}\".", name );
 	else if ( result->second.is_valid is false )
-		engine_log_error( "Music\"{}\" is not valid (it failed to load).", name );
+		engine_log_error( "Music \"{}\" is not valid (it failed to load).", name );
 	else
 		music_to_return = &result->second.resource;
 
@@ -65,7 +65,7 @@ auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font co
 	if ( result == fonts.end() )
 		engine_log_error( "Can't find font \"{}\".", name );
 	else if ( result->second.is_valid is false )
-		engine_log_error( "Font\"{}\" is not valid (it failed to load).", name );
+		engine_log_error( "Font \"{}\" is not valid (it failed to load).", name );
 	else
 		font_to_return = &result->second.resource;
 
