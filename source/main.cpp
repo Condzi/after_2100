@@ -5,6 +5,8 @@
 
 #include "pch.hpp"
 #include "framework/scene/application.hpp"
+#include "framework/common/resources_storage.hpp"
+#include "framework/localization/locale.hpp"
 
 #include "game/scenes/level_1.hpp"
 
@@ -16,6 +18,8 @@ int main()
 	// root has fps_counter label that is positioned relative to window that doesn't
 	// exist yet.
 	G_Window.initialize( 1280, 720, 64, "after_2100" );
+	G_Resources_Storage.reload();
+	G_Locale.reload();
 
 	G_App.initialize();
 	G_Root.change_scene( Level_1::instantiate() );

@@ -1,13 +1,13 @@
 {
     "#loc1" :
     {
-        "en":"text_1_en",
-        "pl":"text_1_pl_ąćź"
+        "en":"{0:.1f} fps",
+        "pl":"{0:.1f} fps"
     },
 
     "#loc2" : 
     {
-        "en":"text_2_en",
-        "pl":"text_2_pl_óęł"
+        "en":"text_en",
+        "pl":"text_pl_óęł"
     }
 }

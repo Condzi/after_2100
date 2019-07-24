@@ -16,9 +16,6 @@ namespace con
 {
 void Application::initialize()
 {
-	G_Resources_Storage.reload();
-	G_Locale.reload();
-
 	game_camera = root.attach<Camera>();
 	gui_camera = root.attach<Camera>();
 
