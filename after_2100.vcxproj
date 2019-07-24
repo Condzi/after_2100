@@ -96,6 +96,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\framework\common\assertions.hpp" />
+    <ClInclude Include="source\framework\common\gui_string.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\framework\common\percent_position.hpp">
       <SubType>
       </SubType>
@@ -234,6 +238,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\framework\common\assertions.cpp" />
+    <ClCompile Include="source\framework\common\gui_string.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\framework\common\percent_position.cpp">
       <SubType>
       </SubType>
@@ -367,6 +375,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="source\framework\common\gui_string.inl" />
     <None Include="source\framework\common\signal.inl">
       <SubType>
       </SubType>

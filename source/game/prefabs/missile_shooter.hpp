@@ -26,7 +26,7 @@ public:
 	void set_missile_type()
 	{
 		static_assert( std::is_base_of_v<Missile_Base, TMissile> );
-		spawning_function = [this]() -> Missile_Base & {
+		spawning_function = [this]() -> Missile_Base& {
 			return *attach<TMissile>();
 		};
 	}
@@ -36,7 +36,7 @@ public:
 
 	[[nodiscard]] auto get_cooldown_time() const     -> sf::Time const&;
 	[[nodiscard]] auto get_time_to_next_shot() const -> sf::Time const&;
-	[[nodiscard]] auto is_ready_to_shoot() const -> bool;
+	[[nodiscard]] auto is_ready_to_shoot() const     -> bool;
 
 	void shoot();
 
