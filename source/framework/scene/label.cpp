@@ -64,13 +64,6 @@ void Label::update( r32 dt )
 	text.setRotation( get_rotation() );
 	text.setScale( get_scale() );
 
-	std::visit( visitor_overload{
-		[&]( sf::String const& str ) {
-			text.setString( str );
-		},
-		[&]( Localized_String const& str ) {
-			text.setString( str.get_localized_text() );
-		},
-	}, string );
+	text.setString( string.get_string() );
 }
 }

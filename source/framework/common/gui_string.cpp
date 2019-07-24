@@ -12,6 +12,7 @@ namespace con
 void GUI_String::set_locale_name( std::string const& name )
 {
 	localized_string.set_locale_name( name );
+	string = localized_string.get_localized_text();
 }
 
 void GUI_String::set_ascii( std::string const& str )

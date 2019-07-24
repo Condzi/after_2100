@@ -17,7 +17,7 @@ Root::Root()
 {
 	fps_label = attach<Label>();
 	fps_label->name = "fps_label";
-	fps_label->string = std::string{ "~.~fps" };
+	fps_label->string.set_ascii( "~.~fps" );
 	fps_label->set_absolute_position( Percent_Position{ 1.0,1.0 } );
 
 	bond_disconnector( s_update.connect(
@@ -43,8 +43,8 @@ void Root::update( r32 delta )
 	if ( time_since_update >= FPS_UPDATE_INTERVAL ) {
 		time_since_update -= FPS_UPDATE_INTERVAL;
 
-		fps_label->string = std::string{ fmt::format( "{0:.1f} fps", 1/delta ) };
-	}
+		fps_label->string.set_ascii( fmt::format( "{0:.1f} fps", 1/delta ) );
+}
 }
 
 void Root::change_scene( Node_Ptr&& scene_to_switch )
