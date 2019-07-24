@@ -67,7 +67,7 @@ inline constexpr con::r32 operator"" deg( long double val )
 	// add support for it if needed
 	if( val < 0 ) assert( "Negative degrees are not supported." );
 
-	return val;
+	return static_cast<con::r32>( val );
 }
 
 #define is ==

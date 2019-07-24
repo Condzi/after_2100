@@ -36,8 +36,8 @@ public:
 
 	[[nodiscard]] auto get_cooldown_time() const     -> sf::Time const&;
 	[[nodiscard]] auto get_time_to_next_shot() const -> sf::Time const&;
+	[[nodiscard]] auto is_ready_to_shoot() const -> bool;
 
-	bool get_is_ready_to_shoot() const;
 	void shoot();
 
 	void update( r32 delta ) override;
@@ -50,7 +50,7 @@ private:
 	r32               horizontal_velocity;
 	sf::Time          cooldown_time;
 	sf::Time          time_to_next_shot;
-	bool              is_ready_to_shoot{ true };
+	bool              ready_to_shoot{ true };
 
 	sf::CircleShape visual_representation;
 };

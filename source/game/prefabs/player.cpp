@@ -104,7 +104,7 @@ void Player::check_movement_keys()
 
 	// Should be in own method?
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Space ) and
-		 gun_a->get_is_ready_to_shoot() ) {
+		 gun_a->is_ready_to_shoot() ) {
 		gun_a->shoot();
 		gun_b->shoot();
 	}

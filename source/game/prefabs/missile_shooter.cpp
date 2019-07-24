@@ -27,9 +27,9 @@ auto Missile_Shooter::get_time_to_next_shot() const -> sf::Time const&
 	return time_to_next_shot;
 }
 
-bool Missile_Shooter::get_is_ready_to_shoot() const
+bool Missile_Shooter::is_ready_to_shoot() const
 {
-	return is_ready_to_shoot;
+	return ready_to_shoot;
 }
 
 void Missile_Shooter::shoot()
@@ -46,7 +46,7 @@ void Missile_Shooter::shoot()
 		return;
 	}
 
-	if ( is_ready_to_shoot is false )
+	if ( ready_to_shoot is false )
 		return;
 
 	Missile_Base& new_missile{ spawning_function() };
@@ -55,14 +55,14 @@ void Missile_Shooter::shoot()
 	new_missile.set_global_position( get_global_position() );
 
 	time_to_next_shot = cooldown_time;
-	is_ready_to_shoot = false;
+	ready_to_shoot = false;
 }
 
 void Missile_Shooter::update( r32 delta )
 {
 	if ( time_to_next_shot.asSeconds() - delta <= 0 ) {
 		time_to_next_shot = sf::Time::Zero;
-		is_ready_to_shoot = true;
+		ready_to_shoot = true;
 	} else
 		time_to_next_shot -= sf::seconds( delta );
 }
