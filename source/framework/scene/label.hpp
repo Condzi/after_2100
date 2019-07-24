@@ -8,7 +8,7 @@
 
 #include "node.hpp"
 #include "framework/common/shapes.hpp"
-#include "framework/localization/localized_string.hpp"
+#include "framework/common/gui_string.hpp"
 
 namespace con
 {
@@ -18,7 +18,7 @@ class Label final :
 	CLASS_DEF( Label );
 
 public:
-	std::variant<sf::String, Localized_String> string;
+	GUI_String string;
 	s32 layer{ 0 };
 	bool visible{ true };
 
