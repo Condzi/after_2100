@@ -128,6 +128,12 @@ void Application::handle_debug_keys( sf::Event const& event )
 		engine_log_info( "Debug: toggle display_fps." );
 		break;
 	}
+	case sf::Keyboard::F9:
+	{
+		G_Debug_Flags.draw_sound_sources = !G_Debug_Flags.draw_sound_sources;
+		engine_log_info( "Debug: toggle draw_sound_sources." );
+		break;
+	}
 	}
 }
 

@@ -6,10 +6,6 @@
 
 namespace con::priv
 {
-// @ToDo (ideas for flags):
-// DRAW_PARTICLES
-// DRAW_FPS
-//
 // Maybe use bitset? But only if there'll be many more flags. 
 class Debug_Flags final
 {
@@ -17,6 +13,7 @@ public:
 	bool draw_areas{ false };
 	bool draw_paths{ false };
 	bool draw_missile_shooters{ false };
+	bool draw_sound_sources{ false };
 	bool display_fps{ false };
 
 	void enable_all();
