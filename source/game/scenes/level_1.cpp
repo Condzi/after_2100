@@ -21,11 +21,6 @@ Level_1::Level_1()
 	name = "level_1";
 	log_info( "{} instantiated.", name );
 
-	Label& l = *attach<Label>();
-
-	l.string.set_locale_name( "#loc2" );
-	l.set_fill_color( sf::Color::Cyan );
-	l.set_absolute_position( Percent_Position{ 10.1, 1 } );
 	attach<Player>();
 
 	///////////////////////////////
@@ -46,7 +41,7 @@ Level_1::Level_1()
 	spawner.set_enemy_type<Enemy_Base>();
 	spawner.start();
 	spawner.spawn_interval = 1.9sec;
-	spawner.set_spawn_limit( 8 );
+	spawner.set_spawn_limit( 200 );
 
 	Sprite* spr = attach<Sprite>();
 
@@ -55,7 +50,7 @@ Level_1::Level_1()
 
 	auto music = attach<Music_Source>();
 
-	music->set_music_from_name( "space_ambient_2" );
+	music->set_music_from_name( "space_ambient_3" );
 	music->set_loop( true );
 	music->set_relative_to_audio_listener( true );
 	music->play();
