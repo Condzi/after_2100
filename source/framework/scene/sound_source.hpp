@@ -14,11 +14,14 @@ namespace con
 class Sound_Source final :
 	public Node
 {
+	CLASS_DEF( Sound_Source );
+	
 public:
 	sf::Color shape_color{ sf::Color::Green };
 	s32       layer{ 10 };
 
 	void set_attenuation( r32 attenuation );
+	void set_minimum_distance( r32 distance );
 	void set_loop( bool value );
 	void set_sound_buffer_from_pointer( sf::SoundBuffer const* buffer );
 	void set_sound_buffer_from_name( std::string const& name );

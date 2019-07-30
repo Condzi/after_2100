@@ -22,6 +22,16 @@ void Sound_Source::set_attenuation( r32 attenuation )
 	sound.setAttenuation( attenuation );
 }
 
+void Sound_Source::set_minimum_distance( r32 distance )
+{
+	report_error_if( distance < 1 )
+	{
+		return;
+	}
+
+	sound.setMinDistance( distance );
+}
+
 void Sound_Source::set_loop( bool value )
 {
 	sound.setLoop( value );

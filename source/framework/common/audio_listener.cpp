@@ -14,7 +14,7 @@ namespace con::priv
 {
 void Audio_Listener::set_position( Point const& position )
 {
-	sf::Listener::setPosition( { position.x, position.y, 0 } );
+	sf::Listener::setPosition( { position.x, 0, position.y } );
 }
 
 void Audio_Listener::set_master_volume( s32 master_volume )

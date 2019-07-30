@@ -8,6 +8,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include "framework/common/resources_storage.hpp"
+#include "framework/common/audio_listener.hpp"
 #include "framework/scene/application.hpp"
 
 #include "player.hpp"
@@ -61,6 +62,8 @@ Player::Player()
 
 void Player::update( r32 dt )
 {
+	G_Audio_Listener.set_position( sprite_a->get_global_position() );
+
 	check_movement_keys();
 	move( velocity * dt );
 	correct_for_boundary_collision();
@@ -166,3 +169,4 @@ void Player::update_tilt_transformation()
 	hitbox_a->set_rectangle_shape( sprite_a->get_global_bounds() );
 	hitbox_b->set_rectangle_shape( sprite_b->get_global_bounds() );
 }
+
