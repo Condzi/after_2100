@@ -15,9 +15,10 @@ class Window final
 public:
 	void initialize( u32 window_width, u32 window_height, u32 fps, std::string const& title );
 
-	[[nodiscard]] auto get_raw_window()   -> sf::RenderWindow&;
-	[[nodiscard]] auto get_size() const   -> Size2;
-	[[nodiscard]] auto get_bounds() const -> Rectangle_Shape;
+	[[nodiscard]] auto get_raw_window()           -> sf::RenderWindow&;
+	[[nodiscard]] auto get_size() const           -> Size2;
+	[[nodiscard]] auto get_bounds() const         -> Rectangle_Shape;
+	[[nodiscard]] auto get_mouse_position() const -> Point;
 
 	static Window& get_instance();
 

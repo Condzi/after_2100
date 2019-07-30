@@ -5,6 +5,8 @@
 
 #include "pch.hpp"
 
+#include <SFML/Window/Mouse.hpp>
+
 #include "window.hpp"
 
 namespace con::priv
@@ -31,6 +33,11 @@ auto Window::get_size() const -> Size2
 auto Window::get_bounds() const -> Rectangle_Shape
 {
 	return { {0,0}, window.getSize() };
+}
+
+auto Window::get_mouse_position() const -> Point
+{
+	return sf::Mouse::getPosition( window );
 }
 
 Window& Window::get_instance()

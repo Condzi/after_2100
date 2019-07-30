@@ -7,6 +7,8 @@
 
 #include "pch.hpp"
 
+#include <SFML/Window/Event.hpp>
+
 #include "framework/common/assertions.hpp"
 #include "framework/common/vec2.hpp"
 #include "framework/common/drawing_set.hpp"
