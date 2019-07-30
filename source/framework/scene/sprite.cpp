@@ -62,7 +62,7 @@ auto Sprite::get_global_bounds() const -> Rectangle_Shape
 	const_cast<Sprite&>( *this ).update( 0.0 );
 
 	return sprite.getGlobalBounds();
-}
+}	
 
 auto Sprite::get_texture() const -> sf::Texture const*
 {
