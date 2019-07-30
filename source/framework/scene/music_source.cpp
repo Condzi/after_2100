@@ -50,6 +50,17 @@ void Music_Source::update( r32 dt )
 	unused( dt );
 
 	music->setPosition( get_global_position().x, get_global_position().y, 0 );
+
+	if ( constant current_status = music->getStatus(); current_status != previous_status ) {
+		previous_status = current_status;
+
+		if ( current_status == sf::Music::Status::Playing )
+			s_music_play.emit();
+		else if ( current_status == sf::Music::Status::Paused )
+			s_music_pause.emit();	
+		else if ( current_status == sf::Music::Status::Stopped )
+			s_music_stop.emit();
+	}
 }
 
 void Music_Source::draw( Drawing_Set& set )

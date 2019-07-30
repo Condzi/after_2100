@@ -17,6 +17,10 @@ class Music_Source final :
 	CLASS_DEF( Music_Source );
 
 public:
+	Signal<> s_music_play;
+	Signal<> s_music_pause;
+	Signal<> s_music_stop;
+
 	sf::Color shape_color{ sf::Color::Yellow };
 	s32       layer{ 10 };
 
@@ -35,6 +39,8 @@ public:
 
 private:
 	sf::Music* music;
+	// workaround for Signal<>
+	sf::Music::Status previous_status{ sf::Music::Status::Stopped };
 
 	sf::CircleShape debug_shape{ 10.0px };
 };

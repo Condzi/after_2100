@@ -21,5 +21,5 @@ Explosion::Explosion()
 	sound->set_attenuation( 10 );
 	sound->set_minimum_distance( 1000.0f );
 
-	s_play.connect( [=]{ sound->play(); } );
+	bond_disconnector( s_play.connect( [=]{ sound->play(); } ) );
 }

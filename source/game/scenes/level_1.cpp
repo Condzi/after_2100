@@ -50,8 +50,16 @@ Level_1::Level_1()
 
 	auto music = attach<Music_Source>();
 
-	music->set_music_from_name( "space_ambient_3" );
-	music->set_loop( true );
+	music->set_music_from_name( "space_ambient_1" );
 	music->set_relative_to_audio_listener( true );
 	music->play();
+
+	// (when music finishes, randomize next)
+	bond_disconnector( music->s_music_stop.connect( [=] {
+		constant num = std::to_string( random_int( 1, 3 ) );
+		music->set_music_from_name( "space_ambient_" + num );
+		music->play();
+
+		log_info( "Next track: space_ambient_{}", num );
+	 } ) );
 }
