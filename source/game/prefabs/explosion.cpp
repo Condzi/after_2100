@@ -18,7 +18,7 @@ Explosion::Explosion()
 
 	auto sound = attach<Sound_Source>();
 	sound->set_sound_buffer_from_name( "explosion" );
-	sound->set_attenuation( 10 );
+	sound->set_attenuation( 1 );
 	sound->set_minimum_distance( 1000.0f );
 
 	bond_disconnector( s_play.connect( [=]{ sound->play(); } ) );

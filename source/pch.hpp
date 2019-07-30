@@ -23,6 +23,7 @@
 
 #include "framework/common/vec2.hpp"
 #include "framework/common/percent_position.hpp"
+#include "framework/common/random.hpp"
 
 // Probably from spdlog.
 #undef TRANSPARENT

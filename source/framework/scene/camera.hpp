@@ -39,7 +39,7 @@ private:
 		static constexpr r32 MAX_ANGLE    = 10.0deg;
 		static constexpr r32 MAX_OFFSET_X = 100.0px;
 		static constexpr r32 MAX_OFFSET_Y = 100.0px;
-		static constexpr r32 TRAUMA_DECREASING_RATE = 0.2;
+		static constexpr r32 TRAUMA_DECREASING_RATE = 0.3;
 
 		r32  trauma;
 		r32  angle;
