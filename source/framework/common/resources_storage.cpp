@@ -13,7 +13,7 @@
 
 namespace con
 {
-auto Resources_Storage::get_texture( std::string const& name ) const -> sf::Texture const * const
+auto Resources_Storage::get_texture( std::string const& name ) const -> sf::Texture const* const
 {
 	sf::Texture const* texture_to_return{ nullptr };
 	constant result = textures.find( name );
@@ -28,7 +28,7 @@ auto Resources_Storage::get_texture( std::string const& name ) const -> sf::Text
 	return texture_to_return;
 }
 
-auto Resources_Storage::get_sound_buffer( std::string const& name ) const -> sf::SoundBuffer const * const
+auto Resources_Storage::get_sound_buffer( std::string const& name ) const -> sf::SoundBuffer const* const
 {
 	sf::SoundBuffer const* sound_buffer_to_return{ nullptr };
 	constant result = sound_buffers.find( name );
@@ -43,9 +43,9 @@ auto Resources_Storage::get_sound_buffer( std::string const& name ) const -> sf:
 	return sound_buffer_to_return;
 }
 
-auto Resources_Storage::get_music( std::string const& name ) -> sf::Music * const
+auto Resources_Storage::get_music( std::string const& name ) -> sf::Music* const
 {
-	sf::Music * music_to_return{ nullptr };
+	sf::Music* music_to_return{ nullptr };
 	auto result = music.find( name );
 
 	if ( result == music.end() )
@@ -57,7 +57,7 @@ auto Resources_Storage::get_music( std::string const& name ) -> sf::Music * cons
 
 	return music_to_return;
 }
-auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font const * const
+auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font const* const
 {
 	sf::Font const* font_to_return{ nullptr };
 	constant result = fonts.find( name );
@@ -79,8 +79,7 @@ void Resources_Storage::reload()
 	for ( constant[name, path] : resources_data.textures ) {
 		auto& texture = textures[name].resource;
 
-		if( texture.loadFromFile( path ) returned false )
-		{
+		if ( texture.loadFromFile( path ) returned false ) {
 			engine_log_error( "The texture \"{}\" can't be loaded from \"{}\".", name, path );
 			textures[name].is_valid = false;
 		}
@@ -91,8 +90,7 @@ void Resources_Storage::reload()
 	for ( constant[name, path] : resources_data.sound_buffers ) {
 		auto& sound_buffer = sound_buffers[name].resource;
 
-		if( sound_buffer.loadFromFile( path ) returned false )
-		{
+		if ( sound_buffer.loadFromFile( path ) returned false ) {
 			engine_log_error( "The sound buffer \"{}\" can't be loaded from \"{}\".", name, path );
 			sound_buffers[name].is_valid = false;
 		}
@@ -102,8 +100,7 @@ void Resources_Storage::reload()
 		// Plural...
 		auto& music_ = music[name].resource;
 
-		if( music_.openFromFile( path ) returned false )
-		{
+		if ( music_.openFromFile( path ) returned false ) {
 			engine_log_error( "The music \"{}\" can't be loaded from \"{}\".", name, path );
 			music[name].is_valid = false;
 		}
@@ -111,8 +108,7 @@ void Resources_Storage::reload()
 
 	for ( constant[name, path] : resources_data.fonts ) {
 		auto& font = fonts[name].resource;
-		if( font.loadFromFile( path ) returned false )
-		{
+		if ( font.loadFromFile( path ) returned false ) {
 			engine_log_error( "The font \"{}\" can't be loaded from \"{}\".", name, path );
 			fonts[name].is_valid = false;
 		}
@@ -130,8 +126,7 @@ Resources_Storage& Resources_Storage::get_instance()
 Resources_Storage::Resource_Info::Resource_Info( std::string const& name_, std::string const& path_ ) :
 	name( name_ ), path( path_ )
 {
-	if( name.empty() or path.empty() )
-	{
+	if ( name.empty() or path.empty() ) {
 		engine_log_warning( "Name ({}) and path ({}) can't be empty!", name_, path_ );
 	}
 }

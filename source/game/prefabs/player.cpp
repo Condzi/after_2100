@@ -55,6 +55,7 @@ Player::Player()
 	hitbox_a->name = hitbox_b->name = "hitbox_" + name;
 
 	health = attach<Health>();
+	health->set_max( 10 );
 	set_absolute_position( Percent_Position{ 0, 50 } );
 }
 

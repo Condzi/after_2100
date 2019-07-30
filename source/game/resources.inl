@@ -14,6 +14,8 @@
 
 // Sounds
 {
+	{ "low_hp",        "resources/sound/low_hp.wav" },
+	{ "enemy_missile", "resources/sound/enemy_missile.wav" }
 },
 
 // Music
