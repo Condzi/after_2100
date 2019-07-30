@@ -14,6 +14,7 @@
 #include "framework/scene/application.hpp"
 
 #include "framework/scene/label.hpp"
+#include "framework/scene/music_source.hpp"
 
 Level_1::Level_1()
 {
@@ -51,4 +52,11 @@ Level_1::Level_1()
 
 	spr->set_texture_from_name( "space_background" );
 	spr->layer = -1;
+
+	auto music = attach<Music_Source>();
+
+	music->set_music_from_name( "space_ambient_1" );
+	music->set_loop( true );
+	music->set_relative_to_audio_listener( true );
+	music->play();
 }

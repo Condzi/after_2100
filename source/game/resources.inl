@@ -21,6 +21,7 @@
 
 // Music
 {
+	{ "space_ambient_1", "resources/music/space_ambient_1.ogg"}
 },
 
 // Fonts
