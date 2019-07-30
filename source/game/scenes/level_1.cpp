@@ -55,7 +55,7 @@ Level_1::Level_1()
 
 	auto music = attach<Music_Source>();
 
-	music->set_music_from_name( "space_ambient_1" );
+	music->set_music_from_name( "space_ambient_2" );
 	music->set_loop( true );
 	music->set_relative_to_audio_listener( true );
 	music->play();
