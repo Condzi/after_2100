@@ -37,6 +37,11 @@ void Sound_Source::set_loop( bool value )
 	sound.setLoop( value );
 }
 
+void Sound_Source::set_relative_to_audio_listener( bool value )
+{
+	sound.setRelativeToListener( value );
+}
+
 void Sound_Source::set_sound_buffer_from_pointer( sf::SoundBuffer const* buffer )
 {
 	sound.setBuffer( *buffer );
@@ -56,7 +61,7 @@ void Sound_Source::update( r32 dt )
 
 void Sound_Source::draw( Drawing_Set& set )
 {
-	if ( not G_Debug_Flags.draw_sound_sources )
+	if ( not G_Debug_Flags.draw_audio_sources )
 		return;
 
 	debug_shape.setPosition( get_global_position() );

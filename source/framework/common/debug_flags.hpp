@@ -13,7 +13,7 @@ public:
 	bool draw_areas{ false };
 	bool draw_paths{ false };
 	bool draw_missile_shooters{ false };
-	bool draw_sound_sources{ false };
+	bool draw_audio_sources{ false };
 	bool display_fps{ false };
 
 	void enable_all();
