@@ -53,11 +53,14 @@ Level_1::Level_1()
 	music->set_music_from_name( "space_ambient_1" );
 	music->set_relative_to_audio_listener( true );
 	music->play();
+	music->name = "space_ambient";
 
 	// (when music finishes, randomize next)
-	bond_disconnector( music->s_music_stop.connect( [=] {
+	bond_disconnector( music->s_music_stop.connect( [this] {
 		constant num = std::to_string( random_int( 1, 3 ) );
+		auto music = get_node( "space_ambient" )->cast_to<Music_Source>();
 		music->set_music_from_name( "space_ambient_" + num );
+		music->stop(); //@Bug: for some reason we have to stop it before playing again, otherwise if the same music is randomized then it won't play.
 		music->play();
 
 		log_info( "Next track: space_ambient_{}", num );
