@@ -38,6 +38,7 @@ void Application::run()
 		while ( G_Window.get_raw_window().pollEvent( event ) ) {
 			root.handle_input_children( event );
 			handle_debug_keys( event );
+			G_Debug_Console.input( event );
 		}
 
 		root.remove_queued_for_delete();
@@ -84,7 +85,6 @@ void Application::handle_debug_keys( sf::Event const& event )
 	}
 	case sf::Keyboard::F1:
 	{
-		engine_log_info( "Debug: toggle display_debug_console." );
 		G_Debug_Flags.toggle( "display_debug_console" );
 		break;
 	}
