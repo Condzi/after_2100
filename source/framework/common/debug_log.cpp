@@ -15,9 +15,8 @@
 
 namespace con::priv
 {
-template <typename TMutex>
 class Debug_Log_Sink final :
-	public spdlog::sinks::base_sink<TMutex>
+	public spdlog::sinks::base_sink<spdlog::details::null_mutex>
 {
 public:
 	void sink_it_( const spdlog::details::log_msg& msg ) override
@@ -45,7 +44,7 @@ Debug_Log::Debug_Log()
 	using namespace spdlog::level;
 
 	try {
-		auto console_sink{ std::make_shared<Debug_Log_Sink<spdlog::details::null_mutex>>() };
+		auto console_sink{ std::make_shared<Debug_Log_Sink>() };
 		auto file_sink{ std::make_shared<basic_file_sink_st>( LOG_FILE_NAME, true ) };
 
 		console_sink->set_pattern( "[%n][%L][%T:%e] %v" );
