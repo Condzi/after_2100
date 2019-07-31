@@ -48,7 +48,7 @@ Debug_Log::Debug_Log()
 		auto console_sink{ std::make_shared<Debug_Log_Sink<spdlog::details::null_mutex>>() };
 		auto file_sink{ std::make_shared<basic_file_sink_st>( LOG_FILE_NAME, true ) };
 
-		console_sink->set_pattern( "[%^%n%$][%T:%e] %v" );
+		console_sink->set_pattern( "[%n][%L][%T:%e] %v" );
 		file_sink->set_pattern( "[%n][%L][%T:%e] %v" );
 
 		engine_logger = std::make_unique<logger>( "ENGINE", sinks_init_list{ console_sink, file_sink } );
