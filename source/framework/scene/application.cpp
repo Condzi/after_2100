@@ -10,6 +10,7 @@
 #include "framework/common/stl_extensions.hpp"
 #include "framework/localization/locale.hpp"
 #include "framework/common/window.hpp"
+#include "framework/scene/debug_console.hpp"
 #include "application.hpp"
 #include "area_overleaping_checker.hpp"
 
@@ -41,6 +42,7 @@ void Application::run()
 
 		root.remove_queued_for_delete();
 		root.update_children( fps_clock.restart().asSeconds() );
+		G_Debug_Console.update();
 
 		G_Area_Overleaping_Checker.update();
 		render();
@@ -96,6 +98,8 @@ void Application::render()
 
 	gui_drawing_set.clear();
 	root.draw_gui_children( gui_drawing_set );
+
+	G_Debug_Console.draw( gui_drawing_set );
 
 	auto& window = G_Window.get_raw_window();
 

@@ -17,7 +17,6 @@ namespace con
 {
 Root::Root()
 {
-	attach<priv::Debug_Console>();
 	fps_label = attach<Label>();
 	fps_label->name = "fps_label";
 	fps_label->string.set_locale_name( "#loc1" );
