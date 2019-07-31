@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "music_source.hpp"
+#include "framework/common/debug_flags.hpp"
 #include "framework/common/resources_storage.hpp"
 
 namespace con
@@ -57,7 +58,7 @@ void Music_Source::update( r32 dt )
 		if ( current_status == sf::Music::Status::Playing )
 			s_music_play.emit();
 		else if ( current_status == sf::Music::Status::Paused )
-			s_music_pause.emit();	
+			s_music_pause.emit();
 		else if ( current_status == sf::Music::Status::Stopped )
 			s_music_stop.emit();
 	}
@@ -65,7 +66,7 @@ void Music_Source::update( r32 dt )
 
 void Music_Source::draw( Drawing_Set& set )
 {
-	if ( not G_Debug_Flags.draw_audio_sources )
+	if ( not G_Debug_Flags.get( "draw_audio_sources" ) )
 		return;
 
 	debug_shape.setPosition( get_global_position() );

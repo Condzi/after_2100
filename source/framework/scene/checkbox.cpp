@@ -20,6 +20,8 @@ Checkbox::Checkbox()
 	set_outline_thickness( 2 );
 	set_size( { 16, 16 } );
 	set_outline_color( sf::Color{ 50, 50,50 } );
+	// force update
+	update( 0 );
 }
 
 void Checkbox::set_size( Size2 const& size )

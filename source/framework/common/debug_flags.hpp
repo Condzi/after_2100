@@ -4,22 +4,38 @@
 */
 #pragma once
 
+#include "stl_extensions.hpp"
+
 namespace con::priv
 {
-// Maybe use bitset? But only if there'll be many more flags. 
 class Debug_Flags final
 {
 public:
-	bool draw_areas{ false };
-	bool draw_paths{ false };
-	bool draw_missile_shooters{ false };
-	bool draw_audio_sources{ false };
-	bool display_fps{ false };
-
 	void enable_all();
 	void disable_all();
 
+	[[nodiscard]] auto get( std::string_view name ) -> bool&;
+	void toggle( std::string_view name );
+
 	static Debug_Flags& get_instance();
+
+private:
+	struct Flag
+	{
+		std::string_view const name;
+		size_t const           hash{ type_hash( name ) };
+		bool                   status{ false };
+	};
+
+	std::vector<Flag> flags =
+	{
+		{ "draw_areas"            },
+		{ "draw_paths"            },
+		{ "draw_missile_shooters" },
+		{ "draw_audio_sources"    },
+		{ "display_fps"           },
+		{ "display_debug_console" }
+	};
 };
 }
 

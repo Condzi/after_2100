@@ -5,6 +5,7 @@
 
 #include "pch.hpp"
 
+#include "framework/common/debug_flags.hpp"
 #include "framework/common/resources_storage.hpp"
 #include "framework/common/stl_extensions.hpp"
 #include "framework/localization/locale.hpp"
@@ -81,57 +82,8 @@ void Application::handle_debug_keys( sf::Event const& event )
 	}
 	case sf::Keyboard::F1:
 	{
-		G_Debug_Flags.enable_all();
-		engine_log_info( "Debug: enable all." );
-		break;
-	}
-	case sf::Keyboard::F2:
-	{
-		G_Debug_Flags.disable_all();
-		engine_log_info( "Debug: disable all." );
-		break;
-	}
-	case sf::Keyboard::F3:
-	{
-		G_Debug_Flags.draw_areas = !G_Debug_Flags.draw_areas;
-
-		engine_log_info( "Debug: toggle draw_areas." );
-		break;
-	}
-	case sf::Keyboard::F4:
-	{
-		G_Debug_Flags.draw_paths = !G_Debug_Flags.draw_paths;
-		engine_log_info( "Debug: toggle draw_paths." );
-		break;
-	}
-	case sf::Keyboard::F5:
-	{
-		G_Debug_Flags.draw_missile_shooters = !G_Debug_Flags.draw_missile_shooters;
-		engine_log_info( "Debug: toggle draw_missile_shooters." );
-		break;
-	}
-	case sf::Keyboard::F6:
-	{
-		engine_log_info( "Debug: reload resources." );
-		G_Resources_Storage.reload();
-		break;
-	}
-	case sf::Keyboard::F7:
-	{
-		engine_log_info( "Debug: reload locale." );
-		G_Locale.reload();
-		break;
-	}
-	case sf::Keyboard::F8:
-	{
-		G_Debug_Flags.display_fps = !G_Debug_Flags.display_fps;
-		engine_log_info( "Debug: toggle display_fps." );
-		break;
-	}
-	case sf::Keyboard::F9:
-	{
-		G_Debug_Flags.draw_audio_sources = !G_Debug_Flags.draw_audio_sources;
-		engine_log_info( "Debug: toggle draw_audio_sources." );
+		engine_log_info( "Debug: toggle dsplay_debug_console." );
+		G_Debug_Flags.toggle( "display_debug_console" );
 		break;
 	}
 	}

@@ -5,6 +5,7 @@
 
 #include "pch.hpp"
 
+#include "framework/common/debug_flags.hpp"
 #include "area.hpp"
 #include "area_overleaping_checker.hpp"
 
@@ -46,7 +47,7 @@ auto Area::get_shape_variant() const -> Shape_Variant const&
 
 void Area::draw( Drawing_Set& drawing_set )
 {
-	if ( shape_set is false or G_Debug_Flags.draw_areas is false )
+	if ( shape_set is false or G_Debug_Flags.get( "draw_areas" ) is false )
 		return;
 
 	std::visit( visitor_overload{

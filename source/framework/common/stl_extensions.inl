@@ -43,4 +43,10 @@ void remove_if( TContainer& container, TLambda&& lambda )
 
 	container.erase( std::remove_if( begin, end, change_owner( lambda ) ), end );
 }
+
+template<typename T>
+size_t type_hash( T const& value )
+{
+	return std::hash<T>{}( value );
+}
 }

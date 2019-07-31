@@ -33,8 +33,8 @@ Debug_Log::Debug_Log()
 		console_sink->set_pattern( "[%^%n%$][%T:%e] %v" );
 		file_sink->set_pattern( "[%n][%L][%T:%e] %v" );
 
-		engine_logger = std::make_shared<logger>( "ENGINE", sinks_init_list{ console_sink, file_sink } );
-		game_logger = std::make_shared<logger>( " GAME ", sinks_init_list{ console_sink, file_sink } );
+		engine_logger = std::make_unique<logger>( "ENGINE", sinks_init_list{ console_sink, file_sink } );
+		game_logger = std::make_unique<logger>( " GAME ", sinks_init_list{ console_sink, file_sink } );
 
 		engine_logger->flush_on( level_enum::info );
 		game_logger->flush_on( level_enum::info );

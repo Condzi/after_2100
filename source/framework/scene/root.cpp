@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "framework/common/assertions.hpp"
+#include "framework/common/debug_flags.hpp"
 
 #include "root.hpp"
 #include "application.hpp"
@@ -23,7 +24,7 @@ Root::Root()
 	bond_disconnector( s_update.connect(
 		[this]( r32 dt ) {
 			unused( dt );
-			fps_label->visible = G_Debug_Flags.display_fps;
+			fps_label->visible = G_Debug_Flags.get( "display_fps" );
 		} ) );
 }
 

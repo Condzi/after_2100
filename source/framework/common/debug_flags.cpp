@@ -6,17 +6,46 @@
 #include "pch.hpp"
 
 #include "debug_flags.hpp"
+#include "assertions.hpp"
+#include "stl_extensions.hpp"
 
 namespace con::priv
 {
 void Debug_Flags::enable_all()
 {
-	draw_areas = draw_paths = draw_missile_shooters = draw_audio_sources = display_fps = true;
+	for ( auto& flag : flags )
+		if ( flag.name is_not "display_debug_console" )
+			flag.status = true;
 }
 
 void Debug_Flags::disable_all()
 {
-	draw_areas = draw_paths = draw_missile_shooters = draw_audio_sources = display_fps = false;
+	for ( auto& flag : flags )
+		if ( flag.name is_not "display_debug_console" )
+			flag.status = false;
+}
+
+auto Debug_Flags::get( std::string_view name ) -> bool&
+{
+	constant hash = type_hash( name );
+
+	constant[found, idx] = find_if( flags, [hash]( constant flag ) {
+		return flag.hash == hash;
+		} );
+
+	report_error_if( not found )
+	{
+		static bool fallback{ false };
+		return fallback;
+	}
+
+	return flags[idx].status;
+}
+
+void Debug_Flags::toggle( std::string_view name )
+{
+	bool& status = get( name );
+	status = !status;
 }
 
 Debug_Flags& Debug_Flags::get_instance()

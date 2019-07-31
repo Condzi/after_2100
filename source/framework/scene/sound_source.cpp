@@ -61,7 +61,7 @@ void Sound_Source::update( r32 dt )
 
 void Sound_Source::draw( Drawing_Set& set )
 {
-	if ( not G_Debug_Flags.draw_audio_sources )
+	if ( not G_Debug_Flags.get( "draw_audio_sources" ) )
 		return;
 
 	debug_shape.setPosition( get_global_position() );

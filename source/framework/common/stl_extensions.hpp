@@ -24,7 +24,10 @@ template <typename TContainer, typename TLambda>
 template <typename TContainer, typename TLambda>
 void remove_if( TContainer& container, TLambda&& lambda );
 
-bool string_begins_with( std::string const& string, std::string const& prefix );
+[[nodiscard]] bool string_begins_with( std::string const& string, std::string const& prefix );
+
+template <typename T>
+[[nodiscard]] size_t type_hash( T const& value );
 }
 
 #include "stl_extensions.inl"

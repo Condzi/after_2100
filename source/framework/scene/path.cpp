@@ -7,6 +7,7 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include "framework/common/debug_flags.hpp"
 #include "framework/common/drawing_set.hpp"
 
 #include "path.hpp"
@@ -15,7 +16,7 @@ namespace con
 {
 void Path::draw( Drawing_Set& set )
 {
-	if ( G_Debug_Flags.draw_paths is false )
+	if ( G_Debug_Flags.get( "draw_paths" ) is false )
 		return;
 
 	visual_representation.resize( points.size() );
@@ -52,7 +53,7 @@ void Path_Follower::stop_following()
 	following = false;
 }
 
-auto Path_Follower::get_velocity() const -> Vec2 const &
+auto Path_Follower::get_velocity() const -> Vec2 const&
 {
 	return velocity;
 }
@@ -83,8 +84,7 @@ void Path_Follower::update( r32 dt )
 		return;
 	}
 
-	if( max_velocity <= 0 )
-	{
+	if ( max_velocity <= 0 ) {
 		engine_log_error( "'max_velocity' has to be positive, like you :)" );
 		stop_following();
 		return;
@@ -96,8 +96,7 @@ void Path_Follower::update( r32 dt )
 	if ( current_position.distance( target_position ) <= minimum_distance )
 		current_target_id++;
 
-	if ( is_finished() )
-	{
+	if ( is_finished() ) {
 		following = false;
 		s_on_finish_following.emit();
 	}

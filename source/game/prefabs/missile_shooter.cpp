@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "missile_shooter.hpp"
+#include "framework/common/debug_flags.hpp"
 
 void Missile_Shooter::set_horizontal_velocity( r32 velocity )
 {
@@ -34,14 +35,12 @@ bool Missile_Shooter::is_ready_to_shoot() const
 
 void Missile_Shooter::shoot()
 {
-	if( !spawning_function )
-	{
+	if ( !spawning_function ) {
 		log_warning( "No spawning_function set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
 		return;
 	}
 
-	if( horizontal_velocity is 0 )
-	{
+	if ( horizontal_velocity is 0 ) {
 		log_warning( "No horizontal_velocity set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
 		return;
 	}
@@ -69,7 +68,7 @@ void Missile_Shooter::update( r32 delta )
 
 void Missile_Shooter::draw( Drawing_Set& drawing_set )
 {
-	if ( G_Debug_Flags.draw_missile_shooters is false )
+	if ( G_Debug_Flags.get( "draw_missile_shooters" ) is false )
 		return;
 
 	visual_representation.setOrigin( debug_circle_radious / 2, debug_circle_radious/ 2 );

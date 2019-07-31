@@ -22,8 +22,8 @@ public:
 		Critical = spdlog::level::level_enum::critical,
 	};
 
-	std::shared_ptr<spdlog::logger> engine_logger;
-	std::shared_ptr<spdlog::logger> game_logger;
+	std::unique_ptr<spdlog::logger> engine_logger;
+	std::unique_ptr<spdlog::logger> game_logger;
 
 	//
 	//	Logger probably should't've an intialization method like .init():bool because it may be called before (maybe by some global variable?)
