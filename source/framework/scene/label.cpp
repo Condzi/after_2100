@@ -34,6 +34,16 @@ void Label::set_fill_color( sf::Color const& color )
 	text.setFillColor( color );
 }
 
+void Label::set_outline_color( sf::Color const& color )
+{
+	text.setOutlineColor( color );
+}
+
+void Label::set_outline_thickness( r32 thickness )
+{
+	text.setOutlineThickness( thickness );
+}
+
 auto Label::get_character_size() const -> size_t
 {
 	return text.getCharacterSize();

@@ -32,10 +32,10 @@ public:
 
 private:
 	compile_constant LINES = 16; // 15 + 1 for input
-	compile_constant CHAR_SIZE = 8;
-	compile_constant VERTICAL_SPACING = 2;
+	compile_constant CHAR_SIZE = 16;
+	compile_constant VERTICAL_SPACING = 1;
 	compile_constant HEIGHT = LINES * ( CHAR_SIZE + VERTICAL_SPACING );
-	compile_constant LEFT_MARGIN = 5.0px;
+	compile_constant LEFT_MARGIN = 1.0px;
 
 	compile_constant FONT_NAME = "default";
 	sf::Font const& font = *G_Resources_Storage.get_font( FONT_NAME ); //@TODO: Unused?
@@ -55,4 +55,4 @@ private:
 };
 }
 
-// G_Debug_Console -> get from root
+#define G_Debug_Console *G_Root.get_node("debug_console")

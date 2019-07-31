@@ -11,24 +11,33 @@ namespace con::priv
 {
 Debug_Console::Debug_Console()
 {
-	report_background.setFillColor( sf::Color{ 180, 180, 180 } );
-	input_background.setFillColor( sf::Color{ 140, 140, 140 } );
+	name = "debug_console";
+	report_background.setFillColor( sf::Color{ 180, 180, 180, 150 } );
+	input_background.setFillColor( sf::Color{ 140, 140, 140, 150 } );
 
 	report_background.setSize( { G_Window.get_size().width, ( LINES-1 ) * ( CHAR_SIZE + VERTICAL_SPACING ) } );
 	input_background.setPosition( 0, report_background.getSize().y );
 	input_background.setSize( { G_Window.get_size().width, CHAR_SIZE + VERTICAL_SPACING } );
 
 	input_line = attach<Label>();
-	input_line->visible = false;
-	for ( auto* label : visible_lines ) {
+	bond_disconnector( input_line->s_update.connect( [this]( r32 dt ) { input_line->visible = this->visible; } ) );
+
+	for ( auto& label : visible_lines ) {
 		label = attach<Label>();
 		label->set_character_size( CHAR_SIZE );
 		label->set_font( FONT_NAME );
-		label->layer = layer;
-		label->visible = false;
+		label->layer = layer + 1;
+		label->set_fill_color( sf::Color::White );
+		label->set_outline_thickness( 1.0px );
+		label->set_outline_color( sf::Color::Black );
+
+		bond_disconnector( label->s_update.connect( [label, this]( r32 dt ) { label->visible = this->visible; } ) );
 	}
 
 	put_labels_on_correct_positions();
+
+	print( "first message" );
+	print( "second message" );
 }
 
 void Debug_Console::set_report_background_color( sf::Color const& color )
@@ -81,7 +90,7 @@ void Debug_Console::put_labels_on_correct_positions()
 
 void Debug_Console::update_lines()
 {
-	for ( size_t i = 0; i < visible_lines.size() or i < history.size(); i++ )
-		visible_lines[i]->string.set_ascii( history[history.size() - 1 - i] );
+	for ( size_t i = 0; i < visible_lines.size() and i < history.size(); i++ )
+		visible_lines[i]->string.set_ascii( *( history.rbegin() + i ) );
 }
 }

@@ -27,6 +27,8 @@ public:
 	void set_font( std::string const& name );
 	void set_character_size( size_t size );
 	void set_fill_color( sf::Color const& color );
+	void set_outline_color( sf::Color const& color );
+	void set_outline_thickness( r32 thickness );
 
 	[[nodiscard]] auto get_character_size() const -> size_t;
 	[[nodiscard]] auto get_global_bounds() const  -> Rectangle_Shape;
