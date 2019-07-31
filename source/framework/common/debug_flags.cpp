@@ -42,6 +42,17 @@ auto Debug_Flags::get( std::string_view name ) -> bool&
 	return flags[idx].status;
 }
 
+auto Debug_Flags::get_flags_names() -> std::vector<std::string>
+{
+	std::vector<std::string> vec;
+	vec.resize( flags.size() );
+
+	for ( size_t i = 0; i < vec.size(); i++ )
+		vec[i] = flags[i].name;
+
+	return vec;
+}
+
 void Debug_Flags::toggle( std::string_view name )
 {
 	bool& status = get( name );

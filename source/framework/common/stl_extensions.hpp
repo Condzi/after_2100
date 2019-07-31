@@ -26,6 +26,8 @@ void remove_if( TContainer& container, TLambda&& lambda );
 
 [[nodiscard]] bool string_begins_with( std::string const& string, std::string const& prefix );
 
+[[nodiscard]] std::string lower_string( std::string str );
+
 template <typename T>
 [[nodiscard]] size_t type_hash( T const& value );
 }

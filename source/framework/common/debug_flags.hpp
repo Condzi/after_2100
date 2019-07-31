@@ -15,6 +15,7 @@ public:
 	void disable_all();
 
 	[[nodiscard]] auto get( std::string_view name ) -> bool&;
+	[[nodiscard]] auto get_flags_names()             -> std::vector<std::string>;
 	void toggle( std::string_view name );
 
 	static Debug_Flags& get_instance();

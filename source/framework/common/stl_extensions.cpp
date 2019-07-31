@@ -13,4 +13,10 @@ bool string_begins_with( std::string const& string, std::string const& prefix )
 {
 	return string.substr( 0, prefix.size() ) == prefix;
 }
+std::string lower_string( std::string str )
+{
+	std::transform( str.begin(), str.end(), str.begin(), std::tolower );
+
+	return str;
+}
 }

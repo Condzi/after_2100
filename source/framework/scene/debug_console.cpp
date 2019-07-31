@@ -91,7 +91,7 @@ void Debug_Console::input( sf::Event const& event )
 		char ascii = sf::String{ event.text.unicode }.toAnsiString().front();
 
 		if ( ( ascii < 'A' or ascii > 'Z' ) and ( ascii < 'a' or ascii > 'z' ) and
-			( ascii < '0' or ascii > '9' ) )
+			( ascii < '0' or ascii > '9' ) and ascii is_not '_' )
 			return;
 
 		input_string += ascii;
@@ -116,8 +116,11 @@ void Debug_Console::input( sf::Event const& event )
 void Debug_Console::update()
 {
 	if ( visible is_not previous_visible )
-		if ( visible )
+		if ( visible ) {
+			input_focused = true;
+			input_background.setOutlineThickness( -2 );
 			update_lines();
+		}
 
 	previous_visible = visible;
 }
@@ -167,6 +170,42 @@ void Debug_Console::update_lines()
 
 void Debug_Console::do_command( std::string const& command )
 {
-	//@ToDo
+	print( command );
+
+	constant first_space_idx = command.find_first_of( ' ' );
+	constant lhs = lower_string( command.substr( 0, first_space_idx ) );
+	constant rhs = lower_string( command.substr( first_space_idx + 1 ) );
+
+	if ( lhs == "help" ) {
+		for ( constant str : G_Debug_Flags.get_flags_names() )
+			print( str );
+
+		print( "enable_all" );
+		print( "disable_all" );
+
+		return;
+	}
+
+	if ( first_space_idx is std::string::npos ) {
+		if ( rhs == "enable_all" )
+			G_Debug_Flags.enable_all();
+		else if ( rhs == "disable_all" )
+			G_Debug_Flags.disable_all();
+		else
+			engine_log_info( "{} = {}", lhs, G_Debug_Flags.get( lhs ) );
+		return;
+	}
+
+	bool flag{ false };
+
+	if ( rhs is "true" or rhs is "1" )
+		flag = true;
+
+	else if ( rhs is_not "false" and rhs is_not "0" ) {
+		engine_log_error( "Command error: expected 1/0, true/false, empty. Got: {}.", rhs );
+		return;
+	}
+
+	G_Debug_Flags.get( lhs ) = flag;
 }
 }

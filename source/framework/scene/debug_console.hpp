@@ -47,7 +47,7 @@ private:
 
 	sf::RectangleShape report_background;
 	sf::RectangleShape input_background;
-	bool input_focused{ false };
+	bool input_focused{ true };
 
 	std::vector<std::string> history; // FILO ~ first message is the oldest one.
 	std::array<sf::Text, LINES - 1> visible_lines; // The first message is the bottom one.
