@@ -7,12 +7,14 @@
 
 #include <spdlog/logger.h>
 
+#include "framework/common/typedefs.hpp"
+
 namespace con::priv
 {
 class Debug_Log final
 {
 public:
-	static constexpr const char* LOG_FILE_NAME{ "log.txt" };
+	compile_constant LOG_FILE_NAME = "log.txt";
 
 	enum Level
 	{

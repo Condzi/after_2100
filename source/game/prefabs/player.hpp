@@ -26,10 +26,10 @@ public:
 	void update( r32 dt ) override;
 
 private:
-	static constexpr r32 VELOCITY_MAX = 280;
-	static constexpr r32 SLOWING_MULTIPLIER = 0.86;
-	static constexpr r32 ACCELERATION_MULTIPLIER = 0.1;
-	static constexpr r32 TILT_MULTIPLIER = 0.09;
+	compile_constant VELOCITY_MAX = 280.0f;
+	compile_constant SLOWING_MULTIPLIER = 0.86f;
+	compile_constant ACCELERATION_MULTIPLIER = 0.1f;
+	compile_constant TILT_MULTIPLIER = 0.09f;
 
 	Vec2 acceleration_direction;
 	Vec2 velocity;

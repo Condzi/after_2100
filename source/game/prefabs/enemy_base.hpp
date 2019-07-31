@@ -31,7 +31,7 @@ protected:
 	Explosion* explosion;
 
 private:
-	static constexpr r32 TILT_MULTIPLIER = 0.18;
+	compile_constant TILT_MULTIPLIER = 0.18f;
 
 	void update_tilt_transformation();
 };

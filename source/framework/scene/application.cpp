@@ -82,7 +82,7 @@ void Application::handle_debug_keys( sf::Event const& event )
 	}
 	case sf::Keyboard::F1:
 	{
-		engine_log_info( "Debug: toggle dsplay_debug_console." );
+		engine_log_info( "Debug: toggle display_debug_console." );
 		G_Debug_Flags.toggle( "display_debug_console" );
 		break;
 	}

@@ -11,7 +11,7 @@ namespace con::priv
 class Locale final
 {
 public:
-	static constexpr const char* PATH_TO_LOC_FILE = "resources/loc.json";
+	compile_constant PATH_TO_LOC_FILE = "resources/loc.json";
 
 	void set_current_language( std::string const& language );
 
