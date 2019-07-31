@@ -107,6 +107,12 @@ void Debug_Console::input( sf::Event const& event )
 		else if ( event.key.code == sf::Keyboard::Key::Return ) {
 			do_command( input_string );
 			input_string.clear();
+		} else if ( event.key.code == sf::Keyboard::Up and scroll_offset < static_cast<s32>( history.size() ) - static_cast<s32>( visible_lines.size() ) ) {
+			scroll_offset++;
+			update_lines();
+		} else if ( event.key.code == sf::Keyboard::Down and scroll_offset > 0 ) {
+			scroll_offset--;
+			update_lines();
 		}
 	}
 
@@ -149,10 +155,8 @@ Debug_Console& Debug_Console::get_instance()
 
 void Debug_Console::put_labels_on_correct_positions()
 {
-
 	input_sign.setPosition( { LEFT_MARGIN, input_background.getPosition().y } );
 	input_text.setPosition( input_sign.getPosition().x + input_sign.getGlobalBounds().width, input_sign.getPosition().y );
-
 
 	for ( auto i = visible_lines.rbegin(); i != visible_lines.rend(); i++ ) {
 		sf::Text& line = *i;
@@ -165,7 +169,7 @@ void Debug_Console::put_labels_on_correct_positions()
 void Debug_Console::update_lines()
 {
 	for ( size_t i = 0; i < visible_lines.size() and i < history.size(); i++ )
-		visible_lines[i].setString( *( history.rbegin() + i ) );
+		visible_lines[i].setString( *( history.rbegin() + i + scroll_offset ) );
 }
 
 void Debug_Console::do_command( std::string const& command )
@@ -202,7 +206,7 @@ void Debug_Console::do_command( std::string const& command )
 		flag = true;
 
 	else if ( rhs is_not "false" and rhs is_not "0" ) {
-		engine_log_error( "Command error: expected 1/0, true/false, empty. Got: {}.", rhs );
+		engine_log_warning( "Command error: expected 1/0, true/false, empty. Got: {}.", rhs );
 		return;
 	}
 
