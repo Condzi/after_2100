@@ -13,6 +13,8 @@
 
 namespace con::priv
 {
+// @ToDo: If more commands will be added then make Command_Shell or something. For example:
+// vector<Command> commands = { "display_fps", [](std::string statement){ G_Debug_Flags.get("display_fps") = to_bool(statement);}}
 class Debug_Console final
 {
 public:
