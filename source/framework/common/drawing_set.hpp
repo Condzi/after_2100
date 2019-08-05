@@ -16,8 +16,9 @@ class Drawing_Set final
 {
 	struct Drawable final
 	{
-		s32 layer{ 0 };
-		sf::Drawable const& drawable;
+		s32 const              layer{ 0 };
+		sf::Drawable const&    drawable;
+		sf::RenderStates const render_states{ sf::RenderStates::Default };
 
 		bool operator<( Drawable const& second ) const;
 		bool operator==( Drawable const& second ) const;
@@ -25,7 +26,7 @@ class Drawing_Set final
 
 public:
 	void clear();
-	auto add_drawable( sf::Drawable const& drawable, s32 layer ) -> bool;
+	auto add_drawable( sf::Drawable const& drawable, s32 const layer, sf::RenderStates const render_states = sf::RenderStates::Default ) -> bool;
 	void display( sf::RenderTarget& target );
 
 private:
