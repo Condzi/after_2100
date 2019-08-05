@@ -38,7 +38,7 @@ public:
 	void pause();
 
 private:
-	sf::Music* music;
+	sf::Music* music{ nullptr };
 	// workaround for Signal<>
 	sf::Music::Status previous_status{ sf::Music::Status::Stopped };
 

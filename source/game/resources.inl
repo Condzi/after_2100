@@ -21,9 +21,9 @@
 
 // Music
 {
-	{ "space_ambient_1", "resources/music/space_ambient_1.ogg"},
-	{ "space_ambient_2", "resources/music/space_ambient_2.ogg"},
-	{ "space_ambient_3", "resources/music/space_ambient_3.ogg"}
+	{ "space_ambient_1", "resources/music/space_ambient)1.ogg" },
+	{ "space_ambient_2", "resources/music/space_ambient)2.ogg" },
+	{ "space_ambient_3", "resources/music/space_ambient)3.ogg" }
 },
 
 // Fonts

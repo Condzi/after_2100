@@ -18,6 +18,9 @@ void Music_Source::set_attenuation( r32 attenuation )
 		return;
 	}
 
+	if ( music is nullptr )
+		return;
+
 	music->setAttenuation( attenuation );
 }
 
@@ -28,16 +31,25 @@ void Music_Source::set_minimum_distance( r32 distance )
 		return;
 	}
 
+	if ( music is nullptr )
+		return;
+
 	music->setMinDistance( distance );
 }
 
 void Music_Source::set_loop( bool value )
 {
+	if ( music is nullptr )
+		return;
+
 	music->setLoop( value );
 }
 
 void Music_Source::set_relative_to_audio_listener( bool value )
 {
+	if ( music is nullptr )
+		return;
+
 	music->setRelativeToListener( value );
 }
 
@@ -48,6 +60,9 @@ void Music_Source::set_music_from_name( std::string const& name )
 
 void Music_Source::update( r32 dt )
 {
+	if ( music is nullptr )
+		return;
+
 	unused( dt );
 
 	music->setPosition( get_global_position().x, get_global_position().y, 0 );
@@ -79,16 +94,25 @@ void Music_Source::draw( Drawing_Set& set )
 
 void Music_Source::play()
 {
+	if ( music is nullptr )
+		return;
+
 	music->play();
 }
 
 void Music_Source::stop()
 {
+	if ( music is nullptr )
+		return;
+
 	music->stop();
 }
 
 void Music_Source::pause()
 {
+	if ( music is nullptr )
+		return;
+
 	music->pause();
 }
 }
