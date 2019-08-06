@@ -227,6 +227,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="source\game\prefabs\exploded_sprite.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\game\prefabs\explosion.hpp">
       <SubType>
       </SubType>
@@ -383,6 +387,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="source\game\prefabs\enemy_spawner.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\game\prefabs\exploded_sprite.cpp">
       <SubType>
       </SubType>
     </ClCompile>
