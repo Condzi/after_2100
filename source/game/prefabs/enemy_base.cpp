@@ -44,6 +44,9 @@ Enemy_Base::Enemy_Base()
 	explosion = attach<Explosion>();
 	explosion->set_local_position( sprite->get_global_bounds().size * -0.5 );
 	explosion->set_scale( { 1.5, 1.5 } );
+	
+	explosion->sprite->layer = 4;
+	exploded_sprite->layer = 3;
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;

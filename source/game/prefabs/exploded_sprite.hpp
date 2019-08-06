@@ -18,7 +18,7 @@ class Exploded_Sprite :
 
 public:
 	bool visible{ true };
-	s32  layer{ 10 };
+	s32  layer;
 	r32  scale_per_second{ 0.5 }; // how fast the object decreases
 
 	Exploded_Sprite();
