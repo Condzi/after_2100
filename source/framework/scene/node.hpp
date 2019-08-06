@@ -34,8 +34,9 @@ public:
 	using Node_Ptr = std::unique_ptr<Node>;
 
 	Signal<>     s_destroy;
-	Signal<Vec2> s_move; //< Vec2 is the new position.
+	Signal<Vec2> s_move; //< Vec2 is the offset.
 	Signal<r32>  s_update; //< r32 is delta time
+	Signal<r32>  s_rotate; //< r32 is how many degrees was added
 
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };

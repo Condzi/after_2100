@@ -70,6 +70,19 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	initialized = true;
 }
 
+Exploded_Sprite::Exploded_Sprite()
+{
+	bond_disconnector( s_move.connect( [this]( Vec2 const& offset ) {
+		for ( size_t i = 0; i < vertices.getVertexCount(); i++ )
+			vertices[i].position += static_cast<sf::Vector2f>( offset );
+		} ) );
+}
+
+void Exploded_Sprite::set_transformation_origin( Point const& origin )
+{
+	transform.setOrigin( origin );
+}
+
 void Exploded_Sprite::set_texture_from_pointer( sf::Texture const* texture_ )
 {
 	texture = texture_;
@@ -85,11 +98,15 @@ void Exploded_Sprite::update( r32 dt )
 	if ( not initialized )
 		return;
 
-	transform.scale( Size2{ scale_per_second, scale_per_second } * dt, Size2{ texture->getSize() } * 0.5 + get_global_position() );
+	transform.setPosition( get_global_position() );
+	transform.setRotation( get_rotation() );
+	//transform.scale( Size2{ scale_per_second, scale_per_second } * dt );
 
 	for ( auto& element : elements )
 		for ( auto* vertices : element.vertices )
-			static_cast<Vec2>( vertices->position ) += element.velocity * dt;
+			vertices->position += static_cast<sf::Vector2f>( element.velocity * dt );
+
+	log_info( "Position: {} {}", transform.getPosition().x, transform.getPosition().y );
 }
 
 void Exploded_Sprite::draw( Drawing_Set& set )
@@ -97,6 +114,9 @@ void Exploded_Sprite::draw( Drawing_Set& set )
 	if ( not visible or not initialized )
 		return;
 
-	set.add_drawable( vertices, layer, texture );
-}
+	sf::RenderStates states;
+	states.transform = transform.getTransform();
+	states.texture = texture;
 
+	set.add_drawable( vertices, layer, states );
+}

@@ -19,6 +19,16 @@ Enemy_Base::Enemy_Base()
 	sprite->set_transformation_origin( sprite->get_global_bounds().size * 0.5 );
 	sprite->rotate( -90.0deg );
 
+	exploded_sprite = attach<Exploded_Sprite>();
+	exploded_sprite->name = "exploded_sprite";
+	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
+	exploded_sprite->set_transformation_origin( sprite->get_transformation_origin() );
+	exploded_sprite->rotate( -90.0deg );
+	exploded_sprite->initialize( { 200, 200 } );
+	exploded_sprite->visible = false;
+	exploded_sprite->set_pause( true );
+	exploded_sprite->layer = 20; // @ToDo: Better layer index
+
 	hitbox = sprite->attach<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
 	hitbox->name = "hitbox_" + name;
@@ -39,7 +49,9 @@ Enemy_Base::Enemy_Base()
 		sprite->visible = false;
 		hitbox->set_pause( true );
 		stop_following();
-		explosion->play();
+		//explosion->play();
+		exploded_sprite->visible = true;
+		exploded_sprite->set_pause( false );
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 					   } ) );
 

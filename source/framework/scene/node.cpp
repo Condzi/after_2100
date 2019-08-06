@@ -39,6 +39,7 @@ auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 void Node::rotate( r32 deg, bool affect_children )
 {
 	set_rotation( get_rotation() + deg, affect_children );
+	s_rotate.emit( deg );
 }
 
 void Node::set_rotation( r32 deg, bool affect_children )
@@ -244,7 +245,7 @@ auto Node::get_scale() const -> Size2 const&
 void Node::move( Vec2 const& vec )
 {
 	position += vec;
-	s_move.emit( position );
+	s_move.emit( vec );
 
 	for ( auto& child : child_nodes )
 		if ( child->move_with_parent )

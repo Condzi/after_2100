@@ -11,6 +11,7 @@
 
 #include "explosion.hpp"
 #include "health.hpp"
+#include "exploded_sprite.hpp"
 
 using namespace con;
 
@@ -29,6 +30,7 @@ protected:
 	Area*      hitbox;
 	Health*    health;
 	Explosion* explosion;
+	Exploded_Sprite* exploded_sprite;
 
 private:
 	compile_constant TILT_MULTIPLIER = 0.18f;
