@@ -18,8 +18,8 @@ class Exploded_Sprite :
 
 public:
 	bool visible{ true };
-	s32  layer;
-	r32  scale_per_second{ 0.1 }; // how fast the object decreases
+	s32  layer{ 10 };
+	r32  scale_per_second{ 0.5 }; // how fast the object decreases
 
 	Exploded_Sprite();
 
@@ -34,12 +34,12 @@ private:
 	struct Element
 	{
 		Vec2 velocity;
-		std::array<sf::Vertex*, 4> vertices;
+		sf::RenderStates render_states;
+		Point center;
+		sf::VertexArray vertices{sf::Quads, 4};
 	};
 
 	bool initialized{ false };
 	sf::Texture const* texture{ nullptr };
-	sf::VertexArray        vertices{ sf::Quads, 16 }; // @ToDo: Use std::array when we'll have the ability of rendering vertices directly 
 	std::array<Element, 4> elements;
-	sf::RenderStates states;
 };

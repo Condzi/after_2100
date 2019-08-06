@@ -42,13 +42,14 @@ Enemy_Base::Enemy_Base()
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
-	explosion->set_local_position( -sprite->get_global_bounds().size );
+	explosion->set_local_position( sprite->get_global_bounds().size * -0.5 );
+	explosion->set_scale( { 1.5, 1.5 } );
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;
 		hitbox->set_pause( true );
 		stop_following();
-		//explosion->play();
+		explosion->play();
 		exploded_sprite->visible = true;
 		exploded_sprite->set_pause( false );
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );

@@ -27,9 +27,13 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	};
 
 	size_t vertex_idx{ 0 };
+	size_t element_idx{ 0 };
 	constant next_vertex = [&]() -> sf::Vertex & {
-		report_error_if( vertex_idx >= 16 );
-		return vertices[vertex_idx++];
+		if ( vertex_idx is 4 ) {
+			vertex_idx = 0;
+			++element_idx;
+		}
+		return elements[element_idx].vertices[vertex_idx++];
 	};
 
 	constant initialize_next_vertex = [&]( Point const& pos, Point const& tex ) {
@@ -58,14 +62,14 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	initialize_next_vertex( vert_position( 50, 100 ), texture_position( 50, 100 ) );
 
 	constant random_velocity = [&max_velocity] {
-		return Vec2{ max_velocity } *Vec2{ random_real( -1, 1 ), random_real( -1, 1 ) };
+		return Vec2{ max_velocity } *Vec2{ random_real( 0.2, 1 ), random_real( -1, 1 ) };
 	};
 
-	for ( size_t i = 0; i < 16; i++ )
-		elements[i / 4].vertices[i%4] = &vertices[i];
 
-	for ( auto& element : elements )
+	for ( auto& element : elements ) {
 		element.velocity = random_velocity();
+		element.center = Vec2{ texture->getSize() } *0.25;
+	}
 
 	initialized = true;
 }
@@ -73,15 +77,17 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 Exploded_Sprite::Exploded_Sprite()
 {
 	bond_disconnector( s_move.connect( [this]( Vec2 const& offset ) {
-		for ( size_t i = 0; i < vertices.getVertexCount(); i++ )
-			vertices[i].position += static_cast<sf::Vector2f>( offset );
+		for ( auto& element : elements )
+			for ( size_t i = 0; i < 4; i++ ) {
+				auto& vertex = element.vertices[i];
+				vertex.position += static_cast<sf::Vector2f>( offset );
+			}
 					   } ) );
 }
 
 void Exploded_Sprite::set_texture_from_pointer( sf::Texture const* texture_ )
 {
 	texture = texture_;
-	states.texture = texture;
 }
 
 void Exploded_Sprite::set_texture_from_name( std::string const& name )
@@ -97,9 +103,16 @@ void Exploded_Sprite::update( r32 dt )
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )
 		set_scale( get_scale() - Vec2{ scale_per_second, scale_per_second } *dt );
 
-	for ( auto& element : elements )
-		for ( auto* vertices : element.vertices )
-			vertices->position += static_cast<sf::Vector2f>( element.velocity * dt );
+	for ( auto& element : elements ) {
+		for ( size_t i = 0; i < 4; i++ ) {
+			auto& vertex = element.vertices[i];
+			vertex.position += static_cast<sf::Vector2f>( element.velocity * dt );
+		}
+
+		element.render_states.transform = sf::Transform::Identity;
+		element.render_states.transform.rotate( get_rotation(), element.center + element.vertices[0].position );
+		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
+	}
 }
 
 void Exploded_Sprite::draw( Drawing_Set& set )
@@ -107,10 +120,8 @@ void Exploded_Sprite::draw( Drawing_Set& set )
 	if ( not visible or not initialized )
 		return;
 
-	constant center = Vec2{ texture->getSize().y, texture->getSize().x } *0.25f;
-	states.transform = sf::Transform::Identity;
-	states.transform.rotate( get_rotation(), center );
-	states.transform.scale( get_scale(), center );
-
-	set.add_drawable( vertices, layer, states );
+	for ( auto& element : elements ) {
+		element.render_states.texture = texture;
+		set.add_drawable( element.vertices, layer, element.render_states  );
+	}
 }
