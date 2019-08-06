@@ -112,8 +112,8 @@ void Exploded_Sprite::update( r32 dt )
 		}
 
 		element.render_states.transform = sf::Transform::Identity;
-		element.render_states.transform.rotate( get_rotation(), element.center + element.vertices[0].position );
-		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
+		element.render_states.transform.rotate( get_rotation() * element.random_scalar_for_rotation, element.center + element.vertices[0].position );
+		element.render_states.transform.scale( get_scale() * element.random_scalar_for_scaling, element.center + element.vertices[0].position );
 	}
 }
 
