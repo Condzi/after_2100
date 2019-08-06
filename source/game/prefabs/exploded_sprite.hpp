@@ -20,6 +20,7 @@ public:
 	bool visible{ true };
 	s32  layer;
 	r32  scale_per_second{ 0.5 }; // how fast the object decreases
+	r32  degress_per_second{ 60.0deg };
 
 	Exploded_Sprite();
 
@@ -36,7 +37,7 @@ private:
 		Vec2 velocity;
 		sf::RenderStates render_states;
 		Point center;
-		sf::VertexArray vertices{sf::Quads, 4};
+		sf::VertexArray vertices{ sf::Quads, 4 };
 	};
 
 	bool initialized{ false };

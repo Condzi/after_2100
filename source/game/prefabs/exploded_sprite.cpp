@@ -103,6 +103,8 @@ void Exploded_Sprite::update( r32 dt )
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )
 		set_scale( get_scale() - Vec2{ scale_per_second, scale_per_second } *dt );
 
+	rotate( degress_per_second * dt );
+
 	for ( auto& element : elements ) {
 		for ( size_t i = 0; i < 4; i++ ) {
 			auto& vertex = element.vertices[i];

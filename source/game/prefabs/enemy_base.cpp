@@ -23,10 +23,10 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->name = "exploded_sprite";
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
 	exploded_sprite->rotate( -90.0deg );
-	exploded_sprite->initialize( { 200, 200 } );
+	exploded_sprite->degress_per_second = random_real( -100, 100 );
+	exploded_sprite->initialize( { 170, 90 } );
 	exploded_sprite->visible = false;
 	exploded_sprite->set_pause( true );
-	exploded_sprite->layer = 20; // @ToDo: Better layer index
 
 	hitbox = sprite->attach<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
