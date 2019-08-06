@@ -9,7 +9,7 @@
 	{ "enemy_1",          "resources/texture/enemy_1.png" },
 	{ "missile_player",   "resources/texture/missile_player.png" },
 	{ "explosion",        "resources/texture/explosion.png" },
-	{ "space_background", "resources/texture/space_background.jpg" }
+	{ "space_background", "resources/texture/space_background.png" }
 },
 
 // Sounds

@@ -47,6 +47,7 @@ Level_1::Level_1()
 
 	spr->set_texture_from_name( "space_background" );
 	spr->layer = -1;
+	spr->set_absolute_position( Percent_Position{ -5, -5 } );
 
 	auto music = attach<Music_Source>();
 
