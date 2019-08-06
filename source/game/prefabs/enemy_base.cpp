@@ -22,7 +22,6 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite = attach<Exploded_Sprite>();
 	exploded_sprite->name = "exploded_sprite";
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
-	exploded_sprite->set_transformation_origin( sprite->get_transformation_origin() );
 	exploded_sprite->rotate( -90.0deg );
 	exploded_sprite->initialize( { 200, 200 } );
 	exploded_sprite->visible = false;
