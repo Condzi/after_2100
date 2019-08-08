@@ -26,13 +26,15 @@ bool report_and_break( spdlog::level::level_enum log_level, bool should_break, b
 	std::string local_path{ file };
 	local_path = local_path.substr( local_path.find( "source" ) );
 
+	auto& logger = Debug_Log::get_instance().engine_logger;
+
 	if ( condition ) {
 
-		Debug_Log::get_instance().engine_logger->log( log_level, "==============================" );
-		Debug_Log::get_instance().engine_logger->log( log_level, "Expression: {}", condition_string );
-		Debug_Log::get_instance().engine_logger->log( log_level, "File: {}", local_path );
-		Debug_Log::get_instance().engine_logger->log( log_level, "Line: {}", line );
-		Debug_Log::get_instance().engine_logger->log( log_level, "==============================" );
+		logger->log( log_level, "==============================" );
+		logger->log( log_level, "Expression: {}", condition_string );
+		logger->log( log_level, "File: {}", local_path );
+		logger->log( log_level, "Line: {}", line );
+		logger->log( log_level, "==============================" );
 
 		force_break( should_break );
 	}

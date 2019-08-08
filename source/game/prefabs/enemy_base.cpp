@@ -28,17 +28,11 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->visible = false;
 	exploded_sprite->set_pause( true );
 	// hack - positioning sprite (and animation) right in the center of the real sprite
-	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5) );
+	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 
 	hitbox = sprite->attach<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
 	hitbox->name = "hitbox_" + name;
-
-	bond_disconnector( hitbox->s_area_entered.connect(
-		[this]( Area& second ) {
-			if ( second.name == "hitbox_missile_player" )
-				health->damage( 1 );
-		} ) );
 
 	health = attach<Health>();
 	health->set_max( 2 );
@@ -50,6 +44,12 @@ Enemy_Base::Enemy_Base()
 
 	explosion->sprite->layer = 4;
 	exploded_sprite->layer = 3;
+
+	bond_disconnector( hitbox->s_area_entered.connect(
+		[this]( Area& second ) {
+			if ( second.name == "hitbox_missile_player" )
+				health->damage( 1 );
+		} ) );
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;
