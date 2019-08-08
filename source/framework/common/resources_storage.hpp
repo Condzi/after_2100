@@ -19,10 +19,8 @@ class Resources_Storage final
 {
 	struct Resource_Info final
 	{
-		std::string name;
-		std::string path;
-
-		Resource_Info( std::string const& name_, std::string const& path_ );
+		std::string_view name;
+		std::string_view path;
 	};
 
 	using Resources_Info_Vec = std::vector<Resource_Info>;
@@ -51,7 +49,7 @@ public:
 
 private:
 	template <typename TResource>
-	using Storage = std::unordered_map<std::string, Resource_Validation_Wrapper<TResource>>;
+	using Storage = std::unordered_map<std::string_view, Resource_Validation_Wrapper<TResource>>;
 
 	Storage<sf::Texture>     textures;
 	Storage<sf::SoundBuffer> sound_buffers;

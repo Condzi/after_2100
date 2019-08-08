@@ -57,6 +57,7 @@ auto Resources_Storage::get_music( std::string const& name ) -> sf::Music* const
 
 	return music_to_return;
 }
+
 auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font const* const
 {
 	sf::Font const* font_to_return{ nullptr };
@@ -71,63 +72,58 @@ auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font co
 
 	return font_to_return;
 }
+
 void Resources_Storage::reload()
 {
 	engine_log_info( "Reloading resources." );
 	sf::Clock timer;
 
-	for ( constant[name, path] : resources_data.textures ) {
-		auto& texture = textures[name].resource;
+	for ( constant&[name, path] : resources_data.textures ) {
+		auto& texture = textures[name];
 
-		if ( texture.loadFromFile( path ) returned false ) {
+		if ( texture.resource.loadFromFile( path.data() ) returned false ) {
 			engine_log_error( "The texture \"{}\" can't be loaded from \"{}\".", name, path );
-			textures[name].is_valid = false;
+			texture.is_valid = false;
 		}
 
-		texture.setSmooth( true );
+		texture.resource.setSmooth( true );
 	}
 
-	for ( constant[name, path] : resources_data.sound_buffers ) {
-		auto& sound_buffer = sound_buffers[name].resource;
+	for ( constant&[name, path] : resources_data.sound_buffers ) {
+		auto& sound_buffer = sound_buffers[name];
 
-		if ( sound_buffer.loadFromFile( path ) returned false ) {
+		if ( sound_buffer.resource.loadFromFile( path.data() ) returned false ) {
 			engine_log_error( "The sound buffer \"{}\" can't be loaded from \"{}\".", name, path );
-			sound_buffers[name].is_valid = false;
+			sound_buffer.is_valid = false;
 		}
 	}
 
-	for ( constant[name, path] : resources_data.music ) {
+	for ( constant&[name, path] : resources_data.music ) {
 		// Plural...
-		auto& music_ = music[name].resource;
+		auto& music_ = music[name];
 
-		if ( music_.openFromFile( path ) returned false ) {
+		if ( music_.resource.openFromFile( path.data() ) returned false ) {
 			engine_log_error( "The music \"{}\" can't be loaded from \"{}\".", name, path );
-			music[name].is_valid = false;
+			music_.is_valid = false;
 		}
 	}
 
-	for ( constant[name, path] : resources_data.fonts ) {
-		auto& font = fonts[name].resource;
-		if ( font.loadFromFile( path ) returned false ) {
+	for ( constant&[name, path] : resources_data.fonts ) {
+		auto& font = fonts[name];
+
+		if ( font.resource.loadFromFile( path.data() ) returned false ) {
 			engine_log_error( "The font \"{}\" can't be loaded from \"{}\".", name, path );
-			fonts[name].is_valid = false;
+			font.is_valid = false;
 		}
 	}
 
 	engine_log_info( "Resources reload end. It took {0:.3f}s.", timer.getElapsedTime().asSeconds() );
 }
+
 Resources_Storage& Resources_Storage::get_instance()
 {
 	static Resources_Storage* instance = new Resources_Storage;
 
 	return *instance;
-}
-
-Resources_Storage::Resource_Info::Resource_Info( std::string const& name_, std::string const& path_ ) :
-	name( name_ ), path( path_ )
-{
-	if ( name.empty() or path.empty() ) {
-		engine_log_warning( "Name ({}) and path ({}) can't be empty!", name_, path_ );
-	}
 }
 }
