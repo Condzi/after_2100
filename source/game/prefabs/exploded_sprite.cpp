@@ -37,7 +37,10 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	};
 
 	constant initialize_next_vertex = [&]( Point const& pos, Point const& tex ) {
-		next_vertex() = sf::Vertex{ pos, tex };
+		constant color_variation_value = random_int( -color_variation_range, color_variation_range );
+		constant color_variation = sf::Color( color.r + color_variation_value, color.g + color_variation_value, color.b + color_variation_value );
+
+		next_vertex() = sf::Vertex{ pos, color_variation, tex  };
 	};
 
 	// 16 of the vertices initialized, 4 quads
