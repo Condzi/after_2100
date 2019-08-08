@@ -42,6 +42,7 @@ public:
 	[[nodiscard]] auto get_eleapsed_time() const -> r32;
 	[[nodiscard]] auto get_status() const        -> Status;
 	[[nodiscard]] auto is_looped() const         -> bool;
+	[[nodiscard]] auto get_frame_size() const    -> Size2 const&;
 
 	void play();
 	void pause();

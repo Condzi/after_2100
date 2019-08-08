@@ -102,6 +102,11 @@ auto Animation::is_looped() const -> bool
 	return looped;
 }
 
+auto Animation::get_frame_size() const -> Size2 const&
+{
+	return frame_size;
+}
+
 void Animation::play()
 {
 	report_warning_if( status is Status::Playing );

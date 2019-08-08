@@ -39,7 +39,10 @@ Enemy_Base::Enemy_Base()
 
 	explosion = attach<Explosion>();
 	// hack (see exploded_sprite->set_global position above)
-	explosion->set_global_position( sprite->get_sprite_raw().getPosition() - static_cast<sf::Vector2f>( sprite->get_global_bounds().size ) );
+	explosion->set_global_position( static_cast<Vec2>( sprite->get_sprite_raw().getPosition() ) - sprite->get_global_bounds().size  );
+	// slightly moving it to the left
+	explosion->move( {explosion->get_frame_size().width * -0.25f, 0} );
+
 	explosion->set_scale( { 2.0, 2.0 } );
 
 	explosion->sprite->layer = 4;
