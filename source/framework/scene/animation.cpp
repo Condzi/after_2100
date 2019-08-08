@@ -153,7 +153,12 @@ void Animation::update_fps()
 
 bool Animation::is_valid() const
 {
-	constant atlas_size = Vec2{ sprite->get_texture()->getSize() };
+	if ( sprite->get_texture() is nullptr ) 		{
+		engine_log_error( "Animation atlas texture is not set." );
+		return false;
+	}
+
+ 	constant atlas_size = Vec2{ sprite->get_texture()->getSize() };
 	constant first_frame_pos = begin_position;
 	constant last_frame_pos = Vec2{ begin_position.x + frame_size.width * (frames_count-1), begin_position.y };
 

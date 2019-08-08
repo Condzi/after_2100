@@ -44,6 +44,11 @@ void Sound_Source::set_relative_to_audio_listener( bool value )
 
 void Sound_Source::set_sound_buffer_from_pointer( sf::SoundBuffer const* buffer )
 {
+	report_warning_if( buffer is nullptr )
+	{
+		return;
+	}
+
 	sound.setBuffer( *buffer );
 }
 
