@@ -12,7 +12,7 @@ Explosion::Explosion()
 {
 	name = "explosion";
 	set_texture_from_name( "explosion" );
-	set_duration( 2.0sec );
+	set_duration( 1.f / 64 * 10 );
 	set_frames_count( 10 );
 	set_frame_size( { 128.0px, 128.0px } );
 

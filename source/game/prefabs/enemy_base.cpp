@@ -24,9 +24,11 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
 	exploded_sprite->rotate( -90.0deg );
 	exploded_sprite->degress_per_second = random_real( -360, 360 );
-	exploded_sprite->initialize( { 200, 90 } );
+	exploded_sprite->initialize( { 120, 180 } );
 	exploded_sprite->visible = false;
 	exploded_sprite->set_pause( true );
+	// hack - positioning sprite (and animation) right in the center of the real sprite
+	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5) );
 
 	hitbox = sprite->attach<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
@@ -42,9 +44,10 @@ Enemy_Base::Enemy_Base()
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
-	explosion->set_local_position( sprite->get_global_bounds().size * -0.5 );
-	explosion->set_scale( { 1.5, 1.5 } );
-	
+	// hack (see exploded_sprite->set_global position above)
+	explosion->set_global_position( sprite->get_sprite_raw().getPosition() - static_cast<sf::Vector2f>( sprite->get_global_bounds().size ) );
+	explosion->set_scale( { 2.0, 2.0 } );
+
 	explosion->sprite->layer = 4;
 	exploded_sprite->layer = 3;
 
@@ -58,7 +61,7 @@ Enemy_Base::Enemy_Base()
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 					   } ) );
 
-	bond_disconnector( explosion->s_stop.connect( [this] { queue_for_delete(); } ) );
+	bond_disconnector( exploded_sprite->s_done_scaling.connect( [this] { queue_for_delete(); } ) );
 
 	bond_disconnector( s_on_finish_following.connect(
 		[&] {

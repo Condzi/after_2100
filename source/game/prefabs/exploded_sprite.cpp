@@ -71,7 +71,7 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 		element.center = Vec2{ texture->getSize() } *0.25;
 	}
 
-	initialized = true;
+	elements_initialized = true;
 }
 
 Exploded_Sprite::Exploded_Sprite()
@@ -97,11 +97,15 @@ void Exploded_Sprite::set_texture_from_name( std::string const& name )
 
 void Exploded_Sprite::update( r32 dt )
 {
-	if ( not initialized )
+	if ( elements_initialized is false )
 		return;
 
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )
 		set_scale( get_scale() - Vec2{ scale_per_second, scale_per_second } *dt );
+	else {
+		s_done_scaling.emit();
+		return;
+	}
 
 	rotate( degress_per_second * dt );
 
@@ -115,15 +119,18 @@ void Exploded_Sprite::update( r32 dt )
 		element.render_states.transform.rotate( get_rotation() * element.random_scalar_for_rotation, element.center + element.vertices[0].position );
 		element.render_states.transform.scale( get_scale() * element.random_scalar_for_scaling, element.center + element.vertices[0].position );
 	}
+
+	if ( not transformation_initialized )
+		transformation_initialized = true;
 }
 
 void Exploded_Sprite::draw( Drawing_Set& set )
 {
-	if ( not visible or not initialized )
+	if ( not visible or not transformation_initialized )
 		return;
 
 	for ( auto& element : elements ) {
 		element.render_states.texture = texture;
-		set.add_drawable( element.vertices, layer, element.render_states  );
+		set.add_drawable( element.vertices, layer, element.render_states );
 	}
 }

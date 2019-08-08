@@ -17,9 +17,11 @@ class Exploded_Sprite :
 	CLASS_DEF( Exploded_Sprite );
 
 public:
+	Signal<> s_done_scaling;
+
 	bool visible{ true };
 	s32  layer;
-	r32  scale_per_second{ 0.1 }; // how fast the object decreases
+	r32  scale_per_second{ 0.25 }; // how fast the object decreases
 	r32  degress_per_second{ 60.0deg };
 
 	Exploded_Sprite();
@@ -42,7 +44,8 @@ private:
 		sf::VertexArray vertices{ sf::Quads, 4 };
 	};
 
-	bool initialized{ false };
+	bool elements_initialized{ false };
+	bool transformation_initialized{ false };
 	sf::Texture const* texture{ nullptr };
 	std::array<Element, 4> elements;
 };
