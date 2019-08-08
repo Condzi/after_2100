@@ -19,15 +19,15 @@ class Resources_Storage final
 {
 	struct Resource_Info final
 	{
-		std::string_view name;
-		std::string_view path;
+		std::string_view const name;
+		std::string_view const path;
 	};
 
 	using Resources_Info_Vec = std::vector<Resource_Info>;
 
 	struct Resources_Data final
 	{
-		Resources_Info_Vec textures, sound_buffers, music, fonts;
+		Resources_Info_Vec const textures, sound_buffers, music, fonts;
 	};
 
 	template <typename TResource>

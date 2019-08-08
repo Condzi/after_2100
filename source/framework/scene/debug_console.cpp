@@ -8,6 +8,8 @@
 #include "debug_console.hpp"
 
 #include "framework/common/window.hpp"
+#include "framework/localization/locale.hpp"
+#include "framework/common/resources_storage.hpp"
 
 namespace con::priv
 {
@@ -188,6 +190,8 @@ void Debug_Console::do_command( std::string const& command )
 
 		print( "enable_all" );
 		print( "disable_all" );
+		print( "reload_locale" );
+		print( "reload_resources" );
 
 		return;
 	}
@@ -197,6 +201,10 @@ void Debug_Console::do_command( std::string const& command )
 			G_Debug_Flags.enable_all();
 		else if ( rhs == "disable_all" )
 			G_Debug_Flags.disable_all();
+		else if ( rhs == "reload_locale" )
+			G_Locale.reload();
+		else if ( rhs == "reload_resources" )
+			G_Resources_Storage.reload();
 		else
 			engine_log_info( "{} = {}", lhs, G_Debug_Flags.get( lhs ) );
 		return;
