@@ -26,6 +26,7 @@ Player_Missile::Player_Missile()
 	missile_animation->set_scale( { 0.2, 0.2 } );
 	missile_animation->sprite->set_transformation_origin( missile_animation->sprite->get_global_bounds().size * 0.5 );
 	missile_animation->rotate( 90.0deg );
+	missile_animation->sprite->layer = 2;
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {

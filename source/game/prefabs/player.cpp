@@ -23,6 +23,7 @@ Player::Player()
 	sprite_b->name = "sprite_b";
 	sprite_a->set_texture_from_name( "player" );
 	sprite_b->set_texture_from_name( "player" );
+	sprite_a->layer = sprite_b->layer = 3;
 
 	constant sprite_size = sprite_a->get_global_bounds().size;
 	// After rotating by 90deg width gets swapped with height.

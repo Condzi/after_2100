@@ -18,6 +18,7 @@ Enemy_Base::Enemy_Base()
 	sprite->set_texture_from_name( "enemy_1" );
 	sprite->set_transformation_origin( sprite->get_global_bounds().size * 0.5 );
 	sprite->rotate( -90.0deg );
+	sprite->layer = 3;
 
 	exploded_sprite = attach<Exploded_Sprite>();
 	exploded_sprite->name = "exploded_sprite";
@@ -29,6 +30,7 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->set_pause( true );
 	// hack - positioning sprite (and animation) right in the center of the real sprite
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
+	exploded_sprite->layer = 1;
 
 	hitbox = sprite->attach<Area>();
 	hitbox->shape_color = sf::Color::Cyan;
@@ -38,6 +40,7 @@ Enemy_Base::Enemy_Base()
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
+	explosion->sprite->layer = 4;
 	// hack (see exploded_sprite->set_global position above)
 	explosion->set_global_position( static_cast<Vec2>( sprite->get_sprite_raw().getPosition() ) - sprite->get_global_bounds().size  );
 	// slightly moving it to the left
