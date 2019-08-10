@@ -17,8 +17,8 @@ class Sound_Source final :
 	CLASS_DEF( Sound_Source );
 	
 public:
-	sf::Color shape_color{ sf::Color::Green };
-	s32       layer{ 10 };
+	sf::Color shape_color{ sf::Color::Magenta };
+	s32       layer{ 50 };
 
 	void set_attenuation( r32 attenuation );
 	void set_minimum_distance( r32 distance );

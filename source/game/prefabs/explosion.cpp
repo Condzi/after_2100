@@ -18,8 +18,9 @@ Explosion::Explosion()
 
 	auto sound = attach<Sound_Source>();
 	sound->set_sound_buffer_from_name( "explosion" );
-	sound->set_attenuation( 1 );
-	sound->set_minimum_distance( 1000.0f );
+	sound->set_local_position( get_frame_size() );
+	// Setting it to 0 makes better results that to 1, because it fades out too quickly.
+	sound->set_attenuation( 0 );
 
 	bond_disconnector( s_play.connect( [=]{ sound->play(); } ) );
 }

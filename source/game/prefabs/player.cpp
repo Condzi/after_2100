@@ -45,8 +45,8 @@ Player::Player()
 	gun_b->set_horizontal_velocity( 500 );
 
 	// Again - after rotating by 90deg, width gets swapped with height.
-	gun_a->set_local_position( { sprite_size.height/2, 0 } );
-	gun_b->set_local_position( { sprite_size.height/2, 0 } );
+	gun_a->set_local_position( { sprite_size.height/4, 0 } );
+	gun_b->set_local_position( { sprite_size.height/4, 0 } );
 
 	gun_a->set_cooldown_time( 0.25sec );
 	gun_b->set_cooldown_time( 0.25sec );

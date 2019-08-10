@@ -22,7 +22,7 @@ public:
 	Signal<> s_music_stop;
 
 	sf::Color shape_color{ sf::Color::Yellow };
-	s32       layer{ 10 };
+	s32       layer{ 50 };
 
 	void set_attenuation( r32 attenuation );
 	void set_minimum_distance( r32 distance );

@@ -24,7 +24,7 @@ public:
 	
 	// For debug:
 	sf::Color shape_color{ sf::Color::Red };
-	s32       layer{ 0 };
+	s32       layer{ 50 };
 
 	s32       collision_layer{ 0 };
 

@@ -20,7 +20,7 @@ class Missile_Shooter final :
 public:
 	sf::Color debug_circle_color{ sf::Color::Green };
 	r32       debug_circle_radious{ 10.00px };
-	s32       debug_circle_layer{ 0 };
+	s32       debug_circle_layer{ 50 };
 
 	template <typename TMissile>
 	void set_missile_type()

@@ -33,7 +33,7 @@ auto Debug_Flags::get( std::string_view name ) -> bool&
 		return flag.hash == hash;
 		} );
 
-	report_error_if( not found )
+	report_warning_if( not found )
 	{
 		static bool fallback{ false };
 		return fallback;
