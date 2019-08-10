@@ -8,6 +8,7 @@
 #include "pch.hpp"
 
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 #include "framework/common/assertions.hpp"
 #include "framework/common/vec2.hpp"
@@ -37,10 +38,12 @@ public:
 	Signal<Vec2> s_move; //< Vec2 is the offset.
 	Signal<r32>  s_update; //< r32 is delta time
 	Signal<r32>  s_rotate; //< r32 is how many degrees was added
+	Signal<Drawing_Set&> s_draw;
 
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
 
+	Node();
 	virtual ~Node() = default;
 
 	template <typename TNode>
@@ -97,6 +100,8 @@ private:
 	Point position{ 0.0px, 0.0px };
 	Size2 scale{ 1, 1 };
 	r32   angle{ 0.0deg };
+
+	sf::CircleShape debug_position_visual;
 
 	bool queued_for_delete{ false };
 	bool paused{ false };

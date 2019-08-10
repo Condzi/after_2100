@@ -20,6 +20,10 @@ Enemy_Base::Enemy_Base()
 	sprite->rotate( -90.0deg );
 	sprite->layer = 3;
 
+	hitbox = sprite->attach<Area>();
+	hitbox->shape_color = sf::Color::Cyan;
+	hitbox->name = "hitbox_" + name;
+
 	exploded_sprite = attach<Exploded_Sprite>();
 	exploded_sprite->name = "exploded_sprite";
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
@@ -32,24 +36,14 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 1;
 
-	hitbox = sprite->attach<Area>();
-	hitbox->shape_color = sf::Color::Cyan;
-	hitbox->name = "hitbox_" + name;
 
 	health = attach<Health>();
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
 	explosion->sprite->layer = 4;
-	// hack (see exploded_sprite->set_global position above)
-	explosion->set_global_position( static_cast<Vec2>( sprite->get_sprite_raw().getPosition() ) - sprite->get_global_bounds().size  );
-	// slightly moving it to the left
-	explosion->move( {explosion->get_frame_size().width * -0.25f, 0} );
-
 	explosion->set_scale( { 2.0, 2.0 } );
-
-	explosion->sprite->layer = 4;
-	exploded_sprite->layer = 3;
+	explosion->sprite->set_transformation_origin( explosion->get_frame_size() * 0.5f );
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
