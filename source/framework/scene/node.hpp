@@ -43,7 +43,6 @@ public:
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
 
-	Node();
 	virtual ~Node() = default;
 
 	template <typename TNode>
