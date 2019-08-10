@@ -41,7 +41,6 @@ private:
 		Vec2 velocity;
 		sf::RenderStates render_states;
 		r32 const random_scalar_for_rotation = random_real( -1, 1 );
-		r32 const random_scalar_for_scaling = random_real( 0.1, 1 );
 		Point center;
 		sf::VertexArray vertices{ sf::Quads, 4 };
 	};

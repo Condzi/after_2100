@@ -1,45 +1,27 @@
-RichText
-Load text -> parse tokens (nested are valid, like: "_#Im italic and bold#_") -> make correct sf::Text, in correct order
+RichText:
+{
+Load text -> parse tokens (nested are valid, like: "_#Im italic and bold#_") -> make correct sf::Text, in correct order,
+then update parameters ("You have {} bucks!" -> "You have 0 bucks!")
+
+limited by Rectangle_Shape -> have to fit text in it, or split it to more screens / rectangles that can be showed later.
+margin_left, _right, _top, bottom
+
+Rich_Text.show(time_between_letters)
+Rich_Text.show_all()
+Rich_Text.parse();
+Rich_Text.update_parameters(value, position.x, position.y, etc)
+
+Syntax:
+#bold#
+_italic_
+regular
+{} ~ parameters
+\n - newline hint (if it'll be in the middle of the textbox then it won'y affect anything, but if at the end then it'll move text to
+ the new line )
+
+}
+
 
 Dialog system - make a small utility that replaces text with #loc ids when done
 
-In-game console box?
-
-Camera
-* shake (time, delta_x, delta_y, speed) ?
-* set_center
-* follow(Node&) ?
-* G_Game_Camera, G_GUI_Camera
-* separate drawing_set (GUI always on top)
-
-
-Session 4:
-
-x* animations - Frame(size), Settings(frames count, loop, play time, color)
-x* get rid of syntax: 'attach( Sprite::instantiate() )->cast_to<Sprite>'. make it more: 'attach<Sprite>()'.
-
-
-Session 3:
-
-!* spawning problem - it should be done before update() - add spawning queue or something. now it causes 
-bugs with shooting - areas are in same position and it detects collision, where in next frame there are in
-correct postions.
-x* areas are in 0,0 position for a frame. figure out why
-x* better names for nodes (especially hitbox's names are inconsistent)
-* figure out where deal damage (in which hitbox signal?)
-x* in Signal::bond() use Node* instead Node& because we always have to deref the pointer which is 
-  boilerplate
-x* add s_move to Node (maybe some other signals too?)
-
-Session 2:
-* Missiles, health, explosions:
-    * missile shooter and timed missile shooter nodes.
-* partciles maybe now or later (decide?)
-* make input binding be easy to change?
-x* debug overseer with flags    
-
-==========
-Session 1:
-x* Area2D => 1 Shape (Circle / Rectangle)
-x* Update in Root?
-x* move beggining of lambdas ('[]()') to new line for cleaner formatting
+make camera follow the path so we'll be able to make small cinematics
