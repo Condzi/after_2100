@@ -36,7 +36,6 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 1;
 
-
 	health = attach<Health>();
 	health->set_max( 2 );
 

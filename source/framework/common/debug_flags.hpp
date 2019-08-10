@@ -35,8 +35,7 @@ private:
 		{ "draw_missile_shooters" },
 		{ "draw_audio_sources"    },
 		{ "display_fps"           },
-		{ "display_debug_console" },
-		{ "draw_node_positions"   }
+		{ "display_debug_console" }
 	};
 };
 }

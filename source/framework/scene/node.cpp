@@ -12,24 +12,6 @@
 
 namespace con
 {
-Node::Node()
-{
-		debug_position_visual.setOutlineThickness( 1.0px );
-		debug_position_visual.setOutlineColor( sf::Color::Blue );
-		debug_position_visual.setFillColor( sf::Color::Transparent );
-		debug_position_visual.setRadius( 10.0px );
-		debug_position_visual.setOrigin( 5.0px, 5.0px );
-
-		// @DEBUG: just for now, delete later
-		s_draw.connect( [this]( Drawing_Set& set ) {
-			if ( G_Debug_Flags.get( "draw_node_positions" ) is false )
-				return;
-
-			debug_position_visual.setPosition( get_global_position() );
-			set.add_drawable( debug_position_visual, 50 );
-						} );
-}
-
 auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 {
 	if ( node_to_attach is nullptr ) {

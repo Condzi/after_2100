@@ -100,9 +100,7 @@ private:
 	Point position{ 0.0px, 0.0px };
 	Size2 scale{ 1, 1 };
 	r32   angle{ 0.0deg };
-
-	sf::CircleShape debug_position_visual;
-
+	
 	bool queued_for_delete{ false };
 	bool paused{ false };
 
