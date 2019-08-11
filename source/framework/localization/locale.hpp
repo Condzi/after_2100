@@ -27,7 +27,7 @@ public:
 private:
 	// @ToDo: Set from save / config file so the player doesn't need to select it 
 	// in every session.
-	std::string              current_language{ "pl" };
+	std::string              current_language{ "en" };
 	std::vector<std::string> avaible_languages;
 
 	sf::String                                  fallback_string{ "#no_loc" };

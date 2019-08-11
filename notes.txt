@@ -1,24 +1,41 @@
-RichText:
+Pause:
 {
-Load text -> parse tokens (nested are valid, like: "_#Im italic and bold#_") -> make correct sf::Text, in correct order,
-then update parameters ("You have {} bucks!" -> "You have 0 bucks!")
+  make a screenshot -> pause all entities -> switch to pause menu without removing current level (somehow?)
+}
 
-limited by Rectangle_Shape -> have to fit text in it, or split it to more screens / rectangles that can be showed later.
-margin_left, _right, _top, bottom
+Rich_Text:
+{
+  set locale or ascii text
+          ||
+          \/
+  update parameters ("#You have# {} bucks!" -> "#You have# 0 bucks!")
+          ||
+          \/
+  generate quads with proper color and *style* for every individual letter
 
-Rich_Text.show(time_between_letters)
-Rich_Text.show_all()
-Rich_Text.parse();
-Rich_Text.update_parameters(value, position.x, position.y, etc)
 
-Syntax:
-#bold#
-_italic_
-regular
-{} ~ parameters
-\n - newline hint (if it'll be in the middle of the textbox then it won'y affect anything, but if at the end then it'll move text to
- the new line )
 
+
+
+  Rich_Text.gui_string.update_parameters(value, position.x, position.y, etc)
+  Rich_Text.parse();
+  break_at(pos) - breaks text at given idx by moving it to new line
+  get_letter_bounds(pos) ?
+
+  Syntax:
+  #bold#
+  _italic_
+  regular
+  {} ~ parameters
+
+}
+
+Dialog_Box:
+{
+  margin_left, _right, _top, bottom
+  Rich_Text.show(time_between_letters)
+  Rich_Text.show_all()
+  limited by Rectangle_Shape -> have to fit text in it, or split it to more screens / rectangles that can be showed later
 }
 
 
