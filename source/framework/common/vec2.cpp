@@ -122,6 +122,21 @@ Vec2 Vec2::operator*( Vec2 const& rhs ) const
 	return Vec2( x, y ) *= rhs;
 }
 
+bool Vec2::operator==( Vec2 const& rhs ) const
+{
+	return x is rhs.x and y is rhs.y;
+}
+
+bool Vec2::operator>( Vec2 const& rhs ) const
+{
+	return x > rhs.x and y > rhs.y;
+}
+
+bool Vec2::operator<( Vec2 const& rhs ) const
+{
+	return x < rhs.x and y < rhs.y;
+}
+
 Vec2 truncate( Vec2 const& in, r32 max )
 {
 	Vec2 truncated{ in };

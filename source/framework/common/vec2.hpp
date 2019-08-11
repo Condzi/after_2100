@@ -67,6 +67,9 @@ public:
 	[[nodiscard]] Vec2 operator-( Vec2 const& rhs ) const;
 	[[nodiscard]] Vec2 operator*( Vec2 const& rhs ) const;
 
+	[[nodiscard]] bool operator==( Vec2 const& rhs ) const;
+	[[nodiscard]] bool operator>( Vec2 const& rhs ) const;
+	[[nodiscard]] bool operator<( Vec2 const& rhs ) const;
 };
 
 Vec2 truncate( Vec2 const& in, r32 max );
