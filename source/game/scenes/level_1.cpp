@@ -17,6 +17,7 @@
 #include "framework/scene/music_source.hpp"
 
 #include "framework/scene/rich_text.hpp"
+#include "framework/scene/panel.hpp"
 
 Level_1::Level_1()
 {
@@ -71,24 +72,19 @@ Level_1::Level_1()
 
 	rt->set_font_from_name( "default" );
 	rt->string.set_locale_name( "#loc2" );
-	rt->string.update_locale_parameters( L"69 420 69" );
 	rt->character_size = 50;
-	rt->outline_thickness = 0.0px;
-	rt->set_absolute_position( Percent_Position{ 10, 20 } );
-	rt->outline_color = sf::Color::Cyan;
+	rt->outline_thickness = 3.0px;
 	rt->update_vertices();
 
-	auto rt_area = rt->attach<Area>();
-	rt_area->collision_layer = -1;
-	rt_area->set_rectangle_shape( rt->get_global_bounds() );
-	Point p = rt->find_character_position( 4 );
+	auto panel = rt->attach<Panel>();
+	panel->set_size( rt->get_global_bounds().size );
+	panel->set_color( sf::Color{ 100,100,100 } );
 
-	auto pos_area = attach<Area>();
+	rt->set_absolute_position( Percent_Position{ 25,25 } );
 
-	pos_area->set_circle_shape( {p, 2.0px} );
+	rt->layer = 5;
+	panel->layer = 4;
 
-	log_info( "Character position: {:.1f}, {:.1f}", p.x, p.y );
-	log_info( "Real string: {}", rt->get_string_without_formating_characters().toAnsiString() );
 
 	attach<Player>();
 }

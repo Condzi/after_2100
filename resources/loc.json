@@ -7,7 +7,7 @@
 
     "#loc2" : 
     {
-        "en":"| #bold#\n_#combined#_\n%#%_%% - escaped.\nParameter: #_{}_#.",
+        "en":"Simply #dialog# box.\nI have grey-ish background.\nDo _you_ like it?",
         "pl":"#óęł#, _óęł_, #_óęł#_ :D"
     }
 }
