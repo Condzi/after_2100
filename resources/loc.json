@@ -7,7 +7,7 @@
 
     "#loc2" : 
     {
-        "en":"Regular\n_italic_\n#bold#\n_#combined#_\n%#%_%% - escaped.\nParameter: #_{}_#.",
+        "en":"| #bold#\n_#combined#_\n%#%_%% - escaped.\nParameter: #_{}_#.",
         "pl":"#óęł#, _óęł_, #_óęł#_ :D"
     }
 }

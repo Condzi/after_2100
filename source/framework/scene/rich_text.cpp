@@ -55,8 +55,11 @@ void Rich_Text::update_vertices()
 	bottom_right = Point::ZERO();
 
 	line_spacing = font->getLineSpacing( character_size ) * line_spacing_factor;
-	x = outline_thickness;
-	y = static_cast<r32>( character_size ); // without / 1.25 the bounds are offseted at the top and not pixel-perfect
+	x = 0;
+	// @Hack:
+	// l (small L) is tallest ascii character. we use it to measue from the top - it's required
+	// for correct global_bounds. without it the bounds have a noticable gap on top.
+	y = font->getGlyph( L'l', character_size, false, outline_thickness ).textureRect.height;
 	bool bold{ false }, italic{ false };
 
 	u32 previous_character{ 0 }, current_character{ 0 };
@@ -75,7 +78,7 @@ void Rich_Text::update_vertices()
 				continue;
 			} else if ( current_character == L'\n' ) {
 				y += line_spacing;
-				x = outline_thickness;
+				x = 0;
 				continue;
 			} else if ( current_character == L'%' ) {
 				want_to_escape = true;
@@ -84,15 +87,12 @@ void Rich_Text::update_vertices()
 		}
 
 		want_to_escape = false;
-
 		add_character( previous_character, current_character, bold, italic );
 
 		previous_character = current_character;
 	}
 
 	update_tranform();
-
-	log_info( "Vertices = {}", vertices.getVertexCount() );
 }
 
 void Rich_Text::update( r32 dt )

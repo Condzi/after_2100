@@ -72,8 +72,8 @@ Level_1::Level_1()
 	rt->set_font_from_name( "default" );
 	rt->string.set_locale_name( "#loc2" );
 	rt->string.update_locale_parameters( L"69 420 69" );
-	rt->character_size = 40;
-	rt->outline_thickness = 3.0px;
+	rt->character_size = 50;
+	rt->outline_thickness = 0.0px;
 	rt->set_absolute_position( Percent_Position{ 10, 20 } );
 	rt->outline_color = sf::Color::Cyan;
 	rt->update_vertices();
