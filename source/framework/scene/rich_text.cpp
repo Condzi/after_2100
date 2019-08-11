@@ -23,7 +23,7 @@ auto Rich_Text::get_global_bounds() const -> Rectangle_Shape
 
 auto Rich_Text::find_character_position( size_t idx ) const -> Point
 {
-	report_warning_if ( idx * 6 > vertices.getVertexCount() )
+	report_warning_if ( idx > string_without_formatting_characters.getSize() )
 		return Point::ZERO();
 
 	Point position;
@@ -34,6 +34,11 @@ auto Rich_Text::find_character_position( size_t idx ) const -> Point
 		position = vertices[idx * 6].position;
 
 	return transformable.getTransform().transformPoint( position );
+}
+
+auto Rich_Text::get_string_without_formating_characters() const -> sf::String const&
+{
+	return string_without_formatting_characters;
 }
 
 void Rich_Text::update_vertices()
@@ -122,6 +127,8 @@ void Rich_Text::update_tranform()
 
 void Rich_Text::add_character( u32 previous_character, u32 current_character, bool bold, bool italic )
 {
+	string_without_formatting_characters += current_character;
+
 	x += font->getKerning( previous_character, current_character, character_size );
 
 	r32 whitespace_width = font->getGlyph( L' ', character_size, bold ).advance;

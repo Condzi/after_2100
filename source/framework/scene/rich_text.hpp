@@ -34,6 +34,7 @@ public:
 	
 	[[nodiscard]] auto get_global_bounds() const -> Rectangle_Shape;
 	[[nodiscard]] auto find_character_position( size_t idx ) const -> Point;
+	[[nodiscard]] auto get_string_without_formating_characters() const -> sf::String const&;
 
 	void update_vertices();
 
@@ -45,6 +46,7 @@ private:
 	sf::VertexArray outline_vertices{ sf::Triangles };
 	sf::Font const* font{ nullptr };
 	sf::String copy_of_string; // use for breaking it to new lines
+	sf::String string_without_formatting_characters;
 
 	sf::Transformable transformable;
 	

@@ -88,6 +88,7 @@ Level_1::Level_1()
 	pos_area->set_circle_shape( {p, 2.0px} );
 
 	log_info( "Character position: {:.1f}, {:.1f}", p.x, p.y );
+	log_info( "Real string: {}", rt->get_string_without_formating_characters().toAnsiString() );
 
 	attach<Player>();
 }
