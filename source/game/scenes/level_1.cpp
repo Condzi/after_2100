@@ -16,6 +16,8 @@
 #include "framework/scene/label.hpp"
 #include "framework/scene/music_source.hpp"
 
+#include "framework/scene/rich_text.hpp"
+
 Level_1::Level_1()
 {
 	name = "level_1";
@@ -49,7 +51,6 @@ Level_1::Level_1()
 	spr->layer = 0;
 	spr->set_absolute_position( Percent_Position{ -5, -5 } );
 
-
 	auto music = attach<Music_Source>();
 
 	music->set_music_from_name( "space_ambient_1" );
@@ -67,4 +68,13 @@ Level_1::Level_1()
 		log_info( "Next track: space_ambient_{}", num );
 	 } ) );
 
+	auto rt = attach<Rich_Text>();
+
+	rt->set_font_from_name( "default" );
+	rt->string.set_locale_name( "#loc2" );
+	rt->character_size = 40;
+	rt->outline_thickness = 3.0px;
+	rt->set_absolute_position( Percent_Position{ 10, 50 } );
+	rt->rotate( 30.0deg );
+	rt->update_vertices();
 }

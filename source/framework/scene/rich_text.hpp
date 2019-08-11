@@ -38,16 +38,10 @@ public:
 	void draw_gui( Drawing_Set& set ) override;
 
 private:
-	enum Style
-	{
-		Regular = 0,
-		Bold    = 1 << 0,
-		Italic  = 1 << 1,
-	};
-
 	sf::VertexArray vertices{ sf::Triangles };
 	sf::VertexArray outline_vertices{ sf::Triangles };
 	sf::Font const* font{ nullptr };
+	sf::String copy_of_string; // use for breaking it to new lines
 
 	sf::Transformable transformable;
 	
@@ -55,7 +49,7 @@ private:
 	r32 line_spacing;
 	r32 x, y;
 
-	void add_character( u32 previous_character, u32 current_character, u32 style );
+	void add_character( u32 previous_character, u32 current_character, bool is_bold, bool is_italic  );
 	void add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 italic_shear = 0, r32 outline = 0 );
 };
 }

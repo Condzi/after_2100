@@ -31,13 +31,31 @@ void Rich_Text::update_vertices()
 	x = 0;
 	y = static_cast<r32>( character_size );
 
-	u32 style = Style::Regular;
+	bool bold{ false }, italic{ false };
 
 	u32 previous_character{ 0 }, current_character{ 0 };
+	bool want_to_escape{ false }; // % character (because json formatter is stupid and doesn't allow \)
+
 	for ( size_t i = 0; i < str.getSize(); i++ ) {
 		current_character = str[i];
 
-		add_character( previous_character, current_character, style );
+		if ( not want_to_escape ) {
+			// if any of these characters occur we will continue; to not render it.
+			if ( current_character == L'#' ) {
+				bold = !bold;
+				continue;
+			} else if ( current_character == L'_' ) {
+				italic = !italic;
+				continue;
+			} else if ( current_character == L'%' ) {
+				want_to_escape = true;
+				continue;
+			}
+		}
+
+		want_to_escape = false;
+
+		add_character( previous_character, current_character, bold, italic );
 
 		previous_character = current_character;
 	}
@@ -65,11 +83,11 @@ void Rich_Text::draw_gui( Drawing_Set& set )
 
 	set.add_drawable( vertices, layer, states );
 }
-void Rich_Text::add_character( u32 previous_character, u32 current_character, u32 style )
+void Rich_Text::add_character( u32 previous_character, u32 current_character, bool bold, bool italic )
 {
 	x += font->getKerning( previous_character, current_character, character_size );
 
-	r32 whitespace_width = font->getGlyph( L' ', character_size, style&Style::Bold ).advance;
+	r32 whitespace_width = font->getGlyph( L' ', character_size, bold ).advance;
 	constant letter_spacing = ( whitespace_width / 3.f ) * ( letter_spacing_factor - 1.f );
 	whitespace_width += letter_spacing;
 
@@ -79,12 +97,12 @@ void Rich_Text::add_character( u32 previous_character, u32 current_character, u3
 	}
 
 	if ( outline_thickness is_not 0 ) {
-		constant& glyph = font->getGlyph( current_character, character_size, style & Style::Bold, outline_thickness );
-		add_quad( glyph, outline_color, style & Style::Italic ? 0.209f : 0, outline_thickness );
+		constant& glyph = font->getGlyph( current_character, character_size, bold, outline_thickness );
+		add_quad( glyph, outline_color, italic ? 0.209f : 0, outline_thickness );
 	}
 
-	constant& glyph = font->getGlyph( current_character, character_size, style & Style::Bold, 0 );
-	add_quad( glyph, fill_color, style & Style::Italic ? 0.209f : 0 );
+	constant& glyph = font->getGlyph( current_character, character_size, bold, 0 );
+	add_quad( glyph, fill_color, italic ? 0.209f : 0 );
 
 	// Advance to the next character
 	x += glyph.advance + letter_spacing;
@@ -107,11 +125,11 @@ void Rich_Text::add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 it
 	// if we have outline passed in we are adding outline vertices, if not then text vertices.
 	sf::VertexArray& vert = outline != 0 ? outline_vertices : vertices;
 
-	vert.append({ { x + left  - italic_shear * top    - outline, y + top    - outline }, color, { u1, v1 } } );
-	vert.append({ { x + right - italic_shear * top    - outline, y + top    - outline }, color, { u2, v1 } } );
-	vert.append({ { x + left  - italic_shear * bottom - outline, y + bottom - outline }, color, { u1, v2 } } );
-	vert.append({ { x + left  - italic_shear * bottom - outline, y + bottom - outline }, color, { u1, v2 } } );
-	vert.append({ { x + right - italic_shear * top    - outline, y + top    - outline }, color, { u2, v1 } } );
-	vert.append({ { x + right - italic_shear * bottom - outline, y + bottom - outline }, color, { u2, v2 } } );
+	vert.append( { { x + left  - italic_shear * top    - outline, y + top    - outline }, color, { u1, v1 } } );
+	vert.append( { { x + right - italic_shear * top    - outline, y + top    - outline }, color, { u2, v1 } } );
+	vert.append( { { x + left  - italic_shear * bottom - outline, y + bottom - outline }, color, { u1, v2 } } );
+	vert.append( { { x + left  - italic_shear * bottom - outline, y + bottom - outline }, color, { u1, v2 } } );
+	vert.append( { { x + right - italic_shear * top    - outline, y + top    - outline }, color, { u2, v1 } } );
+	vert.append( { { x + right - italic_shear * bottom - outline, y + bottom - outline }, color, { u2, v2 } } );
 }
 }
