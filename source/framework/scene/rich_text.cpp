@@ -47,6 +47,10 @@ void Rich_Text::update_vertices()
 			} else if ( current_character == L'_' ) {
 				italic = !italic;
 				continue;
+			} else if ( current_character == L'\n' ){
+				y += line_spacing;
+				x = 0;
+				continue;
 			} else if ( current_character == L'%' ) {
 				want_to_escape = true;
 				continue;
