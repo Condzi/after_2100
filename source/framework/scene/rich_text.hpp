@@ -33,6 +33,7 @@ public:
 	void set_font_from_name( std::string const& name );
 	
 	[[nodiscard]] auto get_global_bounds() const -> Rectangle_Shape;
+	[[nodiscard]] auto find_character_position( size_t idx ) const -> Point;
 
 	void update_vertices();
 
@@ -54,6 +55,7 @@ private:
 	// bounds, top left one is always 0.0
 	Point bottom_right; // = size of the rectangle, actually
 
+	void update_tranform();
 	void add_character( u32 previous_character, u32 current_character, bool is_bold, bool is_italic  );
 	void add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 italic_shear = 0, r32 outline = 0 );
 };

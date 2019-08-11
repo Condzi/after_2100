@@ -23,7 +23,6 @@ Level_1::Level_1()
 	name = "level_1";
 	log_info( "{} instantiated.", name );
 
-	attach<Player>();
 
 	///////////////////////////////
 	Path& path = *attach<Path>();
@@ -82,4 +81,13 @@ Level_1::Level_1()
 	auto rt_area = rt->attach<Area>();
 	rt_area->collision_layer = -1;
 	rt_area->set_rectangle_shape( rt->get_global_bounds() );
+	Point p = rt->find_character_position( 4 );
+
+	auto pos_area = attach<Area>();
+
+	pos_area->set_circle_shape( {p, 2.0px} );
+
+	log_info( "Character position: {:.1f}, {:.1f}", p.x, p.y );
+
+	attach<Player>();
 }

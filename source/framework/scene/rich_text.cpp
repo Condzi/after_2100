@@ -21,16 +21,32 @@ auto Rich_Text::get_global_bounds() const -> Rectangle_Shape
 	return { get_global_position(), bottom_right };
 }
 
+auto Rich_Text::find_character_position( size_t idx ) const -> Point
+{
+	report_warning_if ( idx * 6 > vertices.getVertexCount() )
+		return Point::ZERO();
+
+	Point position;
+
+	if ( outline_thickness > 0 )
+		position = outline_vertices[idx * 6].position;
+	else
+		position = vertices[idx * 6].position;
+
+	return transformable.getTransform().transformPoint( position );
+}
+
 void Rich_Text::update_vertices()
 {
 	report_warning_if( font is nullptr or string.get_string().isEmpty() )
 		return;
 
-	sf::String str = string.get_string();
+	copy_of_string = string.get_string();
 
+	// @ToDo: This doesn't work because we should *reserve* instead of resize.
 	// 6 vertices of triangle make a quad
-	vertices.resize( str.getSize() * 6 );
-	outline_vertices.resize( str.getSize() * 6 );
+	// vertices.resize( copy_of_string.getSize() * 6 );
+	// outline_vertices.resize( copy_of_string.getSize() * 6 );
 	bottom_right = Point::ZERO();
 
 	line_spacing = font->getLineSpacing( character_size ) * line_spacing_factor;
@@ -41,8 +57,8 @@ void Rich_Text::update_vertices()
 	u32 previous_character{ 0 }, current_character{ 0 };
 	bool want_to_escape{ false }; // % character (because json formatter is stupid and doesn't allow \)
 
-	for ( size_t i = 0; i < str.getSize(); i++ ) {
-		current_character = str[i];
+	for ( size_t i = 0; i < copy_of_string.getSize(); i++ ) {
+		current_character = copy_of_string[i];
 
 		if ( not want_to_escape ) {
 			// if any of these characters occur we will continue; to not render it.
@@ -68,13 +84,17 @@ void Rich_Text::update_vertices()
 
 		previous_character = current_character;
 	}
+
+	update_tranform();
+
+	log_info( "Vertices = {}", vertices.getVertexCount() );
 }
 
 void Rich_Text::update( r32 dt )
 {
-	transformable.setPosition( get_global_position() );
-	transformable.setScale( get_scale() );
-	transformable.setRotation( get_rotation() );
+	unused( dt );
+
+	update_tranform();
 }
 
 void Rich_Text::draw_gui( Drawing_Set& set )
@@ -91,6 +111,13 @@ void Rich_Text::draw_gui( Drawing_Set& set )
 		set.add_drawable( outline_vertices, layer, states );
 
 	set.add_drawable( vertices, layer, states );
+}
+
+void Rich_Text::update_tranform()
+{
+	transformable.setPosition( get_global_position() );
+	transformable.setScale( get_scale() );
+	transformable.setRotation( get_rotation() );
 }
 
 void Rich_Text::add_character( u32 previous_character, u32 current_character, bool bold, bool italic )
