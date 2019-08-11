@@ -16,6 +16,11 @@ void Rich_Text::set_font_from_name( std::string const& name )
 	font = G_Resources_Storage.get_font( name );
 }
 
+auto Rich_Text::get_global_bounds() const -> Rectangle_Shape
+{
+	return { get_global_position(), bottom_right };
+}
+
 void Rich_Text::update_vertices()
 {
 	report_warning_if( font is nullptr or string.get_string().isEmpty() )
@@ -26,11 +31,11 @@ void Rich_Text::update_vertices()
 	// 6 vertices of triangle make a quad
 	vertices.resize( str.getSize() * 6 );
 	outline_vertices.resize( str.getSize() * 6 );
+	bottom_right = Point::ZERO();
 
 	line_spacing = font->getLineSpacing( character_size ) * line_spacing_factor;
-	x = 0;
-	y = static_cast<r32>( character_size );
-
+	x = outline_thickness;
+	y = static_cast<r32>( character_size ); // without / 1.25 the bounds are offseted at the top and not pixel-perfect
 	bool bold{ false }, italic{ false };
 
 	u32 previous_character{ 0 }, current_character{ 0 };
@@ -47,9 +52,9 @@ void Rich_Text::update_vertices()
 			} else if ( current_character == L'_' ) {
 				italic = !italic;
 				continue;
-			} else if ( current_character == L'\n' ){
+			} else if ( current_character == L'\n' ) {
 				y += line_spacing;
-				x = 0;
+				x = outline_thickness;
 				continue;
 			} else if ( current_character == L'%' ) {
 				want_to_escape = true;
@@ -87,6 +92,7 @@ void Rich_Text::draw_gui( Drawing_Set& set )
 
 	set.add_drawable( vertices, layer, states );
 }
+
 void Rich_Text::add_character( u32 previous_character, u32 current_character, bool bold, bool italic )
 {
 	x += font->getKerning( previous_character, current_character, character_size );
@@ -135,5 +141,8 @@ void Rich_Text::add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 it
 	vert.append( { { x + left  - italic_shear * bottom - outline, y + bottom - outline }, color, { u1, v2 } } );
 	vert.append( { { x + right - italic_shear * top    - outline, y + top    - outline }, color, { u2, v1 } } );
 	vert.append( { { x + right - italic_shear * bottom - outline, y + bottom - outline }, color, { u2, v2 } } );
+
+	// the last added vertex is the bottom_right one
+	bottom_right = Point{ std::max( bottom_right.x, x + right - italic_shear * bottom - outline ), std::max( bottom_right.y, y + bottom - outline ) };
 }
 }

@@ -76,5 +76,10 @@ Level_1::Level_1()
 	rt->character_size = 40;
 	rt->outline_thickness = 3.0px;
 	rt->set_absolute_position( Percent_Position{ 10, 20 } );
+	rt->outline_color = sf::Color::Cyan;
 	rt->update_vertices();
+
+	auto rt_area = rt->attach<Area>();
+	rt_area->collision_layer = -1;
+	rt_area->set_rectangle_shape( rt->get_global_bounds() );
 }

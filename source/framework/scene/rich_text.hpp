@@ -31,6 +31,8 @@ public:
 	s32 layer{ 0 };
 
 	void set_font_from_name( std::string const& name );
+	
+	[[nodiscard]] auto get_global_bounds() const -> Rectangle_Shape;
 
 	void update_vertices();
 
@@ -48,6 +50,9 @@ private:
 	// shared between letters
 	r32 line_spacing;
 	r32 x, y;
+
+	// bounds, top left one is always 0.0
+	Point bottom_right; // = size of the rectangle, actually
 
 	void add_character( u32 previous_character, u32 current_character, bool is_bold, bool is_italic  );
 	void add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 italic_shear = 0, r32 outline = 0 );
