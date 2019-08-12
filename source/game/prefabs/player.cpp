@@ -96,6 +96,9 @@ void Player::update_illusion()
 
 void Player::check_movement_keys()
 {
+	if ( G_Window.is_focused() is false )
+		return;
+
 	acceleration_direction = Vec2::ZERO();
 
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )

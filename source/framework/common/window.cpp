@@ -18,6 +18,8 @@ void Window::initialize( u32 window_width, u32 window_height, u32 fps, std::stri
 
 	window.create( { window_width, window_height }, title, sf::Style::Close, settings );
 	window.setFramerateLimit( fps );
+
+	fps_limit = fps;
 }
 
 auto Window::get_raw_window() -> sf::RenderWindow &
@@ -38,6 +40,16 @@ auto Window::get_bounds() const -> Rectangle_Shape
 auto Window::get_mouse_position() const -> Point
 {
 	return sf::Mouse::getPosition( window );
+}
+
+auto Window::get_fps_limit() const -> u32
+{
+	return fps_limit;
+}
+
+bool Window::is_focused() const
+{
+	return window.hasFocus();
 }
 
 Window& Window::get_instance()

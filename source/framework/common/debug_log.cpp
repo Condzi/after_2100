@@ -23,7 +23,10 @@ public:
 	{
 		fmt::memory_buffer formatted;
 		spdlog::sinks::sink::formatter_->format( msg, formatted );
-		
+	
+		if ( msg.color_range_end > msg.color_range_start )
+			G_Debug_Console.print( "Color range!" );
+
 		G_Debug_Console.print( fmt::to_string( formatted ) );
 	}
 	void flush_() override {}

@@ -30,6 +30,7 @@ Rich_Text:
 
 }
 
+derive from Rich_Text???
 Dialog_Box:
 {
   margin_left, _right, _top, bottom
@@ -37,7 +38,6 @@ Dialog_Box:
   Rich_Text.show_all()
   limited by Rectangle_Shape -> have to fit text in it, or split it to more screens / rectangles that can be showed later
 }
-
 
 Dialog system - make a small utility that replaces text with #loc ids when done
 

@@ -33,20 +33,27 @@ void Application::run()
 {
 	sf::Clock fps_clock;
 	sf::Event event;
+	r32 frame_time{ 0 };
 
 	while ( not exit ) {
-		while ( G_Window.get_raw_window().pollEvent( event ) ) {
-			root.handle_input_children( event );
-			handle_debug_keys( event );
-			G_Debug_Console.input( event );
-		}
+		if ( G_Window.is_focused() )
+			while ( G_Window.get_raw_window().pollEvent( event ) ) {
+				root.handle_input_children( event );
+				handle_debug_keys( event );
+				G_Debug_Console.input( event );
+			}
 
 		root.remove_queued_for_delete();
-		root.update_children( fps_clock.restart().asSeconds() );
+		root.update_children( frame_time );
 		G_Debug_Console.update();
 
 		G_Area_Overleaping_Checker.update();
 		render();
+
+		frame_time = fps_clock.restart().asSeconds();
+		if ( constant fps_limit = G_Window.get_fps_limit();
+			 fps_limit > 0 and frame_time > 1.0f / fps_limit )
+			frame_time = 1.0f / fps_limit;
 	}
 
 	engine_log_info( "Exiting game loop..." );
