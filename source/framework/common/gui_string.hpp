@@ -21,6 +21,7 @@ public:
 	void update_locale_parameters( TArgs ...args );
 
 	void set_ascii( std::string const& str );
+	void set( sf::String const& str );
 
 	[[nodiscard]] auto get_string() const -> sf::String const&;
 

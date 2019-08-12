@@ -87,4 +87,8 @@ Level_1::Level_1()
 
 
 	attach<Player>();
+
+	engine_log_info( "Info!" );
+	engine_log_warning( "Warning!" );
+	engine_log_error( "Error!" );
 }

@@ -20,6 +20,11 @@ void GUI_String::set_ascii( std::string const& str )
 	string = str;
 }
 
+void GUI_String::set( sf::String const& str )
+{
+	string = str;
+}
+
 auto GUI_String::get_string() const -> sf::String const&
 {
 	return string;

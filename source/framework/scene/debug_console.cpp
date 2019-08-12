@@ -15,8 +15,8 @@ namespace con::priv
 {
 Debug_Console::Debug_Console()
 {
-	report_background.setFillColor( sf::Color{ 180, 180, 180, 150 } );
-	input_background.setFillColor( sf::Color{ 140, 140, 140, 150 } );
+	report_background.setFillColor( sf::Color{ 140, 140, 140, 180 } );
+	input_background.setFillColor( sf::Color{ 180, 180, 180, 180 } );
 	input_background.setOutlineColor( sf::Color{ 30,130,30 } );
 
 	report_background.setSize( { 1280, VERTICAL_SPACING + ( LINES-1 ) * ( CHAR_SIZE + VERTICAL_SPACING ) } );
@@ -25,13 +25,14 @@ Debug_Console::Debug_Console()
 
 	font.loadFromFile( "resources/Oxanium-Regular.ttf" );
 
-	for ( auto& text : visible_lines ) {
-		text.setCharacterSize( CHAR_SIZE );
-		text.setFont( font );
-		text.setFillColor( sf::Color::White );
-		text.setOutlineThickness( 1.0px );
-		text.setOutlineColor( sf::Color::Black );
-	}
+	visible_lines = Rich_Text::instantiate();
+
+	visible_lines->character_size = CHAR_SIZE;
+	visible_lines->set_font_from_pointer( &font );
+	visible_lines->fill_color = sf::Color::White;
+	visible_lines->outline_color = sf::Color::Black;
+	visible_lines->outline_thickness = 1.0px;
+	visible_lines->layer = layer;
 
 	input_text.setCharacterSize( CHAR_SIZE );
 	input_text.setFont( font );
@@ -60,7 +61,7 @@ void Debug_Console::set_input_outline_selection_color( sf::Color const& color )
 	input_background.setOutlineColor( color );
 }
 
-void Debug_Console::print( std::string const& new_message )
+void Debug_Console::print( sf::String const& new_message )
 {
 	history.emplace_back( new_message );
 
@@ -110,7 +111,7 @@ void Debug_Console::input( sf::Event const& event )
 			do_command( input_string );
 			input_string.clear();
 		} else if ( event.key.code == sf::Keyboard::Up and
-					scroll_offset < static_cast<s32>( history.size() ) - static_cast<s32>( visible_lines.size() ) ) {
+					scroll_offset < static_cast<s32>( history.size() ) - static_cast<s32>( LINES ) ) {
 			scroll_offset++;
 			update_lines();
 		} else if ( event.key.code == sf::Keyboard::Down and scroll_offset > 0 ) {
@@ -143,8 +144,7 @@ void Debug_Console::draw( Drawing_Set& set )
 	set.add_drawable( report_background, layer );
 	set.add_drawable( input_background, layer );
 
-	for ( auto& text : visible_lines )
-		set.add_drawable( text, layer );
+	visible_lines->draw_gui( set );
 
 	set.add_drawable( input_sign, layer );
 	set.add_drawable( input_text, layer );
@@ -162,23 +162,29 @@ void Debug_Console::put_labels_on_correct_positions()
 	input_sign.setPosition( { LEFT_MARGIN, input_background.getPosition().y } );
 	input_text.setPosition( { LEFT_MARGIN, input_sign.getPosition().y } );
 
-	for ( auto i = visible_lines.rbegin(); i != visible_lines.rend(); i++ ) {
-		sf::Text& line = *i;
-		constant idx = static_cast<size_t>( std::distance( visible_lines.rbegin(), i ) );
-
-		line.setPosition( { LEFT_MARGIN, static_cast<r32>( VERTICAL_SPACING + idx * ( VERTICAL_SPACING + CHAR_SIZE ) ) } );
-	}
+	visible_lines->set_global_position( { LEFT_MARGIN, 0 } );
 }
 
 void Debug_Console::update_lines()
 {
-	for ( size_t i = 0; i < visible_lines.size() and i < history.size(); i++ )
-		visible_lines[i].setString( *( history.rbegin() + i + scroll_offset ) );
+	constant append_new_line = [this]( sf::String line ) {
+		auto current_string = visible_lines->string.get_string();
+		line += current_string;
+
+		visible_lines->string.set( line );
+	};
+
+	visible_lines->string.set( "" ); // clearing the string. @ToDo: add method to do that?
+
+	for ( size_t i = 0; i < LINES and i < history.size(); i++ )
+		append_new_line( *( history.rbegin() + i + scroll_offset ) );
+
+	visible_lines->update_vertices();
 }
 
 void Debug_Console::do_command( std::string const& command )
 {
-	print( command );
+	print( command + '\n' );
 
 	constant first_space_idx = command.find_first_of( ' ' );
 	constant lhs = lower_string( command.substr( 0, first_space_idx ) );
@@ -188,10 +194,10 @@ void Debug_Console::do_command( std::string const& command )
 		for ( constant str : G_Debug_Flags.get_flags_names() )
 			print( str );
 
-		print( "enable_all" );
-		print( "disable_all" );
-		print( "reload_locale" );
-		print( "reload_resources" );
+		print( "enable_all\n" );
+		print( "disable_all\n" );
+		print( "reload_locale\n" );
+		print( "reload_resources\n" );
 
 		return;
 	}

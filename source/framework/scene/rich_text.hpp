@@ -31,13 +31,12 @@ public:
 	s32 layer{ 0 };
 
 	void set_font_from_name( std::string const& name );
+	void set_font_from_pointer( sf::Font const* ptr );
 
 	[[nodiscard]] auto get_global_bounds() const -> Rectangle_Shape;
 	[[nodiscard]] auto find_character_position( size_t idx ) const -> Point;
 	[[nodiscard]] auto get_string_without_formating_characters() const -> sf::String const&;
 
-	// replaces character at idx with \n. reports warning if [idx] is not space.
-	void break_at( size_t idx );
 	void update_vertices();
 
 	void update( r32 dt ) override;

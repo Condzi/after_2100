@@ -13,7 +13,12 @@ namespace con
 {
 void Rich_Text::set_font_from_name( std::string const& name )
 {
-	font = G_Resources_Storage.get_font( name );
+	set_font_from_pointer( G_Resources_Storage.get_font( name ) );
+}
+
+void Rich_Text::set_font_from_pointer( sf::Font const* ptr )
+{
+	font = ptr;
 }
 
 auto Rich_Text::get_global_bounds() const -> Rectangle_Shape
@@ -43,7 +48,7 @@ auto Rich_Text::get_string_without_formating_characters() const -> sf::String co
 
 void Rich_Text::update_vertices()
 {
-	report_warning_if( font is nullptr or string.get_string().isEmpty() )
+	if( font is nullptr or string.get_string().isEmpty() )
 		return;
 
 	constant& str = string.get_string();
@@ -52,6 +57,8 @@ void Rich_Text::update_vertices()
 	// 6 vertices of triangle make a quad
 	// vertices.resize( copy_of_string.getSize() * 6 );
 	// outline_vertices.resize( copy_of_string.getSize() * 6 );
+	vertices.clear();
+	outline_vertices.clear();
 	bottom_right = Point::Zero();
 
 	line_spacing = font->getLineSpacing( character_size ) * line_spacing_factor;
@@ -73,14 +80,14 @@ void Rich_Text::update_vertices()
 			if ( current_character == L'#' ) {
 				bold = !bold;
 				continue;
-			} else if ( current_character == L'_' ) {
+			} else if ( current_character == L'€' ) {
 				italic = !italic;
 				continue;
 			} else if ( current_character == L'\n' ) {
 				y += line_spacing;
 				x = 0;
 				continue;
-			} else if ( current_character == L'%' ) {
+			} else if ( current_character == L'`' ) {
 				want_to_escape = true;
 				continue;
 			}

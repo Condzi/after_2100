@@ -23,11 +23,12 @@ public:
 	{
 		fmt::memory_buffer formatted;
 		spdlog::sinks::sink::formatter_->format( msg, formatted );
-	
-		if ( msg.color_range_end > msg.color_range_start )
-			G_Debug_Console.print( "Color range!" );
+		std::string string_to_print = fmt::to_string( formatted );
 
-		G_Debug_Console.print( fmt::to_string( formatted ) );
+		if ( msg.level > spdlog::level::info )
+			string_to_print = "#" + string_to_print + "#";
+
+		G_Debug_Console.print( string_to_print );
 	}
 	void flush_() override {}
 };

@@ -10,6 +10,7 @@
 
 #include "framework/common/drawing_set.hpp"
 #include "framework/common/debug_flags.hpp"
+#include "framework/scene/rich_text.hpp"
 
 namespace con::priv
 {
@@ -24,7 +25,7 @@ public:
 	void set_input_background_color( sf::Color const& color );
 	void set_input_outline_selection_color( sf::Color const& color );
 
-	void print( std::string const& new_message );
+	void print( sf::String const& new_message );
 
 	void input( sf::Event const& event );
 	void update();
@@ -35,9 +36,9 @@ public:
 private:
 	Debug_Console();
 
-	compile_constant LINES = 12; // 15 + 1 for input
+	compile_constant LINES = 12; // 12 + 1 for input
 	compile_constant CHAR_SIZE = 16;
-	compile_constant VERTICAL_SPACING = 4;
+	compile_constant VERTICAL_SPACING = 5;
 	compile_constant HEIGHT = LINES * ( CHAR_SIZE + VERTICAL_SPACING );
 	compile_constant LEFT_MARGIN = 1.0px;
 
@@ -52,8 +53,8 @@ private:
 	bool input_focused{ true };
 
 	s32 scroll_offset{ 0 };
-	std::vector<std::string> history; // FILO ~ first message is the oldest one.
-	std::array<sf::Text, LINES - 1> visible_lines; // The first message is the bottom one.
+	std::vector<sf::String> history; // FILO ~ first message is the oldest one.
+	std::unique_ptr<Rich_Text> visible_lines;
 	sf::Text input_sign;
 	sf::Text input_text;
 
