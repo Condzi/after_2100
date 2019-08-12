@@ -24,7 +24,6 @@ Level_1::Level_1()
 	name = "level_1";
 	log_info( "{} instantiated.", name );
 
-
 	///////////////////////////////
 	Path& path = *attach<Path>();
 
@@ -70,25 +69,5 @@ Level_1::Level_1()
 
 	auto rt = attach<Rich_Text>();
 
-	rt->set_font_from_name( "default" );
-	rt->string.set_locale_name( "#loc2" );
-	rt->character_size = 50;
-	rt->outline_thickness = 3.0px;
-	rt->update_vertices();
-
-	auto panel = rt->attach<Panel>();
-	panel->set_size( rt->get_global_bounds().size );
-	panel->set_color( sf::Color{ 100,100,100 } );
-
-	rt->set_absolute_position( Percent_Position{ 25,25 } );
-
-	rt->layer = 5;
-	panel->layer = 4;
-
-
 	attach<Player>();
-
-	engine_log_info( "Info!" );
-	engine_log_warning( "Warning!" );
-	engine_log_error( "Error!" );
 }

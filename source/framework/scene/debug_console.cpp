@@ -167,6 +167,7 @@ void Debug_Console::put_labels_on_correct_positions()
 
 void Debug_Console::update_lines()
 {
+	// it's a weird way to append lines, but it works like that so I don't touch it.
 	constant append_new_line = [this]( sf::String line ) {
 		auto current_string = visible_lines->string.get_string();
 		line += current_string;
