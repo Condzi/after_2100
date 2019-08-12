@@ -208,6 +208,19 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 	return current_node;
 }
 
+auto Node::get_child_nodes_names() const -> std::vector<std::string>
+{
+	std::vector<std::string> vec;
+
+	vec.reserve( child_nodes.size() );
+
+	for ( auto& child : child_nodes )
+		if ( not child->queued_for_delete )
+			vec.emplace_back( child->name );
+
+	return vec;
+}
+
 auto Node::get_node( std::string const& path ) -> Node* const
 {
 	constant node = get_node_or_null( path );

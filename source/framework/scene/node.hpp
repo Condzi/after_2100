@@ -54,6 +54,7 @@ public:
 	[[nodiscard]] auto get_parent()                         -> Node* const;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node* const;
 	[[nodiscard]] auto get_node( std::string const& path )  -> Node* const;
+	[[nodiscard]] auto get_child_nodes_names() const        -> std::vector<std::string>;
 
 	[[nodiscard]] auto get_global_position() const          -> Point const&;
 	[[nodiscard]] auto get_local_position() const           -> Point const&;
