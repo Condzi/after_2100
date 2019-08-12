@@ -193,7 +193,7 @@ void Debug_Console::do_command( std::string const& command )
 
 	if ( lhs == "help" ) {
 		for ( constant str : G_Debug_Flags.get_flags_names() )
-			print( str );
+			print( str + '\n' );
 
 		print( "enable_all\n" );
 		print( "disable_all\n" );

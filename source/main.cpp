@@ -27,7 +27,7 @@ int main()
 	splash_screen();
 
 	G_App.initialize();
-	G_Root.change_scene( Level_1::instantiate() );
+	G_Root.attach<Level_1>();
 	G_App.run();
 }
 

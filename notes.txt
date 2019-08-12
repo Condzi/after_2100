@@ -35,7 +35,11 @@ Dialog_Box:
 {
 }
 
-add colors to Debug Console by using Rich_Text
+Button:
+{
+Label + panel ?
+}
+
 Dialog system - make a small utility that replaces text with #loc ids when done
 
 make camera follow the path so we'll be able to make small cinematics
