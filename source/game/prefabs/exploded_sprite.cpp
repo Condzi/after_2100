@@ -88,6 +88,16 @@ Exploded_Sprite::Exploded_Sprite()
 					   } ) );
 }
 
+void Exploded_Sprite::explode()
+{
+	exploding = true;
+}
+
+auto Exploded_Sprite::is_exploding() const -> bool
+{
+	return exploding;
+}
+
 void Exploded_Sprite::set_texture_from_pointer( sf::Texture const* texture_ )
 {
 	texture = texture_;
@@ -100,7 +110,7 @@ void Exploded_Sprite::set_texture_from_name( std::string const& name )
 
 void Exploded_Sprite::update( r32 dt )
 {
-	if ( elements_initialized is false )
+	if ( elements_initialized is false or not exploding)
 		return;
 
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )

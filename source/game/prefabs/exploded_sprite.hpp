@@ -29,6 +29,10 @@ public:
 	Exploded_Sprite();
 
 	void initialize( Vec2 const& max_velocity );
+	void explode();
+
+	[[nodiscard]] auto is_exploding() const -> bool;
+
 	void set_texture_from_pointer( sf::Texture const* texture_ );
 	void set_texture_from_name( std::string const& name );
 
@@ -45,6 +49,7 @@ private:
 		sf::VertexArray vertices{ sf::Quads, 4 };
 	};
 
+	bool exploding = false;
 	bool elements_initialized{ false };
 	bool transformation_initialized{ false };
 	sf::Texture const* texture{ nullptr };

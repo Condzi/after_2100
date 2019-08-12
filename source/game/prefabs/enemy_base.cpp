@@ -31,7 +31,6 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->degress_per_second = random_real( -360, 360 );
 	exploded_sprite->initialize( { 120, 180 } );
 	exploded_sprite->visible = false;
-	exploded_sprite->set_pause( true );
 	// hack - positioning sprite (and animation) right in the center of the real sprite
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 1;
@@ -52,11 +51,12 @@ Enemy_Base::Enemy_Base()
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;
-		hitbox->set_pause( true );
+		hitbox->collision_layer = -1;
+		hitbox->shape_color.a -= 200;
 		stop_following();
 		explosion->play();
 		exploded_sprite->visible = true;
-		exploded_sprite->set_pause( false );
+		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 					   } ) );
 

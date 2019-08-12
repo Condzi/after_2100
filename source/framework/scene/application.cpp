@@ -64,9 +64,19 @@ auto Application::get_root() -> Root &
 	return root;
 }
 
+auto Application::is_paused() const -> bool
+{
+	return paused;
+}
+
 void Application::exit_game()
 {
 	exit = true;
+}
+
+void Application::toggle_pause()
+{
+	paused = !paused;
 }
 
 Application& Application::get_instance()
@@ -87,7 +97,7 @@ void Application::handle_debug_keys( sf::Event const& event )
 	switch ( event.key.code ) {
 	case sf::Keyboard::Escape:
 	{
-		exit_game();
+		toggle_pause();
 		break;
 	}
 	case sf::Keyboard::F1:
