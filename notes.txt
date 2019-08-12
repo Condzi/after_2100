@@ -19,7 +19,6 @@ Rich_Text:
 
   Rich_Text.gui_string.update_parameters(value, position.x, position.y, etc)
   Rich_Text.parse();
-  break_at(pos) - breaks text at given idx by moving it to new line
   get_letter_bounds(pos) ?
 
   Syntax:
@@ -33,12 +32,9 @@ Rich_Text:
 derive from Rich_Text???
 Dialog_Box:
 {
-  margin_left, _right, _top, bottom
-  Rich_Text.show(time_between_letters)
-  Rich_Text.show_all()
-  limited by Rectangle_Shape -> have to fit text in it, or split it to more screens / rectangles that can be showed later
 }
 
+add colors to Debug Console by using Rich_Text
 Dialog system - make a small utility that replaces text with #loc ids when done
 
 make camera follow the path so we'll be able to make small cinematics

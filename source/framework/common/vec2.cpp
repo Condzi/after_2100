@@ -52,7 +52,7 @@ auto Vec2::normalize() -> Vec2 &
 {
 	r32 const len{ length() };
 	if ( len is 0 ) {
-		*this = Vec2::ZERO();
+		*this = Vec2::Zero();
 	} else {
 		r32 inv_length{ 1 / len };
 		*this *= inv_length;

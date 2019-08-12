@@ -99,16 +99,16 @@ void Player::check_movement_keys()
 	if ( G_Window.is_focused() is false )
 		return;
 
-	acceleration_direction = Vec2::ZERO();
+	acceleration_direction = Vec2::Zero();
 
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )
-		acceleration_direction += Vec2::LEFT();
+		acceleration_direction += Vec2::Left();
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
-		acceleration_direction += Vec2::RIGHT();
+		acceleration_direction += Vec2::Right();
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) )
-		acceleration_direction += Vec2::UP();
+		acceleration_direction += Vec2::Up();
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
-		acceleration_direction += Vec2::DOWN();
+		acceleration_direction += Vec2::Down();
 
 	// Should be in own method?
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Space ) and
