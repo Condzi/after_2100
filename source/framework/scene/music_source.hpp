@@ -24,6 +24,8 @@ public:
 	sf::Color shape_color{ sf::Color::Yellow };
 	s32       layer{ 50 };
 
+	Music_Source();
+
 	void set_attenuation( r32 attenuation );
 	void set_minimum_distance( r32 distance );
 	void set_loop( bool value );

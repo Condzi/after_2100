@@ -2,20 +2,19 @@
 	Conrad 'Condzi' Kubacki 2019
 	https://github.com/condzi
 */
-
 #pragma once
 
 #include "framework/scene/node.hpp"
 
 using namespace con;
 
-class Level_1 final :
+class Pause_Screen final :
 	public Node
 {
-	CLASS_DEF( Level_1 );
+	CLASS_DEF( Pause_Screen );
 
 public:
-	Level_1();
+	Pause_Screen();
 
-	void update( r32 dt ) override;
+	void input( sf::Event const& ev ) override;
 };

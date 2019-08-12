@@ -12,6 +12,16 @@
 
 namespace con
 {
+Sound_Source::Sound_Source()
+{
+	bond_disconnector( s_paused.connect( [this]( bool status ) {
+		if ( status is true and sound.getStatus() is sf::Music::Playing )
+			sound.pause();
+		else if ( status is false and sound.getStatus() is sf::Music::Paused )
+			sound.play();
+					   } ) );
+}
+
 void Sound_Source::set_attenuation( r32 attenuation )
 {
 	report_error_if( attenuation < 0 or attenuation > 100 )

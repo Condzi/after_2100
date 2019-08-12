@@ -72,7 +72,10 @@ void Node::apply_scale( Size2 const& scale_, bool affect_children )
 
 void Node::set_pause( bool val, bool affect_children )
 {
-	paused = val;
+	if ( paused is_not val ) {
+		paused = val;
+		s_paused.emit( paused );
+	}
 
 	if ( affect_children )
 		for ( auto& child : child_nodes )

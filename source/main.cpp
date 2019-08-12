@@ -9,6 +9,7 @@
 #include "framework/localization/locale.hpp"
 
 #include "game/scenes/level_1.hpp"
+#include "game/scenes/pause_screen.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -27,6 +28,7 @@ int main()
 	splash_screen();
 
 	G_App.initialize();
+	G_Root.attach<Pause_Screen>();
 	G_Root.attach<Level_1>();
 	G_App.run();
 }

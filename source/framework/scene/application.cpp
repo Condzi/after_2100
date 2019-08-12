@@ -95,11 +95,6 @@ void Application::handle_debug_keys( sf::Event const& event )
 		return;
 
 	switch ( event.key.code ) {
-	case sf::Keyboard::Escape:
-	{
-		toggle_pause();
-		break;
-	}
 	case sf::Keyboard::F1:
 	{
 		G_Debug_Flags.toggle( "display_debug_console" );

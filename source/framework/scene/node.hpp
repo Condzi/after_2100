@@ -38,6 +38,7 @@ public:
 	Signal<Vec2> s_move; //< Vec2 is the offset.
 	Signal<r32>  s_update; //< r32 is delta time
 	Signal<r32>  s_rotate; //< r32 is how many degrees was added
+	Signal<bool> s_paused;
 	Signal<Drawing_Set&> s_draw;
 
 	std::string name{ "unnamed_node" };

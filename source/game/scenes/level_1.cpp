@@ -71,3 +71,11 @@ Level_1::Level_1()
 
 	attach<Player>();
 }
+
+void Level_1::update( r32 dt )
+{
+	// We don't unpause here - we do it in Pause_Screen class by
+	// calling G_Root.set_pause(false).
+	if ( G_App.is_paused() )
+		set_pause( true );
+}
