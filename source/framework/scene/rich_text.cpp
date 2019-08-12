@@ -80,14 +80,14 @@ void Rich_Text::update_vertices()
 			if ( current_character == L'#' ) {
 				bold = !bold;
 				continue;
-			} else if ( current_character == L'€' ) {
+			} else if ( current_character == L'$' ) {
 				italic = !italic;
 				continue;
 			} else if ( current_character == L'\n' ) {
 				y += line_spacing;
 				x = 0;
 				continue;
-			} else if ( current_character == L'`' ) {
+			} else if ( current_character == L'%' ) {
 				want_to_escape = true;
 				continue;
 			}

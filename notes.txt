@@ -23,7 +23,8 @@ Rich_Text:
 
   Syntax:
   #bold#
-  _italic_
+  $italic$
+  %# %$ - escaped
   regular
   {} ~ parameters
 
@@ -38,3 +39,7 @@ add colors to Debug Console by using Rich_Text
 Dialog system - make a small utility that replaces text with #loc ids when done
 
 make camera follow the path so we'll be able to make small cinematics
+
+pausing and resuming the game - add a special scene / node for pause?
+or pause the node right below the root, then add other "pause" node when pausing.
+when resuming - simple remove the pause node and unpause the level node.
