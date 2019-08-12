@@ -1,35 +1,3 @@
-Pause:
-{
-  make a screenshot -> pause all entities -> switch to pause menu without removing current level (somehow?)
-}
-
-Rich_Text:
-{
-  set locale or ascii text
-          ||
-          \/
-  update parameters ("#You have# {} bucks!" -> "#You have# 0 bucks!")
-          ||
-          \/
-  generate quads with proper color and *style* for every individual letter
-
-
-
-
-
-  Rich_Text.gui_string.update_parameters(value, position.x, position.y, etc)
-  Rich_Text.parse();
-  get_letter_bounds(pos) ?
-
-  Syntax:
-  #bold#
-  $italic$
-  %# %$ - escaped
-  regular
-  {} ~ parameters
-
-}
-
 derive from Rich_Text???
 Dialog_Box:
 {
@@ -43,7 +11,3 @@ Label + panel ?
 Dialog system - make a small utility that replaces text with #loc ids when done
 
 make camera follow the path so we'll be able to make small cinematics
-
-pausing and resuming the game - add a special scene / node for pause?
-or pause the node right below the root, then add other "pause" node when pausing.
-when resuming - simple remove the pause node and unpause the level node.

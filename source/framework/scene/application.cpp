@@ -36,8 +36,10 @@ void Application::run()
 	r32 frame_time{ 0 };
 
 	while ( not exit ) {
-		if ( G_Window.is_focused() )
 			while ( G_Window.get_raw_window().pollEvent( event ) ) {
+				if ( G_Window.is_focused() returned false )
+					break;
+
 				root.handle_input_children( event );
 				handle_debug_keys( event );
 				G_Debug_Console.input( event );
