@@ -10,7 +10,7 @@
 namespace con::priv
 {
 bool force_break( bool condition );
-bool report_and_break( spdlog::level::level_enum log_level, bool should_break, bool condition, const char* condition_string, const char* file, s64 line );
+bool report_and_break( spdlog::level::level_enum log_level, bool should_break, bool condition, std::string_view const condition_string, std::string_view const file, s64 line );
 }
 
 //

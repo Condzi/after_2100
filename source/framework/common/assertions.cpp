@@ -20,17 +20,17 @@ bool force_break( bool condition )
 	return condition;
 }
 
-bool report_and_break( spdlog::level::level_enum log_level, bool should_break, bool condition, const char* condition_string, const char* file, s64 line )
+bool report_and_break( spdlog::level::level_enum log_level, bool should_break, bool condition, std::string_view condition_string, std::string_view file, s64 line )
 {
 	if ( condition is false )
 		return false;
 
 	static constant local_path_begin = [&]() {
-		return std::string_view{ file }.find( "source" );
+		return file.find( "source" );
 	}( );
 
-	constant file_path_length = strlen( file );
-	std::string_view const local_path{ file+local_path_begin, file_path_length - local_path_begin };
+	constant file_path_length = file.size();
+	std::string_view const local_path{ file.data() + local_path_begin, file_path_length - local_path_begin };
 
 	auto& logger = Debug_Log::get_instance().engine_logger;
 
