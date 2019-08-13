@@ -12,6 +12,5 @@ Dialog system - make a small utility that replaces text with #loc ids when done
 
 make camera follow the path so we'll be able to make small cinematics
 
-Diagnostics:
-report_and_break -> substr operation takes too long
-use vector since unqiue_id in signals is counting from 0. unordered_map seems to be slow.
+the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.
+update: it looks like the only fix for that is moving the evnet loop to another thread (sic!)

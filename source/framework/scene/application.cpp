@@ -53,9 +53,6 @@ void Application::run()
 		render();
 
 		frame_time = fps_clock.restart().asSeconds();
-		if ( constant fps_limit = G_Window.get_fps_limit();
-			 fps_limit > 0 and frame_time > 1.0f / fps_limit )
-			frame_time = 1.0f / fps_limit;
 	}
 
 	engine_log_info( "Exiting game loop..." );
