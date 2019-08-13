@@ -5,6 +5,7 @@
 
 #include "pch.hpp"
 
+#include "framework/scene/application.hpp"
 #include "camera.hpp"
 
 namespace con
@@ -19,6 +20,16 @@ void Camera::set_view( sf::View const& v )
 void Camera::set_center( Point const& point )
 {
 	set_global_position( point );
+}
+
+void Camera::set_zoom( r32 val )
+{
+	zoom_val = val;
+}
+
+void Camera::zoom( r32 val )
+{
+	zoom_val += val;
 }
 
 auto Camera::get_center() const -> Point
@@ -39,6 +50,11 @@ auto Camera::get_view() const -> sf::View
 	return view;
 }
 
+auto Camera::get_zoom() const -> r32
+{
+	return zoom_val;
+}
+
 void Camera::add_shake_trauma( r32 trauma )
 {
 	shake.trauma = std::min( shake.trauma + trauma, 1.0f );
@@ -51,13 +67,20 @@ void Camera::stop_shaking()
 
 void Camera::update( r32 dt )
 {
+	if ( G_App.is_paused() )
+		return;
+
+	Path_Follower::update( dt );
+
 	update_shake( dt );
 	update_transformations();
 }
+
 void Camera::update_transformations()
 {
 	view.setRotation( get_rotation() );
 	view.setCenter( get_global_position() );
+	view.setSize( G_Window.get_size() * zoom_val );
 }
 
 void Camera::update_shake( r32 dt )

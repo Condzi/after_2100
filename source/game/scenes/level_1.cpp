@@ -62,9 +62,42 @@ Level_1::Level_1()
 		music->play();
 
 		log_info( "Next track: space_ambient_{}", num );
-	 } ) );
+					   } ) );
 
 	attach<Player>();
+
+	auto cam_path = attach<Path>();
+
+	cam_path->points.emplace_back( Point{ 0, 50 } *0.01 * win_size );
+	cam_path->points.emplace_back( Point{ 15,50 } *0.01 * win_size );
+	cam_path->points.emplace_back( Point{ 20,50 } *0.01 * win_size );
+	cam_path->points.emplace_back( Point{ 30,50 } *0.01 * win_size );
+	cam_path->points.emplace_back( Point{ 50,50 } *0.01 * win_size );
+	cam_path->visual_representation_color = sf::Color( 125, 100, 75 );
+
+	auto& camera = *G_Root.get_node( "game_camera" )->cast_to<Camera>();
+	camera.set_rotation( 90.0deg );
+	camera.set_zoom( 0.1 );
+	camera.s_update.connect( [cam = &camera]( r32 dt ) {
+		if ( G_App.is_paused() )
+			return;
+
+		constant rotation_delta = -25.0deg * dt;
+		constant zoom_delta = 0.18 * dt;
+
+		if ( cam->get_rotation() + rotation_delta < 0 )
+			cam->set_rotation( 0.0deg );
+		else
+			cam->rotate( rotation_delta );
+
+		if ( cam->get_zoom() + zoom_delta > 1.0 )
+			cam->set_zoom( 1.0 );
+		else
+			cam->zoom( zoom_delta );
+							 } );
+	camera.max_velocity = 130;
+	camera.set_path( *cam_path );
+	camera.start_following();
 }
 
 void Level_1::update( r32 dt )

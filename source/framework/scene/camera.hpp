@@ -24,9 +24,12 @@ class Camera :
 public:
 	void set_view( sf::View const& v );
 	void set_center( Point const& point );
+	void set_zoom( r32 val );
+	void zoom( r32 val );
 
 	[[nodiscard]] auto get_center() const -> Point;
 	[[nodiscard]] auto get_view() const   -> sf::View;
+	[[nodiscard]] auto get_zoom() const   -> r32;
 
 	void add_shake_trauma( r32 trauma );
 	void stop_shaking();
@@ -47,6 +50,7 @@ private:
 	} shake;
 
 	sf::View view;
+	r32 zoom_val = 1.0;
 
 	void update_transformations();
 	void update_shake( r32 dt );

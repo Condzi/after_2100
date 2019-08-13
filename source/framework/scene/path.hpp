@@ -21,7 +21,7 @@ public:
 	std::vector<Point> points;
 
 	// For debug:
-	s32 layer{ 0 };
+	s32 layer{ 5 };
 	sf::Color visual_representation_color{ sf::Color::Red };
 
 	void draw( Drawing_Set& set ) override;
