@@ -92,6 +92,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>sfml-window.lib;sfml-graphics.lib;sfml-audio.lib;sfml-system.lib;sfml-main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\sfml\lib;</AdditionalLibraryDirectories>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -176,6 +177,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="source\framework\scene\checkbox.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\framework\scene\clickable_label.hpp">
       <SubType>
       </SubType>
     </ClInclude>
@@ -350,6 +355,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="source\framework\scene\checkbox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\framework\scene\clickable_label.cpp">
       <SubType>
       </SubType>
     </ClCompile>

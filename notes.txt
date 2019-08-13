@@ -18,3 +18,5 @@ update: it looks like the only fix for that is moving the evnet loop to another 
 better commands for Debug_Console - now it's a mess.
 
 add clickable_label for pause menu (and other menus?)
+
+Sprite3D could be a bottleneck. Maybe simple vertices would do the job?

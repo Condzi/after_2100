@@ -14,7 +14,7 @@ Pause_Screen::Pause_Screen()
 {
 	auto label = attach<Label>();
 
-	label->string.set_ascii( "Pause" );
+	label->string.set_locale_name( "#loc_pause" );
 	label->set_absolute_position( Percent_Position{ 45,20 } );
 	bond_disconnector( label->s_update.connect( [=]( r32 dt ) {
 		unused( dt );
