@@ -4,7 +4,8 @@
 */
 #pragma once
 
-#include "framework/scene/node.hpp"
+#include "framework/scene/label.hpp"
+#include "framework/scene/clickable_label.hpp"
 
 using namespace con;
 
@@ -17,4 +18,10 @@ public:
 	Pause_Screen();
 
 	void input( sf::Event const& ev ) override;
+	void update( r32 dt ) override;
+
+private:
+	Label* pause_title;
+	Clickable_Label* option_resume;
+	Clickable_Label* option_exit;
 };
