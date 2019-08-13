@@ -14,3 +14,7 @@ make camera follow the path so we'll be able to make small cinematics
 
 the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.
 update: it looks like the only fix for that is moving the evnet loop to another thread (sic!)
+
+better commands for Debug_Console - now it's a mess.
+
+add clickable_label for pause menu (and other menus?)

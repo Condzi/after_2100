@@ -13,11 +13,8 @@
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
 
-#include "framework/scene/label.hpp"
 #include "framework/scene/music_source.hpp"
 
-#include "framework/scene/rich_text.hpp"
-#include "framework/scene/panel.hpp"
 
 Level_1::Level_1()
 {
@@ -66,8 +63,6 @@ Level_1::Level_1()
 
 		log_info( "Next track: space_ambient_{}", num );
 	 } ) );
-
-	auto rt = attach<Rich_Text>();
 
 	attach<Player>();
 }

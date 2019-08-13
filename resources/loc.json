@@ -1,13 +1,25 @@
 {
-    "#loc1" :
+    "#loc_fps" :
     {
         "en":"{0:.1f} fps",
         "pl":"{0:.1f} kl/s"
     },
 
-    "#loc2" : 
+    "#loc_pause" : 
     {
-        "en":"Simply #dialog# box.\nI have grey-ish background.\nDo _you_ like it?",
-        "pl":"#óęł#, _óęł_, #_óęł#_ :D"
+        "en":"Pause",
+        "pl":"Pauza"
+    },
+
+    "#loc_resume" : 
+    {
+        "en":"Reume",
+        "pl":"Wznów"
+    },
+
+    "#loc_exit" : 
+    {
+        "en":"Exit",
+        "pl":"Wyjdź"
     }
 }
