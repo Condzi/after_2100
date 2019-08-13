@@ -15,7 +15,7 @@ Pause_Screen::Pause_Screen()
 	pause_title = attach<Label>();
 
 	pause_title->string.set_locale_name( "#loc_pause" );
-	pause_title->set_absolute_position( Percent_Position{ 45,35 } );
+	pause_title->set_absolute_position( Percent_Position{ 45,25 } );
 	pause_title->set_character_size( 72 );
 
 	option_resume = attach<Clickable_Label>();
@@ -36,8 +36,8 @@ Pause_Screen::Pause_Screen()
 			G_App.exit_game();
 										  } );
 
-	option_resume->set_absolute_position( Percent_Position{ 45, 55 } );
-	option_exit->set_absolute_position( Percent_Position{ 45, 65 } );
+	option_resume->set_absolute_position( Percent_Position{ 45, 45 } );
+	option_exit->set_absolute_position( Percent_Position{ 45, 55 } );
 }
 
 void Pause_Screen::input( sf::Event const& ev )
