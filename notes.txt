@@ -11,3 +11,7 @@ Label + panel ?
 Dialog system - make a small utility that replaces text with #loc ids when done
 
 make camera follow the path so we'll be able to make small cinematics
+
+Diagnostics:
+report_and_break -> substr operation takes too long
+use vector since unqiue_id in signals is counting from 0. unordered_map seems to be slow.

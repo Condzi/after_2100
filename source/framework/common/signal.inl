@@ -5,24 +5,31 @@
 
 namespace con
 {
+template<typename ...TArgs>
+Signal<TArgs...>::Signal()
+{
+	functions.reserve( RESERVED );
+}
+
 template <typename ...TArgs>
 auto Signal<TArgs...>::connect( Function function ) -> Disconnector
 {
 	unique_id_counter++;
-	functions[unique_id_counter] = function;
+	functions.emplace_back( function );
 
-	return [this, pos = unique_id_counter] {
- 		functions.erase( pos );
+	return [this, pos = unique_id_counter-1] {
+		// just reset it.
+		// @ToDo: Waste of memory since we are not removing it.
+		// If we would remove it, we would invalidate the iterator
+		functions[pos] = Function{};
 	};
 }
 
 template <typename ...TArgs>
 void Signal<TArgs...>::emit( TArgs ...args )
 {
-	for ( auto& f_pair : functions ) {
-		// @Hack: iteration over empty map causes crash. This fixes it:
-		if ( functions.empty() ) return;
-		f_pair.second( std::forward<TArgs>( args )... );
-	}
+	for ( auto& func : functions )
+		if ( func )
+			func( std::forward<TArgs>( args )... );
 }
 }

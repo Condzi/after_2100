@@ -20,12 +20,16 @@ class Signal final
 public:
 	using Disconnector = std::function<void()>;
 
+	Signal();
+
 	[[nodiscard]] auto connect( Function function ) -> Disconnector;
 	void emit( TArgs ...args );
 
 private:
-	size_t                               unique_id_counter{ 0 };
-	std::unordered_map<size_t, Function> functions;
+	compile_constant RESERVED = 8;
+
+	size_t                unique_id_counter{ 0 };
+	std::vector<Function> functions;
 };
 }
 
