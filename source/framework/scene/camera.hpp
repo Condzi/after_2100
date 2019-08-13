@@ -26,7 +26,7 @@ public:
 	void set_center( Point const& point );
 
 	[[nodiscard]] auto get_center() const -> Point;
-	[[nodiscard]] auto get_view() const   -> sf::View const&;
+	[[nodiscard]] auto get_view() const   -> sf::View;
 
 	void add_shake_trauma( r32 trauma );
 	void stop_shaking();

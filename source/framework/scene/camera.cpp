@@ -26,7 +26,7 @@ auto Camera::get_center() const -> Point
 	return view.getCenter();
 }
 
-auto Camera::get_view() const -> sf::View const&
+auto Camera::get_view() const -> sf::View
 {
 	// Meaning that camera is shaking
 	if ( shake.trauma > 0 ) {
