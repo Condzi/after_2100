@@ -45,7 +45,7 @@ Level_1::Level_1()
 
 	spr->set_texture_from_name( "space_background" );
 	spr->layer = 0;
-	spr->set_absolute_position( Percent_Position{ -5, -5 } );
+	spr->set_absolute_position( Percent_Position{ -10, -10 } );
 
 	auto music = attach<Music_Source>();
 
@@ -82,7 +82,7 @@ Level_1::Level_1()
 		if ( G_App.is_paused() )
 			return;
 
-		constant rotation_delta = -25.0deg * dt;
+		constant rotation_delta = -18.0deg * dt;
 		constant zoom_delta = 0.18 * dt;
 
 		if ( cam->get_rotation() + rotation_delta < 0 )

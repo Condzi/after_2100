@@ -1,23 +1,12 @@
-derive from Rich_Text???
-Dialog_Box:
-{
-}
-
-Button:
-{
-Label + panel ?
-}
+Player health, game over scene
+sound effects for low health?
 
 Dialog system - make a small utility that replaces text with #loc ids when done
-
-make camera follow the path so we'll be able to make small cinematics
 
 the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.
 update: it looks like the only fix for that is moving the evnet loop to another thread (sic!)
 
 better commands for Debug_Console - now it's a mess.
-
-add clickable_label for pause menu (and other menus?)
 
 Sprite3D could be a bottleneck. Maybe simple vertices would do the job?
 
