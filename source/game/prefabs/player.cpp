@@ -75,8 +75,6 @@ Player::Player()
 
 void Player::update( r32 dt )
 {
-	log_info( "Velocity = {:.1f}, {:.1f}", velocity.x, velocity.y );
-
 	G_Audio_Listener.set_position( sprite_a->get_global_position() );
 
 	check_movement_keys();
@@ -135,7 +133,9 @@ void Player::check_movement_keys()
 
 		// @ToDo: Separate variable for recoil? But according to Newton's law (F = -F) 
 		// the recoil should be initial velocity of the missile. So maybe something like
-		// "recoil_factor", and for better missiles it'd be < 1? 
+		// "recoil_factor", and for better missiles it'd be < 1?
+
+		// * 2 because 2 turrets? 
 		constant recoil = gun_a_1->get_horizontal_velocity();
 
 		if ( velocity.x - recoil < -recoil )
@@ -162,14 +162,6 @@ void Player::slow_down()
 void Player::accelerate( r32 dt )
 {
 	velocity += acceleration_direction * VELOCITY_MAX * ACCELERATION_MULTIPLIER;
-
-	/*
-	if ( std::fabs( velocity.x ) > VELOCITY_MAX )
-		velocity.x = VELOCITY_MAX * acceleration_direction.x;
-
-	if ( std::fabs( velocity.y ) > VELOCITY_MAX )
-		velocity.y = VELOCITY_MAX * acceleration_direction.y;
-	*/
 }
 
 void Player::correct_for_boundary_collision()
