@@ -88,8 +88,6 @@ Level_1::Level_1()
 	camera.minimum_distance = 1.0px;
 	camera.set_path( *cam_path );
 	camera.start_following();
-
-	camera.s_on_finish_following.connect( [cam = &camera] {log_info( "Position: {:.0f}, {:.0f}", cam->get_global_position().x, cam->get_global_position().y ); } );
 }
 
 void Level_1::update( r32 dt )

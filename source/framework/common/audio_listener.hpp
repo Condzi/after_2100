@@ -12,7 +12,13 @@ public:
 	void set_position( Point const& position );
 	void set_master_volume( s32 master_volume );
 
+	void mute();
+	void unmute();
+
 	static Audio_Listener& get_instance();
+
+private:
+	s32 volume_before_mute{ 0 };
 };
 }
 

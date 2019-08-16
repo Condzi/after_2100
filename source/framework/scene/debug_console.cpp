@@ -10,6 +10,7 @@
 #include "framework/common/window.hpp"
 #include "framework/localization/locale.hpp"
 #include "framework/common/resources_storage.hpp"
+#include "framework/common/audio_listener.hpp"
 
 namespace con::priv
 {
@@ -199,6 +200,8 @@ void Debug_Console::do_command( std::string const& command )
 		print( "disable_all\n" );
 		print( "reload_locale\n" );
 		print( "reload_resources\n" );
+		print( "mute\n" );
+		print( "unmute\n" );
 
 		return;
 	}
@@ -212,6 +215,10 @@ void Debug_Console::do_command( std::string const& command )
 			G_Locale.reload();
 		else if ( rhs == "reload_resources" )
 			G_Resources_Storage.reload();
+		else if ( rhs is "mute" )
+			G_Audio_Listener.mute();
+		else if (rhs is "unmute" )
+			G_Audio_Listener.unmute();
 		else
 			engine_log_info( "{} = {}", lhs, G_Debug_Flags.get( lhs ) );
 		return;
