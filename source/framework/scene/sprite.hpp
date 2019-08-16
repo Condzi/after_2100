@@ -31,6 +31,7 @@ public:
 	void set_rotation_3d( r32 pitch, r32 yaw, r32 roll );
 	void set_transformation_origin( Point const& point );
 	void set_texture_rect( Rectangle_Shape const& rect );
+	void set_fill_color( sf::Color const& color );
 
 	[[nodiscard]] auto get_global_bounds() const         -> Rectangle_Shape;
 	[[nodiscard]] auto get_texture() const               -> sf::Texture const*;

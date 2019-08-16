@@ -54,6 +54,11 @@ void Sprite::set_texture_rect( Rectangle_Shape const& rect )
 	sprite.setTextureRect( rect );
 }
 
+void Sprite::set_fill_color( sf::Color const& color )
+{
+	sprite.setColor( color );
+}
+
 auto Sprite::get_global_bounds() const -> Rectangle_Shape
 {
 	// Fix for a bug.
