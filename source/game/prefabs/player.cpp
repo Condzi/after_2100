@@ -50,17 +50,17 @@ Player::Player()
 	gun_b_1->set_horizontal_velocity( 500 );
 	gun_b_2->set_horizontal_velocity( 500 );
 
-	
+
 	gun_a_1->set_local_position( Size2{ 50.0px, -36.0px } );
 	gun_a_2->set_local_position( Size2{ 50.0px, 36.0px } );
 
 	gun_b_1->set_local_position( Size2{ 50.0px, -36.0px } );
 	gun_b_2->set_local_position( Size2{ 50.0px, 36.0px } );
-	
-	gun_a_1->set_cooldown_time( 0.25sec );
-	gun_a_2->set_cooldown_time( 0.25sec );
-	gun_b_1->set_cooldown_time( 0.25sec );
-	gun_b_2->set_cooldown_time( 0.25sec );
+
+	gun_a_1->set_cooldown_time( 0.2sec );
+	gun_a_2->set_cooldown_time( 0.2sec );
+	gun_b_1->set_cooldown_time( 0.2sec );
+	gun_b_2->set_cooldown_time( 0.2sec );
 
 
 	hitbox_a = sprite_a->attach<Area>();
@@ -75,6 +75,8 @@ Player::Player()
 
 void Player::update( r32 dt )
 {
+	log_info( "Velocity = {:.1f}, {:.1f}", velocity.x, velocity.y );
+
 	G_Audio_Listener.set_position( sprite_a->get_global_position() );
 
 	check_movement_keys();
@@ -113,13 +115,13 @@ void Player::check_movement_keys()
 
 	acceleration_direction = Vec2::Zero();
 
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )
+	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) and velocity.x > -VELOCITY_MAX )
 		acceleration_direction += Vec2::Left();
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
+	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) and velocity.x < VELOCITY_MAX )
 		acceleration_direction += Vec2::Right();
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) )
+	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) and velocity.y > -VELOCITY_MAX )
 		acceleration_direction += Vec2::Up();
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
+	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) and velocity.y < VELOCITY_MAX )
 		acceleration_direction += Vec2::Down();
 
 	// Should be in own method?
@@ -130,6 +132,16 @@ void Player::check_movement_keys()
 
 		gun_b_1->shoot();
 		gun_b_2->shoot();
+
+		// @ToDo: Separate variable for recoil? But according to Newton's law (F = -F) 
+		// the recoil should be initial velocity of the missile. So maybe something like
+		// "recoil_factor", and for better missiles it'd be < 1? 
+		constant recoil = gun_a_1->get_horizontal_velocity();
+
+		if ( velocity.x - recoil < -recoil )
+			velocity.x = -recoil;
+		else
+			velocity.x -= recoil;
 	}
 }
 
@@ -151,11 +163,13 @@ void Player::accelerate( r32 dt )
 {
 	velocity += acceleration_direction * VELOCITY_MAX * ACCELERATION_MULTIPLIER;
 
+	/*
 	if ( std::fabs( velocity.x ) > VELOCITY_MAX )
 		velocity.x = VELOCITY_MAX * acceleration_direction.x;
 
 	if ( std::fabs( velocity.y ) > VELOCITY_MAX )
 		velocity.y = VELOCITY_MAX * acceleration_direction.y;
+	*/
 }
 
 void Player::correct_for_boundary_collision()

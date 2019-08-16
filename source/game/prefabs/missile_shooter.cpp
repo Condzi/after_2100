@@ -33,6 +33,11 @@ bool Missile_Shooter::is_ready_to_shoot() const
 	return ready_to_shoot;
 }
 
+auto Missile_Shooter::get_horizontal_velocity() const -> r32
+{
+	return horizontal_velocity;
+}
+
 void Missile_Shooter::shoot()
 {
 	if ( !spawning_function ) {
