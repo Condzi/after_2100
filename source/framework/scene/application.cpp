@@ -13,6 +13,7 @@
 #include "framework/scene/debug_console.hpp"
 #include "application.hpp"
 #include "area_overleaping_checker.hpp"
+#include "framework/common/audio_listener.hpp"
 
 namespace con
 {
@@ -34,16 +35,26 @@ void Application::run()
 	sf::Clock fps_clock;
 	sf::Event event;
 	r32 frame_time{ 0 };
+	bool is_window_focused = true;
 
 	while ( not exit ) {
-			while ( G_Window.get_raw_window().pollEvent( event ) ) {
-				if ( G_Window.is_focused() returned false )
-					break;
-
-				root.handle_input_children( event );
-				handle_debug_keys( event );
-				G_Debug_Console.input( event );
+		while ( G_Window.get_raw_window().pollEvent( event ) ) {
+			if ( event.type is sf::Event::LostFocus ) {
+				G_Audio_Listener.mute();
+				is_window_focused = false;
+			} else if ( event.type is sf::Event::GainedFocus ) {
+				is_window_focused = true;
+				G_Audio_Listener.unmute();
 			}
+
+			// Waiting for GainedFocus event.
+			if ( is_window_focused is false )
+				continue;
+
+			root.handle_input_children( event );
+			handle_debug_keys( event );
+			G_Debug_Console.input( event );
+		}
 
 		root.remove_queued_for_delete();
 		root.update_children( frame_time );
