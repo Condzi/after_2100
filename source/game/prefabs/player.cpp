@@ -35,21 +35,33 @@ Player::Player()
 
 	rotate( 90.0deg );
 
-	gun_a = sprite_a->attach<Missile_Shooter>();
-	gun_b = sprite_b->attach<Missile_Shooter>();
+	gun_a_1 = sprite_a->attach<Missile_Shooter>();
+	gun_a_2 = sprite_a->attach<Missile_Shooter>();
+	gun_b_1 = sprite_b->attach<Missile_Shooter>();
+	gun_b_2 = sprite_b->attach<Missile_Shooter>();
 
-	gun_a->set_missile_type<Player_Missile>();
-	gun_b->set_missile_type<Player_Missile>();
+	gun_a_1->set_missile_type<Player_Missile>();
+	gun_a_2->set_missile_type<Player_Missile>();
+	gun_b_1->set_missile_type<Player_Missile>();
+	gun_b_2->set_missile_type<Player_Missile>();
 
-	gun_a->set_horizontal_velocity( 500 );
-	gun_b->set_horizontal_velocity( 500 );
+	gun_a_1->set_horizontal_velocity( 500 );
+	gun_a_2->set_horizontal_velocity( 500 );
+	gun_b_1->set_horizontal_velocity( 500 );
+	gun_b_2->set_horizontal_velocity( 500 );
 
-	// Again - after rotating by 90deg, width gets swapped with height.
-	gun_a->set_local_position( { sprite_size.height/4, 0 } );
-	gun_b->set_local_position( { sprite_size.height/4, 0 } );
+	
+	gun_a_1->set_local_position( Size2{ 50.0px, -36.0px } );
+	gun_a_2->set_local_position( Size2{ 50.0px, 36.0px } );
 
-	gun_a->set_cooldown_time( 0.25sec );
-	gun_b->set_cooldown_time( 0.25sec );
+	gun_b_1->set_local_position( Size2{ 50.0px, -36.0px } );
+	gun_b_2->set_local_position( Size2{ 50.0px, 36.0px } );
+	
+	gun_a_1->set_cooldown_time( 0.25sec );
+	gun_a_2->set_cooldown_time( 0.25sec );
+	gun_b_1->set_cooldown_time( 0.25sec );
+	gun_b_2->set_cooldown_time( 0.25sec );
+
 
 	hitbox_a = sprite_a->attach<Area>();
 	hitbox_b = sprite_b->attach<Area>();
@@ -112,9 +124,12 @@ void Player::check_movement_keys()
 
 	// Should be in own method?
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Space ) and
-		 gun_a->is_ready_to_shoot() ) {
-		gun_a->shoot();
-		gun_b->shoot();
+		 gun_a_1->is_ready_to_shoot() ) {
+		gun_a_1->shoot();
+		gun_a_2->shoot();
+
+		gun_b_1->shoot();
+		gun_b_2->shoot();
 	}
 }
 
