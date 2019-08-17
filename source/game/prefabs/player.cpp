@@ -131,12 +131,9 @@ void Player::check_movement_keys()
 		gun_b_1->shoot();
 		gun_b_2->shoot();
 
-		// @ToDo: Separate variable for recoil? But according to Newton's law (F = -F) 
-		// the recoil should be initial velocity of the missile. So maybe something like
-		// "recoil_factor", and for better missiles it'd be < 1?
-
-		// * 2 because 2 turrets? 
-		constant recoil = gun_a_1->get_horizontal_velocity();
+		// @ToDo: Separate variable for recoil? According to Newton's law (am = -am)
+		// we need some mass multiplier.
+		constant recoil = gun_a_1->get_horizontal_velocity() * 0.8;
 
 		if ( velocity.x - recoil < -recoil )
 			velocity.x = -recoil;
@@ -174,10 +171,15 @@ void Player::correct_for_boundary_collision()
 	// but it's still more clear if we set it as it was.
 	constant y_pos = get_global_position().y;
 
-	if ( x_pos <= 0.0px )
+	if ( x_pos < 0.0px ) {
 		set_global_position( { 0.0px, y_pos } );
-	else if ( x_pos_max >= window_width )
+		if ( acceleration_direction.x is -1 )
+			acceleration_direction.x = 0;
+	} else if ( x_pos_max > window_width ) {
 		set_global_position( { window_width - sprite_width, y_pos } );
+		if ( acceleration_direction.x is 1 )
+			acceleration_direction.x = 0;
+	}
 }
 
 void Player::update_tilt_transformation()

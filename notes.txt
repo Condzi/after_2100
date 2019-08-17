@@ -13,3 +13,5 @@ better commands for Debug_Console - now it's a mess.
 Sprite3D could be a bottleneck. Maybe simple vertices would do the job?
 
 Add save files and save locale too (pl or en).
+
+bug: random crashes on exit. amd driver's fault or do I do something shady?
