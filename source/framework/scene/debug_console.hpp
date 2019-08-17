@@ -29,6 +29,8 @@ public:
 	void update();
 	void draw( Drawing_Set& set );
 
+	void add_command( std::string const& name, std::function<void( std::string )> callback );
+
 	static Debug_Console& get_instance();
 
 private:

@@ -3,8 +3,6 @@ sound effects for low health?
 
 Player force shield that aquaiers one or more hits
 
-Dialog system - make a small utility that replaces text with #loc ids when done
-
 the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.
 update: it looks like the only fix for that is moving the evnet loop to another thread (sic!)
 

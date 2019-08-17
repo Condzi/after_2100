@@ -152,6 +152,17 @@ void Debug_Console::draw( Drawing_Set& set )
 	set.add_drawable( input_text, layer );
 }
 
+void Debug_Console::add_command( std::string const& name, std::function<void( std::string )> callback )
+{
+	if ( constant result = commands.find( name ); result is_not commands.end() );
+	{
+		engine_log_error( "Command you want to add already exists: \"{}\".", name );
+		return;
+	}
+
+	commands[name] = callback;
+}
+
 Debug_Console& Debug_Console::get_instance()
 {
 	static Debug_Console* instance = new Debug_Console;
@@ -219,7 +230,7 @@ void Debug_Console::initialize_basic_commands()
 
 	for ( constant& str : G_Debug_Flags.get_flags_names() )
 		commands[str] = [this, str]( std::string flag_str ) {
-		if ( flag_str.empty() ) 			{
+		if ( flag_str.empty() ) {
 			print( fmt::format( "{} = {}\n", str, G_Debug_Flags.get( str ) ) );
 			return;
 		}
@@ -237,7 +248,7 @@ void Debug_Console::do_command( std::string const& command )
 	std::string lhs = command, rhs;
 
 	constant first_space_idx = command.find_first_of( ' ' );
-	if ( first_space_idx is_not std::string::npos ) 		{
+	if ( first_space_idx is_not std::string::npos ) {
 		lhs = lower_string( command.substr( 0, first_space_idx ) );
 		rhs = lower_string( command.substr( first_space_idx + 1 ) );
 	}
