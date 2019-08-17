@@ -14,8 +14,6 @@
 
 namespace con::priv
 {
-// @ToDo: If more commands will be added then make Command_Shell or something. For example:
-// vector<Command> commands = { "display_fps", [](std::string statement){ G_Debug_Flags.get("display_fps") = to_bool(statement);}}
 class Debug_Console final
 {
 public:
@@ -58,8 +56,11 @@ private:
 	sf::Text input_sign;
 	sf::Text input_text;
 
+	std::unordered_map<std::string, std::function<void( std::string )>> commands;
+
 	void put_labels_on_correct_positions(); // when initializing for the first time 
 	void update_lines(); // after printing or scrolling
+	void initialize_basic_commands();
 	void do_command( std::string const& command );
 };
 }

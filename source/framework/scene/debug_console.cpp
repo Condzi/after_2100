@@ -45,6 +45,7 @@ Debug_Console::Debug_Console()
 	input_sign.setString( "<" );
 
 	put_labels_on_correct_positions();
+	initialize_basic_commands();
 }
 
 void Debug_Console::set_report_background_color( sf::Color const& color )
@@ -184,56 +185,67 @@ void Debug_Console::update_lines()
 	visible_lines->update_vertices();
 }
 
+void Debug_Console::initialize_basic_commands()
+{
+	commands["help"] = [this]( std::string ) {
+		print( "#Avaible commands:#\n" );
+		for ( constant cmd_pair : commands )
+			print( cmd_pair.first + '\n' );
+	};
+
+	commands["enable_all"] = []( std::string ) {
+		G_Debug_Flags.enable_all();
+	};
+
+	commands["disable_all"] = []( std::string ) {
+		G_Debug_Flags.disable_all();
+	};
+
+	commands["reload_locale"] = []( std::string ) {
+		G_Locale.reload();
+	};
+
+	commands["reload_resources"] = []( std::string ) {
+		G_Resources_Storage.reload();
+	};
+
+	commands["mute"] = []( std::string ) {
+		G_Audio_Listener.mute();
+	};
+
+	commands["unmute"] = []( std::string ) {
+		G_Audio_Listener.unmute();
+	};
+
+	for ( constant& str : G_Debug_Flags.get_flags_names() )
+		commands[str] = [this, str]( std::string flag_str ) {
+		if ( flag_str.empty() ) 			{
+			print( fmt::format( "{} = {}\n", str, G_Debug_Flags.get( str ) ) );
+			return;
+		}
+		flag_str = lower_string( flag_str );
+		bool flag = !( flag_str is "0" or flag_str is "false" );
+
+		G_Debug_Flags.get( str ) = flag;
+	};
+}
+
 void Debug_Console::do_command( std::string const& command )
 {
-	print( command + '\n' );
+	print( "#" + command + "#\n" );
+
+	std::string lhs = command, rhs;
 
 	constant first_space_idx = command.find_first_of( ' ' );
-	constant lhs = lower_string( command.substr( 0, first_space_idx ) );
-	constant rhs = lower_string( command.substr( first_space_idx + 1 ) );
-
-	if ( lhs == "help" ) {
-		for ( constant str : G_Debug_Flags.get_flags_names() )
-			print( str + '\n' );
-
-		print( "enable_all\n" );
-		print( "disable_all\n" );
-		print( "reload_locale\n" );
-		print( "reload_resources\n" );
-		print( "mute\n" );
-		print( "unmute\n" );
-
-		return;
+	if ( first_space_idx is_not std::string::npos ) 		{
+		lhs = lower_string( command.substr( 0, first_space_idx ) );
+		rhs = lower_string( command.substr( first_space_idx + 1 ) );
 	}
 
-	if ( first_space_idx is std::string::npos ) {
-		if ( rhs == "enable_all" )
-			G_Debug_Flags.enable_all();
-		else if ( rhs == "disable_all" )
-			G_Debug_Flags.disable_all();
-		else if ( rhs == "reload_locale" )
-			G_Locale.reload();
-		else if ( rhs == "reload_resources" )
-			G_Resources_Storage.reload();
-		else if ( rhs is "mute" )
-			G_Audio_Listener.mute();
-		else if (rhs is "unmute" )
-			G_Audio_Listener.unmute();
-		else
-			engine_log_info( "{} = {}", lhs, G_Debug_Flags.get( lhs ) );
-		return;
-	}
-
-	bool flag{ false };
-
-	if ( rhs is "true" or rhs is "1" )
-		flag = true;
-
-	else if ( rhs is_not "false" and rhs is_not "0" ) {
-		engine_log_warning( "Command error: expected 1/0, true/false, empty. Got: {}.", rhs );
-		return;
-	}
-
-	G_Debug_Flags.get( lhs ) = flag;
+	constant it = commands.find( lhs );
+	if ( it is commands.end() )
+		engine_log_warning( "#Unknow command:# \"{}\".", command );
+	else
+		it->second( rhs );
 }
 }

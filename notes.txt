@@ -8,10 +8,10 @@ Dialog system - make a small utility that replaces text with #loc ids when done
 the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.
 update: it looks like the only fix for that is moving the evnet loop to another thread (sic!)
 
-better commands for Debug_Console - now it's a mess.
-
 Sprite3D could be a bottleneck. Maybe simple vertices would do the job?
 
 Add save files and save locale too (pl or en).
 
 bug: random crashes on exit. amd driver's fault or do I do something shady?
+
+Investigate: after reload_resources the text in pause menu disappear. Probably have to do some reloading?

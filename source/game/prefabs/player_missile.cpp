@@ -26,11 +26,11 @@ Player_Missile::Player_Missile()
 	missile_animation->sprite->set_transformation_origin( missile_animation->sprite->get_global_bounds().size * 0.5 );
 	missile_animation->rotate( 90.0deg );
 	missile_animation->sprite->layer = 2;	
-	missile_animation->sprite->set_fill_color( { 200, 20 , 30 } );
+	missile_animation->sprite->set_fill_color( { 200, 20, 30 } );
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
-			if ( second.name != "hitbox_player" and second.name != "hitbox_missile_player" )
+			if ( second.name is_not "hitbox_player" and second.name is_not "hitbox_missile_player" )
 				// @ToDo: fancy explosion
 				queue_for_delete();
 		} ) );
