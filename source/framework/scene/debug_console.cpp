@@ -103,7 +103,6 @@ void Debug_Console::input( sf::Event const& event )
 	}
 
 	if ( event.type is sf::Event::EventType::KeyReleased ) {
-
 		if ( event.key.code == sf::Keyboard::Key::Space )
 			input_string += ' ';
 		else if ( event.key.code == sf::Keyboard::Key::BackSpace and
@@ -112,11 +111,18 @@ void Debug_Console::input( sf::Event const& event )
 		else if ( event.key.code == sf::Keyboard::Key::Return ) {
 			do_command( input_string );
 			input_string.clear();
-		} else if ( event.key.code == sf::Keyboard::Up and
-					scroll_offset < static_cast<s32>( history.size() ) - static_cast<s32>( LINES ) ) {
+		}
+	}
+
+	if ( event.type is sf::Event::EventType::MouseWheelMoved ) {
+		constant scroll_up = event.mouseWheel.delta > 0;
+		constant can_scroll_up = scroll_offset < static_cast<s32>( history.size() ) - static_cast<s32>( LINES );
+		constant can_scroll_down = scroll_offset > 0;
+
+		if ( scroll_up and can_scroll_up ) {
 			scroll_offset++;
 			update_lines();
-		} else if ( event.key.code == sf::Keyboard::Down and scroll_offset > 0 ) {
+		} else if ( not scroll_up and can_scroll_down ) {
 			scroll_offset--;
 			update_lines();
 		}
