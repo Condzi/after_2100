@@ -58,6 +58,9 @@ void Health::damage( s32 value, Node* dealer )
 	if ( is_dead() )
 		return;
 
+	if ( is_immoral )
+		value = 0;
+
 	current_hp -= value;
 	s_damage.emit( value, dealer );
 
