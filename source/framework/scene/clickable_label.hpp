@@ -28,7 +28,6 @@ public:
 	sf::Color outline_color_idle{ sf::Color::Black };
 	sf::Color outline_color_hovered{ sf::Color::Black };
 
-	// @ToDo: Create normal text class and use it instead. (sfml one is meh tbh)
 	Rich_Text* text{ nullptr };
 
 	Clickable_Label();

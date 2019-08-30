@@ -44,8 +44,7 @@ auto Enemy_Spawner::is_finished() const -> bool
 
 void Enemy_Spawner::start()
 {
-	if( spawning )
-	{
+	if ( spawning ) {
 		log_warning( "Spawner is already started." );
 		return;
 	}
@@ -60,8 +59,7 @@ void Enemy_Spawner::start()
 		return;
 	}
 
-	if( spawning_function is false )
-	{
+	if ( spawning_function is false ) {
 		log_error( "No spawning function set for Enemy_Spawner. (no type was assigned)" );
 		return;
 	}
@@ -71,8 +69,7 @@ void Enemy_Spawner::start()
 
 void Enemy_Spawner::stop()
 {
-	if( not spawning )
-	{
+	if ( not spawning ) {
 		log_warning( "Spawner is already not spawning." );
 		return;
 	}
@@ -102,6 +99,8 @@ void Enemy_Spawner::update( r32 delta )
 		enemy.start_following();
 	}
 
-	if ( is_finished() )
+	if ( is_finished() ) {
 		stop();
+		s_finished.emit();	
+	}
 }

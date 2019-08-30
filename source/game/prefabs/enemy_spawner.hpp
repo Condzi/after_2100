@@ -13,6 +13,8 @@ class Enemy_Spawner :
 	CLASS_DEF( Enemy_Spawner );
 
 public:
+	Signal<> s_finished;
+
 	r32 spawn_interval{ 2.0sec };
 
 	Enemy_Spawner();

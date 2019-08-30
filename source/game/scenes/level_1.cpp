@@ -21,25 +21,52 @@ Level_1::Level_1()
 	name = "level_1";
 	log_info( "{} instantiated.", name );
 
-	///////////////////////////////
-	Path& path = *attach<Path>();
-
 	constant win_size = G_Window.get_size();
 
-	path.points.emplace_back( win_size * Vec2{ 1.1, 0.5 } );
+	///////////////////////////////
+	Path& path_1 = *attach<Path>();
+	path_1.points.emplace_back( win_size * Vec2{ 1.1, 0.5 } );
 
 	for ( r32 i = 10; i > 0; i -= 0.05 )
-		path.points.emplace_back( win_size.width * i / 10, win_size.height * sin( i ) * 0.2f + win_size.height * 0.5f );
+		path_1.points.emplace_back( win_size.width * i / 10, win_size.height * sin( i ) * 0.2f + win_size.height * 0.5f );
 
-	path.points.emplace_back( win_size * Vec2{ -0.1, 0.5 } );
+	path_1.points.emplace_back( win_size * Vec2{ -0.1, 0.5 } );
+
+	///////////////////////////////
+	Path& path_2 = *attach<Path>();
+
+	path_2.points.emplace_back( win_size * Vec2{ 1.1, 1.1 } );
+	path_2.points.emplace_back( win_size * Vec2{ -0.1, -0.1 } );
+
+	///////////////////////////////
+	Path& path_3 = *attach<Path>();
+
+	path_3.points.emplace_back( win_size * Vec2{ 1.1, -0.1 } );
+	path_3.points.emplace_back( win_size * Vec2{ -0.1, 1.1 } );
 
 	///////////////////////////////
 	Enemy_Spawner& spawner = *attach<Enemy_Spawner>();
-	spawner.set_path( path );
+	spawner.set_path( path_1 );
 	spawner.set_enemy_type<Enemy_Base>();
 	spawner.start();
 	spawner.spawn_interval = 1.9sec;
-	spawner.set_spawn_limit( 200 );
+	spawner.set_spawn_limit( 10 );
+
+	// switch paths when one ends.
+	bond_disconnector( spawner.s_finished.connect( [spawner = &spawner, p_2 = &path_2, p_3 = &path_3] {
+		if ( spawner->spawn_interval is 1.9sec ) {
+			spawner->set_path( *p_2 );
+			spawner->spawn_interval = 1.5sec;
+		} else if ( spawner->spawn_interval is 1.5sec ) {
+			spawner->set_path( *p_3 );
+			spawner->spawn_interval = 1.3sec;
+		} else
+			return;
+
+		spawner->reset();
+		spawner->start();
+					   } ) );
+
 
 	Sprite* spr = attach<Sprite>();
 

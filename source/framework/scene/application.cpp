@@ -125,7 +125,7 @@ void Application::render()
 
 	auto& window = G_Window.get_raw_window();
 
-	window.clear();
+	window.clear( sf::Color{ 14,19,22 } );
 
 	game_drawing_set.display( window );
 	window.setView( gui_camera->get_view() );
