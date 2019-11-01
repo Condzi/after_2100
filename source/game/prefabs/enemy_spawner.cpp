@@ -101,6 +101,6 @@ void Enemy_Spawner::update( r32 delta )
 
 	if ( is_finished() ) {
 		stop();
-		s_finished.emit();	
+		s_finished.emit();
 	}
 }

@@ -67,7 +67,7 @@ auto Sprite::get_global_bounds() const -> Rectangle_Shape
 	const_cast<Sprite&>( *this ).update( 0.0 );
 
 	return sprite.getGlobalBounds();
-}	
+}
 
 auto Sprite::get_texture() const -> sf::Texture const*
 {
@@ -81,7 +81,7 @@ auto Sprite::get_rotation_3d() const -> Rotation3D
 	return { pitch, yaw, roll };
 }
 
-auto Sprite::get_sprite_raw() -> sf::Sprite3d &
+auto Sprite::get_sprite_raw() -> sf::Sprite3d&
 {
 	return sprite;
 }

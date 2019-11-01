@@ -17,8 +17,7 @@ auto Node::attach() -> TNode* const
 
 	TNode* return_val = dynamic_cast<TNode*>( child_nodes.back().get() );
 
-	if( return_val is nullptr )
-	{
+	if ( return_val is nullptr ) {
 		engine_log_critical( "You forgot CLASS_DEF( class_ ) for this TNode." );
 	}
 
@@ -26,13 +25,12 @@ auto Node::attach() -> TNode* const
 }
 
 template <typename TNode>
-auto Node::cast_to() -> TNode *const
+auto Node::cast_to() -> TNode* const
 {
 	static_assert( std::is_base_of_v<Node, TNode> );
 
 	auto casted = dynamic_cast<TNode*>( this );
-	if( casted is nullptr )
-	{
+	if ( casted is nullptr ) {
 		engine_log_error( "Error casting \"{}\" => \"{}\".", get_class_name(), TNode::get_class_name_static() );
 	}
 

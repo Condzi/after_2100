@@ -31,8 +31,7 @@ void Animation::set_texture_from_name( std::string const& name )
 
 void Animation::set_begin_position( Point const& pos )
 {
-	if( pos.x < 0 or pos.y < 0 )
-	{
+	if ( pos.x < 0 or pos.y < 0 ) {
 		engine_log_warning( "Beggining position of animation frame in texture atlas can't be <0. (value is x={}, y={})", pos.x, pos.y );
 		return;
 	}
@@ -42,8 +41,7 @@ void Animation::set_begin_position( Point const& pos )
 
 void Animation::set_frame_size( Size2 const& size )
 {
-	if( size.x <= 0 or size.y <= 0 )
-	{
+	if ( size.x <= 0 or size.y <= 0 ) {
 		engine_log_warning( "Size of animation frame in texture atlas can't be <=0. (value is x={}, y={})", size.x, size.y );
 		return;
 	}
@@ -53,8 +51,7 @@ void Animation::set_frame_size( Size2 const& size )
 
 void Animation::set_frames_count( u32 count )
 {
-	if( count < 1 )
-	{
+	if ( count < 1 ) {
 		engine_log_warning( "Number of animation frames can't be < 1. (value is {})", count );
 		return;
 	}
@@ -66,8 +63,7 @@ void Animation::set_frames_count( u32 count )
 
 void Animation::set_duration( r32 sec )
 {
-	if( sec <= 0 )
-	{
+	if ( sec <= 0 ) {
 		engine_log_warning( "Duration of animation can't be <=0s. (value is {}s)", sec );
 		return;
 	}
@@ -120,7 +116,7 @@ void Animation::play()
 
 	sprite->visible = true;
 	update_frame();
-	
+
 	s_play.emit();
 }
 
@@ -158,14 +154,14 @@ void Animation::update_fps()
 
 bool Animation::is_valid() const
 {
-	if ( sprite->get_texture() is nullptr ) 		{
+	if ( sprite->get_texture() is nullptr ) {
 		engine_log_error( "Animation atlas texture is not set." );
 		return false;
 	}
 
- 	constant atlas_size = Vec2{ sprite->get_texture()->getSize() };
+	constant atlas_size = Vec2{ sprite->get_texture()->getSize() };
 	constant first_frame_pos = begin_position;
-	constant last_frame_pos = Vec2{ begin_position.x + frame_size.width * (frames_count-1), begin_position.y };
+	constant last_frame_pos = Vec2{ begin_position.x + frame_size.width * ( frames_count-1 ), begin_position.y };
 
 	constant doesnt_fit_in_atlas = [&]( Vec2 const& point ) {
 		return point.x < 0 or point.x > atlas_size.x or
@@ -178,7 +174,7 @@ bool Animation::is_valid() const
 	}
 
 	if ( doesnt_fit_in_atlas( last_frame_pos ) or doesnt_fit_in_atlas( last_frame_pos + frame_size ) ) {
-		engine_log_error( "Last frame of animation doesn't fit in the texture atlas. Frame bounds are: {}, {}, {}, {}. Atlas bounds are: 0, 0, {}, {}", last_frame_pos.x, last_frame_pos.y, frame_size.width, frame_size.height, atlas_size.width, atlas_size.height);
+		engine_log_error( "Last frame of animation doesn't fit in the texture atlas. Frame bounds are: {}, {}, {}, {}. Atlas bounds are: 0, 0, {}, {}", last_frame_pos.x, last_frame_pos.y, frame_size.width, frame_size.height, atlas_size.width, atlas_size.height );
 		return false;
 	}
 
@@ -205,11 +201,10 @@ void Animation::switch_frame()
 	current_frame++;
 
 	if ( current_frame is frames_count ) {
-		if ( looped ) 			{
+		if ( looped ) {
 			current_frame = 0;
 			eleapsed = 0;
-		}
-		else
+		} else
 			stop();
 	}
 

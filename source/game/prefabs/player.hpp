@@ -43,7 +43,7 @@ private:
 	Missile_Shooter* gun_a_2;
 	Missile_Shooter* gun_b_1;
 	Missile_Shooter* gun_b_2;
-	
+
 	// Children of sprites.
 	Area* hitbox_a;
 	Area* hitbox_b;

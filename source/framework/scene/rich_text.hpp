@@ -51,8 +51,8 @@ private:
 	sf::Transformable transformable;
 
 	// shared between letters
-	r32 line_spacing;
-	r32 x, y;
+	r32 line_spacing{ 0 };
+	r32 x{ 0 }, y{ 0 };
 
 	// bounds, top left one is always 0.0
 	Point bottom_right; // = size of the rectangle, actually

@@ -84,7 +84,7 @@ void Debug_Console::input( sf::Event const& event )
 
 		input_focused = rect_vs_point( input_bounds, mouse_position );
 
-		input_background.setOutlineThickness( input_focused ? -2 : 0 );
+		input_background.setOutlineThickness( input_focused ? -2.0px : 0 );
 	}
 
 	if ( not input_focused )

@@ -25,7 +25,7 @@ r32 Vec2::distance( Vec2 const& second ) const
 	return std::sqrtf( distance_squared( second ) );
 }
 
-r32 Vec2::distance_squared( Vec2 const & second ) const
+r32 Vec2::distance_squared( Vec2 const& second ) const
 {
 	constant x_diff_sqr{ ( x - second.x ) * ( x - second.x ) };
 	constant y_diff_sqr{ ( y - second.y ) * ( y - second.y ) };
@@ -48,7 +48,7 @@ r32 Vec2::angle() const
 	return std::atan2f( y, x );
 }
 
-auto Vec2::normalize() -> Vec2 &
+auto Vec2::normalize() -> Vec2&
 {
 	r32 const len{ length() };
 	if ( len is 0 ) {
@@ -137,16 +137,14 @@ bool Vec2::operator<( Vec2 const& rhs ) const
 	return x < rhs.x and y < rhs.y;
 }
 
-Vec2 truncate( Vec2 const& in, r32 max )
+Vec2 truncate( Vec2 vec, r32 max )
 {
-	Vec2 truncated{ in };
+	if ( vec.x > max )
+		vec.x = max;
 
-	if ( in.x > max )
-		truncated.x = max;
+	if ( vec.y > max )
+		vec.y = max;
 
-	if ( in.y > max )
-		truncated.y = max;
-
-	return truncated;
+	return vec;
 }
 }

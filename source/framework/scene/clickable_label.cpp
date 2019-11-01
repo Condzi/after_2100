@@ -31,7 +31,7 @@ void Clickable_Label::input( sf::Event const& event )
 
 	constant mouse_in_bounds = rect_vs_point( text->get_global_bounds(), G_Window.get_mouse_position() );
 
-	if ( mouse_in_bounds is false and 
+	if ( mouse_in_bounds is false and
 		 status is Status::Hover ) {
 		style_for_idle();
 		status = Status::Idle;

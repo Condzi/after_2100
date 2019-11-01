@@ -28,7 +28,7 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 
 	size_t vertex_idx{ 0 };
 	size_t element_idx{ 0 };
-	constant next_vertex = [&]() -> sf::Vertex & {
+	constant next_vertex = [&]() -> sf::Vertex& {
 		if ( vertex_idx is 4 ) {
 			vertex_idx = 0;
 			++element_idx;
@@ -71,7 +71,7 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 
 	for ( auto& element : elements ) {
 		element.velocity = random_velocity();
-		element.center = Vec2{ texture->getSize() } * 0.25f;
+		element.center = Vec2{ texture->getSize() } *0.25f;
 	}
 
 	elements_initialized = true;
@@ -110,7 +110,7 @@ void Exploded_Sprite::set_texture_from_name( std::string const& name )
 
 void Exploded_Sprite::update( r32 dt )
 {
-	if ( elements_initialized is false or not exploding)
+	if ( elements_initialized is false or not exploding )
 		return;
 
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )

@@ -22,7 +22,7 @@ void Window::initialize( u32 window_width, u32 window_height, u32 fps, std::stri
 	fps_limit = fps;
 }
 
-auto Window::get_raw_window() -> sf::RenderWindow &
+auto Window::get_raw_window() -> sf::RenderWindow&
 {
 	return window;
 }

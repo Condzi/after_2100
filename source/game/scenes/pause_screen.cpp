@@ -21,20 +21,20 @@ Pause_Screen::Pause_Screen()
 	option_resume = attach<Clickable_Label>();
 	option_resume->text->string.set_locale_name( "#loc_resume" );
 	option_resume->text->character_size = 48;
-	option_resume->s_label_clicked.connect( [] {
+	bond_disconnector( option_resume->s_label_clicked.connect( [] {
 		if ( G_App.is_paused() ) {
 			G_App.toggle_pause();
 			G_Root.set_pause( false );
 		}
-											} );
+					   } ) );
 
 	option_exit = attach<Clickable_Label>();
 	option_exit->text->string.set_locale_name( "#loc_exit" );
 	option_exit->text->character_size = 48;
-	option_exit->s_label_clicked.connect( [] {
+	bond_disconnector( option_exit->s_label_clicked.connect( [] {
 		if ( G_App.is_paused() )
 			G_App.exit_game();
-										  } );
+					   } ) );
 
 	option_resume->set_absolute_position( Percent_Position{ 45, 45 } );
 	option_exit->set_absolute_position( Percent_Position{ 45, 55 } );

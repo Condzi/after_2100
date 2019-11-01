@@ -56,7 +56,7 @@ bool circle_vs_point( Circle_Shape const& circle, Point const& point )
 
 bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b )
 {
-	return std::visit( visitor_overload{	   
+	return std::visit( visitor_overload{
 		[]( Rectangle_Shape const& a, Rectangle_Shape const& b ) {
 			return rect_vs_rect( a, b );
 		},

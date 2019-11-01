@@ -15,7 +15,7 @@ class Sound_Source final :
 	public Node
 {
 	CLASS_DEF( Sound_Source );
-	
+
 public:
 	sf::Color shape_color{ sf::Color::Magenta };
 	s32       layer{ 50 };

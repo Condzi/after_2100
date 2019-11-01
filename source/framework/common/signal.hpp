@@ -13,7 +13,7 @@ namespace con
 // connect(...) returns function which has to be called when given funciton is invalidated.
 // for example when node is being destroyed.
 template <typename ...TArgs>
-class Signal final 
+class Signal final
 {
 	using Function = std::function<void( TArgs... )>;
 

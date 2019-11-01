@@ -37,7 +37,7 @@ public:
 	Signal<>     s_destroy;
 	Signal<Vec2> s_move; //< Vec2 is the offset.
 	Signal<r32>  s_update; //< r32 is delta time
-	Signal<r32>  s_rotate; //< r32 is how many degrees was added
+	Signal<r32>  s_rotate; //< r32 is how many degrees were added
 	Signal<bool> s_paused;
 	Signal<Drawing_Set&> s_draw;
 
@@ -101,7 +101,7 @@ private:
 	Point position{ 0.0px, 0.0px };
 	Size2 scale{ 1, 1 };
 	r32   angle{ 0.0deg };
-	
+
 	bool queued_for_delete{ false };
 	bool paused{ false };
 

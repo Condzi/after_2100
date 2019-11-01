@@ -39,14 +39,14 @@ public:
 private:
 	struct
 	{
-		compile_constant MAX_ANGLE    = 10.0deg;
+		compile_constant MAX_ANGLE = 10.0deg;
 		compile_constant MAX_OFFSET_X = 100.0px;
 		compile_constant MAX_OFFSET_Y = 100.0px;
 		compile_constant TRAUMA_DECREASING_RATE = 0.3f;
 
-		r32  trauma;
-		r32  angle;
-		Vec2 offset;
+		r32  trauma{ 0 };
+		r32  angle{ 0 };
+		Vec2 offset{ 0,0 };
 	} shake;
 
 	sf::View view;

@@ -21,5 +21,5 @@ Explosion::Explosion()
 	// Setting it to 0 makes better results that to 1, because it fades out too quickly.
 	sound->set_attenuation( 0 );
 
-	bond_disconnector( s_play.connect( [=]{ sound->play(); } ) );
+	bond_disconnector( s_play.connect( [=] { sound->play(); } ) );
 }

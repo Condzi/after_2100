@@ -54,13 +54,13 @@ inline constexpr con::r32 operator"" sec( long double val )
 // Automaticly sets correct degrees value (400 -> 400 - 360 = 40)
 inline constexpr con::r32 operator"" deg( long double val )
 {
+	// add support for it if needed
+	if ( val < 0 ) assert( "Negative degrees are not supported." );
+
 	if ( val > 360 ) {
 		auto const as_integer{ static_cast<con::s32>( val ) };
 		return static_cast<con::r32>( val ) - 360 * ( as_integer % 360 );
 	}
-
-	// add support for it if needed
-	if( val < 0 ) assert( "Negative degrees are not supported." );
 
 	return static_cast<con::r32>( val );
 }

@@ -5,7 +5,7 @@
 
 // Textures
 {
-	{ "player",           "resources/texture/player.png" },
+	{ "player", "resources/texture/player.png" },
 	{ "enemy_1",          "resources/texture/enemy_1.png" },
 	{ "missile_player",   "resources/texture/missile_player.png" },
 	{ "explosion",        "resources/texture/explosion.png" },

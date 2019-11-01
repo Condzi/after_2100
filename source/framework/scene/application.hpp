@@ -34,9 +34,9 @@ public:
 
 private:
 	Drawing_Set game_drawing_set;
-	Camera*     game_camera;
+	Camera* game_camera;
 	Drawing_Set gui_drawing_set;
-	Camera*     gui_camera;
+	Camera* gui_camera;
 
 	bool        exit{ false };
 	bool        paused{ false };

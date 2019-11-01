@@ -64,7 +64,7 @@ auto Image::get_texture() const -> sf::Texture const*
 	return sprite.getTexture();
 }
 
-auto Image::get_sprite_raw() -> sf::Sprite &
+auto Image::get_sprite_raw() -> sf::Sprite&
 {
 	return sprite;
 }

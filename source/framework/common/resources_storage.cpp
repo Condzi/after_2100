@@ -78,7 +78,7 @@ void Resources_Storage::reload()
 	engine_log_info( "Reloading resources." );
 	sf::Clock timer;
 
-	for ( constant&[name, path] : resources_data.textures ) {
+	for ( constant& [name, path] : resources_data.textures ) {
 		auto& texture = textures[name];
 
 		if ( texture.resource.loadFromFile( path.data() ) returned false ) {
@@ -89,7 +89,7 @@ void Resources_Storage::reload()
 		texture.resource.setSmooth( true );
 	}
 
-	for ( constant&[name, path] : resources_data.sound_buffers ) {
+	for ( constant& [name, path] : resources_data.sound_buffers ) {
 		auto& sound_buffer = sound_buffers[name];
 
 		if ( sound_buffer.resource.loadFromFile( path.data() ) returned false ) {
@@ -98,7 +98,7 @@ void Resources_Storage::reload()
 		}
 	}
 
-	for ( constant&[name, path] : resources_data.music ) {
+	for ( constant& [name, path] : resources_data.music ) {
 		// Plural...
 		auto& music_ = music[name];
 
@@ -108,7 +108,7 @@ void Resources_Storage::reload()
 		}
 	}
 
-	for ( constant&[name, path] : resources_data.fonts ) {
+	for ( constant& [name, path] : resources_data.fonts ) {
 		auto& font = fonts[name];
 
 		if ( font.resource.loadFromFile( path.data() ) returned false ) {

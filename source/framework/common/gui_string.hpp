@@ -15,7 +15,7 @@ class GUI_String final
 {
 public:
 	void set_locale_name( std::string const& name );
-	
+
 	// Locale can have paremeters like: "Hello, {0}!" => "Hello, Conrad!"
 	template <typename ...TArgs>
 	void update_locale_parameters( TArgs ...args );

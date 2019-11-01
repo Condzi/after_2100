@@ -25,11 +25,11 @@ public:
 		r32 height;
 	};
 
-	[[nodiscard]] constexpr static Vec2 Zero()  { return {  0,  0 }; };
-	[[nodiscard]] constexpr static Vec2 Left()  { return { -1,  0 }; };
-	[[nodiscard]] constexpr static Vec2 Right() { return {  1,  0 }; };
-	[[nodiscard]] constexpr static Vec2 Up()    { return {  0, -1 }; };
-	[[nodiscard]] constexpr static Vec2 Down()  { return {  0,  1 }; };
+	[[nodiscard]] constexpr static Vec2 Zero()  { return { 0,  0 }; };
+	[[nodiscard]] constexpr static Vec2 Left()  { return { -1, 0 }; };
+	[[nodiscard]] constexpr static Vec2 Right() { return { 1,  0 }; };
+	[[nodiscard]] constexpr static Vec2 Up()    { return { 0, -1 }; };
+	[[nodiscard]] constexpr static Vec2 Down()  { return { 0,  1 }; };
 
 	constexpr Vec2() = default;
 	constexpr Vec2( r32 x_, r32 y_ ) : x( x_ ), y( y_ ) {}
@@ -46,7 +46,7 @@ public:
 	[[nodiscard]] r32 dot( Vec2 const& second ) const;
 	[[nodiscard]] r32 cross( Vec2 const& second ) const;
 	[[nodiscard]] r32 angle() const;
-	[[nodiscard]] auto normalize() -> Vec2 &;
+	[[nodiscard]] auto normalize() -> Vec2&;
 
 	[[nodiscard]] operator sf::Vector2f() const;
 	template <typename T>
@@ -72,7 +72,7 @@ public:
 	[[nodiscard]] bool operator<( Vec2 const& rhs ) const;
 };
 
-Vec2 truncate( Vec2 const& in, r32 max );
+Vec2 truncate( Vec2 vec, r32 max );
 
 using Point = Vec2;
 using Size2 = Vec2;

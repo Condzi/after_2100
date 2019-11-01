@@ -16,7 +16,7 @@ class Missile_Base :
 	CLASS_DEF( Missile_Base );
 
 public:
-	Area*   hitbox;
+	Area* hitbox;
 	Vec2    velocity;
 
 	Missile_Base();

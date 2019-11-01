@@ -43,10 +43,10 @@ public:
 	void update( r32 delta ) override;
 
 private:
-	using Spawning_Function = std::function<Enemy_Base&()>;
+	using Spawning_Function = std::function<Enemy_Base&( )>;
 
 	Spawning_Function spawning_function;
-	Path const*       path_to_follow{ nullptr };
+	Path const* path_to_follow{ nullptr };
 	r32               time_since_last_spawn{ 0 };
 	u32               spawn_limit{ 0 };
 	u32               already_spawned_count{ 0 };

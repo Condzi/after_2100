@@ -77,7 +77,7 @@ void Checkbox::input( sf::Event const& event )
 	if ( event.type is sf::Event::EventType::MouseButtonReleased and
 		 event.mouseButton.button is sf::Mouse::Left and
 		 rect_vs_point( checkbox_rect, mouse_position ) returned true ) {
-			 
+
 		checked = !checked;
 		s_toggle.emit( checked );
 	}

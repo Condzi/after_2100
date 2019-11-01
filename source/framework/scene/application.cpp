@@ -69,7 +69,7 @@ void Application::run()
 	engine_log_info( "Exiting game loop..." );
 }
 
-auto Application::get_root() -> Root &
+auto Application::get_root() -> Root&
 {
 	return root;
 }
@@ -116,9 +116,9 @@ void Application::handle_debug_keys( sf::Event const& event )
 void Application::render()
 {
 	game_drawing_set.clear();
-	root.draw_children( game_drawing_set );
-
 	gui_drawing_set.clear();
+
+	root.draw_children( game_drawing_set );
 	root.draw_gui_children( gui_drawing_set );
 
 	G_Debug_Console.draw( gui_drawing_set );

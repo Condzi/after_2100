@@ -48,7 +48,7 @@ auto Rich_Text::get_string_without_formating_characters() const -> sf::String co
 
 void Rich_Text::update_vertices()
 {
-	if( font is nullptr or string.get_string().isEmpty() )
+	if ( font is nullptr or string.get_string().isEmpty() )
 		return;
 
 	constant& str = string.get_string();

@@ -26,9 +26,9 @@ public:
 	void update( r32 dt ) override;
 
 protected:
-	Sprite*    sprite;
-	Area*      hitbox;
-	Health*    health;
+	Sprite* sprite;
+	Area* hitbox;
+	Health* health;
 	Explosion* explosion;
 	Exploded_Sprite* exploded_sprite;
 
