@@ -16,7 +16,7 @@ bool Drawing_Set::Drawable::operator<( Drawable const& second ) const
 
 bool Drawing_Set::Drawable::operator==( Drawable const& second ) const
 {
-	return &drawable == &second.drawable;
+	return &drawable is &second.drawable;
 }
 
 bool Drawing_Set::add_drawable( sf::Drawable const& drawable, s32 const layer, sf::RenderStates const render_states )

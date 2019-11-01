@@ -15,7 +15,7 @@ Find_Result find( TContainer const& container, TValue const& value )
 	if ( result == end )
 		return {};
 
-	s32 idx = static_cast<s32>( std::distance( begin, result ) );
+	constant idx = static_cast<s32>( std::distance( begin, result ) );
 
 	return { true, idx };
 }
@@ -30,7 +30,7 @@ Find_Result find_if( TContainer const& container, TLambda&& lambda )
 	if ( result == end )
 		return {};
 
-	s32 idx = static_cast<s32>( std::distance( begin, result ) );
+	constant idx = static_cast<s32>( std::distance( begin, result ) );
 
 	return { true, idx };
 }
@@ -44,9 +44,11 @@ void remove_if( TContainer& container, TLambda&& lambda )
 	container.erase( std::remove_if( begin, end, change_owner( lambda ) ), end );
 }
 
-template<typename T>
+template <typename T>
 size_t type_hash( T const& value )
 {
-	return std::hash<T>{}( value );
+	static std::hash<T> hasher; // There is always one hasher per type.
+
+	return hasher( value );
 }
 }

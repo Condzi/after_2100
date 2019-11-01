@@ -32,7 +32,7 @@ void Animation::set_texture_from_name( std::string const& name )
 void Animation::set_begin_position( Point const& pos )
 {
 	if ( pos.x < 0 or pos.y < 0 ) {
-		engine_log_warning( "Beggining position of animation frame in texture atlas can't be <0. (value is x={}, y={})", pos.x, pos.y );
+		engine_log_warning( "Beggining position of animation frame in texture atlas can't be <0. (values are x={}, y={})", pos.x, pos.y );
 		return;
 	}
 
@@ -42,7 +42,7 @@ void Animation::set_begin_position( Point const& pos )
 void Animation::set_frame_size( Size2 const& size )
 {
 	if ( size.x <= 0 or size.y <= 0 ) {
-		engine_log_warning( "Size of animation frame in texture atlas can't be <=0. (value is x={}, y={})", size.x, size.y );
+		engine_log_warning( "Size of animation frame in texture atlas can't be <=0. (values are width={}, height={})", size.x, size.y );
 		return;
 	}
 

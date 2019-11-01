@@ -11,7 +11,7 @@ namespace con
 {
 bool string_begins_with( std::string const& string, std::string const& prefix )
 {
-	return string.substr( 0, prefix.size() ) == prefix;
+	return string.substr( 0, prefix.size() ) is prefix;
 }
 std::string lower_string( std::string str )
 {
