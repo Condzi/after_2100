@@ -22,23 +22,23 @@ using r32 = float;
 using r64 = double;
 }
 
-#define CLASS_DEF( class_ )                                        \
-public:                                                            \
-                                                                   \
-compile_constant get_class_name_static()                           \
-{                                                                  \
-	return #class_;                                                \
-}                                                                  \
-                                                                   \
-virtual std::string get_class_name() const                         \
-{                                                                  \
-	return get_class_name_static();                                \
-}                                                                  \
-                                                                   \
-inline static auto instantiate()                                   \
-{                                                                  \
-	return std::make_unique<class_>();                             \
-}                                                                  \
+#define CLASS_DEF( class_ )                                          \
+public:                                                              \
+                                                                     \
+compile_constant get_class_name_static()                             \
+{                                                                    \
+	return #class_;                                                  \
+}                                                                    \
+                                                                     \
+virtual std::string get_class_name() const                           \
+{                                                                    \
+	return fmt::format( "{}( \"{}\" | {:#x} )", get_class_name_static(), name, (u64)this ); \
+}                                                                    \
+                                                                     \
+inline static auto instantiate()                                     \
+{                                                                    \
+	return std::make_unique<class_>();                               \
+}                                                                    \
 private:
 
 
