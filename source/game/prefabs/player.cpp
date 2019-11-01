@@ -134,11 +134,7 @@ void Player::check_movement_keys()
 		// @ToDo: Separate variable for recoil? According to Newton's law (am = -am)
 		// we need some mass multiplier.
 		constant recoil = gun_a_1->get_horizontal_velocity() * 0.8;
-
-		if ( velocity.x - recoil < -recoil )
-			velocity.x = -recoil;
-		else
-			velocity.x -= recoil;
+		velocity.x -= recoil;
 	}
 }
 

@@ -7,7 +7,7 @@
 namespace con
 {
 // Helper class for GUI.
-// Usage: Node.set_absolute_position(Percent_Position{1.2, 1.3})
+// Usage: Node.set_absolute_position( Percent_Position{1.2, 1.3} )
 struct Percent_Position final
 {
 	r32 x{ 0 };
