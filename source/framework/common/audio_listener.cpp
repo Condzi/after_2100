@@ -24,7 +24,7 @@ void Audio_Listener::set_master_volume( s32 master_volume )
 		return;
 	}
 
-	sf::Listener::setGlobalVolume( static_cast<r32>( master_volume ) );
+	sf::Listener::setGlobalVolume( cast<r32>( master_volume ) );
 }
 
 void Audio_Listener::mute()

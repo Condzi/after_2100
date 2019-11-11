@@ -424,7 +424,7 @@ unsigned int Sprite3d::getSubdivision() const
 
 void Sprite3d::setNumberOfPoints(const unsigned int numberOfPoints)
 {
-	const unsigned int root{ static_cast<unsigned int>(std::sqrt(numberOfPoints)) };
+	const unsigned int root{ cast<unsigned int>(std::sqrt(numberOfPoints)) };
 	if (root > 2)
 		setMeshDensity(root - 2);
 	else
@@ -433,7 +433,7 @@ void Sprite3d::setNumberOfPoints(const unsigned int numberOfPoints)
 
 void Sprite3d::setNumberOfQuads(const unsigned int numberOfQuads)
 {
-	const unsigned int root{ static_cast<unsigned int>(std::sqrt(numberOfQuads)) };
+	const unsigned int root{ cast<unsigned int>(std::sqrt(numberOfQuads)) };
 	if (root > 1)
 		setMeshDensity(root - 1);
 	else
@@ -499,7 +499,7 @@ void Sprite3d::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Sprite3d::updateTransformedPoints() const
 {
 	if (m_useDynamicSubdivision)
-		setSubdivision(static_cast<unsigned int>((m_maxSubdivision - m_minSubdivision) * getMostExtremeAngle() / 90.f + m_minSubdivision));
+		setSubdivision(cast<unsigned int>((m_maxSubdivision - m_minSubdivision) * getMostExtremeAngle() / 90.f + m_minSubdivision));
 
 	m_origin = { this->getOrigin().x, this->getOrigin().y, m_origin.z };
 	const float radiansFromDegreesMultiplier{ 0.0174532925f }; // pi / 180;
@@ -595,8 +595,8 @@ void Sprite3d::createPointGrid() const
 	{
 		for (unsigned int x{ 0u }; x < numberOfPointsPerDimension; ++x)
 		{
-			m_points[y * numberOfPointsPerDimension + x].x = linearInterpolation(leftTop.x, rightBottom.x, static_cast<float>(x) / (numberOfPointsPerDimension - 1));
-			m_points[y * numberOfPointsPerDimension + x].y = linearInterpolation(leftTop.y, rightBottom.y, static_cast<float>(y) / (numberOfPointsPerDimension - 1));
+			m_points[y * numberOfPointsPerDimension + x].x = linearInterpolation(leftTop.x, rightBottom.x, cast<float>(x) / (numberOfPointsPerDimension - 1));
+			m_points[y * numberOfPointsPerDimension + x].y = linearInterpolation(leftTop.y, rightBottom.y, cast<float>(y) / (numberOfPointsPerDimension - 1));
 			m_points[y * numberOfPointsPerDimension + x].z = 0.f;
 		}
 	}

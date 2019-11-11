@@ -34,10 +34,10 @@ public:
 	constexpr Vec2() = default;
 	constexpr Vec2( r32 x_, r32 y_ ) : x( x_ ), y( y_ ) {}
 	template <typename T>
-	constexpr Vec2( T x_, T y_ ) : x( static_cast<r32>( x_ ) ), y( static_cast<r32>( y_ ) ) {}
+	constexpr Vec2( T x_, T y_ ) : x( cast<r32>( x_ ) ), y( cast<r32>( y_ ) ) {}
 	Vec2( sf::Vector2f const& vec ) : x( vec.x ), y( vec.y ) {}
 	template <typename T>
-	Vec2( sf::Vector2<T> const& vec ) : Vec2( static_cast<sf::Vector2f>( vec ) ) {}
+	Vec2( sf::Vector2<T> const& vec ) : Vec2( cast<sf::Vector2f>( vec ) ) {}
 
 	[[nodiscard]] r32 length() const;
 	[[nodiscard]] r32 length_squared() const;
@@ -52,7 +52,7 @@ public:
 	template <typename T>
 	[[nodiscard]] operator sf::Vector2<T>() const
 	{
-		return static_cast<sf::Vector2<T>>( static_cast<sf::Vector2f>( *this ) );
+		return cast<sf::Vector2<T>>( cast<sf::Vector2f>( *this ) );
 	}
 
 	[[nodiscard]] Vec2 operator-() const;

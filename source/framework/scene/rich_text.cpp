@@ -169,10 +169,10 @@ void Rich_Text::add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 it
 	constant right = glyph.bounds.left + glyph.bounds.width + padding;
 	constant bottom = glyph.bounds.top  + glyph.bounds.height + padding;
 
-	float u1 = static_cast<float>( glyph.textureRect.left ) - padding;
-	float v1 = static_cast<float>( glyph.textureRect.top ) - padding;
-	float u2 = static_cast<float>( glyph.textureRect.left + glyph.textureRect.width ) + padding;
-	float v2 = static_cast<float>( glyph.textureRect.top  + glyph.textureRect.height ) + padding;
+	float u1 = cast<float>( glyph.textureRect.left ) - padding;
+	float v1 = cast<float>( glyph.textureRect.top ) - padding;
+	float u2 = cast<float>( glyph.textureRect.left + glyph.textureRect.width ) + padding;
+	float v2 = cast<float>( glyph.textureRect.top  + glyph.textureRect.height ) + padding;
 
 	// if we have outline passed in we are adding outline vertices, if not then text vertices.
 	sf::VertexArray& vert = outline != 0 ? outline_vertices : vertices;

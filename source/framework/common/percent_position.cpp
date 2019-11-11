@@ -12,8 +12,8 @@ namespace con
 {
 Percent_Position::Percent_Position( r64 x_, r64 y_ )
 {
-	x = static_cast<r32>( x_ );
-	y = static_cast<r32>( y_ );
+	x = cast<r32>( x_ );
+	y = cast<r32>( y_ );
 }
 
 Percent_Position::operator Vec2() const

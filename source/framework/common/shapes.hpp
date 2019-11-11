@@ -20,14 +20,14 @@ struct Rectangle_Shape final
 	Rectangle_Shape( Point const& position_, Size2 const& size_ ) : position( position_ ), size( size_ ) {}
 	template <typename T>
 	Rectangle_Shape( sf::Rect<T> const& rect ) :
-		position( static_cast<r32>( rect.left ), static_cast<r32>( rect.top ) ),
-		size( static_cast<r32>( rect.width ), static_cast<r32>( rect.height ) )
+		position( cast<r32>( rect.left ), cast<r32>( rect.top ) ),
+		size( cast<r32>( rect.width ), cast<r32>( rect.height ) )
 	{}
 
 	template <typename T>
 	[[nodiscard]] operator sf::Rect<T>() const
 	{
-		return sf::Rect<T>{ static_cast<T>( position.x ), static_cast<T>( position.y ), static_cast<T>( size.width ), static_cast<T>( size.height ) };
+		return sf::Rect<T>{ cast<T>( position.x ), cast<T>( position.y ), cast<T>( size.width ), cast<T>( size.height ) };
 	}
 };
 

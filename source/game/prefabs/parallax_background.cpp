@@ -32,7 +32,7 @@ void Parallax_Background::set_texture_from_pointer( sf::Texture const* texture )
 	sprite_a->set_global_position( get_global_position() );
 	sprite_b->set_global_position( get_global_position() );
 
-	sprite_b->move( { static_cast<r32>( texture->getSize().x ), 0 } );
+	sprite_b->move( { cast<r32>( texture->getSize().x ), 0 } );
 }
 
 void Parallax_Background::set_texture_from_name( std::string const& name )

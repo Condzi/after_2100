@@ -22,6 +22,15 @@ using r32 = float;
 using r64 = double;
 }
 
+#define is ==
+#define is_not !=
+#define returned is
+#define constant auto const
+#define compile_constant static constexpr auto
+#define change_owner( uptr ) std::move( uptr )
+#define unused( x ) ( ( void )( x ) )
+#define cast static_cast
+
 #define CLASS_DEF( class_ )                                          \
 public:                                                              \
                                                                      \
@@ -43,12 +52,12 @@ private:
 
 inline constexpr con::r32 operator"" px( long double val )
 {
-	return static_cast<con::r32>( val );
+	return cast<con::r32>( val );
 }
 
 inline constexpr con::r32 operator"" sec( long double val )
 {
-	return static_cast<con::r32>( val );
+	return cast<con::r32>( val );
 }
 // Automaticly sets correct degrees value (400 -> 400 - 360 = 40)
 inline constexpr con::r32 operator"" deg( long double val )
@@ -57,20 +66,12 @@ inline constexpr con::r32 operator"" deg( long double val )
 	if ( val < 0 ) assert( "Negative degrees are not supported." );
 
 	if ( val > 360 ) {
-		auto const as_integer{ static_cast<con::s32>( val ) };
-		return static_cast<con::r32>( val ) - 360 * ( as_integer % 360 );
+		auto const as_integer{ cast<con::s32>( val ) };
+		return cast<con::r32>( val ) - 360 * ( as_integer % 360 );
 	}
 
-	return static_cast<con::r32>( val );
+	return cast<con::r32>( val );
 }
-
-#define is ==
-#define is_not !=
-#define returned is
-#define constant auto const
-#define compile_constant static constexpr auto
-#define change_owner( uptr ) std::move( uptr )
-#define unused( x ) ( ( void )( x ) )
 
 namespace con
 {

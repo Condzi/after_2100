@@ -9,7 +9,7 @@
 
 namespace con
 {
-std::mt19937 rng{ static_cast<u32>( std::chrono::high_resolution_clock::now().time_since_epoch().count() ) };
+std::mt19937 rng{ cast<u32>( std::chrono::high_resolution_clock::now().time_since_epoch().count() ) };
 
 s32 random_int( s32 min, s32 max )
 {

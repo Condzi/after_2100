@@ -15,7 +15,7 @@ Find_Result find( TContainer const& container, TValue const& value )
 	if ( result == end )
 		return {};
 
-	constant idx = static_cast<s32>( std::distance( begin, result ) );
+	constant idx = cast<s32>( std::distance( begin, result ) );
 
 	return { true, idx };
 }
@@ -30,7 +30,7 @@ Find_Result find_if( TContainer const& container, TLambda&& lambda )
 	if ( result == end )
 		return {};
 
-	constant idx = static_cast<s32>( std::distance( begin, result ) );
+	constant idx = cast<s32>( std::distance( begin, result ) );
 
 	return { true, idx };
 }

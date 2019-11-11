@@ -33,7 +33,7 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->initialize( { 120, 180 } );
 	exploded_sprite->visible = false;
 	// hack - positioning sprite (and animation) right in the center of the real sprite
-	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- static_cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
+	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 1;
 
 	health = attach<Health>();

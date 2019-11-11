@@ -82,7 +82,7 @@ Exploded_Sprite::Exploded_Sprite()
 		for ( auto& element : elements )
 			for ( size_t i = 0; i < 4; i++ ) {
 				auto& vertex = element.vertices[i];
-				vertex.position += static_cast<sf::Vector2f>( offset );
+				vertex.position += cast<sf::Vector2f>( offset );
 			}
 					   } ) );
 }
@@ -125,7 +125,7 @@ void Exploded_Sprite::update( r32 dt )
 	for ( auto& element : elements ) {
 		for ( size_t i = 0; i < 4; i++ ) {
 			auto& vertex = element.vertices[i];
-			vertex.position += static_cast<sf::Vector2f>( element.velocity * dt );
+			vertex.position += cast<sf::Vector2f>( element.velocity * dt );
 		}
 
 		element.render_states.transform = sf::Transform::Identity;
