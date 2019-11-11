@@ -27,9 +27,10 @@ public:
 	void set_zoom( r32 val );
 	void zoom( r32 val );
 
-	[[nodiscard]] auto get_center() const -> Point;
-	[[nodiscard]] auto get_view() const   -> sf::View;
-	[[nodiscard]] auto get_zoom() const   -> r32;
+	[[nodiscard]] auto get_global_bounds() const -> Rectangle_Shape;
+	[[nodiscard]] auto get_center() const        -> Point;
+	[[nodiscard]] auto get_view() const          -> sf::View;
+	[[nodiscard]] auto get_zoom() const          -> r32;
 
 	void add_shake_trauma( r32 trauma );
 	void stop_shaking();

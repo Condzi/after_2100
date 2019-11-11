@@ -73,6 +73,7 @@ Level_1::Level_1()
 	spr->set_texture_from_name( "space_background" );
 	spr->layer = 0;
 	spr->set_absolute_position( Percent_Position{ -10, -10 } );
+	spr->s_update.connect( [sprite = spr]( r32 dt ) {sprite->move( { -100*dt, 0 } ); } );
 
 	auto music = attach<Music_Source>();
 
