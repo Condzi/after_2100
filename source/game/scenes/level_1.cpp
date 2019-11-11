@@ -8,6 +8,7 @@
 #include "level_1.hpp"
 #include "game/prefabs/player.hpp"
 #include "game/prefabs/enemy_spawner.hpp"
+#include "game/prefabs/parallax_background.hpp"
 
 #include "framework/scene/path.hpp"
 #include "framework/common/resources_storage.hpp"
@@ -68,12 +69,12 @@ Level_1::Level_1()
 					   } ) );
 
 
-	Sprite* spr = attach<Sprite>();
-
-	spr->set_texture_from_name( "space_background" );
-	spr->layer = 0;
-	spr->set_absolute_position( Percent_Position{ -10, -10 } );
-	spr->s_update.connect( [sprite = spr]( r32 dt ) {sprite->move( { -100*dt, 0 } ); } );
+	Parallax_Background* bg = attach<Parallax_Background>();
+	
+	bg->set_texture_from_name( "space_background" );
+	bg->layer = 0;
+	bg->set_absolute_position( Percent_Position{ -10, -10 } );
+	bg->speed = 100;
 
 	auto music = attach<Music_Source>();
 
