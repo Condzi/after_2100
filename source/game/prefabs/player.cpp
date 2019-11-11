@@ -50,7 +50,6 @@ Player::Player()
 	gun_b_1->set_horizontal_velocity( 500 );
 	gun_b_2->set_horizontal_velocity( 500 );
 
-
 	gun_a_1->set_local_position( Size2{ 50.0px, -36.0px } );
 	gun_a_2->set_local_position( Size2{ 50.0px, 36.0px } );
 
@@ -61,7 +60,6 @@ Player::Player()
 	gun_a_2->set_cooldown_time( 0.2sec );
 	gun_b_1->set_cooldown_time( 0.2sec );
 	gun_b_2->set_cooldown_time( 0.2sec );
-
 
 	hitbox_a = sprite_a->attach<Area>();
 	hitbox_b = sprite_b->attach<Area>();
@@ -163,7 +161,7 @@ void Player::correct_for_boundary_collision()
 	constant sprite_width = sprite_a->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
 	constant x_pos_max = x_pos + sprite_width;
-	// y_pos doesn't matter since sprites has it own individual position, 
+	// y_pos doesn't matter since sprites has it own individual position,
 	// but it's still more clear if we set it as it was.
 	constant y_pos = get_global_position().y;
 
@@ -192,4 +190,3 @@ void Player::update_tilt_transformation()
 	hitbox_a->set_rectangle_shape( sprite_a->get_global_bounds() );
 	hitbox_b->set_rectangle_shape( sprite_b->get_global_bounds() );
 }
-

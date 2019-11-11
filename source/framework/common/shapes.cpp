@@ -70,5 +70,4 @@ bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b )
 			return circle_vs_rect( b, a );
 		} }, a, b );
 }
-
 }

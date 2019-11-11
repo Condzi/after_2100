@@ -16,7 +16,6 @@
 
 #include "framework/scene/music_source.hpp"
 
-
 Level_1::Level_1()
 {
 	name = "level_1";
@@ -67,7 +66,6 @@ Level_1::Level_1()
 		spawner->reset();
 		spawner->start();
 					   } ) );
-
 
 	Parallax_Background* bg = attach<Parallax_Background>();
 

@@ -34,5 +34,4 @@ r32 random_real( r32 min, r32 max )
 
 	return dist( rng );
 }
-
 }

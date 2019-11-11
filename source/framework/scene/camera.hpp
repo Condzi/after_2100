@@ -4,7 +4,6 @@
 */
 #pragma once
 
-
 #include <SFML/Graphics/View.hpp>
 
 #include "path.hpp"
@@ -13,7 +12,6 @@
 
 namespace con
 {
-
 // Deriving from Path_Follower allows for making better
 // cut scenes. Just make a path and make camera follow it.
 class Camera :

@@ -95,5 +95,4 @@ auto Sprite::get_texture_rect() -> Rectangle_Shape
 {
 	return sprite.getTextureRect();
 }
-
 }

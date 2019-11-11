@@ -60,7 +60,7 @@ private:
 
 	std::unordered_map<std::string, std::function<void( std::string )>> commands;
 
-	void put_labels_on_correct_positions(); // when initializing for the first time 
+	void put_labels_on_correct_positions(); // when initializing for the first time
 	void update_lines(); // after printing or scrolling
 	void initialize_basic_commands();
 	void do_command( std::string const& command );

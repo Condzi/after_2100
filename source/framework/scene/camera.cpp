@@ -35,11 +35,11 @@ void Camera::zoom( r32 val )
 auto Camera::get_global_bounds() const -> Rectangle_Shape
 {
 	Rectangle_Shape bounds;
-	
+
 	bounds.size = get_view().getSize();
 	bounds.position.x = get_center().x - bounds.size.width / 2;
 	bounds.position.y = get_center().y - bounds.size.height / 2;
-	
+
 	return bounds;
 }
 

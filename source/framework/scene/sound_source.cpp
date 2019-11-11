@@ -101,5 +101,4 @@ void Sound_Source::pause()
 {
 	sound.pause();
 }
-
 }

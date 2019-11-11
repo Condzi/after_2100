@@ -25,7 +25,7 @@ public:
 	static Locale& get_instance();
 
 private:
-	// @ToDo: Set from save / config file so the player doesn't need to select it 
+	// @ToDo: Set from save / config file so the player doesn't need to select it
 	// in every session.
 	std::string              current_language{ "pl" };
 	std::vector<std::string> avaible_languages;

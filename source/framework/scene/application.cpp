@@ -42,11 +42,9 @@ void Application::run()
 			if ( event.type is sf::Event::LostFocus ) {
 				G_Audio_Listener.mute();
 				is_window_focused = false;
-
 			} else if ( event.type is sf::Event::GainedFocus ) {
 				is_window_focused = true;
 				G_Audio_Listener.unmute();
-
 			} else if ( event.type is sf::Event::KeyPressed and
 						event.key.code is sf::Keyboard::F1 ) {
 				G_Debug_Flags.toggle( "display_debug_console" );

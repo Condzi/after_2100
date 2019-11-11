@@ -58,7 +58,7 @@ private:
 
 	// they call me a madman...
 	Resources_Data resources_data{
-	#include "game/resources.inl" 
+	#include "game/resources.inl"
 	};
 };
 }

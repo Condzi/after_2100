@@ -3,7 +3,6 @@
 	https://github.com/condzi
 */
 
-
 #include "pch.hpp"
 
 #include <SFML/System/Clock.hpp>

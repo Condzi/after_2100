@@ -78,7 +78,6 @@ void Debug_Console::input( sf::Event const& event )
 
 	if ( event.type is sf::Event::EventType::MouseButtonReleased and
 		 event.mouseButton.button is sf::Mouse::Button::Left ) {
-
 		constant mouse_position = G_Window.get_mouse_position();
 		constant input_bounds = Rectangle_Shape( input_background.getGlobalBounds() );
 

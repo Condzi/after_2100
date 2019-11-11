@@ -45,6 +45,5 @@ public:
 
 private:
 	sf::Sprite3d sprite;
-
 };
 }

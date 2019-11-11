@@ -33,7 +33,6 @@ public:
 	void flush_() override {}
 };
 
-
 Debug_Log& Debug_Log::get_instance()
 {
 	static Debug_Log* instance = new Debug_Log;
@@ -59,7 +58,6 @@ Debug_Log::Debug_Log()
 
 		engine_logger->flush_on( level_enum::info );
 		game_logger->flush_on( level_enum::info );
-
 	}
 	catch ( const std::exception& ex ) {
 		std::cout << "\n\n Error initializing spdlog: " << ex.what() << " \n\n";

@@ -72,5 +72,4 @@ void Clickable_Label::style_for_hover()
 
 	text_needs_update = true;
 }
-
 }

@@ -9,7 +9,6 @@
 
 #include "framework/scene/application.hpp"
 
-
 Pause_Screen::Pause_Screen()
 {
 	pause_title = attach<Label>();

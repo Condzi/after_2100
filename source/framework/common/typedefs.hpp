@@ -41,7 +41,6 @@ inline static auto instantiate()                                     \
 }                                                                    \
 private:
 
-
 inline constexpr con::r32 operator"" px( long double val )
 {
 	return static_cast<con::r32>( val );

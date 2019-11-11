@@ -68,7 +68,6 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 		return Vec2{ max_velocity } *Vec2{ random_real( 0.2, 1 ), random_real( -1, 1 ) };
 	};
 
-
 	for ( auto& element : elements ) {
 		element.velocity = random_velocity();
 		element.center = Vec2{ texture->getSize() } *0.25f;

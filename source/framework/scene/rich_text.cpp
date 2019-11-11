@@ -71,7 +71,7 @@ void Rich_Text::update_vertices()
 
 	u32 previous_character{ 0 }, current_character{ 0 };
 	bool want_to_escape{ false }; // % character (because json formatter is stupid and doesn't allow \)
-	
+
 	for ( size_t i = 0; i < str.getSize(); i++ ) {
 		current_character = str[i];
 
