@@ -5,11 +5,12 @@
 
 #pragma once
 
-#include "framework/scene/sprite.hpp"
 #include "framework/scene/area.hpp"
+#include "framework/scene/sprite.hpp"
+
 #include "health.hpp"
-#include "player_missile.hpp"
 #include "missile_shooter.hpp"
+#include "player_missile.hpp"
 
 using namespace con;
 

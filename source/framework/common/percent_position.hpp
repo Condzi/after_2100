@@ -4,6 +4,8 @@
 */
 #pragma once
 
+#include "framework/common/vec2.hpp"
+
 namespace con
 {
 // Helper class for GUI.

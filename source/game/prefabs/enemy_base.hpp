@@ -5,13 +5,13 @@
 
 #pragma once
 
-#include "framework/scene/path.hpp"
-#include "framework/scene/sprite.hpp"
-#include "framework/scene/area.hpp"
-
+#include "exploded_sprite.hpp"
 #include "explosion.hpp"
 #include "health.hpp"
-#include "exploded_sprite.hpp"
+
+#include "framework/scene/area.hpp"
+#include "framework/scene/path.hpp"
+#include "framework/scene/sprite.hpp"
 
 using namespace con;
 

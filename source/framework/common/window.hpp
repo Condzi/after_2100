@@ -4,9 +4,9 @@
 */
 #pragma once
 
-#include <SFML/Graphics/RenderWindow.hpp>
-
 #include "shapes.hpp"
+
+#include <SFML/Graphics/RenderWindow.hpp>
 
 namespace con::priv
 {

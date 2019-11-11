@@ -5,13 +5,13 @@
 
 #include "pch.hpp"
 
-#include "locale.hpp"
 #include "framework/common/stl_extensions.hpp"
 
-#include <fstream>
+#include "locale.hpp"
 
-#include <SFML/System/Clock.hpp>
+#include <fstream>
 #include <nlohmann/json.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace con::priv
 {

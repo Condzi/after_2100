@@ -4,10 +4,11 @@
 */
 #pragma once
 
-#include <SFML/System/String.hpp>
+#include "assertions.hpp"
 
 #include "framework/localization/localized_string.hpp"
-#include "assertions.hpp"
+
+#include <SFML/System/String.hpp>
 
 namespace con
 {

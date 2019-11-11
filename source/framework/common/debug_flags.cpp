@@ -5,8 +5,8 @@
 
 #include "pch.hpp"
 
-#include "debug_flags.hpp"
 #include "assertions.hpp"
+#include "debug_flags.hpp"
 #include "stl_extensions.hpp"
 
 namespace con::priv

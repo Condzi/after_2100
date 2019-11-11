@@ -5,15 +5,17 @@
 
 #include "pch.hpp"
 
+#include "application.hpp"
+#include "area_overleaping_checker.hpp"
+
+#include "framework/common/audio_listener.hpp"
 #include "framework/common/debug_flags.hpp"
 #include "framework/common/resources_storage.hpp"
 #include "framework/common/stl_extensions.hpp"
-#include "framework/localization/locale.hpp"
 #include "framework/common/window.hpp"
+
+#include "framework/localization/locale.hpp"
 #include "framework/scene/debug_console.hpp"
-#include "application.hpp"
-#include "area_overleaping_checker.hpp"
-#include "framework/common/audio_listener.hpp"
 
 namespace con
 {

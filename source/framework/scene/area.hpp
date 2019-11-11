@@ -4,12 +4,13 @@
 */
 #pragma once
 
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-
 #include "framework/common/shapes.hpp"
 #include "framework/common/signal.hpp"
+
 #include "node.hpp"
+
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 namespace con
 {

@@ -7,6 +7,7 @@
 
 #include "framework/common/assertions.hpp"
 #include "framework/common/resources_storage.hpp"
+
 #include "sprite.hpp"
 
 namespace con

@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <spdlog/logger.h>
-
 #include "framework/common/typedefs.hpp"
+
+#include <spdlog/logger.h>
 
 namespace con::priv
 {

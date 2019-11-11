@@ -4,8 +4,8 @@
 */
 #pragma once
 
-#include "framework/scene/node.hpp"
 #include "framework/scene/area.hpp"
+#include "framework/scene/node.hpp"
 
 using namespace con;
 

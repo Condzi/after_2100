@@ -5,9 +5,9 @@
 
 #include "pch.hpp"
 
-#include <SFML/Window/Mouse.hpp>
-
 #include "window.hpp"
+
+#include <SFML/Window/Mouse.hpp>
 
 namespace con::priv
 {

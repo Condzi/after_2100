@@ -5,8 +5,8 @@
 
 #include "pch.hpp"
 
-#include "framework/scene/application.hpp"
 #include "camera.hpp"
+#include "framework/scene/application.hpp"
 
 namespace con
 {

@@ -5,8 +5,9 @@
 
 #include "pch.hpp"
 
-#include "framework/common/resources_storage.hpp"
 #include "enemy_base.hpp"
+
+#include "framework/common/resources_storage.hpp"
 #include "framework/scene/camera.hpp"
 
 Enemy_Base::Enemy_Base()

@@ -5,13 +5,13 @@
 
 #include "pch.hpp"
 
+#include "framework/common/assertions.hpp"
+#include "framework/common/debug_log.hpp"
+#include "framework/scene/application.hpp"
+#include "framework/scene/debug_console.hpp"
+
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/sinks/basic_file_sink.h>
-
-#include "framework/common/debug_log.hpp"
-#include "framework/common/assertions.hpp"
-#include "framework/scene/debug_console.hpp"
-#include "framework/scene/application.hpp"
 
 namespace con::priv
 {

@@ -7,10 +7,10 @@
 
 #include "debug_console.hpp"
 
+#include "framework/common/audio_listener.hpp"
+#include "framework/common/resources_storage.hpp"
 #include "framework/common/window.hpp"
 #include "framework/localization/locale.hpp"
-#include "framework/common/resources_storage.hpp"
-#include "framework/common/audio_listener.hpp"
 
 namespace con::priv
 {

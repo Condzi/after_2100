@@ -17,7 +17,7 @@ class Drawing_Set final
 	struct Drawable final
 	{
 		s32 const              layer{ 0 };
-		sf::Drawable const&    drawable;
+		sf::Drawable const& drawable;
 		sf::RenderStates const render_states{ sf::RenderStates::Default };
 
 		bool operator<( Drawable const& second ) const;

@@ -4,8 +4,8 @@
 */
 #pragma once
 
-#include "framework/scene/node.hpp"
 #include "framework/common/signal.hpp"
+#include "framework/scene/node.hpp"
 
 using namespace con;
 

@@ -4,11 +4,12 @@
 */
 #pragma once
 
-#include <SFML/Graphics/View.hpp>
+#include "framework/common/random.hpp"
+#include "framework/common/vec2.hpp"
 
 #include "path.hpp"
-#include "framework/common/vec2.hpp"
-#include "framework/common/random.hpp"
+
+#include <SFML/Graphics/View.hpp>
 
 namespace con
 {

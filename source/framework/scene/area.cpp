@@ -5,9 +5,10 @@
 
 #include "pch.hpp"
 
-#include "framework/common/debug_flags.hpp"
 #include "area.hpp"
 #include "area_overleaping_checker.hpp"
+
+#include "framework/common/debug_flags.hpp"
 
 namespace con
 {

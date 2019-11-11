@@ -9,9 +9,9 @@
 #include "framework/common/debug_flags.hpp"
 #include "framework/scene/debug_console.hpp"
 
-#include "root.hpp"
 #include "application.hpp"
 #include "label.hpp"
+#include "root.hpp"
 
 namespace con
 {

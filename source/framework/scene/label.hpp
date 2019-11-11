@@ -4,11 +4,12 @@
 */
 #pragma once
 
-#include <SFML/Graphics/Text.hpp>
+#include "framework/common/gui_string.hpp"
+#include "framework/common/shapes.hpp"
 
 #include "node.hpp"
-#include "framework/common/shapes.hpp"
-#include "framework/common/gui_string.hpp"
+
+#include <SFML/Graphics/Text.hpp>
 
 namespace con
 {

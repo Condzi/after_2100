@@ -5,10 +5,10 @@
 
 #pragma once
 
+#include "framework/common/shapes.hpp"
 #include "framework/common/sprite3d.hpp"
 
 #include "node.hpp"
-#include "framework/common/shapes.hpp"
 
 namespace con
 {

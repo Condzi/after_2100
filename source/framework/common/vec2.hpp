@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
-
 #include "framework/common/typedefs.hpp"
+
+#include <SFML/System/Vector2.hpp>
 
 namespace con
 {

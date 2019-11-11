@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "missile_shooter.hpp"
+
 #include "framework/common/debug_flags.hpp"
 
 void Missile_Shooter::set_horizontal_velocity( r32 velocity )

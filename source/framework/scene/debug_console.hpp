@@ -4,13 +4,13 @@
 */
 #pragma once
 
+#include "framework/common/debug_flags.hpp"
+#include "framework/common/drawing_set.hpp"
+#include "framework/scene/rich_text.hpp"
+
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Event.hpp>
-
-#include "framework/common/drawing_set.hpp"
-#include "framework/common/debug_flags.hpp"
-#include "framework/scene/rich_text.hpp"
 
 namespace con::priv
 {

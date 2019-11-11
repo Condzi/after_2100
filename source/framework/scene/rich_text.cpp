@@ -5,9 +5,9 @@
 
 #include "pch.hpp"
 
-#include "rich_text.hpp"
-
 #include "framework/common/resources_storage.hpp"
+
+#include "rich_text.hpp"
 
 namespace con
 {

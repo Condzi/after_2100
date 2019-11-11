@@ -5,8 +5,9 @@
 
 #include "pch.hpp"
 
-#include "framework/common/resources_storage.hpp"
 #include "animation.hpp"
+
+#include "framework/common/resources_storage.hpp"
 
 namespace con
 {

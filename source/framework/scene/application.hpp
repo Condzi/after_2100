@@ -7,8 +7,9 @@
 
 #include "pch.hpp"
 
-#include "root.hpp"
 #include "camera.hpp"
+#include "root.hpp"
+
 #include "framework/common/shapes.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>

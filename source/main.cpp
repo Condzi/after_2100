@@ -4,6 +4,7 @@
 */
 
 #include "pch.hpp"
+
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
 #include "framework/localization/locale.hpp"

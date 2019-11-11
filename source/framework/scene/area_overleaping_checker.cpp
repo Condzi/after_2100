@@ -5,9 +5,10 @@
 
 #include "pch.hpp"
 
-#include "framework/common/stl_extensions.hpp"
-#include "area_overleaping_checker.hpp"
 #include "area.hpp"
+#include "area_overleaping_checker.hpp"
+
+#include "framework/common/stl_extensions.hpp"
 
 namespace con::priv
 {

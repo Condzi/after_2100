@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "music_source.hpp"
+
 #include "framework/common/debug_flags.hpp"
 #include "framework/common/resources_storage.hpp"
 

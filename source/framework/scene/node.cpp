@@ -5,10 +5,10 @@
 
 #include "pch.hpp"
 
-#include "framework/scene/node.hpp"
+#include "framework/common/debug_flags.hpp"
 #include "framework/common/stl_extensions.hpp"
 #include "framework/scene/application.hpp"
-#include "framework/common/debug_flags.hpp"
+#include "framework/scene/node.hpp"
 
 namespace con
 {

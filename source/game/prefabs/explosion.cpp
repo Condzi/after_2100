@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "explosion.hpp"
+
 #include "framework/scene/sound_source.hpp"
 
 Explosion::Explosion()

@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <SFML/Graphics/Rect.hpp>
-
 #include "vec2.hpp"
+
+#include <SFML/Graphics/Rect.hpp>
 
 namespace con
 {

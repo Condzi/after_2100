@@ -5,13 +5,13 @@
 
 #include "pch.hpp"
 
-#include <SFML/Window/Keyboard.hpp>
-
-#include "framework/common/resources_storage.hpp"
 #include "framework/common/audio_listener.hpp"
+#include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
 
 #include "player.hpp"
+
+#include <SFML/Window/Keyboard.hpp>
 
 Player::Player()
 {

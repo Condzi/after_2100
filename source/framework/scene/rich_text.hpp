@@ -4,12 +4,12 @@
 */
 #pragma once
 
-#include <SFML/Graphics/VertexArray.hpp>
-#include <SFML/Graphics/Font.hpp>
+#include "framework/common/gui_string.hpp"
 
 #include "node.hpp"
 
-#include "framework/common/gui_string.hpp"
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 
 namespace con
 {

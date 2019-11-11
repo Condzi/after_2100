@@ -5,10 +5,10 @@
 
 #include "pch.hpp"
 
-#include <intrin.h>
-
 #include "framework/common/assertions.hpp"
 #include "framework/common/debug_log.hpp"
+
+#include <intrin.h>
 
 namespace con::priv
 {

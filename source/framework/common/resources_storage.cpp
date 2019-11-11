@@ -5,10 +5,10 @@
 
 #include "pch.hpp"
 
-#include <SFML/System/Clock.hpp>
-
 #include "assertions.hpp"
 #include "resources_storage.hpp"
+
+#include <SFML/System/Clock.hpp>
 
 namespace con
 {

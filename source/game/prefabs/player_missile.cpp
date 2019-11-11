@@ -7,8 +7,9 @@
 
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
-#include "player_missile.hpp"
+
 #include "health.hpp"
+#include "player_missile.hpp"
 
 Player_Missile::Player_Missile()
 {

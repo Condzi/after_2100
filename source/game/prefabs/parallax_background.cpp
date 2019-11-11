@@ -5,11 +5,12 @@
 
 #include "pch.hpp"
 
-#include <SFML/Graphics/Texture.hpp>
-#include "framework/scene/camera.hpp"
 #include "framework/common/resources_storage.hpp"
+#include "framework/scene/camera.hpp"
 
 #include "parallax_background.hpp"
+
+#include <SFML/Graphics/Texture.hpp>
 
 Parallax_Background::Parallax_Background()
 {

@@ -5,16 +5,16 @@
 
 #include "pch.hpp"
 
-#include "level_1.hpp"
-#include "game/prefabs/player.hpp"
-#include "game/prefabs/enemy_spawner.hpp"
-#include "game/prefabs/parallax_background.hpp"
-
-#include "framework/scene/path.hpp"
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
-
 #include "framework/scene/music_source.hpp"
+#include "framework/scene/path.hpp"
+
+#include "game/prefabs/enemy_spawner.hpp"
+#include "game/prefabs/parallax_background.hpp"
+#include "game/prefabs/player.hpp"
+
+#include "level_1.hpp"
 
 Level_1::Level_1()
 {
