@@ -70,7 +70,7 @@ Level_1::Level_1()
 
 
 	Parallax_Background* bg = attach<Parallax_Background>();
-	
+
 	bg->set_texture_from_name( "space_background" );
 	bg->layer = 0;
 	bg->set_absolute_position( Percent_Position{ -10, -10 } );

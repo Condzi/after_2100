@@ -42,9 +42,14 @@ void Application::run()
 			if ( event.type is sf::Event::LostFocus ) {
 				G_Audio_Listener.mute();
 				is_window_focused = false;
+
 			} else if ( event.type is sf::Event::GainedFocus ) {
 				is_window_focused = true;
 				G_Audio_Listener.unmute();
+
+			} else if ( event.type is sf::Event::KeyPressed and
+						event.key.code is sf::Keyboard::F1 ) {
+				G_Debug_Flags.toggle( "display_debug_console" );
 			}
 
 			// Waiting for GainedFocus event.
@@ -52,7 +57,6 @@ void Application::run()
 				continue;
 
 			root.handle_input_children( event );
-			handle_debug_keys( event );
 			G_Debug_Console.input( event );
 		}
 
@@ -99,20 +103,6 @@ Application& Application::get_instance()
 	return *instance;
 }
 
-void Application::handle_debug_keys( sf::Event const& event )
-{
-	if ( event.type != sf::Event::EventType::KeyPressed )
-		return;
-
-	switch ( event.key.code ) {
-	case sf::Keyboard::F1:
-	{
-		G_Debug_Flags.toggle( "display_debug_console" );
-		break;
-	}
-	}
-}
-
 void Application::render()
 {
 	game_drawing_set.clear();
@@ -125,6 +115,7 @@ void Application::render()
 
 	auto& window = G_Window.get_raw_window();
 
+	// @ToDo: Clear to black.
 	window.clear( sf::Color{ 14,19,22 } );
 
 	game_drawing_set.display( window );

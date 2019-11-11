@@ -44,7 +44,6 @@ private:
 
 	Application() = default;
 
-	void handle_debug_keys( sf::Event const& event );
 	void render();
 };
 }
