@@ -11,13 +11,14 @@
 
 Pause_Screen::Pause_Screen()
 {
-	pause_title = attach<Label>();
+	pause_title   = attach<Label>();
+	option_resume = attach<Clickable_Label>();
+	option_exit   = attach<Clickable_Label>();
 
 	pause_title->string.set_locale_name( "#loc_pause" );
 	pause_title->set_absolute_position( Percent_Position{ 45,25 } );
 	pause_title->set_character_size( 72 );
 
-	option_resume = attach<Clickable_Label>();
 	option_resume->text->string.set_locale_name( "#loc_resume" );
 	option_resume->text->character_size = 48;
 	bond_disconnector( option_resume->s_label_clicked.connect( [] {
@@ -27,7 +28,6 @@ Pause_Screen::Pause_Screen()
 		}
 					   } ) );
 
-	option_exit = attach<Clickable_Label>();
 	option_exit->text->string.set_locale_name( "#loc_exit" );
 	option_exit->text->character_size = 48;
 	bond_disconnector( option_exit->s_label_clicked.connect( [] {

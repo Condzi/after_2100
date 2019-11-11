@@ -42,9 +42,9 @@ void splash_screen()
 
 	engine_log_info( "Splash screen started..." );
 
-	if ( splash_screen_texture.loadFromFile( "resources/texture/splash_screen.png" ) returned false ) {
+	if ( splash_screen_texture.loadFromFile( "resources/texture/splash_screen.png" ) returned false )
 		log_error( "Can't load splash screen texture." );
-	} else
+	else
 		splash_screen_sprite.setTexture( splash_screen_texture );
 
 	auto& window = G_Window.get_raw_window();
