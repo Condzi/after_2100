@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "framework/scene/rich_text.hpp"
+
 #include "node.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
@@ -25,8 +27,8 @@ public:
 	void update( r32 delta ) override;
 
 private:
-	r32          time_since_update{ 0 };
-	class Label* fps_label;
+	r32        time_since_update{ 0 };
+	Rich_Text* fps_label;
 
 	compile_constant FPS_UPDATE_INTERVAL = 0.1sec;
 };

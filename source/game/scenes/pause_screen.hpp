@@ -4,7 +4,7 @@
 */
 #pragma once
 
-#include "framework/scene/label.hpp"
+#include "framework/scene/panel.hpp"
 #include "framework/scene/clickable_label.hpp"
 
 using namespace con;
@@ -21,7 +21,8 @@ public:
 	void update( r32 dt ) override;
 
 private:
-	Label* pause_title;
-	Clickable_Label* option_resume;
-	Clickable_Label* option_exit;
+	Rich_Text* pause_title;
+	Clickable_Label* label_resume;
+	Clickable_Label* label_exit;
+	Panel* options_panel;
 };

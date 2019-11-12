@@ -196,10 +196,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="source\framework\scene\label.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="source\framework\scene\music_source.hpp">
       <SubType>
       </SubType>
@@ -383,10 +379,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="source\framework\scene\image.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="source\framework\scene\label.cpp">
       <SubType>
       </SubType>
     </ClCompile>

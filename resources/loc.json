@@ -1,25 +1,31 @@
 {
-    "#loc_fps" :
-    {
-        "en":"{0:.1f} fps",
-        "pl":"{0:.1f} kl/s"
-    },
+  "#loc_fps": {
+    "en": "{0:.1f} fps",
+    "pl": "{0:.1f} kl/s"
+  },
 
-    "#loc_pause" : 
-    {
-        "en":"Pause",
-        "pl":"Pauza"
-    },
+  "#loc_pause": {
+    "en": "$Pause$",
+    "pl": "$Pauza$"
+  },
 
-    "#loc_resume" : 
-    {
-        "en":"Resume",
-        "pl":"Wznów"
-    },
+  "#loc_resume": {
+    "en": "Resume",
+    "pl": "Wznów"
+  },
 
-    "#loc_exit" : 
-    {
-        "en":"Exit",
-        "pl":"Wyjdź"
-    }
+  "#loc_exit": {
+    "en": "Exit",
+    "pl": "Wyjdź"
+  },
+
+  "#loc_english": {
+    "en": "english",
+    "pl": "english"
+  },
+
+  "#loc_polish": {
+    "en": "polski",
+    "pl": "polski"
+  }
 }

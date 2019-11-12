@@ -10,14 +10,13 @@
 #include "framework/scene/debug_console.hpp"
 
 #include "application.hpp"
-#include "label.hpp"
 #include "root.hpp"
 
 namespace con
 {
 Root::Root()
 {
-	fps_label = attach<Label>();
+	fps_label = attach<Rich_Text>();
 	fps_label->name = "fps_label";
 	fps_label->string.set_locale_name( "#loc_fps" );
 	fps_label->set_absolute_position( Percent_Position{ 1.0,1.0 } );

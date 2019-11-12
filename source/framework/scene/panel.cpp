@@ -40,6 +40,7 @@ void Panel::update( r32 dt )
 
 void Panel::draw_gui( Drawing_Set& set )
 {
-	set.add_drawable( visual, layer );
+	if ( visible )
+		set.add_drawable( visual, layer );
 }
 }

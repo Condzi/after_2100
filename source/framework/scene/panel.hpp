@@ -17,6 +17,7 @@ class Panel :
 
 public:
 	s32 layer{ 0 };
+	bool visible{ true };
 
 	void set_size( Size2 const& size );
 	void set_color( sf::Color const& color );

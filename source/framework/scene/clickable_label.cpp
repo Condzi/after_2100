@@ -14,7 +14,6 @@ Clickable_Label::Clickable_Label()
 	text = attach<Rich_Text>();
 
 	text->outline_thickness = 2.0px;
-	text->set_font_from_name( "default" );
 	style_for_idle();
 }
 
