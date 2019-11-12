@@ -15,6 +15,11 @@ namespace con
 class GUI_String final
 {
 public:
+	Signal<> s_locale_changed;
+
+	GUI_String();
+	~GUI_String();
+
 	void set_locale_name( std::string const& name );
 
 	// Locale can have paremeters like: "Hello, {0}!" => "Hello, Conrad!"
@@ -27,6 +32,9 @@ public:
 	[[nodiscard]] auto get_string() const -> sf::String const&;
 
 private:
+	Signal<>::Disconnector update_localized_string_disconnector;
+
+	bool use_locale{ false };
 	// It's just a pointer so don't bother with union or variant.
 	Localized_String localized_string;
 	// Ascii string or formated localized string.

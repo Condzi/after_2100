@@ -1,4 +1,6 @@
 {
+  "languages": [ "en", "pl" ],
+
   "#loc_fps": {
     "en": "{0:.1f} fps",
     "pl": "{0:.1f} kl/s"

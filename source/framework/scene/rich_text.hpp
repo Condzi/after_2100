@@ -30,6 +30,8 @@ public:
 	bool visible{ true };
 	s32 layer{ 0 };
 
+	Rich_Text();
+
 	void set_font_from_name( std::string const& name );
 	void set_font_from_pointer( sf::Font const* ptr );
 

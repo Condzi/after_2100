@@ -25,4 +25,6 @@ private:
 	Clickable_Label* label_resume;
 	Clickable_Label* label_exit;
 	Panel* options_panel;
+	Clickable_Label* label_lang_eng;
+	Clickable_Label* label_lang_pl;
 };

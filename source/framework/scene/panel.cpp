@@ -19,6 +19,11 @@ void Panel::set_color( sf::Color const& color )
 	visual.setFillColor( color );
 }
 
+auto Panel::get_global_bounds() const -> Rectangle_Shape
+{
+	return { get_global_position(), get_size() };
+}
+
 auto Panel::get_size() const -> Size2
 {
 	return visual.getSize();

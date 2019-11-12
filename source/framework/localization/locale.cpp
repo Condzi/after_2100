@@ -19,8 +19,11 @@ void Locale::set_current_language( std::string const& language )
 {
 	if ( is_language_avaible( language ) returned false )
 		engine_log_error( "'{}' language is not avaible.", language );
-	else
+	else {
 		current_language = language;
+		G_Locale.reload();
+		s_language_change.emit();
+	}
 }
 
 auto Locale::get_fallback_string() const -> sf::String const&
@@ -62,12 +65,17 @@ void Locale::reload()
 		return;
 	}
 
+	avaible_languages.clear();
+
 	try {
 		input_file >> raw_data;
 
 		for ( constant& record : raw_data.items() ) {
 			constant& key = record.key();
 			constant& value = record.value();
+
+			if ( key is "languages" )
+				value.get_to( avaible_languages );
 
 			if ( string_begins_with( key, "#loc" ) ) {
 				sf::String string_to_add;

@@ -6,11 +6,15 @@
 
 #include <SFML/System/String.hpp>
 
+#include "framework/common/signal.hpp"
+
 namespace con::priv
 {
 class Locale final
 {
 public:
+	Signal<> s_language_change;
+
 	compile_constant PATH_TO_LOC_FILE = "resources/loc.json";
 
 	void set_current_language( std::string const& language );
