@@ -53,6 +53,7 @@ public:
 	template <typename TNode>
 	[[nodiscard]] auto cast_to()                            -> TNode* const;
 	[[nodiscard]] auto get_parent()                         -> Node* const;
+	[[nodiscard]] auto get_children()                       -> std::vector<Node*>;
 	[[nodiscard]] auto get_node_or_null( std::string path ) -> Node* const;
 	[[nodiscard]] auto get_node( std::string const& path )  -> Node* const;
 	[[nodiscard]] auto get_child_nodes_names() const        -> std::vector<std::string>;

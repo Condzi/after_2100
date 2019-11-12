@@ -8,6 +8,8 @@
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
 
+#include "game/flags.hpp"
+
 #include "level_1.hpp"
 
 Level_1::Level_1()
@@ -95,7 +97,7 @@ Level_1::Level_1()
 	auto& camera = *G_Root.get_node( "game_camera" )->cast_to<Camera>();
 	camera.set_rotation( 90.0deg );
 	camera.s_update.connect( [cam = &camera]( r32 dt ) {
-		if ( G_App.is_paused() )
+		if ( G_Flags[Flags::Pause] )
 			return;
 
 		constant rotation_delta = -16.0deg * dt;
@@ -115,8 +117,7 @@ Level_1::Level_1()
 
 void Level_1::update( r32 dt )
 {
-	// We don't unpause here - we do it in Pause_Screen class by
-	// calling G_Root.set_pause(false).
-	if ( G_App.is_paused() )
-		set_pause( true );
+	// @ToDo: Probably inefficent?
+	for ( auto* child : get_children() )
+		child->set_pause( G_Flags[Flags::Pause] );
 }

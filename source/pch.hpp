@@ -18,6 +18,7 @@
 #include <nlohmann/json.hpp>
 
 #include "framework/common/debug_log.hpp"
+#include "framework/common/global_flags.hpp"
 #include "framework/common/percent_position.hpp"
 #include "framework/common/random.hpp"
 #include "framework/common/typedefs.hpp"

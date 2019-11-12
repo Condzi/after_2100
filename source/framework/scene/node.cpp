@@ -164,6 +164,17 @@ auto Node::get_parent() -> Node* const
 	return parent_node;
 }
 
+auto Node::get_children() -> std::vector<Node*>
+{
+	std::vector<Node*> nodes;
+	nodes.reserve( child_nodes.size() );
+	
+	for ( Node_Ptr& child : child_nodes )
+		nodes.emplace_back( child.get() );
+
+	return nodes;
+}
+
 auto Node::get_node_or_null( std::string path ) -> Node* const
 {
 	report_error_if( path.empty() )
