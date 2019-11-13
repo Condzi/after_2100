@@ -38,6 +38,7 @@ void Root::update( r32 delta )
 		time_since_update -= FPS_UPDATE_INTERVAL;
 
 		fps_label->string.update_locale_parameters( 1/delta );
+		fps_label->update_vertices();
 	}
 }
 }
