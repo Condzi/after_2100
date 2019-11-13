@@ -15,6 +15,8 @@ Localized_String::Localized_String()
 {
 	locale_language_change_disconnector =
 		G_Locale.s_language_change.connect( [this] {
+		if ( locale_name.empty() ) return;
+
 		localized_text = &G_Locale.get_string( locale_name );
 		s_update_localized_string.emit();
 											} );
