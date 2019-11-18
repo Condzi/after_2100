@@ -15,9 +15,11 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include <future>
+
 using namespace con;
 
-void splash_screen();
+s8 splash_screen();
 
 int main()
 {
@@ -26,7 +28,10 @@ int main()
 	// existed yet.
 	G_Window.initialize( 1280, 720, 64, "after_2100" );
 
-	splash_screen();
+	if ( splash_screen() returned 1 ) {
+		engine_log_info( "Splash screen exit." );
+		return 0;
+	}
 
 	G_App.initialize();
 	G_Root.attach<Pause_Screen>();
@@ -34,7 +39,7 @@ int main()
 	G_App.run();
 }
 
-void splash_screen()
+s8 splash_screen()
 {
 	sf::Texture splash_screen_texture;
 	sf::Sprite splash_screen_sprite;
@@ -49,12 +54,30 @@ void splash_screen()
 
 	auto& window = G_Window.get_raw_window();
 
-	window.clear();
-	window.draw( splash_screen_sprite );
-	window.display();
+	std::atomic_bool done_loading{ false };
 
+	std::thread t{ [&] {
 	G_Resources_Storage.reload();
 	G_Locale.reload();
+	std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+
+	done_loading = true;
+		   } };
+	t.detach();
+
+	sf::Event ev;
+	while ( not done_loading ) {
+		while ( window.pollEvent( ev ) ) {
+			if ( ev.type is sf::Event::Closed )
+				return 1;
+		}
+
+		window.clear();
+		window.draw( splash_screen_sprite );
+		window.display();
+	}
 
 	engine_log_info( "Splash screen've finished. Time: {:.3f} seconds.", timer.restart().asSeconds() );
+
+	return 0;
 }
