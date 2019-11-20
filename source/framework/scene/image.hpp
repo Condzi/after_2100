@@ -11,6 +11,7 @@
 namespace con
 {
 // GUI version of Sprite
+// @ToDo: Probably delete since Sprite is convinient.
 class Image :
 	public Node
 {

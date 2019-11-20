@@ -23,6 +23,9 @@ s8 splash_screen();
 
 int main()
 {
+	G_Performance_Profiler.begin_session( "global_session" );
+	G_Profile_Scope( "Program lifetime" );
+
 	// Have to split it to G_Window.initialize and G_App.initialize() because
 	// root has fps_counter label that is positioned relative to window that doesn't
 	// existed yet.
@@ -37,10 +40,14 @@ int main()
 	G_Root.attach<Pause_Screen>();
 	G_Root.attach<Level_1>();
 	G_App.run();
+
+	G_Performance_Profiler.end_session();
 }
 
 s8 splash_screen()
 {
+	G_Profile_Function();
+
 	sf::Texture splash_screen_texture;
 	sf::Sprite splash_screen_sprite;
 	sf::Clock timer;
@@ -57,6 +64,7 @@ s8 splash_screen()
 	std::atomic_bool done_loading{ false };
 
 	std::thread t{ [&] {
+		G_Profile_Scope( "splash_screen loading lambda" );
 		G_Resources_Storage.reload();
 		G_Locale.reload();
 	

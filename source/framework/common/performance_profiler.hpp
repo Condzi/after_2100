@@ -43,7 +43,9 @@ private:
 
 #define G_Performance_Profiler con::priv::Performance_Profiler::get_instance()
 
-#ifndef NDEBUG
+#define DO_PROFILING 1
+
+#if DO_PROFILING
 
 #define G_Profile_Scope( name ) con::priv::Performance_Timer performance_timer_##__LINE__{ name };
 #define G_Profile_Function()    G_Profile_Scope( __FUNCTION__ );

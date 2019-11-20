@@ -60,11 +60,13 @@ void Application::run()
 			G_Debug_Console.input( event );
 		}
 
-		root.remove_queued_for_delete();
-		root.update_children( frame_time );
-		G_Debug_Console.update();
-
-		G_Area_Overleaping_Checker.update();
+		{
+			G_Profile_Scope( "update" );
+			root.remove_queued_for_delete();
+			root.update_children( frame_time );
+			G_Debug_Console.update();
+			G_Area_Overleaping_Checker.update();
+		}
 		render();
 
 		frame_time = fps_clock.restart().asSeconds();
@@ -105,6 +107,7 @@ Application& Application::get_instance()
 
 void Application::render()
 {
+	G_Profile_Function();
 	game_drawing_set.clear();
 	gui_drawing_set.clear();
 
