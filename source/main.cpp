@@ -57,11 +57,10 @@ s8 splash_screen()
 	std::atomic_bool done_loading{ false };
 
 	std::thread t{ [&] {
-	G_Resources_Storage.reload();
-	G_Locale.reload();
-	std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
-
-	done_loading = true;
+		G_Resources_Storage.reload();
+		G_Locale.reload();
+	
+		done_loading = true;
 		   } };
 	t.detach();
 
