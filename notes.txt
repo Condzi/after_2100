@@ -10,4 +10,7 @@ Sprite3D could be a bottleneck. Maybe simple vertices would do the job?
 
 Add save files and save locale too (pl or en).
 
-Investigate: after reload_resources the text in pause menu disappear. Probably have to do some reloading?
+From profiling:
+ * try to make signal::emit calls all at once
+ * rendering is taking 90% of the runtime. 
+ * we are making too much missiles! there is no need to spawn them if player mirror sprite is offscreen.
