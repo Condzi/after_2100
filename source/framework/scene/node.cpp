@@ -14,6 +14,8 @@ namespace con
 {
 auto Node::attach( Node_Ptr&& node_to_attach ) -> Node* const
 {
+	G_Profile_Scope( "Node::attach" );
+
 	if ( node_to_attach is nullptr ) {
 		engine_log_error( "Given node is empty, can't attach." );
 		return nullptr;
@@ -111,6 +113,8 @@ void Node::remove_queued_for_delete()
 
 void Node::update_children( r32 dt )
 {
+	G_Profile_Scope( get_class_name() );
+
 	if ( not paused ) {
 		s_update.emit( dt );
 		update( dt );

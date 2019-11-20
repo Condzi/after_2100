@@ -35,7 +35,7 @@ public:
 	~Performance_Timer();
 
 private:
-	std::string_view name;
+	std::string name;
 
 	std::chrono::high_resolution_clock::time_point start_timepoint;
 };

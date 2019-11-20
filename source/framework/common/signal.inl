@@ -28,6 +28,7 @@ auto Signal<TArgs...>::connect( Function function ) -> Disconnector
 template <typename ...TArgs>
 void Signal<TArgs...>::emit( TArgs ...args )
 {
+	G_Profile_Scope( "Signal::emit" );
 	for ( auto& func : functions )
 		if ( func )
 			func( std::forward<TArgs>( args )... );
