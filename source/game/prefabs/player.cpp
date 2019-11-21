@@ -40,6 +40,11 @@ Player::Player()
 	gun_b_1 = sprite_b->attach<Missile_Shooter>();
 	gun_b_2 = sprite_b->attach<Missile_Shooter>();
 
+	gun_a_1->name = "gun_a_1";
+	gun_a_2->name = "gun_a_2";
+	gun_b_1->name = "gun_b_1";
+	gun_b_2->name = "gun_b_2";
+
 	gun_a_1->set_missile_type<Player_Missile>();
 	gun_a_2->set_missile_type<Player_Missile>();
 	gun_b_1->set_missile_type<Player_Missile>();

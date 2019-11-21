@@ -28,6 +28,15 @@ Level_1::Level_1()
 	parallax_background = attach<Parallax_Background>();
 	music_source        = attach<Music_Source>();
 
+	enemy_path_1->name = "enemy_path_1";
+	enemy_path_2->name = "enemy_path_2";
+	enemy_path_3->name = "enemy_path_3";
+
+	camera_path->name = "camera_path";
+
+	parallax_background->name = "parallax_background";
+
+
 	constant win_size = G_Window.get_size();
 
 	///////////////////////////////

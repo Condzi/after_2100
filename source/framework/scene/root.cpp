@@ -16,6 +16,7 @@ namespace con
 {
 Root::Root()
 {
+	name = "root";
 	fps_label = attach<Rich_Text>();
 	fps_label->name = "fps_label";
 	fps_label->string.set_locale_name( "#loc_fps" );

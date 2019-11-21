@@ -18,6 +18,7 @@ Explosion::Explosion()
 	set_frame_size( { 128.0px, 128.0px } );
 
 	auto sound = attach<Sound_Source>();
+	sound->name = "explosion_sound";
 	sound->set_sound_buffer_from_name( "explosion" );
 	// Setting it to 0 makes better results that to 1, because it fades out too quickly.
 	sound->set_attenuation( 0 );

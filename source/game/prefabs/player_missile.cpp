@@ -17,6 +17,7 @@ Player_Missile::Player_Missile()
 	hitbox->name = "hitbox_missile_player";
 
 	missile_animation = attach<Animation>();
+	missile_animation->name = "missile_animation";
 
 	missile_animation->set_texture_from_name( "missile_player" );
 	missile_animation->set_is_looped( true );
