@@ -62,10 +62,10 @@ void Application::run()
 
 		{
 			G_Profile_Scope( "update" );
-		root.remove_queued_for_delete();
-		root.update_children( frame_time );
-		G_Debug_Console.update();
-		G_Area_Overleaping_Checker.update();
+			root.remove_queued_for_delete();
+			root.update_children( frame_time );
+			G_Debug_Console.update();
+			G_Area_Overleaping_Checker.update();
 		}
 
 		render();
@@ -108,26 +108,34 @@ Application& Application::get_instance()
 
 void Application::render()
 {
-	G_Profile_Scope( "render" );
+	{
+		G_Profile_Scope( "gathering drawables" );
 
-	game_drawing_set.clear();
-	gui_drawing_set.clear();
+		game_drawing_set.clear();
+		gui_drawing_set.clear();
 
-	root.draw_children( game_drawing_set );
-	root.draw_gui_children( gui_drawing_set );
+		root.draw_children( game_drawing_set );
+		root.draw_gui_children( gui_drawing_set );
 
-	G_Debug_Console.draw( gui_drawing_set );
+		G_Debug_Console.draw( gui_drawing_set );
+	}
 
 	auto& window = G_Window.get_raw_window();
+	{
+		G_Profile_Scope( "drawing" );
 
-	// @ToDo: Clear to black.
-	window.clear( sf::Color{ 14,19,22 } );
+		// @ToDo: Clear to black.
+		window.clear( sf::Color{ 14,19,22 } );
 
-	game_drawing_set.display( window );
-	window.setView( gui_camera->get_view() );
-	gui_drawing_set.display( window );
-	window.setView( game_camera->get_view() );
+		game_drawing_set.display( window );
+		window.setView( gui_camera->get_view() );
+		gui_drawing_set.display( window );
+		window.setView( game_camera->get_view() );
+	}
 
-	window.display();
+	{
+		G_Profile_Scope( "displaying" );
+		window.display();
+	}
 }
 }

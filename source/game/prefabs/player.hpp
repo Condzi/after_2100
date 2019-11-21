@@ -28,8 +28,8 @@ public:
 
 private:
 	compile_constant VELOCITY_MAX = 280.0f;
-	compile_constant SLOWING_MULTIPLIER = 0.86f;
-	compile_constant ACCELERATION_MULTIPLIER = 0.1f;
+	compile_constant SLOWING_MULTIPLIER = 0.92f;
+	compile_constant ACCELERATION_MULTIPLIER = 0.05f;
 	compile_constant TILT_MULTIPLIER = 0.09f;
 
 	Vec2 acceleration_direction;

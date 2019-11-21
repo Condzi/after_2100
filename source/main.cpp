@@ -27,7 +27,7 @@ int main()
 	// Have to split it to G_Window.initialize and G_App.initialize() because
 	// root has fps_counter label that is positioned relative to window that doesn't
 	// existed yet.
-	G_Window.initialize( 1280, 720, 64, "after_2100" );
+	G_Window.initialize( 1280, 720, 144, "after_2100" );
 
 	if ( splash_screen() returned 1 ) {
 		engine_log_info( "Splash screen exit." );
