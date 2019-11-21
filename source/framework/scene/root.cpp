@@ -31,7 +31,10 @@ void Root::input( sf::Event const& event )
 
 void Root::update( r32 delta )
 {
-	fps_label->visible = G_Debug_Flags.get( "display_fps" );
+	G_Profile_Function();
+	static constant& display_fps = G_Debug_Flags.get( "display_fps" );
+
+	fps_label->visible = display_fps;
 
 	time_since_update += delta;
 

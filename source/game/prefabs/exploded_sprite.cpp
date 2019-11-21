@@ -11,7 +11,6 @@
 
 void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 {
-	G_Profile_Function();
 
 	report_warning_if( texture is nullptr )
 	{

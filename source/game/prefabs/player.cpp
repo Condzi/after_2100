@@ -78,6 +78,7 @@ Player::Player()
 
 void Player::update( r32 dt )
 {
+	G_Profile_Scope( "Player::update" );
 	G_Audio_Listener.set_position( sprite_a->get_global_position() );
 
 	check_movement_keys();
