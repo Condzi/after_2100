@@ -5,6 +5,8 @@
 
 #pragma once
 
+#define DO_PROFILING 0
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>

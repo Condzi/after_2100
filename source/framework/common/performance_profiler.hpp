@@ -43,8 +43,6 @@ private:
 
 #define G_Performance_Profiler con::priv::Performance_Profiler::get_instance()
 
-#define DO_PROFILING 0
-
 #define COMBINE1(X,Y) X##Y  
 #define COMBINE(X,Y) COMBINE1(X,Y)
 
