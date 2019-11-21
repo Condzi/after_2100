@@ -45,9 +45,11 @@ private:
 
 #define DO_PROFILING 1
 
+#define CONCATE(x, y) x##y
+
 #if DO_PROFILING
 
-#define G_Profile_Scope( name ) con::priv::Performance_Timer performance_timer_##__LINE__{ name };
+#define G_Profile_Scope( name ) con::priv::Performance_Timer CONCATE( performance_timer_, __LINE__ ){ name };
 #define G_Profile_Function()    G_Profile_Scope( __FUNCTION__ );
 
 #else

@@ -38,6 +38,8 @@ void Area_Overleaping_Checker::unregister_area( Area* const area_to_unregister )
 
 void Area_Overleaping_Checker::update()
 {
+	G_Profile_Function();
+
 	for ( size_t i = 0; i < areas.size(); i++ ) {
 		Area& area_a = *areas[i];
 		if ( area_a.is_shape_set() returned false or

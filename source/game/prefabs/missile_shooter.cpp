@@ -41,6 +41,8 @@ auto Missile_Shooter::get_horizontal_velocity() const -> r32
 
 void Missile_Shooter::shoot()
 {
+	G_Profile_Function();
+
 	if ( !spawning_function ) {
 		log_warning( "No spawning_function set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
 		return;
@@ -74,7 +76,8 @@ void Missile_Shooter::update( r32 delta )
 
 void Missile_Shooter::draw( Drawing_Set& drawing_set )
 {
-	if ( G_Debug_Flags.get( "draw_missile_shooters" ) is false )
+	static constant& draw_missile_shooters = G_Debug_Flags.get( "draw_missile_shooters" );
+	if ( draw_missile_shooters is false )
 		return;
 
 	visual_representation.setOrigin( debug_circle_radious / 2, debug_circle_radious/ 2 );

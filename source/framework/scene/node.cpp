@@ -135,10 +135,8 @@ void Node::handle_input_children( sf::Event const& event )
 
 void Node::draw_children( Drawing_Set& set )
 {
-	if ( not paused ) {
+	if ( not paused )
 		draw( set );
-		s_draw.emit( set );
-	}
 
 	for ( auto& child : child_nodes )
 		child->draw_children( set );
@@ -172,7 +170,7 @@ auto Node::get_children() -> std::vector<Node*>
 {
 	std::vector<Node*> nodes;
 	nodes.reserve( child_nodes.size() );
-	
+
 	for ( Node_Ptr& child : child_nodes )
 		nodes.emplace_back( child.get() );
 

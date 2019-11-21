@@ -86,6 +86,8 @@ void Player::update( r32 dt )
 
 void Player::update_illusion()
 {
+	G_Profile_Function();
+
 	// Sprite that is visible on the screen.
 	Sprite* main_sprite{ sprite_a };
 	Sprite* mirror_sprite{ sprite_b };
@@ -106,6 +108,8 @@ void Player::update_illusion()
 
 void Player::check_movement_keys()
 {
+	G_Profile_Function();
+
 	if ( G_Window.is_focused() is false )
 		return;
 
@@ -123,6 +127,7 @@ void Player::check_movement_keys()
 	// Should be in own method?
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Space ) and
 		 gun_a_1->is_ready_to_shoot() ) {
+
 		gun_a_1->shoot();
 		gun_a_2->shoot();
 
@@ -138,6 +143,8 @@ void Player::check_movement_keys()
 
 void Player::slow_down()
 {
+	G_Profile_Function();
+
 	if ( acceleration_direction.x is 0 ) {
 		velocity.x *= SLOWING_MULTIPLIER;
 		if ( std::fabs( velocity.x ) < 1 )
@@ -157,6 +164,8 @@ void Player::accelerate( r32 dt )
 
 void Player::correct_for_boundary_collision()
 {
+	G_Profile_Function();
+
 	constant window_width = G_Window.get_size().width;
 	constant sprite_width = sprite_a->get_global_bounds().size.width;
 	constant x_pos = get_global_position().x;
@@ -178,6 +187,8 @@ void Player::correct_for_boundary_collision()
 
 void Player::update_tilt_transformation()
 {
+	G_Profile_Function();
+
 	// Doesn't matter from whitch sprite we are getting the values.
 	auto [pitch, yaw, roll] = sprite_a->get_rotation_3d();
 

@@ -92,7 +92,9 @@ void Music_Source::update( r32 dt )
 
 void Music_Source::draw( Drawing_Set& set )
 {
-	if ( not G_Debug_Flags.get( "draw_audio_sources" ) )
+	static constant& draw_audio_sources = G_Debug_Flags.get( "draw_audio_sources" );
+
+	if ( draw_audio_sources is false )
 		return;
 
 	debug_shape.setPosition( get_global_position() );

@@ -16,7 +16,9 @@ namespace con
 {
 void Path::draw( Drawing_Set& set )
 {
-	if ( G_Debug_Flags.get( "draw_paths" ) is false )
+	static constant& draw_paths = G_Debug_Flags.get( "draw_paths" );
+
+	if ( draw_paths is false )
 		return;
 
 	visual_representation.resize( points.size() );

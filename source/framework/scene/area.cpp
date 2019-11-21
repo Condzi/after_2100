@@ -48,7 +48,9 @@ auto Area::get_shape_variant() const -> Shape_Variant const&
 
 void Area::draw( Drawing_Set& drawing_set )
 {
-	if ( shape_set is false or G_Debug_Flags.get( "draw_areas" ) is false )
+	static constant& draw_areas = G_Debug_Flags.get( "draw_areas" );
+
+	if ( shape_set is false or draw_areas is false )
 		return;
 
 	std::visit( visitor_overload{

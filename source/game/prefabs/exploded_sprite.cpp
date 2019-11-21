@@ -11,6 +11,8 @@
 
 void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 {
+	G_Profile_Function();
+
 	report_warning_if( texture is nullptr )
 	{
 		return;
@@ -109,6 +111,8 @@ void Exploded_Sprite::set_texture_from_name( std::string const& name )
 
 void Exploded_Sprite::update( r32 dt )
 {
+	G_Profile_Function();
+
 	if ( elements_initialized is false or not exploding )
 		return;
 

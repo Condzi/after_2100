@@ -27,6 +27,8 @@ void Debug_Flags::disable_all()
 
 auto Debug_Flags::get( std::string_view name ) -> bool&
 {
+	G_Profile_Function();
+
 	constant hash = type_hash( name );
 
 	constant[found, idx] = find_if( flags, [hash]( constant flag ) {

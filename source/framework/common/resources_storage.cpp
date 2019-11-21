@@ -14,6 +14,8 @@ namespace con
 {
 auto Resources_Storage::get_texture( std::string const& name ) const -> sf::Texture const* const
 {
+	G_Profile_Function();
+
 	sf::Texture const* texture_to_return{ nullptr };
 	constant result = textures.find( name );
 
@@ -29,6 +31,8 @@ auto Resources_Storage::get_texture( std::string const& name ) const -> sf::Text
 
 auto Resources_Storage::get_sound_buffer( std::string const& name ) const -> sf::SoundBuffer const* const
 {
+	G_Profile_Function();
+
 	sf::SoundBuffer const* sound_buffer_to_return{ nullptr };
 	constant result = sound_buffers.find( name );
 
@@ -44,6 +48,8 @@ auto Resources_Storage::get_sound_buffer( std::string const& name ) const -> sf:
 
 auto Resources_Storage::get_music( std::string const& name ) -> sf::Music* const
 {
+	G_Profile_Function();
+
 	sf::Music* music_to_return{ nullptr };
 	auto result = music.find( name );
 
@@ -59,6 +65,8 @@ auto Resources_Storage::get_music( std::string const& name ) -> sf::Music* const
 
 auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font const* const
 {
+	G_Profile_Function();
+	
 	sf::Font const* font_to_return{ nullptr };
 	constant result = fonts.find( name );
 

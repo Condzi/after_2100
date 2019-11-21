@@ -39,7 +39,6 @@ public:
 	Signal<r32>  s_update; //< r32 is delta time
 	Signal<r32>  s_rotate; //< r32 is how many degrees were added
 	Signal<bool> s_paused;
-	Signal<Drawing_Set&> s_draw;
 
 	std::string name{ "unnamed_node" };
 	bool        move_with_parent{ true };
