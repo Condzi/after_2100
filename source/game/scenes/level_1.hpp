@@ -22,8 +22,6 @@ class Level_1 final :
 public:
 	Level_1();
 
-	void update( r32 dt ) override;
-
 private:
 	Player* player;
 

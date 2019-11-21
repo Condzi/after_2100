@@ -10,7 +10,7 @@
 #include "framework/localization/locale.hpp"
 
 #include "game/scenes/level_1.hpp"
-#include "game/scenes/pause_screen.hpp"
+#include "game/scenes/game_master.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -39,12 +39,12 @@ int main()
 
 	G_Performance_Profiler.begin_session( "Runtime", "profile-runtime.json" );
 
-	G_Root.attach<Pause_Screen>();
-	G_Root.attach<Level_1>();
+	auto gm = G_Root.attach<Game_Master>();
+	gm->change_level<Level_1>();
+
 	G_App.run();
 
 	G_Performance_Profiler.end_session();
-
 }
 
 s8 splash_screen()

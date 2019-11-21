@@ -8,7 +8,7 @@
 #include "framework/scene/application.hpp"
 
 #include "game/flags.hpp"
-
+#include "game_master.hpp"
 #include "pause_screen.hpp"
 
 Pause_Screen::Pause_Screen()
@@ -28,14 +28,13 @@ Pause_Screen::Pause_Screen()
 	label_resume->text->string.set_locale_name( "#loc_resume" );
 	label_resume->text->character_size = 48;
 	bond_disconnector( label_resume->s_label_clicked.connect( [] {
-		if ( G_Flags[Flags::Pause] )
 			G_Flags[Flags::Pause] = false;
+			G_Root.get_node( "game_master" )->cast_to<Game_Master>()->update_pause_mode();
 					   } ) );
 
 	label_exit->text->string.set_locale_name( "#loc_exit" );
 	label_exit->text->character_size = 48;
 	bond_disconnector( label_exit->s_label_clicked.connect( [] {
-		if ( G_Flags[Flags::Pause] )
 			G_App.exit_game();
 					   } ) );
 
@@ -66,23 +65,4 @@ Pause_Screen::Pause_Screen()
 			G_Locale.set_current_language( "pl" );
 		}
 					   } ) );
-}
-
-void Pause_Screen::input( sf::Event const& ev )
-{
-	if ( ev.type is sf::Event::KeyReleased and
-		 ev.key.code is sf::Keyboard::Escape )
-		G_Flags.flip( Flags::Pause );
-}
-
-void Pause_Screen::update( r32 dt )
-{
-	unused( dt );
-
-	pause_title->visible          = G_Flags[Flags::Pause];
-	label_resume->text->visible   = G_Flags[Flags::Pause];
-	label_exit->text->visible     = G_Flags[Flags::Pause];
-	options_panel->visible        = G_Flags[Flags::Pause];
-	label_lang_eng->text->visible = G_Flags[Flags::Pause];
-	label_lang_pl->text->visible  = G_Flags[Flags::Pause];
 }

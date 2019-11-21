@@ -17,9 +17,6 @@ class Pause_Screen final :
 public:
 	Pause_Screen();
 
-	void input( sf::Event const& ev ) override;
-	void update( r32 dt ) override;
-
 private:
 	Rich_Text* pause_title;
 	Clickable_Label* label_resume;

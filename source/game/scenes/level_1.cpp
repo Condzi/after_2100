@@ -123,14 +123,3 @@ Level_1::Level_1()
 
 	log_info( "{} instantiated.", name );
 }
-
-void Level_1::update( r32 dt )
-{
-	// @ToDo: Probably inefficent?
-	for ( auto* child : get_children() )
-		child->set_pause( G_Flags[Flags::Pause] );
-
-	// If we don't pause the camera will follow the path and move when game is paused. 
-	// We don't want that so we pause it like that.
-	get_node( "root/game_camera" )->set_pause( G_Flags[Flags::Pause] );
-}

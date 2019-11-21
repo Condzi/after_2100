@@ -25,7 +25,8 @@ auto Clickable_Label::get_status() const -> Status
 void Clickable_Label::input( sf::Event const& event )
 {
 	if ( event.type is_not sf::Event::MouseButtonPressed and
-		 event.type is_not sf::Event::MouseMoved )
+		 event.type is_not sf::Event::MouseMoved and
+		 not is_paused() )
 		return;
 
 	constant mouse_in_bounds = rect_vs_point( text->get_global_bounds(), G_Window.get_mouse_position() );
