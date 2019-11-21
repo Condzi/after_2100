@@ -13,6 +13,8 @@
 
 Pause_Screen::Pause_Screen()
 {
+	name = "pause_screen";
+
 	pause_title    = attach<Rich_Text>();
 	label_resume   = attach<Clickable_Label>();
 	label_exit     = attach<Clickable_Label>();
