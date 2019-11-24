@@ -41,8 +41,6 @@ auto Missile_Shooter::get_horizontal_velocity() const -> r32
 
 void Missile_Shooter::shoot()
 {
-	G_Profile_Function();
-
 	if ( !spawning_function ) {
 		log_warning( "No spawning_function set for Missile_Shooter '{}', child of '{}'", name, get_parent()->name );
 		return;

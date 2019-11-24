@@ -24,7 +24,7 @@ Player::Player()
 
 	constant sprite_size = sprite->get_global_bounds().size;
 	// After rotating by 90deg width gets swapped with height.
-	sprite->set_local_position( { sprite_size.height / 2, 0.0px } );
+	sprite->set_local_position( { sprite_size.height / 2, sprite_size.width / 2 } );
 	sprite->set_transformation_origin( sprite_size * 0.5 );
 
 	rotate( 90.0deg );
@@ -35,14 +35,11 @@ Player::Player()
 	gun_a->name = "gun_a";
 	gun_b->name = "gun_b";
 
-
 	gun_a->set_missile_type<Player_Missile>();
 	gun_b->set_missile_type<Player_Missile>();
 
-
 	gun_a->set_horizontal_velocity( 500 );
 	gun_b->set_horizontal_velocity( 500 );
-;
 
 	gun_a->set_local_position( Size2{ 50.0px, -36.0px } );
 	gun_b->set_local_position( Size2{ 50.0px, 36.0px } );
@@ -50,20 +47,18 @@ Player::Player()
 	gun_a->set_cooldown_time( 0.2sec );
 	gun_b->set_cooldown_time( 0.2sec );
 
-
 	hitbox = sprite->attach<Area>();
 
 	hitbox->name = "hitbox_" + name;
 
 	health = attach<Health>();
 	health->set_max( 10 );
-	set_absolute_position( Percent_Position{ 0, 50 } );
+	set_absolute_position( Percent_Position{ 0, 45 } );
 }
 
 void Player::update( r32 dt )
 {
-	G_Profile_Scope( "Player::update" );
-	G_Audio_Listener.set_position( sprite->get_global_position() );
+	G_Audio_Listener.set_position( get_global_position() );
 
 	check_movement_keys();
 	move( velocity * dt );
@@ -130,23 +125,40 @@ void Player::correct_for_boundary_collision()
 {
 	G_Profile_Function();
 
-	constant window_width = G_Window.get_size().width;
-	constant sprite_width = sprite->get_global_bounds().size.width;
-	constant x_pos = get_global_position().x;
-	constant x_pos_max = x_pos + sprite_width;
-	// y_pos doesn't matter since sprites has it own individual position,
-	// but it's still more clear if we set it as it was.
-	constant y_pos = get_global_position().y;
+	constant window_size = G_Window.get_size();
+	constant sprite_size = sprite->get_global_bounds().size;
 
-	if ( x_pos < 0.0px ) {
-		set_global_position( { 0.0px, y_pos } );
+	constant x_pos     = get_global_position().x;
+	constant x_pos_max = x_pos + sprite_size.width;
+	constant y_pos     = get_global_position().y;
+	constant y_pos_max = y_pos + sprite_size.height;
+
+	auto new_position = get_global_position();
+
+	if ( x_pos < 0 ) {
+		new_position.x = 0;
+
 		if ( acceleration_direction.x is -1 )
 			acceleration_direction.x = 0;
-	} else if ( x_pos_max > window_width ) {
-		set_global_position( { window_width - sprite_width, y_pos } );
+	} else if ( x_pos_max > window_size.width ) {
+		new_position.x = window_size.width - sprite_size.width;
+
 		if ( acceleration_direction.x is 1 )
 			acceleration_direction.x = 0;
 	}
+
+	if ( y_pos < 0 ) {
+		new_position.y = 0;
+		if ( acceleration_direction.y is -1 )
+			acceleration_direction.y = 0;
+	} else if ( y_pos_max > window_size.height ) {
+		new_position.y = window_size.height - sprite_size.height;
+
+		if ( acceleration_direction.y is 1 )
+			acceleration_direction.y = 0;
+	}
+
+	set_global_position( new_position );
 }
 
 void Player::update_tilt_transformation()
