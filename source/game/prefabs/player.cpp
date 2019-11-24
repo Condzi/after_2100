@@ -18,58 +18,42 @@ Player::Player()
 	name = "player";
 
 	sprite_a = attach<Sprite>();
-	sprite_b = attach<Sprite>();
 	sprite_a->name = "sprite_a";
-	sprite_b->name = "sprite_b";
 	sprite_a->set_texture_from_name( "player" );
-	sprite_b->set_texture_from_name( "player" );
-	sprite_a->layer = sprite_b->layer = 3;
+	sprite_a->layer = 3;
 
 	constant sprite_size = sprite_a->get_global_bounds().size;
 	// After rotating by 90deg width gets swapped with height.
 	sprite_a->set_local_position( { sprite_size.height / 2, 0.0px } );
-	sprite_b->set_local_position( { sprite_size.height / 2, 0.0px } );
-
 	sprite_a->set_transformation_origin( sprite_size * 0.5 );
-	sprite_b->set_transformation_origin( sprite_size * 0.5 );
 
 	rotate( 90.0deg );
 
 	gun_a_1 = sprite_a->attach<Missile_Shooter>();
 	gun_a_2 = sprite_a->attach<Missile_Shooter>();
-	gun_b_1 = sprite_b->attach<Missile_Shooter>();
-	gun_b_2 = sprite_b->attach<Missile_Shooter>();
 
 	gun_a_1->name = "gun_a_1";
 	gun_a_2->name = "gun_a_2";
-	gun_b_1->name = "gun_b_1";
-	gun_b_2->name = "gun_b_2";
+
 
 	gun_a_1->set_missile_type<Player_Missile>();
 	gun_a_2->set_missile_type<Player_Missile>();
-	gun_b_1->set_missile_type<Player_Missile>();
-	gun_b_2->set_missile_type<Player_Missile>();
+
 
 	gun_a_1->set_horizontal_velocity( 500 );
 	gun_a_2->set_horizontal_velocity( 500 );
-	gun_b_1->set_horizontal_velocity( 500 );
-	gun_b_2->set_horizontal_velocity( 500 );
+;
 
 	gun_a_1->set_local_position( Size2{ 50.0px, -36.0px } );
 	gun_a_2->set_local_position( Size2{ 50.0px, 36.0px } );
 
-	gun_b_1->set_local_position( Size2{ 50.0px, -36.0px } );
-	gun_b_2->set_local_position( Size2{ 50.0px, 36.0px } );
-
 	gun_a_1->set_cooldown_time( 0.2sec );
 	gun_a_2->set_cooldown_time( 0.2sec );
-	gun_b_1->set_cooldown_time( 0.2sec );
-	gun_b_2->set_cooldown_time( 0.2sec );
+
 
 	hitbox_a = sprite_a->attach<Area>();
-	hitbox_b = sprite_b->attach<Area>();
 
-	hitbox_a->name = hitbox_b->name = "hitbox_" + name;
+	hitbox_a->name = "hitbox_" + name;
 
 	health = attach<Health>();
 	health->set_max( 10 );
@@ -84,32 +68,9 @@ void Player::update( r32 dt )
 	check_movement_keys();
 	move( velocity * dt );
 	correct_for_boundary_collision();
-	update_illusion();
 	slow_down();
 	accelerate( dt );
 	update_tilt_transformation();
-}
-
-void Player::update_illusion()
-{
-	G_Profile_Function();
-
-	// Sprite that is visible on the screen.
-	Sprite* main_sprite{ sprite_a };
-	Sprite* mirror_sprite{ sprite_b };
-	const Rectangle_Shape window{ {0,0}, G_Window.get_size() };
-
-	if ( rect_vs_point( window, sprite_b->get_global_position() ) is true )
-		std::swap( main_sprite, mirror_sprite );
-
-	Vec2 pos_to_set = main_sprite->get_global_position();
-
-	if ( main_sprite->get_global_position().y > window.size.height / 2 )
-		pos_to_set.y -= window.size.height;
-	else
-		pos_to_set.y += window.size.height;
-
-	mirror_sprite->set_global_position( pos_to_set );
 }
 
 void Player::check_movement_keys()
@@ -136,9 +97,6 @@ void Player::check_movement_keys()
 
 		gun_a_1->shoot();
 		gun_a_2->shoot();
-
-		gun_b_1->shoot();
-		gun_b_2->shoot();
 
 		// @ToDo: Separate variable for recoil? According to Newton's law (am = -am)
 		// we need some mass multiplier.
@@ -202,8 +160,6 @@ void Player::update_tilt_transformation()
 	yaw = velocity.y * TILT_MULTIPLIER;
 
 	sprite_a->set_rotation_3d( pitch, yaw, roll );
-	sprite_b->set_rotation_3d( pitch, yaw, roll );
 
 	hitbox_a->set_rectangle_shape( sprite_a->get_global_bounds() );
-	hitbox_b->set_rectangle_shape( sprite_b->get_global_bounds() );
 }

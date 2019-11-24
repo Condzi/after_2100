@@ -8,6 +8,9 @@
 #include "framework/scene/area.hpp"
 #include "framework/scene/sprite.hpp"
 
+#include "exploded_sprite.hpp"
+#include "explosion.hpp"
+
 #include "health.hpp"
 #include "missile_shooter.hpp"
 #include "player_missile.hpp"
@@ -37,21 +40,16 @@ private:
 
 	// For illusion (when player go up and appears from bottom)
 	Sprite* sprite_a;
-	Sprite* sprite_b;
 
 	// Children of sprite_a and _b
 	Missile_Shooter* gun_a_1;
 	Missile_Shooter* gun_a_2;
-	Missile_Shooter* gun_b_1;
-	Missile_Shooter* gun_b_2;
 
 	// Children of sprites.
 	Area* hitbox_a;
-	Area* hitbox_b;
 
 	Health* health;
 
-	void update_illusion();
 	void check_movement_keys();
 	void slow_down();
 	void accelerate( r32 dt );

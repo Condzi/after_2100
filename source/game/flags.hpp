@@ -10,6 +10,8 @@ namespace Flags
 {
 enum _ : con::u8
 {
-	Pause = 0
+	Pause = 0,
+	Level_Failure,
+	Level_Succes
 };
 }
