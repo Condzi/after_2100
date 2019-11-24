@@ -57,7 +57,7 @@ Enemy_Base::Enemy_Base()
 				health->kill( player_node );
 				player_health->damage( 1, this );
 			}
-		} ) );
+			} ) );
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;

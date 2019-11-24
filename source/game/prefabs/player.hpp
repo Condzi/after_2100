@@ -42,6 +42,9 @@ private:
 	Missile_Shooter* gun_b;
 	Area* hitbox;
 
+	Explosion* explosion;
+	Exploded_Sprite* exploded_sprite;
+
 	Health* health;
 
 	void check_movement_keys();

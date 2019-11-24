@@ -10,6 +10,7 @@
 #include "framework/scene/application.hpp"
 
 #include "player.hpp"
+#include "game/flags.hpp"
 
 #include <SFML/Window/Keyboard.hpp>
 
@@ -26,8 +27,6 @@ Player::Player()
 	// After rotating by 90deg width gets swapped with height.
 	sprite->set_local_position( { sprite_size.height / 2, sprite_size.width / 2 } );
 	sprite->set_transformation_origin( sprite_size * 0.5 );
-
-	rotate( 90.0deg );
 
 	gun_a = sprite->attach<Missile_Shooter>();
 	gun_b = sprite->attach<Missile_Shooter>();
@@ -48,16 +47,50 @@ Player::Player()
 	gun_b->set_cooldown_time( 0.2sec );
 
 	hitbox = sprite->attach<Area>();
-
 	hitbox->name = "hitbox_" + name;
 
+	explosion = attach<Explosion>();
+	explosion->sprite->layer = 5;
+	explosion->set_scale( { 2.0, 2.0 } );
+	explosion->sprite->set_transformation_origin( explosion->get_frame_size() * 0.5f );
+
+	exploded_sprite = attach<Exploded_Sprite>();
+	exploded_sprite->name = "exploded_sprite";
+	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
+	exploded_sprite->degress_per_second = random_real( -360, 360 );
+	exploded_sprite->scale_per_second = 0.40;
+	exploded_sprite->initialize( { 120, 180 } );
+	exploded_sprite->visible = false;
+	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
+	exploded_sprite->layer = 3;
+
 	health = attach<Health>();
-	health->set_max( 10 );
+	health->set_max( 3 );
+
+	bond_disconnector( health->s_dead.connect( [this] {
+		sprite->visible = false;
+		hitbox->collision_layer = -1;
+		hitbox->shape_color.a -= 200;
+		explosion->play();
+		exploded_sprite->visible = true;
+		exploded_sprite->explode();
+		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
+					   } ) );
+
+	bond_disconnector( exploded_sprite->s_done_scaling.connect( [] {
+		G_Flags[Flags::Level_Failure] = true;
+					   } ) );
+
 	set_absolute_position( Percent_Position{ 0, 45 } );
+
+	rotate( 90.0deg );
 }
 
 void Player::update( r32 dt )
 {
+	if ( health->is_dead() )
+		return;
+
 	G_Audio_Listener.set_position( get_global_position() );
 
 	check_movement_keys();

@@ -37,16 +37,22 @@ Node* Game_Master::get_level()
 
 void Game_Master::update_pause_mode()
 {
-	pause_screen->set_pause( !G_Flags[Flags::Pause] );
-	level->set_pause( G_Flags[Flags::Pause] );
-	get_node( "root/game_camera" )->set_pause( G_Flags[Flags::Pause] );
+	static constant pause = G_Flags[Flags::Pause];
+
+	pause_screen->set_pause( !pause );
+	level->set_pause( pause );
+	get_node( "root/game_camera" )->set_pause( pause );
 }
 
 void Game_Master::update( r32 dt )
 {
+	static auto level_failure = G_Flags[Flags::Level_Failure];
+
 	unused( dt );
 
 	// @ToDo
-	if ( level->get_node( "player/health" )->cast_to<Health>()->is_dead() )
-		log_info( "Player is dead!" );
+	if ( level_failure ) {
+		log_info( "Level failure detected" );
+		level_failure = false;
+	}
 }
