@@ -10,6 +10,8 @@
 
 #include "game/flags.hpp"
 
+#include "game/prefabs/health.hpp"
+
 Game_Master::Game_Master()
 {
 	name = "game_master";
@@ -28,9 +30,23 @@ void Game_Master::input( sf::Event const& ev )
 	}
 }
 
+Node* Game_Master::get_level()
+{
+	return level;
+}
+
 void Game_Master::update_pause_mode()
 {
 	pause_screen->set_pause( !G_Flags[Flags::Pause] );
 	level->set_pause( G_Flags[Flags::Pause] );
 	get_node( "root/game_camera" )->set_pause( G_Flags[Flags::Pause] );
+}
+
+void Game_Master::update( r32 dt )
+{
+	unused( dt );
+
+	// @ToDo
+	if ( level->get_node( "player/health" )->cast_to<Health>()->is_dead() )
+		log_info( "Player is dead!" );
 }

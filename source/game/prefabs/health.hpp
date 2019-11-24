@@ -38,6 +38,7 @@ public:
 	void heal( s32 value, Node* healer );
 	void damage( s32 value, Node* dealer = nullptr );
 	void refill();
+	void kill( Node* killer = nullptr );
 
 private:
 	s32 max_hp{ 1 };

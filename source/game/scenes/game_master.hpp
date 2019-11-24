@@ -25,7 +25,11 @@ public:
 		log_info( "Switching levels: {}.", level->name );
 	}
 
+	Node* get_level();
+
 	void update_pause_mode();
+
+	void update( r32 dt ) override;
 
 private:
 	Node* pause_screen;

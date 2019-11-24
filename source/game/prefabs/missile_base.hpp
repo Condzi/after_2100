@@ -17,7 +17,7 @@ class Missile_Base :
 
 public:
 	Area* hitbox;
-	Vec2    velocity;
+	Vec2  velocity;
 
 	Missile_Base();
 };

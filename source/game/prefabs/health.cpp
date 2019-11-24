@@ -37,7 +37,7 @@ void Health::set_max( s32 max_value )
 
 bool Health::is_dead() const
 {
-	return current_hp is 0;
+	return current_hp is 0 and is_immoral is false;
 }
 
 void Health::heal( s32 value, Node* healer )
@@ -75,4 +75,10 @@ void Health::refill()
 	s_refill.emit();
 
 	current_hp = max_hp;
+}
+
+void Health::kill( Node* killer )
+{
+	if ( is_immoral is false )
+		damage( current_hp, killer );
 }

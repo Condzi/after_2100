@@ -12,6 +12,5 @@ Add save files and save locale too (pl or en).
 
 From profiling:
  * try to make signal::emit calls all at once
- * rendering is taking 90% of the runtime. 
  * we are making too much missiles! there is no need to spawn them if player mirror sprite is offscreen.
  * exploded_sprite seems to be a hiccup
