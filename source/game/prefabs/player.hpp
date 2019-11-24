@@ -17,8 +17,6 @@
 
 using namespace con;
 
-// @Info: Because of the illusion - the player position is split in two: for sprite_a and sprite_b.
-// It's main position (get_global_position.y) should not be used.
 class Player final :
 	public Node
 {
@@ -38,15 +36,11 @@ private:
 	Vec2 acceleration_direction;
 	Vec2 velocity;
 
-	// For illusion (when player go up and appears from bottom)
-	Sprite* sprite_a;
-
-	// Children of sprite_a and _b
-	Missile_Shooter* gun_a_1;
-	Missile_Shooter* gun_a_2;
-
-	// Children of sprites.
-	Area* hitbox_a;
+	Sprite* sprite;
+	// Children of sprite
+	Missile_Shooter* gun_a;
+	Missile_Shooter* gun_b;
+	Area* hitbox;
 
 	Health* health;
 
