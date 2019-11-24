@@ -22,7 +22,7 @@ public:
 	[[nodiscard]] auto get_fallback_string() const           -> sf::String const&;
 	[[nodiscard]] auto get_current_language() const          -> std::string const&;
 	[[nodiscard]] auto get_avaible_languages() const         -> std::vector<std::string> const&;
-	[[nodiscard]] auto get_string( std::string const& name ) -> sf::String const&;
+	[[nodiscard]] auto get_string( std::string const& name ) -> sf::String const*;
 
 	void reload();
 

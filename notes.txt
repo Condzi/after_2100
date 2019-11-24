@@ -14,5 +14,3 @@ From profiling:
  * try to make signal::emit calls all at once
  * we are making too much missiles! there is no need to spawn them if player mirror sprite is offscreen.
  * exploded_sprite seems to be a hiccup
-
-If can't load the localization, fall-back to loc name (#loc_something) instead of "no_loc".

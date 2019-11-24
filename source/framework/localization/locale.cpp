@@ -41,13 +41,13 @@ auto Locale::get_avaible_languages() const -> std::vector<std::string> const&
 	return avaible_languages;
 }
 
-auto Locale::get_string( std::string const& name ) -> sf::String const&
+auto Locale::get_string( std::string const& name ) -> sf::String const*
 {
 	if ( auto it = strings.find( name ); it is strings.end() ) {
 		engine_log_error( "Can't find string '{}'.", name );
-		return fallback_string;
+		return nullptr;
 	} else
-		return it->second;
+		return &it->second;
 }
 
 void Locale::reload()

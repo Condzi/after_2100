@@ -24,7 +24,7 @@ public:
 private:
 	Signal<>::Disconnector locale_language_change_disconnector;
 
-	std::string locale_name;
+	sf::String locale_name;
 	sf::String const* localized_text{ &G_Locale.get_fallback_string() };
 };
 }
