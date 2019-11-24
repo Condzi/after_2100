@@ -7,6 +7,7 @@
 
 #include "game_master.hpp"
 #include "pause_screen.hpp"
+#include "failure_screen.hpp"
 
 #include "game/flags.hpp"
 
@@ -17,13 +18,17 @@ Game_Master::Game_Master()
 	name = "game_master";
 
 	pause_screen = attach<Pause_Screen>();
+	failure_screen = attach<Failure_Screen>();
+
 	pause_screen->set_pause( true );
+	failure_screen->set_pause( true );
 }
 
 void Game_Master::input( sf::Event const& ev )
 {
 	if ( ev.type is sf::Event::KeyReleased and
-		 ev.key.code is sf::Keyboard::Escape ) {
+		 ev.key.code is sf::Keyboard::Escape and
+		 failure_screen->is_paused() is true ) { // don't show pause menu when failure screen is on
 		G_Flags.flip( Flags::Pause );
 
 		update_pause_mode();
@@ -33,6 +38,17 @@ void Game_Master::input( sf::Event const& ev )
 Node* Game_Master::get_level()
 {
 	return level;
+}
+
+void Game_Master::reset_level()
+{
+	log_info( "Reseting the level ({})", level->name );
+
+	level->queue_for_delete();
+	level_instantiating_function();
+	failure_screen->set_pause( true );
+	// @ToDo:
+	// succes_screen->set_pasue(true);
 }
 
 void Game_Master::update_pause_mode()
@@ -52,7 +68,8 @@ void Game_Master::update( r32 dt )
 
 	// @ToDo
 	if ( level_failure ) {
-		log_info( "Level failure detected" );
+		failure_screen->set_pause( false );
+		level->set_pause( true );
 		level_failure = false;
 	}
 }

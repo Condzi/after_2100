@@ -21,11 +21,21 @@ public:
 	template <typename TNode>
 	void change_level()
 	{
-		level = attach<TNode>();
+		level_instantiating_function = [this] {
+			if ( level ) {
+				
+				level->queue_for_delete();
+						}
+
+			level = attach<TNode>();
+		};
+
+		level_instantiating_function();
 		log_info( "Switching levels: {}.", level->name );
 	}
 
 	Node* get_level();
+	void reset_level();
 
 	void update_pause_mode();
 
@@ -33,5 +43,9 @@ public:
 
 private:
 	Node* pause_screen;
+	Node* failure_screen;
 	Node* level{ nullptr };
+
+	// We have to somethow re-instatntiate the level after player's failure.
+	std::function<void()> level_instantiating_function; 
 };

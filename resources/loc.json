@@ -29,5 +29,15 @@
   "#loc_polish": {
     "en": "polski",
     "pl": "polski"
+  },
+
+  "#loc_level_failed": {
+    "en": "#Level failed...#",
+    "pl": "#No i klops...#"
+  },
+
+  "#loc_try_again": {
+    "en": "Try again",
+    "pl": "Spróbuj ponownie"
   }
 }

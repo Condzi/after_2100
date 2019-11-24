@@ -110,7 +110,7 @@ Level_1::Level_1()
 			return;
 
 		constant rotation_delta = -16.0deg * dt;
-		if ( cam->get_rotation() + rotation_delta < 0 )
+		if ( cam->get_rotation() + rotation_delta < 0 ) 
 			cam->set_rotation( 0.0deg );
 		else
 			cam->rotate( rotation_delta );

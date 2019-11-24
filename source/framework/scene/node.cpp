@@ -50,8 +50,8 @@ void Node::set_rotation( r32 deg, bool affect_children )
 	angle = deg;
 
 	if ( affect_children )
-		for ( auto& child : child_nodes )
-			child->set_rotation( deg, true );
+		for ( size_t i = 0; i < child_nodes.size(); i++ )
+			child_nodes[i]->set_rotation( deg, true );
 }
 
 void Node::set_scale( Size2 const& scale_, bool affect_children )
@@ -59,8 +59,8 @@ void Node::set_scale( Size2 const& scale_, bool affect_children )
 	scale = scale_;
 
 	if ( affect_children )
-		for ( auto& child : child_nodes )
-			child->set_scale( scale_, true );
+		for ( size_t i = 0; i < child_nodes.size(); i++ )
+			child_nodes[i]->set_scale( scale_, true );
 }
 
 void Node::apply_scale( Size2 const& scale_, bool affect_children )
@@ -68,8 +68,8 @@ void Node::apply_scale( Size2 const& scale_, bool affect_children )
 	set_scale( get_scale() * scale_ );
 
 	if ( affect_children )
-		for ( auto& child : child_nodes )
-			child->apply_scale( scale_, true );
+		for ( size_t i = 0; i < child_nodes.size(); i++ )
+			child_nodes[i]->apply_scale( scale_, true );
 }
 
 void Node::set_pause( bool val, bool affect_children )
@@ -80,8 +80,8 @@ void Node::set_pause( bool val, bool affect_children )
 	}
 
 	if ( affect_children )
-		for ( auto& child : child_nodes )
-			child->set_pause( val, true );
+		for ( size_t i = 0; i < child_nodes.size(); i++ )
+			child_nodes[i]->set_pause( val, true );
 }
 
 void Node::queue_for_delete()
@@ -90,8 +90,8 @@ void Node::queue_for_delete()
 
 	queued_for_delete = true;
 
-	for ( auto& child : child_nodes )
-		child->queue_for_delete();
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		child_nodes[i]->queue_for_delete();
 }
 
 void Node::bond_disconnector( std::function<void()> disconnector )
@@ -107,8 +107,8 @@ void Node::remove_queued_for_delete()
 					   []( constant& child ) { return child->queued_for_delete; } ),
 					   child_nodes.end() );
 
-	for ( auto& child : child_nodes )
-		child->remove_queued_for_delete();
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		child_nodes[i]->remove_queued_for_delete();
 }
 
 void Node::update_children( r32 dt )
@@ -120,8 +120,8 @@ void Node::update_children( r32 dt )
 		update( dt );
 	}
 
-	for ( auto& child : child_nodes )
-		child->update_children( dt );
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		child_nodes[i]->update_children( dt );
 }
 
 void Node::handle_input_children( sf::Event const& event )
@@ -129,8 +129,8 @@ void Node::handle_input_children( sf::Event const& event )
 	if ( not paused )
 		input( event );
 
-	for ( auto& child : child_nodes )
-		child->handle_input_children( event );
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		child_nodes[i]->handle_input_children( event );
 }
 
 void Node::draw_children( Drawing_Set& set )
@@ -138,8 +138,8 @@ void Node::draw_children( Drawing_Set& set )
 	if ( not paused )
 		draw( set );
 
-	for ( auto& child : child_nodes )
-		child->draw_children( set );
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		child_nodes[i]->draw_children( set );
 }
 
 void Node::draw_gui_children( Drawing_Set& set )
@@ -147,8 +147,8 @@ void Node::draw_gui_children( Drawing_Set& set )
 	if ( not paused )
 		draw_gui( set );
 
-	for ( auto& child : child_nodes )
-		child->draw_gui_children( set );
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		child_nodes[i]->draw_gui_children( set );
 }
 
 auto Node::get_local_position() const -> Point const&
@@ -279,9 +279,9 @@ void Node::move( Vec2 const& vec )
 	position += vec;
 	s_move.emit( vec );
 
-	for ( auto& child : child_nodes )
-		if ( child->move_with_parent )
-			child->move( vec );
+	for ( size_t i = 0; i < child_nodes.size(); i++ )
+		if ( child_nodes[i]->move_with_parent )
+			child_nodes[i]->move( vec );
 }
 
 void Node::set_global_position( Point const& new_position )

@@ -44,6 +44,7 @@ void Path_Follower::start_following()
 
 	set_global_position( path_to_follow->points.front() );
 
+	current_target_id = 0;
 	following = true;
 }
 

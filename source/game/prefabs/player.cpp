@@ -65,7 +65,7 @@ Player::Player()
 	exploded_sprite->layer = 3;
 
 	health = attach<Health>();
-	health->set_max( 3 );
+	health->set_max( 1 );
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;
