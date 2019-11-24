@@ -7,6 +7,7 @@
 
 #include "framework/scene/area.hpp"
 #include "framework/scene/sprite.hpp"
+#include "framework/scene/sound_source.hpp"
 
 #include "exploded_sprite.hpp"
 #include "explosion.hpp"
@@ -46,6 +47,7 @@ private:
 	Exploded_Sprite* exploded_sprite;
 
 	Health* health;
+	Sound_Source* low_health_sound;
 
 	void check_movement_keys();
 	void slow_down();

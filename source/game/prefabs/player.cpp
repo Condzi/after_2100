@@ -65,7 +65,12 @@ Player::Player()
 	exploded_sprite->layer = 3;
 
 	health = attach<Health>();
-	health->set_max( 1 );
+	health->set_max( 2 );
+
+	low_health_sound = attach<Sound_Source>();
+	low_health_sound->name = "low_health";
+	low_health_sound->set_sound_buffer_from_name( "low_hp" );
+	low_health_sound->set_relative_to_audio_listener( false );
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;
@@ -90,6 +95,12 @@ void Player::update( r32 dt )
 {
 	if ( health->is_dead() )
 		return;
+
+	if ( health->get_current() is 1 and not low_health_sound->is_playing() ) {
+		low_health_sound->play();
+		low_health_sound->set_loop( true );
+	} else
+		low_health_sound->set_loop( false );
 
 	G_Audio_Listener.set_position( get_global_position() );
 

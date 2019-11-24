@@ -22,6 +22,26 @@ Sound_Source::Sound_Source()
 					   } ) );
 }
 
+auto Sound_Source::is_looped() const -> bool
+{
+	return sound.getLoop();
+}
+
+auto Sound_Source::is_playing() const -> bool
+{
+	return sound.getStatus() is sf::Sound::Playing;
+}
+
+auto Sound_Source::is_paused() const -> bool
+{
+	return sound.getStatus() is sf::Sound::Paused;
+}
+
+auto Sound_Source::is_stopped() const -> bool
+{
+	return sound.getStatus() is sf::Sound::Stopped;
+}
+
 void Sound_Source::set_attenuation( r32 attenuation )
 {
 	report_error_if( attenuation < 0 or attenuation > 100 )

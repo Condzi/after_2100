@@ -22,6 +22,11 @@ public:
 
 	Sound_Source();
 
+	[[nodiscard]] auto is_looped() const  -> bool;
+	[[nodiscard]] auto is_playing() const -> bool;
+	[[nodiscard]] auto is_paused() const  -> bool;
+	[[nodiscard]] auto is_stopped() const -> bool;
+
 	void set_attenuation( r32 attenuation );
 	void set_minimum_distance( r32 distance );
 	void set_loop( bool value );
