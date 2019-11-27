@@ -29,4 +29,9 @@
 // Fonts
 {
 	{ "default", "resources/Oxanium-Regular.ttf" }
+},
+
+// JSON files
+{
+
 }

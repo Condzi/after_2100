@@ -1,6 +1,3 @@
-Player health, game over scene
-sound effects for low health?
-
 Player force shield that aquaiers one or more hits
 
 the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.

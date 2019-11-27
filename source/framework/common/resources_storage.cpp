@@ -66,7 +66,7 @@ auto Resources_Storage::get_music( std::string const& name ) -> sf::Music* const
 auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font const* const
 {
 	G_Profile_Function();
-	
+
 	sf::Font const* font_to_return{ nullptr };
 	constant result = fonts.find( name );
 
@@ -78,6 +78,23 @@ auto Resources_Storage::get_font( std::string const& name ) const -> sf::Font co
 		font_to_return = &result->second.resource;
 
 	return font_to_return;
+}
+
+auto Resources_Storage::get_json( std::string const& name ) const -> nlohmann::json const* const
+{
+	G_Profile_Function();
+
+	nlohmann::json const* json_to_return{ nullptr };
+	constant result = json_files.find( name );
+
+	if ( result == json_files.end() )
+		engine_log_error( "Can't find JSON file \"{}\".", name );
+	else if ( result->second.is_valid is false )
+		engine_log_error( "JSON file \"{}\" is not valid (it failed to load).", name );
+	else
+		json_to_return = &result->second.resource;
+
+	return json_to_return;
 }
 
 void Resources_Storage::reload()
@@ -122,6 +139,18 @@ void Resources_Storage::reload()
 			engine_log_error( "The font \"{}\" can't be loaded from \"{}\".", name, path );
 			font.is_valid = false;
 		}
+	}
+
+	for ( constant& [name, path] : resources_data.json_files ) {
+		auto& json = json_files[name];
+
+		std::ifstream input_file{ path };
+
+		if ( input_file.good() returned false ) {
+			engine_log_error( "The JSON \"{}\" can't be loaded from \"{}\".", name, path );
+			json.is_valid = false;
+		} else
+			input_file >> json.resource;
 	}
 
 	engine_log_info( "Resources reload end. It took {0:.3f}s.", timer.getElapsedTime().asSeconds() );
