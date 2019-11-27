@@ -53,20 +53,16 @@ s8 splash_screen()
 
 	engine_log_info( "Splash screen started..." );
 
-	if ( splash_screen_texture.loadFromFile( "resources/texture/splash_screen.png" ) returned false )
-		log_error( "Can't load splash screen texture." );
-	else
-		splash_screen_sprite.setTexture( splash_screen_texture );
-
-
 	auto result = std::async( std::launch::async, [&] {
 		G_Profile_Scope( "Resources loading" );
 		G_Resources_Storage.reload();
 		G_Locale.reload();
 							  } );
 
-
-
+	if ( splash_screen_texture.loadFromFile( "resources/texture/splash_screen.png" ) returned false )
+		log_error( "Can't load splash screen texture." );
+	else
+		splash_screen_sprite.setTexture( splash_screen_texture );
 	// Have to split it to G_Window.initialize and G_App.initialize() because
 	// root has fps_counter label that is positioned relative to window that doesn't
 	// existed yet.
