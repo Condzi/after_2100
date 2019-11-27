@@ -43,6 +43,8 @@ int main()
 	G_Performance_Profiler.end_session();
 }
 
+// Don't touch or you'll break the performance!
+// Turns out loading the texture *decreases* loading time by ~2.5 times. Why? idk!
 s8 splash_screen()
 {
 	G_Profile_Function();

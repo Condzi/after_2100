@@ -21,6 +21,7 @@ Root::Root()
 	fps_label->name = "fps_label";
 	fps_label->string.set_locale_name( "#loc_fps" );
 	fps_label->set_absolute_position( Percent_Position{ 1.0,1.0 } );
+	fps_label->string.update_locale_parameters( 0.0 );
 }
 
 void Root::input( sf::Event const& event )
@@ -35,6 +36,9 @@ void Root::update( r32 delta )
 	static constant& display_fps = G_Debug_Flags.get( "display_fps" );
 
 	fps_label->visible = display_fps;
+
+	if ( display_fps is false )
+		return;
 
 	time_since_update += delta;
 
