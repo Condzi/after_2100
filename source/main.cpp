@@ -24,10 +24,6 @@ s8 splash_screen();
 int main()
 {
 	G_Performance_Profiler.begin_session( "Initlialization", "profile-initialization.json" );
-	// Have to split it to G_Window.initialize and G_App.initialize() because
-	// root has fps_counter label that is positioned relative to window that doesn't
-	// existed yet.
-	G_Window.initialize( 1280, 720, 144, "after_2100" );
 
 	if ( splash_screen() returned 1 ) {
 		engine_log_info( "Splash screen exit." );
@@ -74,6 +70,11 @@ s8 splash_screen()
 		done_loading = true;
 		   } };
 	t.detach();
+
+	// Have to split it to G_Window.initialize and G_App.initialize() because
+	// root has fps_counter label that is positioned relative to window that doesn't
+	// existed yet.
+	G_Window.initialize( 1280, 720, 144, "after_2100" );
 
 	sf::Event ev;
 	while ( not done_loading ) {
