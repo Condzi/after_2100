@@ -58,26 +58,23 @@ s8 splash_screen()
 	else
 		splash_screen_sprite.setTexture( splash_screen_texture );
 
-	auto& window = G_Window.get_raw_window();
 
-	std::atomic_bool done_loading{ false };
-
-	std::thread t{ [&] {
+	auto result = std::async( std::launch::async, [&] {
 		G_Profile_Scope( "Resources loading" );
 		G_Resources_Storage.reload();
 		G_Locale.reload();
-	
-		done_loading = true;
-		   } };
-	t.detach();
+							  } );
+
+
 
 	// Have to split it to G_Window.initialize and G_App.initialize() because
 	// root has fps_counter label that is positioned relative to window that doesn't
 	// existed yet.
 	G_Window.initialize( 1280, 720, 144, "after_2100" );
 
+	auto& window = G_Window.get_raw_window();
 	sf::Event ev;
-	while ( not done_loading ) {
+	while ( result.wait_for( std::chrono::microseconds( 0 ) ) is_not std::future_status::ready ) {
 		while ( window.pollEvent( ev ) ) {
 			if ( ev.type is sf::Event::Closed )
 				return 1;
