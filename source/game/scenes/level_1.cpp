@@ -105,7 +105,7 @@ Level_1::Level_1()
 
 	auto& camera = *G_Root.get_node( "game_camera" )->cast_to<Camera>();
 	camera.set_rotation( 90.0deg );
-	camera.s_update.connect( [cam = &camera]( r32 dt ) {
+	bond_disconnector( camera.s_update.connect( [cam = &camera]( r32 dt ) {
 		if ( G_Flags[Flags::Pause] )
 			return;
 
@@ -114,7 +114,7 @@ Level_1::Level_1()
 			cam->set_rotation( 0.0deg );
 		else
 			cam->rotate( rotation_delta );
-	} );
+	} ) );
 	camera.max_velocity = 130;
 	camera.minimum_distance = 1.0px;
 	camera.set_path( *camera_path );
