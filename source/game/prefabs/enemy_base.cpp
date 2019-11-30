@@ -48,16 +48,16 @@ Enemy_Base::Enemy_Base()
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
-			auto player_node = get_node( "root/game_master" )->cast_to<Game_Master>()->get_level()->get_node( "player" );
-			auto player_health = player_node->get_node( "health" )->cast_to<Health>();
+		auto player_node = get_node( "root/game_master" )->cast_to<Game_Master>()->get_level()->get_node( "player" );
+		auto player_health = player_node->get_node( "health" )->cast_to<Health>();
 
-			if ( second.name is "hitbox_missile_player" )
-				health->damage( 1, player_node );
-			else if ( second.name is "hitbox_player" ) {
-				health->kill( player_node );
-				player_health->damage( 1, this );
-			}
-			} ) );
+		if ( second.name is "hitbox_missile_player" )
+			health->damage( 1, player_node );
+		else if ( second.name is "hitbox_player" ) {
+			health->kill( player_node );
+			player_health->damage( 1, this );
+		}
+	} ) );
 
 	bond_disconnector( health->s_dead.connect( [this] {
 		sprite->visible = false;
@@ -68,14 +68,14 @@ Enemy_Base::Enemy_Base()
 		exploded_sprite->visible = true;
 		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
-					   } ) );
+	} ) );
 
 	bond_disconnector( exploded_sprite->s_done_scaling.connect( [this] { queue_for_delete(); } ) );
 
 	bond_disconnector( s_on_finish_following.connect(
 		[&] {
-			queue_for_delete();
-		} ) );
+		queue_for_delete();
+	} ) );
 }
 
 void Enemy_Base::update( r32 dt )

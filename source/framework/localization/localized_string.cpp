@@ -22,7 +22,7 @@ Localized_String::Localized_String()
 			localized_text = &locale_name;
 
 		s_update_localized_string.emit();
-											} );
+	} );
 }
 
 Localized_String::~Localized_String()

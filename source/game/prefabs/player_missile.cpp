@@ -32,10 +32,10 @@ Player_Missile::Player_Missile()
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
-			if ( second.name is_not "hitbox_player" and second.name is_not "hitbox_missile_player" )
-				// @ToDo: fancy explosion
-				queue_for_delete();
-		} ) );
+		if ( second.name is_not "hitbox_player" and second.name is_not "hitbox_missile_player" )
+			// @ToDo: fancy explosion
+			queue_for_delete();
+	} ) );
 }
 
 void Player_Missile::update( r32 delta )

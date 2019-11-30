@@ -85,7 +85,7 @@ Exploded_Sprite::Exploded_Sprite()
 				auto& vertex = element.vertices[i];
 				vertex.position += cast<sf::Vector2f>( offset );
 			}
-					   } ) );
+	} ) );
 }
 
 void Exploded_Sprite::explode()

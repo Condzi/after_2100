@@ -80,11 +80,11 @@ Player::Player()
 		exploded_sprite->visible = true;
 		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
-					   } ) );
+	} ) );
 
 	bond_disconnector( exploded_sprite->s_done_scaling.connect( [] {
 		G_Flags[Flags::Level_Failure] = true;
-					   } ) );
+	} ) );
 
 	set_absolute_position( Percent_Position{ 0, 45 } );
 

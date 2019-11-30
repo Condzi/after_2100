@@ -19,7 +19,7 @@ Sound_Source::Sound_Source()
 			sound.pause();
 		else if ( status is false and sound.getStatus() is sf::Music::Paused )
 			sound.play();
-					   } ) );
+	} ) );
 }
 
 auto Sound_Source::is_looped() const -> bool

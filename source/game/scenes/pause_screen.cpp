@@ -30,15 +30,15 @@ Pause_Screen::Pause_Screen()
 	label_resume->text->string.set_locale_name( "#loc_resume" );
 	label_resume->text->character_size = 48;
 	bond_disconnector( label_resume->s_label_clicked.connect( [] {
-			G_Flags[Flags::Pause] = false;
-			G_Root.get_node( "game_master" )->cast_to<Game_Master>()->update_pause_mode();
-					   } ) );
+		G_Flags[Flags::Pause] = false;
+		G_Root.get_node( "game_master" )->cast_to<Game_Master>()->update_pause_mode();
+	} ) );
 
 	label_exit->text->string.set_locale_name( "#loc_exit" );
 	label_exit->text->character_size = 48;
 	bond_disconnector( label_exit->s_label_clicked.connect( [] {
-			G_App.exit_game();
-					   } ) );
+		G_App.exit_game();
+	} ) );
 
 	pause_title->set_absolute_position( Percent_Position{ 2,5 } );
 	label_resume->set_absolute_position( Percent_Position{ 1, 20 } );
@@ -60,11 +60,11 @@ Pause_Screen::Pause_Screen()
 		if ( G_Flags[Flags::Pause] ) {
 			G_Locale.set_current_language( "en" );
 		}
-					   } ) );
+	} ) );
 
 	bond_disconnector( label_lang_pl->s_label_clicked.connect( [] {
 		if ( G_Flags[Flags::Pause] ) {
 			G_Locale.set_current_language( "pl" );
 		}
-					   } ) );
+	} ) );
 }

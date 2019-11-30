@@ -17,7 +17,7 @@ GUI_String::GUI_String()
 			string = localized_string.get_localized_text();
 			s_locale_changed.emit();
 		}
-															} );
+	} );
 }
 
 GUI_String::~GUI_String()

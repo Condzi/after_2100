@@ -74,7 +74,7 @@ Level_1::Level_1()
 
 		spawner->reset();
 		spawner->start();
-					   } ) );
+	} ) );
 
 	///////////////////////////////
 	parallax_background->set_texture_from_name( "space_background" );
@@ -96,7 +96,7 @@ Level_1::Level_1()
 		music->play();
 
 		log_info( "Next track: space_ambient_{}", num );
-					   } ) );
+	} ) );
 
 	///////////////////////////////
 	camera_path->points.emplace_back( Point{ -5, 50 } *0.01 * win_size );
@@ -110,11 +110,11 @@ Level_1::Level_1()
 			return;
 
 		constant rotation_delta = -16.0deg * dt;
-		if ( cam->get_rotation() + rotation_delta < 0 ) 
+		if ( cam->get_rotation() + rotation_delta < 0 )
 			cam->set_rotation( 0.0deg );
 		else
 			cam->rotate( rotation_delta );
-							 } );
+	} );
 	camera.max_velocity = 130;
 	camera.minimum_distance = 1.0px;
 	camera.set_path( *camera_path );

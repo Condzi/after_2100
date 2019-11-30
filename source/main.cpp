@@ -59,7 +59,7 @@ s8 splash_screen()
 		G_Profile_Scope( "Resources loading" );
 		G_Resources_Storage.reload();
 		G_Locale.reload();
-							  } );
+	} );
 
 	if ( splash_screen_texture.loadFromFile( "resources/texture/splash_screen.png" ) returned false )
 		log_error( "Can't load splash screen texture." );

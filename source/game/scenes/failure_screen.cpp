@@ -34,8 +34,8 @@ Failure_Screen::Failure_Screen()
 
 	try_again_label->s_label_clicked.connect( [this] {
 		get_node( "root/game_master" )->cast_to<Game_Master>()->reset_level();
-											  } );
+	} );
 	exit_label->s_label_clicked.connect( [] {
 		G_App.exit_game();
-										 } );
+	} );
 }

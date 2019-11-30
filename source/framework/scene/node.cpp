@@ -212,8 +212,8 @@ auto Node::get_node_or_null( std::string path ) -> Node* const
 
 		constant[found, idx] = find_if( current_node->child_nodes,
 										[&name_to_look]( constant& child ) {
-											return child->name == name_to_look;
-										} );
+			return child->name == name_to_look;
+		} );
 
 		if ( not found )
 			return nullptr;

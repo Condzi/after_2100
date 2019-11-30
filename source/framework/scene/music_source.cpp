@@ -19,7 +19,7 @@ Music_Source::Music_Source()
 			music->pause();
 		else if ( status is false and music->getStatus() is sf::Music::Paused )
 			music->play();
-					   } ) );
+	} ) );
 }
 
 void Music_Source::set_attenuation( r32 attenuation )

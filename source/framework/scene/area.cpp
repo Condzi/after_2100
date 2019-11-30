@@ -80,7 +80,7 @@ void Area::draw( Drawing_Set& drawing_set )
 
 	std::visit(
 		[&]( auto&& drawable ) {
-			drawing_set.add_drawable( drawable, layer );
-		}, visual_representation );
+		drawing_set.add_drawable( drawable, layer );
+	}, visual_representation );
 }
 }

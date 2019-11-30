@@ -33,7 +33,7 @@ auto Debug_Flags::get( std::string_view name ) -> bool&
 
 	constant[found, idx] = find_if( flags, [hash]( constant flag ) {
 		return flag.hash == hash;
-									} );
+	} );
 
 	report_warning_if( not found )
 	{

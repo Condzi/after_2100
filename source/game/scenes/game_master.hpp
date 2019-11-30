@@ -22,10 +22,8 @@ public:
 	void change_level()
 	{
 		level_instantiating_function = [this] {
-			if ( level ) {
-				
+			if ( level )
 				level->queue_for_delete();
-						}
 
 			level = attach<TNode>();
 		};
@@ -47,5 +45,5 @@ private:
 	Node* level{ nullptr };
 
 	// We have to somethow re-instatntiate the level after player's failure.
-	std::function<void()> level_instantiating_function; 
+	std::function<void()> level_instantiating_function;
 };

@@ -15,7 +15,7 @@ Rich_Text::Rich_Text()
 {
 	bond_disconnector( string.s_locale_changed.connect( [this] {
 		update_vertices();
-					   } ) );
+	} ) );
 }
 
 void Rich_Text::set_font_from_name( std::string const& name )
