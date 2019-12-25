@@ -90,6 +90,10 @@ void Input_Field::input( sf::Event const& event )
 			temporary_string = input_string;
 	}
 
+	// @ToDo: Figure out more efficent calling of this.
+	// text_visual->update_vertices() is heavy. We need this so
+	// we display the default value when input_string is empty after
+	// clicking out of the input_field boundaries.
 	if ( not input_focused ) {
 		if ( input_string.empty() ) {
 			text_visual->string.set_ascii( default_string );
