@@ -110,14 +110,14 @@ void Rich_Text::update_vertices()
 		previous_character = current_character;
 	}
 
-	update_tranform();
+	update_transform();
 }
 
 void Rich_Text::update( r32 dt )
 {
 	unused( dt );
 
-	update_tranform();
+	update_transform();
 }
 
 void Rich_Text::draw_gui( Drawing_Set& set )
@@ -136,7 +136,7 @@ void Rich_Text::draw_gui( Drawing_Set& set )
 	set.add_drawable( vertices, layer, states );
 }
 
-void Rich_Text::update_tranform()
+void Rich_Text::update_transform()
 {
 	transformable.setPosition( get_global_position() );
 	transformable.setScale( get_scale() );

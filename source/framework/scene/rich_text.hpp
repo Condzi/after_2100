@@ -59,7 +59,7 @@ private:
 	// bounds, top left one is always 0.0
 	Point bottom_right; // = size of the rectangle, actually
 
-	void update_tranform();
+	void update_transform();
 	void add_character( u32 previous_character, u32 current_character, bool is_bold, bool is_italic );
 	void add_quad( sf::Glyph const& glyph, sf::Color const& color, r32 italic_shear = 0, r32 outline = 0 );
 };
