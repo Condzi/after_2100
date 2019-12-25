@@ -40,6 +40,7 @@ private:
 	sf::Color text_color_default;
 	sf::Color text_color_input;
 
+	std::string temporary_string;
 	std::string input_string;
 	std::string default_string;
 };
