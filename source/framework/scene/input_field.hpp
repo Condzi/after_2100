@@ -24,26 +24,23 @@ public:
 
 	Input_Field();
 
-	[[nodiscard]] auto get_input_string() const  -> std::string const&;
+	[[nodiscard]] auto get_input_string() const   -> std::string const&;
+	[[nodiscard]] auto get_default_string() const -> std::string const&;
 
 	void set_text_color_default( sf::Color const& color );
 	void set_text_color_input( sf::Color const& color );
+	void set_input_string( std::string const& str );
 	void set_default_string( std::string const& str );
 
 	void input( sf::Event const& event ) override;
-	void update( r32 dt ) override;
 
 private:
-	enum
-	{
-		Idle, Selected
-	} status = Idle;
+	bool input_focused{ false };
 
 	sf::Color text_color_default;
 	sf::Color text_color_input;
 
 	std::string input_string;
 	std::string default_string;
-
 };
 }

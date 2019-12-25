@@ -92,7 +92,7 @@ void Debug_Console::input( sf::Event const& event )
 	std::string input_string = input_text.getString();
 
 	if ( event.type is sf::Event::EventType::TextEntered ) {
-		char ascii = sf::String{ event.text.unicode }.toAnsiString().front();
+		constant ascii = sf::String{ event.text.unicode }.toAnsiString().front();
 
 		if ( ( ascii < 'A' or ascii > 'Z' ) and ( ascii < 'a' or ascii > 'z' ) and
 			( ascii < '0' or ascii > '9' ) and ascii is_not '_' )
@@ -102,12 +102,12 @@ void Debug_Console::input( sf::Event const& event )
 	}
 
 	if ( event.type is sf::Event::EventType::KeyReleased ) {
-		if ( event.key.code == sf::Keyboard::Key::Space )
+		if ( event.key.code is sf::Keyboard::Key::Space )
 			input_string += ' ';
-		else if ( event.key.code == sf::Keyboard::Key::BackSpace and
+		else if ( event.key.code is sf::Keyboard::Key::BackSpace and
 				  not input_string.empty() )
 			input_string.pop_back();
-		else if ( event.key.code == sf::Keyboard::Key::Return ) {
+		else if ( event.key.code is sf::Keyboard::Key::Return ) {
 			do_command( input_string );
 			input_string.clear();
 		}
