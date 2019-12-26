@@ -78,6 +78,7 @@ void Input_Field::input( sf::Event const& event )
 		constant mouse_position = G_Window.get_mouse_position();
 		constant input_bounds = text_visual->get_global_bounds();
 
+		constant input_was_focused = input_focused;
 		input_focused = rect_vs_point( input_bounds, mouse_position );
 
 		// To erase the default value when clicking.
@@ -88,24 +89,21 @@ void Input_Field::input( sf::Event const& event )
 
 		if ( input_focused )
 			temporary_string = input_string;
-	}
 
-	// @ToDo: Figure out more efficent calling of this.
-	// text_visual->update_vertices() is heavy. We need this so
-	// we display the default value when input_string is empty after
-	// clicking out of the input_field boundaries.
-	if ( not input_focused ) {
-		if ( input_string.empty() ) {
-			text_visual->string.set_ascii( default_string );
-			text_visual->fill_color = text_color_default;
-		} else {
-			text_visual->string.set_ascii( input_string );
-			text_visual->fill_color = text_color_input;
+		if ( input_was_focused and not input_focused ) {
+			if ( input_string.empty() ) {
+				text_visual->string.set_ascii( default_string );
+				text_visual->fill_color = text_color_default;
+			} else {
+				text_visual->string.set_ascii( input_string );
+				text_visual->fill_color = text_color_input;
+			}
+			text_visual->update_vertices();
 		}
-		text_visual->update_vertices();
-
-		return;
 	}
+
+	if ( not input_focused )
+		return;
 
 	bool text_changed = false;
 
@@ -135,11 +133,20 @@ void Input_Field::input( sf::Event const& event )
 			input_focused = false;
 			input_string = temporary_string;
 			s_input_changed.emit( this );
+
+			if ( input_string.empty() ) {
+				text_visual->string.set_ascii( default_string );
+				text_visual->fill_color = text_color_default;
+			} else {
+				text_visual->string.set_ascii( input_string );
+				text_visual->fill_color = text_color_input;
+			}
+
+			text_visual->update_vertices();
 		}
 	}
 
 	if ( text_changed ) {
-
 		text_visual->string.set_ascii( temporary_string );
 		text_visual->fill_color = text_color_input;
 

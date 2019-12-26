@@ -10,6 +10,7 @@
 
 namespace con
 {
+
 class Input_Field final :
 	public Node
 {
