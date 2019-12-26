@@ -7,7 +7,6 @@
 
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
-#include "framework/scene/input_field.hpp"
 
 #include "game/flags.hpp"
 
@@ -122,16 +121,5 @@ Level_1::Level_1()
 	camera.start_following();
 	///////////////////////////////
 
-
-	auto input_field = attach<Input_Field>();
-
-	input_field->text_visual->character_size = 40;
-	input_field->text_visual->set_font_from_name( "default" );
-	input_field->set_default_string( "0123" );
-	input_field->s_input_changed.connect( []( auto ptr ) {
-		log_info( "Input value: {}", ptr->get_input_string() );
-	} );
-
-	input_field->set_absolute_position( Percent_Position{ 25,25 } );
 	log_info( "{} instantiated.", name );
 }
