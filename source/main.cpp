@@ -11,7 +11,7 @@
 
 #include "game/scenes/main_menu.hpp"
 #include "game/scenes/game_master.hpp"
-#include "game/scenes/dialog_template.hpp"
+#include "game/scenes/dialog_tutorial.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -37,7 +37,7 @@ int main()
 	G_Performance_Profiler.begin_session( "Runtime", "profile-runtime.json" );
 
 	auto gm = G_Root.attach<Game_Master>();
-	gm->change_level<Dialog_Template>();
+	gm->change_level<Dialog_Tutorial>();
 
 	G_App.run();
 

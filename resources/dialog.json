@@ -1,0 +1,36 @@
+{
+    "level_prolog": {
+        "1": {
+            "actor": "commander",
+            "text": "#loc_dialog_1",
+            "next": "2"
+        },
+
+        "2": {
+            "actor": "commander",
+            "text": "#loc_dialog_2",
+            "response": {
+                "1": {
+                    "text": "#loc_response_1",
+                    "next": "3"
+                },
+                "2": {
+                    "text": "#loc_repsonse_2",
+                    "next": "4"
+                }
+            }
+        },
+
+        "3": {
+            "actor": "commander",
+            "text": "#loc_dialog_3",
+            "next": "2"
+        },
+
+        "4": {
+            "actor": "commander",
+            "text": "#loc_dialog_4",
+            "next": "end"
+        }
+    }
+}

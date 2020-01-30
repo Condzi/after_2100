@@ -29,6 +29,8 @@ public:
 	r32 letter_spacing_factor{ 1 };
 	bool visible{ true };
 	s32 layer{ 0 };
+	// shared between letters
+	r32 line_spacing{ 0 };
 
 	Rich_Text();
 
@@ -52,8 +54,6 @@ private:
 
 	sf::Transformable transformable;
 
-	// shared between letters
-	r32 line_spacing{ 0 };
 	r32 x{ 0 }, y{ 0 };
 
 	// bounds, top left one is always 0.0
