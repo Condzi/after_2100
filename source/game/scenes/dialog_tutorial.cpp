@@ -63,7 +63,7 @@ void Dialog_Tutorial::input( sf::Event const& event )
 			}
 		}
 
-		else if ( sf::Keyboard::Space is event.key.code and not show_responses ) {
+		else if ( sf::Keyboard::E is event.key.code and not show_responses ) {
 			if ( current_dialog is 1 or current_dialog is 3 ) {
 				show_responses = true;
 				current_dialog = 2;

@@ -7,7 +7,7 @@
 #include "main_menu.hpp"
 #include "game_master.hpp"
 #include "framework/scene/application.hpp"
-#include "level_1.hpp"
+#include "dialog_tutorial.hpp"
 
 Main_Menu::Main_Menu()
 {
@@ -34,7 +34,7 @@ Main_Menu::Main_Menu()
 	label_exit->set_absolute_position( Percent_Position{ 40, 50 } );
 
 	bond_disconnector( label_new_game->s_label_clicked.connect( [this] {
-		get_node( "root/game_master" )->cast_to<Game_Master>()->change_level<Level_1>();
+		get_node( "root/game_master" )->cast_to<Game_Master>()->change_level<Dialog_Tutorial>();
 	} ) );
 
 	bond_disconnector( label_exit->s_label_clicked.connect( [] {
