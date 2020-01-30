@@ -25,7 +25,11 @@ public:
 	std::vector<Rich_Text*> response_text;
 	Point response_text_begin_position;
 	bool show_responses{ false };
-	s8 selected_response{ -1 };
+	s8 selected_response{ 0 };
+	s32 current_dialog{ 0 };
+	bool needs_update{ false };
 
 	Dialog_Template();
+
+	void update_responses_visibility();
 };

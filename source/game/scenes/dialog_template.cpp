@@ -14,8 +14,8 @@ Dialog_Template::Dialog_Template()
 	actor_image = attach<Image>();
 	arrow_image = attach<Image>();
 
-	dialog_text = attach<Rich_Text>();
-	character_name = attach<Rich_Text>();
+	dialog_text	    = attach<Rich_Text>();
+	character_name  = attach<Rich_Text>();
 	dialog_text_box = attach<Panel>();
 
 	dialog_text->string.set_locale_name( "#loc_prolog_1" );
@@ -23,7 +23,7 @@ Dialog_Template::Dialog_Template()
 	actor_image->set_texture_from_name( "portrait_commander" );
 	arrow_image->set_texture_from_name( "arrow" );
 
-	dialog_text->character_size = 32;
+	dialog_text->character_size    = 32;
 	character_name->character_size = 20;
 
 	dialog_text->update_vertices( 50 );
@@ -54,7 +54,13 @@ Dialog_Template::Dialog_Template()
 	character_name->set_global_position( CHARACTER_NAME_POS );
 	dialog_text_box->set_global_position( DIALOG_TEXT_BOX_POS );
 	dialog_text_box->set_size( DIALOG_TEXT_BOX_SIZE );
-	dialog_text_box->set_color( { 255,255,255, 100 } );
+	dialog_text_box->set_color( { 255,255,255, 10 } );
 	dialog_text->set_global_position( DIALOG_TEXT_BOX_POS );
 	arrow_image->set_global_position( ARROW_POSITION );
+}
+
+void Dialog_Template::update_responses_visibility()
+{
+	for ( auto& text : response_text )
+		text->visible = show_responses;
 }
