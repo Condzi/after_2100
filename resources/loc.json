@@ -39,5 +39,10 @@
   "#loc_try_again": {
     "en": "Try again",
     "pl": "Spróbuj ponownie"
-  }
+  },
+
+  "#loc_new_game": {
+    "en": "New Game",
+    "pl": "Nowa Gra"
+  } 
 }

@@ -1,5 +1,5 @@
 /*
-	Conrad 'Condzi' Kubacki 2019
+	Conrad 'Condzi' Kubacki 2020
 	https://github.com/condzi
 */
 
@@ -119,6 +119,7 @@ Level_1::Level_1()
 	camera.minimum_distance = 1.0px;
 	camera.set_path( *camera_path );
 	camera.start_following();
+	camera.update_transformations();
 	///////////////////////////////
 
 	log_info( "{} instantiated.", name );

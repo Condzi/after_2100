@@ -1,5 +1,5 @@
 /*
-	Conrad 'Condzi' Kubacki 2019
+	Conrad 'Condzi' Kubacki 2020
 	https://github.com/condzi
 */
 
@@ -9,7 +9,7 @@
 #include "framework/scene/application.hpp"
 #include "framework/localization/locale.hpp"
 
-#include "game/scenes/level_1.hpp"
+#include "game/scenes/main_menu.hpp"
 #include "game/scenes/game_master.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
@@ -36,7 +36,7 @@ int main()
 	G_Performance_Profiler.begin_session( "Runtime", "profile-runtime.json" );
 
 	auto gm = G_Root.attach<Game_Master>();
-	gm->change_level<Level_1>();
+	gm->change_level<Main_Menu>();
 
 	G_App.run();
 

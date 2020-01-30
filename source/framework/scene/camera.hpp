@@ -1,5 +1,5 @@
 /*
-	Conrad 'Condzi' Kubacki 2019
+	Conrad 'Condzi' Kubacki 2020
 	https://github.com/condzi
 */
 #pragma once
@@ -33,6 +33,7 @@ public:
 
 	void add_shake_trauma( r32 trauma );
 	void stop_shaking();
+	void update_transformations();
 
 	void update( r32 dt ) override;
 
@@ -52,7 +53,6 @@ private:
 	sf::View view;
 	r32 zoom_val = 1.0;
 
-	void update_transformations();
 	void update_shake( r32 dt );
 };
 }

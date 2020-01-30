@@ -1,5 +1,5 @@
 /*
-	Conrad 'Condzi' Kubacki 2019
+	Conrad 'Condzi' Kubacki 2020
 	https://github.com/condzi
 */
 #pragma once
