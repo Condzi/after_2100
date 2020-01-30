@@ -19,9 +19,6 @@ Pause_Screen::Pause_Screen()
 	label_resume   = attach<Clickable_Label>();
 	label_exit     = attach<Clickable_Label>();
 	options_panel  = attach<Panel>();
-	label_lang_eng = attach<Clickable_Label>();
-	label_lang_pl  = attach<Clickable_Label>();
-
 
 	pause_title->string.set_locale_name( "#loc_pause" );
 	pause_title->character_size = 72;
@@ -47,24 +44,4 @@ Pause_Screen::Pause_Screen()
 	options_panel->set_size( G_Window.get_size() * 0.7 );
 	options_panel->set_absolute_position( Percent_Position{ 22, 15 } );
 	options_panel->set_color( { 100, 100, 100 } );
-
-	label_lang_eng->text->string.set_locale_name( "#loc_english" );
-	label_lang_eng->set_absolute_position( Percent_Position{ 10, 10 }, options_panel->get_global_bounds() );
-
-	label_lang_pl->text->string.set_locale_name( "#loc_polish" );
-	label_lang_pl->set_absolute_position( Percent_Position{ 10, 20 }, options_panel->get_global_bounds() );
-
-	label_lang_eng->text->character_size = label_lang_pl->text->character_size = 48;
-
-	bond_disconnector( label_lang_eng->s_label_clicked.connect( [] {
-		if ( G_Flags[Flags::Pause] ) {
-			G_Locale.set_current_language( "en" );
-		}
-	} ) );
-
-	bond_disconnector( label_lang_pl->s_label_clicked.connect( [] {
-		if ( G_Flags[Flags::Pause] ) {
-			G_Locale.set_current_language( "pl" );
-		}
-	} ) );
 }
