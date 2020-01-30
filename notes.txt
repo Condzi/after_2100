@@ -1,3 +1,7 @@
+move locale change options to main menu because it'll crash the game in dialog mode
+
+fix camera when entering level. sometimes it's not rotated correctly
+
 Player force shield that aquaiers one or more hits
 
 the current fix for moving window is not so great. we need to find another way to fix it, i'll just delete the code for fix.

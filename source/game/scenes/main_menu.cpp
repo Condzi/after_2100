@@ -33,12 +33,12 @@ Main_Menu::Main_Menu()
 	label_new_game->set_absolute_position( Percent_Position{ 40, 40 } );
 	label_exit->set_absolute_position( Percent_Position{ 40, 50 } );
 
-	label_new_game->s_label_clicked.connect( [this] {
+	bond_disconnector( label_new_game->s_label_clicked.connect( [this] {
 		get_node( "root/game_master" )->cast_to<Game_Master>()->change_level<Level_1>();
-	} );
+	} ) );
 
-	label_exit->s_label_clicked.connect( [] {
+	bond_disconnector( label_exit->s_label_clicked.connect( [] {
 		G_App.exit_game();
-	} );
+	} ) );
 
 }

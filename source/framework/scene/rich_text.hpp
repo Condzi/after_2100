@@ -39,7 +39,7 @@ public:
 	[[nodiscard]] auto find_character_position( size_t idx ) const -> Point;
 	[[nodiscard]] auto get_string_without_formating_characters() const -> sf::String const&;
 
-	void update_vertices();
+	void update_vertices( s32 max_char_per_line = 0 );
 
 	void update( r32 dt ) override;
 	void draw_gui( Drawing_Set& set ) override;

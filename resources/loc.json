@@ -44,5 +44,31 @@
   "#loc_new_game": {
     "en": "New Game",
     "pl": "Nowa Gra"
-  } 
+  },
+
+
+  "#loc_prolog_1": {
+    "en": "todo",
+    "pl": "Witaj ponownie, żołnierzu! Jak mówiłem na odprawie, poćwiczysz teraz podstawowe manewry. Postaraj się nie rozbić statku, inaczej potrącimy ci to z żołdu!"
+  },
+
+  "#loc_prolog_2": {
+    "en": "Ready?",
+    "pl": "Gotowy?"
+  },
+
+  "#loc_prolog_3": {
+    "en": "todo",
+    "pl": "Niedaleko naszej stacji znajduje się pas asteroid. Postrzelasz sobie trochę do kosmicznych kamieni, przy okazji poćwiczysz swój refleks. Dość gadania, robota czeka!"
+  },
+
+  "#loc_prolog_response_1": {
+    "en": "Yes sir!",
+    "pl": "Tak jest!"
+  },
+
+  "#loc_prolog_response_2": {
+    "en": "todo",
+    "pl": "Na czym będą polegać te ćwiczenia?"
+  }
 }

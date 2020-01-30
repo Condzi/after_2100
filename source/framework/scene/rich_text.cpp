@@ -53,7 +53,7 @@ auto Rich_Text::get_string_without_formating_characters() const -> sf::String co
 	return string_without_formatting_characters;
 }
 
-void Rich_Text::update_vertices()
+void Rich_Text::update_vertices( s32 max_char_per_line )
 {
 	if ( string.get_string().isEmpty() )
 		return;
@@ -61,8 +61,32 @@ void Rich_Text::update_vertices()
 	if ( font is nullptr )
 		set_font_from_name( "default" );
 
-	constant& str = string.get_string();
+	auto& str = string.get_string();
 
+	// Add \n characters if necassary
+	if ( max_char_per_line > 0 and str.getSize() > max_char_per_line ) {
+		s32 last_space_position = -1;
+		s32 char_count = 0; // we can't use i because there are formating characters such as $, # and %
+		for ( size_t i = 0; i < str.getSize(); i++ ) {
+			constant& current_char = str.getData()[i];
+
+			if ( current_char is L'#' or current_char is L'$' or current_char is L'%' )
+				continue;
+
+			if ( current_char is L' ' )
+				last_space_position = i;
+
+			char_count++;
+
+			if ( char_count > max_char_per_line
+				 and last_space_position is_not -1 ) {
+				const_cast<sf::Uint32*>( str.getData() )[last_space_position] = L'\n';
+				i = last_space_position + 1;
+				last_space_position = -1;
+				char_count = 0;
+			}
+		}
+	}
 	// @ToDo: This doesn't work because we should *reserve* instead of resize.
 	// 6 vertices of triangle make a quad
 	// vertices.resize( copy_of_string.getSize() * 6 );
