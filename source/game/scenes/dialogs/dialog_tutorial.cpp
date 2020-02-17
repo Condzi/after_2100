@@ -6,8 +6,8 @@
 #include "pch.hpp"
 
 #include "dialog_tutorial.hpp"
-#include "game_master.hpp"
-#include "level_1.hpp"
+#include "game/scenes/game_master.hpp"
+#include "game/scenes/levels/level_1.hpp"
 
 Dialog_Tutorial::Dialog_Tutorial()
 {
@@ -31,7 +31,6 @@ Dialog_Tutorial::Dialog_Tutorial()
 
 void Dialog_Tutorial::input( sf::Event const& event )
 {
-	log_info( "character_height = {}", character_height );
 	if ( sf::Event::KeyPressed is event.type ) {
 		if ( sf::Keyboard::E is event.key.code and show_responses ) {
 			if ( selected_response is 1 ) {
@@ -52,7 +51,6 @@ void Dialog_Tutorial::input( sf::Event const& event )
 			if ( selected_response is 2 ) {
 				selected_response = 1;
 				arrow_image->set_global_position( arrow_choice_response_position );
-				log_info( "arrow.y = {}", arrow_image->get_global_bounds().position.y );
 			}
 		}
 
@@ -73,10 +71,7 @@ void Dialog_Tutorial::input( sf::Event const& event )
 				update_responses_visibility();
 			} else if ( current_dialog is 4 )
 				get_node( "root/game_master" )->cast_to<Game_Master>()->change_level<Level_1>();
-
 		}
-
-		log_info( "Selected response = {}", selected_response );
 	}
 }
 

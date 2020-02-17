@@ -7,7 +7,7 @@
 #include "main_menu.hpp"
 #include "game_master.hpp"
 #include "framework/scene/application.hpp"
-#include "dialog_tutorial.hpp"
+#include "dialogs/dialog_tutorial.hpp"
 
 Main_Menu::Main_Menu()
 {
