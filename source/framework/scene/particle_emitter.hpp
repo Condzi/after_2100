@@ -6,6 +6,8 @@
 
 #include "node.hpp"
 
+#include <SFML/Graphics/Sprite.hpp>
+
 namespace con
 {
 class Particle_Emitter :
@@ -14,16 +16,20 @@ class Particle_Emitter :
 	CLASS_DEF( Particle_Emitter );
 
 private:
-	struct Particle final	
+	struct Particle final
 	{
 		Vec2 position;
-		sf::Color color;
 		Vec2 velocity;
-		r32 remaining_lifetime;
-		r32 rotation;
+		r32  rotation;
+		r32  remaining_lifetime;
+		sf::Color color;
 	};
 
 public:
+	std::function<void( Particle& )> custom_transformation;
+
+	s32 layer;
+
 	struct
 	{
 		sf::Texture const* texture{ nullptr };
@@ -31,25 +37,40 @@ public:
 		sf::Color          color{ sf::Color::White };
 
 		r32 lifetime{ 1.0sec }; // 0 - unlimited
+		r32 spawn_interval{ 1.0sec };
+		s32 particles_limit{ 16 }; // Don't declare greater than DEFAULT_PARTICLES_COUNT
 
-		r32  spin_velocity{ 0 }; // in angles
+		r32  spin_velocity{ 0 }; // in degrees
 		r32  initial_velocity{ 100.0f };
-		Vec2 force_to_apply; // Gravity etc.
+		Vec2 force_to_apply; // Gravity etc. Applied every frame. @ToDo: Add separate apply_force function for impulses?
+		r32	 angle_min{ -180.0deg }; // Minimum angle in which particles are emitted, in degress.
+		r32  angle_max{ 180.0deg }; // Maximum angle in which particles are emitted, in degress.
 
 		bool one_shot{ false }; // release all particles once.
 	} settings;
 
+	Particle_Emitter();
+
 	void set_particles_count( s32 count );
 
-	auto get_particles_count() const -> s32;
+	[[nodiscard]] auto get_particles_count() const -> s32;
 
 	void update( r32 dt ) override;
 	void draw( Drawing_Set& set ) override;
 
 private:
-	compile_constant DEFAULT_PARTICLES_COUNT{ 32 };
-
+	// Note: arrays share indexes.
+	compile_constant      DEFAULT_PARTICLES_COUNT{ 32 };
+	s32                   particles_count{ DEFAULT_PARTICLES_COUNT };
 	std::vector<Particle> particles{ DEFAULT_PARTICLES_COUNT };
-	std::vector<bool>     particles_status{ DEFAULT_PARTICLES_COUNT };
+	std::vector<bool>     particles_status;
+
+	// @Performance: use sf::VertexArray instead.
+	std::vector<sf::Sprite> particles_sprites{ DEFAULT_PARTICLES_COUNT };
+
+	r32 time_to_next_spawn{ settings.spawn_interval };
+	s32 released_particles_count{ 0 }; // For settings.one_shot.
+
+	void spawn_particle();
 };
 }

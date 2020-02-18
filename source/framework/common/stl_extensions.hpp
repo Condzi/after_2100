@@ -9,6 +9,7 @@
 
 namespace con
 {
+// @ToDo: use last bit of idx instead of "found" field. Or just -1.
 struct Find_Result final
 {
 	bool found{ false };
