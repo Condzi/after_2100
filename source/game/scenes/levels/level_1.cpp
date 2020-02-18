@@ -12,6 +12,10 @@
 
 #include "level_1.hpp"
 
+
+#include "framework/scene/particle_emitter.hpp"
+#include "framework/common/resources_storage.hpp"
+
 Level_1::Level_1()
 {
 	name = "level_1";
@@ -121,6 +125,14 @@ Level_1::Level_1()
 	camera.start_following();
 	camera.update_transformations();
 	///////////////////////////////
+
+
+	auto test_emitter = attach<Particle_Emitter>();
+
+	test_emitter->settings.texture = G_Resources_Storage.get_texture( "round_particle" );
+	test_emitter->set_global_position( { 500, 500 } );
+	test_emitter->settings.color = sf::Color{ 10,20,15, 100 };
+	test_emitter->settings.one_shot = true;
 
 	log_info( "{} instantiated.", name );
 }
