@@ -91,9 +91,10 @@ Player::Player()
 		auto& settings = low_hp_particles->settings;
 		settings.angle_min = 0.0deg;
 		settings.angle_max = 360.0deg;
-		settings.color = sf::Color{ 240,190,15, 0 };
+		settings.color = sf::Color{ 240,190,15, 150 };
 		settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-		settings.initial_velocity = 256;
+		settings.initial_velocity_min = 256;
+		settings.initial_velocity_max = 300;
 		settings.lifetime = 0.5sec;
 		settings.spawn_interval = 0.005sec;
 		settings.particles_limit = 160;
@@ -108,7 +109,8 @@ Player::Player()
 		settings.angle_max = 300.0deg;
 		settings.color = sf::Color{ 90,90,90, 200 };
 		settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-		settings.initial_velocity = 160;
+		settings.initial_velocity_min = 160;
+		settings.initial_velocity_max = 190;
 		settings.lifetime = 3.0sec;
 		settings.spawn_interval = 0.2sec;
 		settings.particles_limit = 50;
@@ -137,9 +139,6 @@ Player::Player()
 
 void Player::update( r32 dt )
 {
-	log_info( "Player: x: {:.5} y: {:.5}", get_global_position().x, get_global_position().y );
-	log_info( "Emitter: x: {:.5} y: {:.5}", low_hp_particles->get_global_position().x, low_hp_particles->get_global_position().y );
-
 	if ( health->is_dead() ) {
 		low_hp_particles->is_emmiting = false;
 		low_hp_smoke->is_emmiting = false;

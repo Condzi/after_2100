@@ -5,6 +5,7 @@
 #pragma once
 
 #include "framework/scene/sprite.hpp"
+#include "framework/scene/particle_emitter.hpp"
 #include "framework/common/vec2.hpp"
 
 using namespace con;
@@ -32,6 +33,9 @@ public:
 private:
 	Sprite* sprite_a;
 	Sprite* sprite_b;
+	Particle_Emitter* stars_particles_a;
+	Particle_Emitter* stars_particles_b;
+	Particle_Emitter* stars_particles_c;
 
 	void parallax_move( r32 const dt );
 	void correct_sprite_positions();

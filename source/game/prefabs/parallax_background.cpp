@@ -16,9 +16,76 @@ Parallax_Background::Parallax_Background()
 {
 	sprite_a = attach<Sprite>();
 	sprite_b = attach<Sprite>();
+	stars_particles_a = attach<Particle_Emitter>();
+	stars_particles_b = attach<Particle_Emitter>();
+	stars_particles_c = attach<Particle_Emitter>();
 
 	sprite_a->name = "sprite_a";
 	sprite_b->name = "sprite_b";
+	stars_particles_a->name = "stars_particles_emitter_a";
+	stars_particles_b->name = "stars_particles_emitter_b";
+	stars_particles_c->name = "stars_particles_emitter_c";
+
+	{
+		auto& settings = stars_particles_a->settings;
+
+		settings.texture = G_Resources_Storage.get_texture( "star_particle" );
+		settings.angle_max = 300;
+		settings.angle_min = 200;
+		settings.initial_velocity_min = 150;
+		settings.initial_velocity_max = 300;
+		settings.color = sf::Color{ 124,175,245, 100 };
+		settings.lifetime = 15.0sec;
+		settings.particles_limit = 256;
+		settings.spawn_interval = 0.1sec;
+		settings.scale = 0.1;
+	}
+
+	{
+		auto& settings = stars_particles_b->settings;
+
+		settings.texture = G_Resources_Storage.get_texture( "star_particle" );
+		settings.angle_max = 300;
+		settings.angle_min = 200;
+		settings.initial_velocity_min = 150;
+		settings.initial_velocity_max = 300;
+		settings.color = sf::Color{ 124,175,245, 100 };
+		settings.lifetime = 15.0sec;
+		settings.particles_limit = 256;
+		settings.spawn_interval = 0.1sec;
+		settings.scale = 0.15;
+	}
+
+	{
+		auto& settings = stars_particles_c->settings;
+
+		settings.texture = G_Resources_Storage.get_texture( "star_particle" );
+		settings.angle_max = 300;
+		settings.angle_min = 200;
+		settings.initial_velocity_min = 150;
+		settings.initial_velocity_max = 300;
+		settings.color = sf::Color{ 124,175,245, 100 };
+		settings.lifetime = 15.0sec;
+		settings.particles_limit = 256;
+		settings.spawn_interval = 0.1sec;
+		settings.scale = 0.2;
+	}
+
+
+	stars_particles_a->set_particles_count( 256 );
+	stars_particles_a->is_emmiting = true;
+	stars_particles_a->set_global_position( { G_Window.get_size().width * 1.5, G_Window.get_size().height * 0.5 } );
+	stars_particles_a->layer = 1;
+
+	stars_particles_b->set_particles_count( 256 );
+	stars_particles_b->is_emmiting = true;
+	stars_particles_b->set_global_position( { G_Window.get_size().width * 1.5, G_Window.get_size().height * 0.5 } );
+	stars_particles_b->layer = 1;
+
+	stars_particles_c->set_particles_count( 256 );
+	stars_particles_c->is_emmiting = true;
+	stars_particles_c->set_global_position( { G_Window.get_size().width * 1.5, G_Window.get_size().height * 0.5 } );
+	stars_particles_c->layer = 1;
 }
 
 void Parallax_Background::set_texture_from_pointer( sf::Texture const* texture )

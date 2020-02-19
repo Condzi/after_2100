@@ -12,6 +12,7 @@
 	{ "space_background", "resources/texture/space_background.png" },
 
 	{ "round_particle",   "resources/texture/round_particle.png" },
+	{ "star_particle",    "resources/texture/star_particle.png" },
 
 	{ "arrow", "resources/texture/arrow.png" },
 	{ "portrait_commander", "resources/texture/commander_portrait.png" }

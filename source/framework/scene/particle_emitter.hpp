@@ -43,7 +43,8 @@ public:
 		s32 particles_limit{ 16 }; // Don't declare greater than DEFAULT_PARTICLES_COUNT
 
 		r32  spin_velocity{ 0 }; // in degrees
-		r32  initial_velocity{ 100.0f };
+		r32  initial_velocity_min{ 100.0f };
+		r32  initial_velocity_max{ 100.0f };
 		Vec2 force_to_apply; // Gravity etc. Applied every frame. @ToDo: Add separate apply_force function for impulses?
 		r32	 angle_min{ 0 }; // Minimum angle in which particles are emitted, in degress.
 		r32  angle_max{ 360 }; // Maximum angle in which particles are emitted, in degress.

@@ -103,7 +103,8 @@ void Particle_Emitter::spawn_particle()
 
 	particle.position	        = get_global_position();
 	constant angle_to_set       = random_real( settings.angle_min, settings.angle_max ) * 3.1415 / 180;
-	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) }*settings.initial_velocity;
+	constant velocity_to_set    = random_real( settings.initial_velocity_min, settings.initial_velocity_max );
+	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) } * velocity_to_set;
 	particle.remaining_lifetime = settings.lifetime;
 	particle.color              = settings.color;
 
