@@ -44,8 +44,8 @@ Parallax_Background::Parallax_Background()
 	stars_particles_b->settings = stars_particles_a->settings;
 	stars_particles_b->settings.scale = 0.15;
 
-	stars_particles_b->settings = stars_particles_a->settings;
-	stars_particles_b->settings.scale = 0.2;
+	stars_particles_c->settings = stars_particles_a->settings;
+	stars_particles_c->settings.scale = 0.2;
 
 
 	stars_particles_a->set_particles_count( 256 );

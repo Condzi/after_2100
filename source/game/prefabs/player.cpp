@@ -114,7 +114,7 @@ Player::Player()
 		settings.lifetime = 3.0sec;
 		settings.spawn_interval = 0.01sec;
 		settings.particles_limit = 512;
-		settings.scale = 0.3;
+		settings.scale = 0.4;
 		low_hp_smoke->set_particles_count( 512 );
 	}
 
