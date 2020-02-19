@@ -129,10 +129,18 @@ Level_1::Level_1()
 
 	auto test_emitter = attach<Particle_Emitter>();
 
+	test_emitter->settings.particles_limit = 128;
+	test_emitter->set_particles_count( 128 );
+	test_emitter->settings.spawn_interval = 0.01sec;
+	test_emitter->settings.lifetime = 0.5sec;
+	test_emitter->settings.initial_velocity = 250;
+	test_emitter->custom_transformation = []( auto& particle, r32 ) {
+		particle.color.a = particle.remaining_lifetime * 180;
+	};
 	test_emitter->settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-	test_emitter->set_global_position( { 500, 500 } );
-	test_emitter->settings.color = sf::Color{ 10,20,15, 100 };
-	test_emitter->settings.one_shot = true;
+	test_emitter->set_global_position( { 200, 200 } );
+	test_emitter->settings.color = sf::Color{ 240, 190, 25, 180 };
+	test_emitter->is_emmiting = true;
 
 	log_info( "{} instantiated.", name );
 }

@@ -35,15 +35,17 @@ auto Particle_Emitter::get_particles_count() const -> s32
 
 void Particle_Emitter::update( r32 dt )
 {
-	time_to_next_spawn -= dt;
+	if ( is_emmiting ) {
+		time_to_next_spawn -= dt;
 
-	if ( ( settings.one_shot and released_particles_count < settings.particles_limit ) or
-		 !settings.one_shot )
-		while ( time_to_next_spawn < 0 ) {
-			time_to_next_spawn += settings.spawn_interval;
+		if ( ( settings.one_shot and released_particles_count < settings.particles_limit ) or
+			 !settings.one_shot )
+			while ( time_to_next_spawn < 0 ) {
+				time_to_next_spawn += settings.spawn_interval;
 
-			spawn_particle();
-		}
+				spawn_particle();
+			}
+	}
 
 	for ( size_t i = 0; i < particles_count; i++ ) {
 		if ( particles_status[i] is false ) continue;
@@ -62,7 +64,7 @@ void Particle_Emitter::update( r32 dt )
 		particle.rotation += settings.spin_velocity * dt;
 
 		if ( custom_transformation )
-			custom_transformation( particle );
+			custom_transformation( particle, dt );
 	}
 }
 
@@ -100,14 +102,15 @@ void Particle_Emitter::spawn_particle()
 	auto& particle = particles[idx];
 
 	particle.position	        = get_global_position();
-	constant angle_to_set       = random_real( settings.angle_min, settings.angle_max );
-	particle.velocity	        = Vec2{ std::cosf( angle_to_set ), std::sinf( angle_to_set ) } *settings.initial_velocity;
+	constant angle_to_set       = random_real( settings.angle_min, settings.angle_max ) * 3.1415 / 180;
+	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) }*settings.initial_velocity;
 	particle.remaining_lifetime = settings.lifetime;
 	particle.color              = settings.color;
 
 	auto& spr = particles_sprites[idx];
 
 	spr.setTexture( *settings.texture );
+	spr.setScale( settings.scale, settings.scale );
 	// @Hack: Check if texture_rect is set.
 	if ( settings.texture_rect.size.width * settings.texture_rect.size.height > 0 )
 		spr.setTextureRect( settings.texture_rect );

@@ -26,17 +26,19 @@ private:
 	};
 
 public:
-	std::function<void( Particle& )> custom_transformation;
+	std::function<void( Particle&, r32 )> custom_transformation; // Ref to particle and dt
 
+	bool is_emmiting{ false };
 	s32 layer;
 
 	struct
 	{
 		sf::Texture const* texture{ nullptr };
 		Rectangle_Shape    texture_rect;
+		r32                scale{ 0.1f };
 		sf::Color          color{ sf::Color::White };
 
-		r32 lifetime{ 10.0sec };
+		r32 lifetime{ 1.0sec };
 		r32 spawn_interval{ 0.1sec };
 		s32 particles_limit{ 16 }; // Don't declare greater than DEFAULT_PARTICLES_COUNT
 
@@ -44,7 +46,7 @@ public:
 		r32  initial_velocity{ 100.0f };
 		Vec2 force_to_apply; // Gravity etc. Applied every frame. @ToDo: Add separate apply_force function for impulses?
 		r32	 angle_min{ 0 }; // Minimum angle in which particles are emitted, in degress.
-		r32  angle_max{ 180.0deg }; // Maximum angle in which particles are emitted, in degress.
+		r32  angle_max{ 360 }; // Maximum angle in which particles are emitted, in degress.
 
 		bool one_shot{ false }; // release all particles once.
 	} settings;
