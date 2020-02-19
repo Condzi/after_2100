@@ -86,6 +86,50 @@ Player::Player()
 		G_Flags[Flags::Level_Failure] = true;
 	} ) );
 
+	low_hp_particles = attach<Particle_Emitter>();
+	{
+		auto& settings = low_hp_particles->settings;
+		settings.angle_min = 0.0deg;
+		settings.angle_max = 360.0deg;
+		settings.color = sf::Color{ 240,190,15, 0 };
+		settings.texture = G_Resources_Storage.get_texture( "round_particle" );
+		settings.initial_velocity = 256;
+		settings.lifetime = 0.5sec;
+		settings.spawn_interval = 0.005sec;
+		settings.particles_limit = 160;
+		settings.scale = 0.12;
+		low_hp_particles->set_particles_count( 160 );
+	}
+
+	low_hp_smoke = attach<Particle_Emitter>();
+	{
+		auto& settings = low_hp_smoke->settings;
+		settings.angle_min = 240.0deg;
+		settings.angle_max = 300.0deg;
+		settings.color = sf::Color{ 90,90,90, 200 };
+		settings.texture = G_Resources_Storage.get_texture( "round_particle" );
+		settings.initial_velocity = 160;
+		settings.lifetime = 3.0sec;
+		settings.spawn_interval = 0.2sec;
+		settings.particles_limit = 50;
+		settings.scale = 1;
+		low_hp_smoke->set_particles_count( 50 );
+	}
+
+	low_hp_particles->layer = 2;
+	low_hp_smoke->layer = 4;
+
+	low_hp_particles->custom_transformation = [ptr = low_hp_particles]( auto& particle, r32 ) {
+		particle.color.a = (particle.remaining_lifetime / ptr->settings.lifetime) * ptr->settings.color.a;
+	};
+
+	low_hp_smoke->custom_transformation = [ptr = low_hp_smoke]( auto& particle, r32 ) {
+		particle.color.a = (particle.remaining_lifetime / ptr->settings.lifetime) * ptr->settings.color.a;
+	};
+
+	low_hp_particles->set_local_position( { sprite_size.height/ 2, sprite_size.width / 2 } );
+	low_hp_smoke->set_local_position( { sprite_size.height/ 2, sprite_size.width / 2 } );
+
 	set_absolute_position( Percent_Position{ 0, 45 } );
 
 	rotate( 90.0deg );
@@ -93,14 +137,28 @@ Player::Player()
 
 void Player::update( r32 dt )
 {
-	if ( health->is_dead() )
-		return;
+	log_info( "Player: x: {:.5} y: {:.5}", get_global_position().x, get_global_position().y );
+	log_info( "Emitter: x: {:.5} y: {:.5}", low_hp_particles->get_global_position().x, low_hp_particles->get_global_position().y );
 
-	if ( health->get_current() is 1 and not low_health_sound->is_playing() ) {
-		low_health_sound->play();
-		low_health_sound->set_loop( true );
-	} else
+	if ( health->is_dead() ) {
+		low_hp_particles->is_emmiting = false;
+		low_hp_smoke->is_emmiting = false;
+		return;
+	}
+
+	if ( health->get_current() is 1 ) {
+		low_hp_particles->is_emmiting = true;
+		low_hp_smoke->is_emmiting = true;
+
+		if ( not low_health_sound->is_playing() ) {
+			low_health_sound->play();
+			low_health_sound->set_loop( true );
+		}
+	} else {
 		low_health_sound->set_loop( false );
+		low_hp_particles->is_emmiting = false;
+		low_hp_smoke->is_emmiting = false;
+	}
 
 	G_Audio_Listener.set_position( get_global_position() );
 

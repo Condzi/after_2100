@@ -8,6 +8,7 @@
 #include "framework/scene/area.hpp"
 #include "framework/scene/sprite.hpp"
 #include "framework/scene/sound_source.hpp"
+#include "framework/scene/particle_emitter.hpp"
 
 #include "exploded_sprite.hpp"
 #include "explosion.hpp"
@@ -42,6 +43,9 @@ private:
 	Missile_Shooter* gun_a;
 	Missile_Shooter* gun_b;
 	Area* hitbox;
+
+	Particle_Emitter* low_hp_particles;
+	Particle_Emitter* low_hp_smoke;
 
 	Explosion* explosion;
 	Exploded_Sprite* exploded_sprite;

@@ -109,6 +109,7 @@ void Particle_Emitter::spawn_particle()
 
 	auto& spr = particles_sprites[idx];
 
+	spr.setPosition( particle.position );
 	spr.setTexture( *settings.texture );
 	spr.setScale( settings.scale, settings.scale );
 	// @Hack: Check if texture_rect is set.
