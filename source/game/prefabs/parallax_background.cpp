@@ -41,35 +41,11 @@ Parallax_Background::Parallax_Background()
 		settings.scale = 0.1;
 	}
 
-	{
-		auto& settings = stars_particles_b->settings;
+	stars_particles_b->settings = stars_particles_a->settings;
+	stars_particles_b->settings.scale = 0.15;
 
-		settings.texture = G_Resources_Storage.get_texture( "star_particle" );
-		settings.angle_max = 300;
-		settings.angle_min = 200;
-		settings.initial_velocity_min = 150;
-		settings.initial_velocity_max = 300;
-		settings.color = sf::Color{ 124,175,245, 100 };
-		settings.lifetime = 15.0sec;
-		settings.particles_limit = 256;
-		settings.spawn_interval = 0.1sec;
-		settings.scale = 0.15;
-	}
-
-	{
-		auto& settings = stars_particles_c->settings;
-
-		settings.texture = G_Resources_Storage.get_texture( "star_particle" );
-		settings.angle_max = 300;
-		settings.angle_min = 200;
-		settings.initial_velocity_min = 150;
-		settings.initial_velocity_max = 300;
-		settings.color = sf::Color{ 124,175,245, 100 };
-		settings.lifetime = 15.0sec;
-		settings.particles_limit = 256;
-		settings.spawn_interval = 0.1sec;
-		settings.scale = 0.2;
-	}
+	stars_particles_b->settings = stars_particles_a->settings;
+	stars_particles_b->settings.scale = 0.2;
 
 
 	stars_particles_a->set_particles_count( 256 );

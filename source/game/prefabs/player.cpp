@@ -112,21 +112,21 @@ Player::Player()
 		settings.initial_velocity_min = 160;
 		settings.initial_velocity_max = 190;
 		settings.lifetime = 3.0sec;
-		settings.spawn_interval = 0.2sec;
-		settings.particles_limit = 50;
-		settings.scale = 1;
-		low_hp_smoke->set_particles_count( 50 );
+		settings.spawn_interval = 0.01sec;
+		settings.particles_limit = 512;
+		settings.scale = 0.3;
+		low_hp_smoke->set_particles_count( 512 );
 	}
 
 	low_hp_particles->layer = 2;
 	low_hp_smoke->layer = 4;
 
 	low_hp_particles->custom_transformation = [ptr = low_hp_particles]( auto& particle, r32 ) {
-		particle.color.a = (particle.remaining_lifetime / ptr->settings.lifetime) * ptr->settings.color.a;
+		particle.color.a = ( particle.remaining_lifetime / ptr->settings.lifetime ) * ptr->settings.color.a;
 	};
 
 	low_hp_smoke->custom_transformation = [ptr = low_hp_smoke]( auto& particle, r32 ) {
-		particle.color.a = (particle.remaining_lifetime / ptr->settings.lifetime) * ptr->settings.color.a;
+		particle.color.a = ( particle.remaining_lifetime / ptr->settings.lifetime ) * ptr->settings.color.a;
 	};
 
 	low_hp_particles->set_local_position( { sprite_size.height/ 2, sprite_size.width / 2 } );
