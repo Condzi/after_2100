@@ -34,7 +34,7 @@ struct Rectangle_Shape final
 struct Circle_Shape final
 {
 	Point center;
-	r32   radious{ 0 };
+	r32   radius{ 0 };
 };
 
 using Shape_Variant = std::variant<Rectangle_Shape, Circle_Shape>;

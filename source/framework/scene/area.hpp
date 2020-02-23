@@ -36,7 +36,7 @@ public:
 	void set_rectangle_shape( Rectangle_Shape const& rectangle );
 
 	[[nodiscard]] auto is_shape_set()	   const -> bool;
-	[[nodiscard]] auto get_shape_variant() const -> Shape_Variant const&;
+	[[nodiscard]] auto get_shape_variant() -> Shape_Variant&;
 
 	void draw( Drawing_Set& drawing_set ) override;
 

@@ -21,7 +21,7 @@ bool rect_vs_point( Rectangle_Shape const& rect, Point const& point )
 }
 bool circle_vs_circle( Circle_Shape const& a, Circle_Shape const& b )
 {
-	constant radious_sum = a.radious + b.radious;
+	constant radious_sum = a.radius + b.radius;
 	constant x_sum = a.center.x + b.center.x;
 	constant y_sum = a.center.y + b.center.y;
 
@@ -49,7 +49,7 @@ bool circle_vs_rect( Circle_Shape const& circle, Rectangle_Shape const& rect )
 bool circle_vs_point( Circle_Shape const& circle, Point const& point )
 {
 	constant distance_squared = circle.center.distance_squared( point );
-	constant radious_squared = circle.radious * circle.radious;
+	constant radious_squared = circle.radius * circle.radius;
 
 	return distance_squared <= radious_squared;
 }

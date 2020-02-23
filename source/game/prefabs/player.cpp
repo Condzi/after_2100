@@ -8,6 +8,7 @@
 #include "framework/common/audio_listener.hpp"
 #include "framework/common/resources_storage.hpp"
 #include "framework/scene/application.hpp"
+#include "framework/common/shapes.hpp"
 
 #include "player.hpp"
 #include "game/flags.hpp"
@@ -28,6 +29,14 @@ Player::Player()
 	sprite->set_local_position( { sprite_size.height / 2, sprite_size.width / 2 } );
 	sprite->set_transformation_origin( sprite_size * 0.5 );
 
+	hitbox = sprite->attach<Area>();
+	hitbox->name = "hitbox_" + name;
+	hitbox->set_circle_shape( { sprite->get_global_bounds().position + sprite_size * 0.5, sprite->get_global_bounds().size.width / 2 } );
+
+	bond_disconnector( s_move.connect( [&]( auto offset ) {
+		std::get<Circle_Shape>( hitbox->get_shape_variant() ).center += offset;
+	} ) );
+
 	gun_a = sprite->attach<Missile_Shooter>();
 	gun_b = sprite->attach<Missile_Shooter>();
 
@@ -46,8 +55,6 @@ Player::Player()
 	gun_a->set_cooldown_time( 0.2sec );
 	gun_b->set_cooldown_time( 0.2sec );
 
-	hitbox = sprite->attach<Area>();
-	hitbox->name = "hitbox_" + name;
 
 	explosion = attach<Explosion>();
 	explosion->sprite->layer = 5;
@@ -273,6 +280,4 @@ void Player::update_tilt_transformation()
 	yaw = velocity.y * TILT_MULTIPLIER;
 
 	sprite->set_rotation_3d( pitch, yaw, roll );
-
-	hitbox->set_rectangle_shape( sprite->get_global_bounds() );
 }

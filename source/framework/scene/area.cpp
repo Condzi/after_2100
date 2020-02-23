@@ -41,7 +41,7 @@ auto Area::is_shape_set() const -> bool
 	return shape_set;
 }
 
-auto Area::get_shape_variant() const -> Shape_Variant const&
+auto Area::get_shape_variant() -> Shape_Variant&
 {
 	return shape;
 }
@@ -69,9 +69,9 @@ void Area::draw( Drawing_Set& drawing_set )
 					auto& circle_to_draw = std::get<sf::CircleShape>( visual_representation );
 
 					// Center the circle just for comfort.
-					circle_to_draw.setOrigin( circle.radious / 2, circle.radious / 2 );
+					circle_to_draw.setOrigin( circle.radius, circle.radius );
 					circle_to_draw.setPosition( circle.center );
-					circle_to_draw.setRadius( circle.radious );
+					circle_to_draw.setRadius( circle.radius );
 					circle_to_draw.setFillColor( sf::Color::Transparent );
 					circle_to_draw.setOutlineThickness( 1.0px );
 					circle_to_draw.setOutlineColor( shape_color );
