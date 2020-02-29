@@ -85,6 +85,7 @@ void Dialog_Template::input( sf::Event const& event )
 
 	if ( sf::Event::KeyPressed is event.type ) {
 		if ( sf::Keyboard::E is event.key.code ) {
+			// @ToDo: Here we can add exit codes for dialogues.
 			if ( current_dialog_data.next is "end" ) {
 				dialog_finished = true;
 				s_dialog_finished.emit();
@@ -110,18 +111,20 @@ void Dialog_Template::input( sf::Event const& event )
 	}
 }
 
-void Dialog_Template::add_responses( std::vector<Dialog_Data::Response> const& locs )
+void Dialog_Template::add_responses()
 {
 	for ( auto response : response_text )
 		response->queue_for_delete();
 
-	response_text.resize( locs.size() );
+	constant responses = current_dialog_data.responses;
 
-	for ( size_t i = 0; i < locs.size(); i++ ) {
+	response_text.resize( responses.size() );
+
+	for ( size_t i = 0; i < responses.size(); i++ ) {
 		auto& current_text = response_text[i];
 
 		current_text = attach<Rich_Text>();
-		current_text->string.set_locale_name( ( *( locs.begin()+i ) ).text );
+		current_text->string.set_locale_name( ( *( responses.begin()+i ) ).text );
 		current_text->character_size = DIALOG_TEXT_CHAR_SIZE;
 		current_text->update_vertices();
 
@@ -173,7 +176,7 @@ void Dialog_Template::set_up_dialog( std::string const& id )
 	if ( not current_dialog_data.responses.empty() ) {
 		selected_response = 1;
 		show_responses = true;
-		add_responses( current_dialog_data.responses );
+		add_responses();
 	} else
 		show_responses = false;
 
