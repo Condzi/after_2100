@@ -60,7 +60,7 @@ private:
 	inline static nlohmann::json const* characters_data{ nullptr };
 	Dialog_Data current_dialog_data;
 
-	void add_responses( std::vector<Dialog_Data::Response> const& locs );
+	void add_responses();
 
 	void update_responses_visibility();
 	void update_arrow_position();
