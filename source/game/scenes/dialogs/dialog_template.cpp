@@ -170,6 +170,7 @@ void Dialog_Template::set_up_dialog( std::string const& id )
 
 	actor_image->set_texture_from_name( character_data.at( "portrait" ) );
 	character_name->string.set_locale_name( character_data.at( "name" ) );
+	character_name->update_vertices();
 	dialog_text->string.set_locale_name( current_dialog_data.text );
 	dialog_text->update_vertices( CHARACTER_LIMIT_PER_LINE );
 
