@@ -1,20 +1,20 @@
 {
   "1": {
     "actor": "commander",
-    "text": "#loc_tutorial_1",
+    "text": "#loc_tutorial_welcome",
     "next": "2"
   },
 
   "2": {
     "actor": "commander",
-    "text": "#loc_tutorial_2",
+    "text": "#loc_tutorial_ready",
     "responses": {
       "1": {
-        "text": "#loc_tutorial_response_1",
+        "text": "#loc_tutorial_response_yes",
         "next": "4"
       },
       "2": {
-        "text": "#loc_tutorial_response_2",
+        "text": "#loc_tutorial_response_question",
         "next": "3"
       }
     }
@@ -22,13 +22,13 @@
 
   "3": {
     "actor": "commander",
-    "text": "#loc_tutorial_3",
+    "text": "#loc_tutorial_info",
     "next": "2"
   },
 
   "4": {
     "actor": "commander",
-    "text": "#loc_tutorial_4",
+    "text": "#loc_tutorial_gl",
     "next": "end"
   }
 }
