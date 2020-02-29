@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "dialog_template.hpp"
+#include "framework/common/resources_storage.hpp"
 
 Dialog_Template::Dialog_Template()
 {
@@ -62,21 +63,68 @@ Dialog_Template::Dialog_Template()
 	dialog_text_box->set_color( { 255,255,255, 30 } );
 	dialog_text->set_global_position( DIALOG_TEXT_BOX_POS );
 	arrow_image->set_global_position( arrow_next_dialog_position );
+
+	if ( characters_data is nullptr )
+		characters_data = G_Resources_Storage.get_json( "characters" );
 }
 
-void Dialog_Template::add_responses( std::initializer_list<std::string> locs )
+void Dialog_Template::set_dialog( std::string_view dialog_name )
 {
+	dialog_json = G_Resources_Storage.get_json( "dialog_name" );
+}
+
+void Dialog_Template::start()
+{
+	set_up_dialog( "1" );
+}
+
+void Dialog_Template::input( sf::Event const& event )
+{
+	if ( dialog_finished )
+		return;
+
+	if ( sf::Event::KeyPressed is event.type ) {
+		if ( sf::Keyboard::E is event.key.code ) {
+			if ( current_dialog_data.next is "end" ) {
+				dialog_finished = true;
+				return;
+			}
+
+			if ( show_responses )
+				set_up_dialog( current_dialog_data.responses[selected_response].next );
+			else
+				set_up_dialog( current_dialog_data.next );
+		}
+	}
+
+	if ( show_responses and current_dialog_data.responses.size() > 1 ) {
+		if ( sf::Keyboard::W is event.key.code ) {
+			if ( selected_response > 1 )
+				selected_response--;
+		} else if ( sf::Keyboard::S is event.key.code )
+			if ( selected_response < current_dialog.size()+1 )
+				selected_response++;
+
+		update_arrow_position();
+	}
+}
+
+void Dialog_Template::add_responses( std::vector<Dialog_Data::Response> const& locs )
+{
+	for ( auto response : response_text )
+		response->queue_for_delete();
+
 	response_text.resize( locs.size() );
 
 	for ( size_t i = 0; i < locs.size(); i++ ) {
 		auto& current_text = response_text[i];
 
 		current_text = attach<Rich_Text>();
-		current_text->string.set_locale_name( *( locs.begin()+i ) );
+		current_text->string.set_locale_name( ( *( locs.begin()+i ) ).text );
 		current_text->character_size = DIALOG_TEXT_CHAR_SIZE;
 		current_text->update_vertices();
 
-		current_text->set_global_position( { response_text_begin_position.x, response_text_begin_position.y + ( character_height* 1.1f)*i } );
+		current_text->set_global_position( { response_text_begin_position.x, response_text_begin_position.y + ( character_height* 1.1f )*i } );
 	}
 }
 
@@ -84,9 +132,48 @@ void Dialog_Template::update_responses_visibility()
 {
 	for ( auto& text : response_text )
 		text->visible = show_responses;
+}
 
+void Dialog_Template::update_arrow_position()
+{
 	if ( show_responses )
 		arrow_image->set_global_position( arrow_choice_response_position );
 	else
 		arrow_image->set_global_position( arrow_next_dialog_position );
+}
+
+Dialog_Template::Dialog_Data Dialog_Template::get_dialog_data( std::string const& id )
+{
+	nlohmann::json data = dialog_json->at( id );
+	Dialog_Data data_to_return{ .actor = data.at( "actor" ), .text = data.at( "text" ), .next = data.at( "next" ) };
+
+	for ( auto const& item : data.at( "responses" ).items() ) {
+		data_to_return.responses.emplace_back();
+		data_to_return.responses.back().text = item.value().at( "text" );
+		data_to_return.responses.back().next = item.value().at( "next" );
+	}
+
+	return data_to_return;
+}
+
+void Dialog_Template::set_up_dialog( std::string const& id )
+{
+	current_dialog_data = get_dialog_data( id );
+	auto const character_data = characters_data->at( current_dialog_data.actor );
+
+	actor_image->set_texture_from_name( character_data.at( "portrait" ) );
+	character_name->string.set_locale_name( character_data.at( "name" ) );
+	dialog_text->string.set_locale_name( current_dialog_data.text );
+	dialog_text->update_vertices( CHARACTER_LIMIT_PER_LINE );
+
+
+	if ( not current_dialog_data.responses.empty() ) {
+		selected_response = 1;
+		show_responses = true;
+		add_responses( current_dialog_data.responses );
+	} else
+		show_responses = false;
+
+	update_arrow_position();
+	update_responses_visibility();
 }

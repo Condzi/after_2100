@@ -30,14 +30,41 @@ public:
 	Point arrow_next_dialog_position;
 	Point arrow_choice_response_position;
 	bool show_responses{ false };
-	s8 selected_response{ 0 };
-	s32 current_dialog{ 0 };
+	s8 selected_response{ 1 };
+	std::string current_dialog{ "1" };
 	bool needs_update{ false };
 	s32 character_height{ 0 };
+	bool dialog_finished = false;
 
 	Dialog_Template();
 
-	void add_responses( std::initializer_list<std::string> locs );
+	void set_dialog( std::string_view dialog_name );
+	void start();
+
+	void input( sf::Event const& event ) override;
+
+private:
+	struct Dialog_Data final
+	{
+		struct Response final
+		{
+			std::string text, next;
+		};
+
+		std::string actor, text, next;
+		std::vector<Response> responses;
+	};
+
+	nlohmann::json const* dialog_json;
+	inline static nlohmann::json const* characters_data{ nullptr };
+	Dialog_Data current_dialog_data;
+
+	void add_responses( std::vector<Dialog_Data::Response> const& locs );
 
 	void update_responses_visibility();
+	void update_arrow_position();
+
+	Dialog_Data get_dialog_data( std::string const& id );
+
+	void set_up_dialog( std::string const& id );
 };

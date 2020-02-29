@@ -39,5 +39,6 @@
 
 // JSON files
 {
-
+	{ "characters", "resources/dialogs/characters.json" },
+	{ "tutorial",   "resources/dialogs/tutorial.json" }
 }
