@@ -70,7 +70,7 @@ Dialog_Template::Dialog_Template()
 
 void Dialog_Template::set_dialog( std::string_view dialog_name )
 {
-	dialog_json = G_Resources_Storage.get_json( "dialog_name" );
+	dialog_json = G_Resources_Storage.get_json( dialog_name.data() );
 }
 
 void Dialog_Template::start()
@@ -87,25 +87,26 @@ void Dialog_Template::input( sf::Event const& event )
 		if ( sf::Keyboard::E is event.key.code ) {
 			if ( current_dialog_data.next is "end" ) {
 				dialog_finished = true;
+				s_dialog_finished.emit();
 				return;
 			}
 
 			if ( show_responses )
-				set_up_dialog( current_dialog_data.responses[selected_response].next );
+				set_up_dialog( current_dialog_data.responses[selected_response-1].next );
 			else
 				set_up_dialog( current_dialog_data.next );
 		}
-	}
 
-	if ( show_responses and current_dialog_data.responses.size() > 1 ) {
-		if ( sf::Keyboard::W is event.key.code ) {
-			if ( selected_response > 1 )
-				selected_response--;
-		} else if ( sf::Keyboard::S is event.key.code )
-			if ( selected_response < current_dialog.size()+1 )
-				selected_response++;
+		if ( show_responses and current_dialog_data.responses.size() > 1 ) {
+			if ( sf::Keyboard::W is event.key.code ) {
+				if ( selected_response > 1 )
+					selected_response--;
+			} else if ( sf::Keyboard::S is event.key.code )
+				if ( selected_response < current_dialog_data.responses.size()+1 )
+					selected_response++;
 
-		update_arrow_position();
+			update_arrow_position();
+		}
 	}
 }
 
@@ -137,7 +138,7 @@ void Dialog_Template::update_responses_visibility()
 void Dialog_Template::update_arrow_position()
 {
 	if ( show_responses )
-		arrow_image->set_global_position( arrow_choice_response_position );
+		arrow_image->set_global_position( { arrow_choice_response_position.x, arrow_choice_response_position.y + character_height * ( selected_response-1 ) } );
 	else
 		arrow_image->set_global_position( arrow_next_dialog_position );
 }
@@ -145,13 +146,16 @@ void Dialog_Template::update_arrow_position()
 Dialog_Template::Dialog_Data Dialog_Template::get_dialog_data( std::string const& id )
 {
 	nlohmann::json data = dialog_json->at( id );
-	Dialog_Data data_to_return{ .actor = data.at( "actor" ), .text = data.at( "text" ), .next = data.at( "next" ) };
+	Dialog_Data data_to_return{ .actor = data.at( "actor" ), .text = data.at( "text" ) };
 
-	for ( auto const& item : data.at( "responses" ).items() ) {
-		data_to_return.responses.emplace_back();
-		data_to_return.responses.back().text = item.value().at( "text" );
-		data_to_return.responses.back().next = item.value().at( "next" );
-	}
+	if ( auto it = data.find( "responses" ); it is_not data.end() ) {
+		for ( auto const& item : it->items() ) {
+			data_to_return.responses.emplace_back();
+			data_to_return.responses.back().text = item.value().at( "text" );
+			data_to_return.responses.back().next = item.value().at( "next" );
+		}
+	} else
+		data_to_return.next = data.at( "next" );
 
 	return data_to_return;
 }
@@ -165,7 +169,6 @@ void Dialog_Template::set_up_dialog( std::string const& id )
 	character_name->string.set_locale_name( character_data.at( "name" ) );
 	dialog_text->string.set_locale_name( current_dialog_data.text );
 	dialog_text->update_vertices( CHARACTER_LIMIT_PER_LINE );
-
 
 	if ( not current_dialog_data.responses.empty() ) {
 		selected_response = 1;

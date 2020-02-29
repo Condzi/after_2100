@@ -15,7 +15,4 @@ class Dialog_Tutorial :
 
 public:
 	Dialog_Tutorial();
-
-	void input( sf::Event const& event ) override;
-	void update( r32 dt ) override;
 };

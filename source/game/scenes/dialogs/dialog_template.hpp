@@ -16,6 +16,8 @@ class Dialog_Template :
 	CLASS_DEF( Dialog_Template );
 
 public:
+	Signal<> s_dialog_finished;
+
 	compile_constant DIALOG_TEXT_CHAR_SIZE    = 32;
 	compile_constant CHARACTER_NAME_CHAR_SIZE = 20;
 	compile_constant CHARACTER_LIMIT_PER_LINE = 50;
@@ -31,7 +33,6 @@ public:
 	Point arrow_choice_response_position;
 	bool show_responses{ false };
 	s8 selected_response{ 1 };
-	std::string current_dialog{ "1" };
 	bool needs_update{ false };
 	s32 character_height{ 0 };
 	bool dialog_finished = false;
