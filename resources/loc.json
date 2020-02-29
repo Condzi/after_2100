@@ -52,7 +52,7 @@
   },
 
   "#loc_tutorial_1": {
-    "en": "todo",
+    "en": "Welcome again, soldier! As I said at the meeting, you'll practice now some maneuvers. Try to not crash the ship, otherwise you'll pay for it!",
     "pl": "Witaj ponownie, żołnierzu! Jak mówiłem na odprawie, poćwiczysz teraz podstawowe manewry. Postaraj się nie rozbić statku, inaczej potrącimy ci to z żołdu!"
   },
 
@@ -62,7 +62,7 @@
   },
 
   "#loc_tutorial_3": {
-    "en": "todo",
+    "en": "There's an asteroid belt near our base. You'll shoot to the space rocks, by the way training your reflex. Enough talking, job's waiting!",
     "pl": "Niedaleko naszej stacji znajduje się pas asteroid. Postrzelasz sobie trochę do kosmicznych kamieni, przy okazji poćwiczysz swój refleks. Dość gadania, robota czeka!"
   },
 
@@ -77,7 +77,7 @@
   },
 
   "#loc_tutorial_response_2": {
-    "en": "todo",
+    "en": "What will I have to do?",
     "pl": "Na czym będą polegać te ćwiczenia?"
   }
 }
