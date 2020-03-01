@@ -1,3 +1,13 @@
+add moving by wsad+e in menus
+
+add resolution options and fullscreen / borderless mode
+    1280x720
+    1366x768
+    1600x900
+    1920x1080
+
+round collider seems to have problems? sometimes it doesn't detect the collision
+
 move locale change options to main menu because it'll crash the game in dialog mode
 
 fix camera when entering level. sometimes it's not rotated correctly

@@ -30,20 +30,16 @@ bool circle_vs_circle( Circle_Shape const& a, Circle_Shape const& b )
 
 bool circle_vs_rect( Circle_Shape const& circle, Rectangle_Shape const& rect )
 {
-	// AABB Verticies, clockwise
-	// A__B
-	// |  |
-	// D__C
-	constant A = rect.position;
-	constant B = A + Vec2{ rect.size.x, 0 };
-	constant C = A + rect.size;
-	constant D = A + Vec2{ 0, rect.size.y };
+	// Source: https://github.com/RandyGaul/cute_headers/blob/master/cute_c2.h#L1184
 
-	return rect_vs_point( rect, circle.center ) or
-		circle_vs_point( circle, A ) or
-		circle_vs_point( circle, B ) or
-		circle_vs_point( circle, C ) or
-		circle_vs_point( circle, D );
+	Vec2 const L{ std::clamp( circle.center.x, rect.position.x, rect.position.x + rect.size.width ),
+				std::clamp( circle.center.y, rect.position.y, rect.position.y + rect.size.height ) };
+	Vec2 const ab{ circle.center.x - L.x, circle.center.y - L.y };
+
+	r32 const d2 = ab.dot( ab );
+	r32 const r2 = circle.radius * circle.radius;
+
+	return d2 < r2;
 }
 
 bool circle_vs_point( Circle_Shape const& circle, Point const& point )
@@ -53,6 +49,7 @@ bool circle_vs_point( Circle_Shape const& circle, Point const& point )
 
 	return distance_squared <= radious_squared;
 }
+
 
 bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b )
 {
