@@ -102,9 +102,10 @@ Player::Player()
 		settings.initial_velocity_min = 256;
 		settings.initial_velocity_max = 300;
 		settings.lifetime = 0.5sec;
-		settings.spawn_interval = 0.005sec;
+		settings.spawn_interval = 0.0001sec;
 		settings.particles_limit = 160;
 		settings.scale = 0.12;
+		settings.one_shot = true;
 		low_hp_particles->set_particles_count( 160 );
 	}
 
@@ -121,6 +122,7 @@ Player::Player()
 		settings.spawn_interval = 0.01sec;
 		settings.particles_limit = 512;
 		settings.scale = 0.4;
+		settings.one_shot = false;
 		low_hp_smoke->set_particles_count( 512 );
 	}
 

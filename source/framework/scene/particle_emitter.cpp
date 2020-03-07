@@ -35,17 +35,18 @@ auto Particle_Emitter::get_particles_count() const -> s32
 
 void Particle_Emitter::update( r32 dt )
 {
-	if ( settings.one_shot and released_particles_count is settings.particles_limit ) {
+	if ( settings.one_shot and released_particles_count is settings.particles_limit )
 		is_emmiting = false;
-	}
 
 	if ( is_emmiting ) {
 		time_to_next_spawn -= dt;
 
-		while ( time_to_next_spawn < 0 and released_particles_count < settings.particles_limit ) {
+		while ( time_to_next_spawn < 0 ) {
 			time_to_next_spawn += settings.spawn_interval;
 
-			spawn_particle();
+			if ( ( settings.one_shot and released_particles_count < settings.particles_limit ) or
+				 not settings.one_shot )
+				spawn_particle();
 		}
 	}
 
@@ -108,7 +109,7 @@ void Particle_Emitter::spawn_particle()
 	constant velocity_to_set    = random_real( settings.initial_velocity_min, settings.initial_velocity_max );
 	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) } *velocity_to_set;
 	particle.remaining_lifetime = settings.lifetime;
-	particle.color              = { settings.color.r, settings.color.g, settings.color.b, settings.color.a };
+	particle.color              ={ settings.color.r, settings.color.g, settings.color.b, settings.color.a };
 
 	auto& spr = particles_sprites[idx];
 
