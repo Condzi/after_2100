@@ -57,9 +57,8 @@ Player::Player()
 
 
 	explosion = attach<Explosion>();
-	explosion->sprite->layer = 5;
-	explosion->set_scale( { 2.0, 2.0 } );
-	explosion->sprite->set_transformation_origin( explosion->get_frame_size() * 0.5f );
+	explosion->layer = 5;
+	explosion->setup();
 
 	exploded_sprite = attach<Exploded_Sprite>();
 	exploded_sprite->name = "exploded_sprite";
@@ -83,7 +82,7 @@ Player::Player()
 		sprite->visible = false;
 		hitbox->collision_layer = -1;
 		hitbox->shape_color.a -= 200;
-		explosion->play();
+		explosion->explode();
 		exploded_sprite->visible = true;
 		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );

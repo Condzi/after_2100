@@ -50,7 +50,6 @@ bool circle_vs_point( Circle_Shape const& circle, Point const& point )
 	return distance_squared <= radious_squared;
 }
 
-
 bool shape_vs_shape( Shape_Variant const& a, Shape_Variant const& b )
 {
 	return std::visit( visitor_overload{

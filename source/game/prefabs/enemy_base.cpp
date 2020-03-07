@@ -42,9 +42,8 @@ Enemy_Base::Enemy_Base()
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
-	explosion->sprite->layer = 4;
-	explosion->set_scale( { 2.0, 2.0 } );
-	explosion->sprite->set_transformation_origin( explosion->get_frame_size() * 0.5f );
+	explosion->layer = 2;
+	explosion->setup();
 
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
@@ -64,7 +63,7 @@ Enemy_Base::Enemy_Base()
 		hitbox->collision_layer = -1;
 		hitbox->shape_color.a -= 200;
 		stop_following();
-		explosion->play();
+		explosion->explode();
 		exploded_sprite->visible = true;
 		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );

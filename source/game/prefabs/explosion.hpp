@@ -4,16 +4,31 @@
 */
 #pragma once
 
-#include "framework/scene/animation.hpp"
 #include "framework/common/resources_storage.hpp"
+#include "framework/scene/particle_emitter.hpp"
+#include "framework/scene/sound_source.hpp"
 
 using namespace con;
 
 class Explosion :
-	public Animation
+	public Node
 {
 	CLASS_DEF( Explosion );
 
 public:
+	s32 layer;
+
 	Explosion();
+
+	void setup();
+	void explode();
+
+	Particle_Emitter* particles_a;
+	Particle_Emitter* particles_b;
+	Particle_Emitter* particles_c;
+
+	Sound_Source* sound;
+
+private:
+	bool is_ready{ false };
 };

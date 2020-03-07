@@ -35,16 +35,18 @@ auto Particle_Emitter::get_particles_count() const -> s32
 
 void Particle_Emitter::update( r32 dt )
 {
+	if ( settings.one_shot and released_particles_count is settings.particles_limit ) {
+		is_emmiting = false;
+	}
+
 	if ( is_emmiting ) {
 		time_to_next_spawn -= dt;
 
-		if ( ( settings.one_shot and released_particles_count < settings.particles_limit ) or
-			 !settings.one_shot )
-			while ( time_to_next_spawn < 0 ) {
-				time_to_next_spawn += settings.spawn_interval;
+		while ( time_to_next_spawn < 0 and released_particles_count < settings.particles_limit ) {
+			time_to_next_spawn += settings.spawn_interval;
 
-				spawn_particle();
-			}
+			spawn_particle();
+		}
 	}
 
 	for ( size_t i = 0; i < particles_count; i++ ) {
@@ -77,7 +79,7 @@ void Particle_Emitter::draw( Drawing_Set& set )
 		auto& spr = particles_sprites[i];
 
 		spr.setPosition( particle.position );
-		spr.setColor( particle.color );
+		spr.setColor( { static_cast<u8>( particle.color.r ), static_cast<u8>( particle.color.g ), static_cast<u8>( particle.color.b ), static_cast<u8>( particle.color.a ) } );
 		spr.setRotation( particle.rotation );
 
 		set.add_drawable( spr, layer );
@@ -94,7 +96,7 @@ void Particle_Emitter::spawn_particle()
 	auto const [found, idx] = find( particles_status, false );
 
 	if ( not found ) {
-		engine_log_warning( "Couldn't spawn the particle, there's no more space ( the limit is {} ).", particles_count );
+		engine_log_warning( "Couldn't spawn the particle, there's no more space ( the limit is {}, released {} ).", settings.particles_limit, released_particles_count );
 		return;
 	}
 
@@ -104,9 +106,9 @@ void Particle_Emitter::spawn_particle()
 	particle.position	        = get_global_position();
 	constant angle_to_set       = random_real( settings.angle_min, settings.angle_max ) * 3.1415 / 180;
 	constant velocity_to_set    = random_real( settings.initial_velocity_min, settings.initial_velocity_max );
-	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) } * velocity_to_set;
+	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) } *velocity_to_set;
 	particle.remaining_lifetime = settings.lifetime;
-	particle.color              = settings.color;
+	particle.color              = { settings.color.r, settings.color.g, settings.color.b, settings.color.a };
 
 	auto& spr = particles_sprites[idx];
 

@@ -22,7 +22,18 @@ private:
 		Vec2 velocity;
 		r32  rotation;
 		r32  remaining_lifetime;
-		sf::Color color;
+		struct Color
+		{
+			Color( u8 r_ = 255, u8 g_ = 255, u8 b_ = 255, u8 a_ = 255 )
+			{
+				r = static_cast<r32>( r_ );
+				g = static_cast<r32>( g_ );
+				b = static_cast<r32>( b_ );
+				a = static_cast<r32>( a_ );
+			}
+
+			r32 r, g, b, a;
+		} color;
 	};
 
 public:

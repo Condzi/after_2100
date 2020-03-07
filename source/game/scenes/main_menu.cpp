@@ -9,6 +9,8 @@
 #include "framework/scene/application.hpp"
 #include "dialogs/dialog_tutorial.hpp"
 
+#include "game/prefabs/explosion.hpp"
+
 Main_Menu::Main_Menu()
 {
 	name = "main_menu";
@@ -41,4 +43,11 @@ Main_Menu::Main_Menu()
 		G_App.exit_game();
 	} ) );
 
+
+	auto explosion = attach<Explosion>();
+
+	explosion->set_global_position( { 500, 500 } );
+	explosion->layer = 5;
+	explosion->setup();
+	explosion->explode();
 }
