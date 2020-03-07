@@ -26,6 +26,7 @@ public:
 	Particle_Emitter* particles_a;
 	Particle_Emitter* particles_b;
 	Particle_Emitter* particles_c;
+	Particle_Emitter* particles_d;
 
 	Sound_Source* sound;
 
