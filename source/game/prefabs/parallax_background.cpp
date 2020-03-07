@@ -34,7 +34,7 @@ Parallax_Background::Parallax_Background()
 		settings.angle_min = 200;
 		settings.initial_velocity_min = 150;
 		settings.initial_velocity_max = 300;
-		settings.color = sf::Color{ 124,175,245, 100 };
+		settings.color = sf::Color{ 170,175,205, 200 };
 		settings.lifetime = 15.0sec;
 		settings.particles_limit = 256;
 		settings.spawn_interval = 0.1sec;
@@ -46,6 +46,14 @@ Parallax_Background::Parallax_Background()
 
 	stars_particles_c->settings = stars_particles_a->settings;
 	stars_particles_c->settings.scale = 0.2;
+
+	stars_particles_c->custom_transformation = stars_particles_b->custom_transformation = stars_particles_a->custom_transformation = [ptr = stars_particles_a]( auto& particle, r32 ) {
+		
+		constant sin_val = std::abs( std::sinf( particle.position.x / 200.0f )  * 0.5f ) + 0.5f;
+		particle.color.r = sin_val * ptr->settings.color.r;
+		particle.color.g = sin_val * ptr->settings.color.g;
+		particle.color.b = sin_val * ptr->settings.color.b;
+	};
 
 
 	stars_particles_a->set_particles_count( 256 );
