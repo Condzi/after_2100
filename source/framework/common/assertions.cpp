@@ -40,7 +40,9 @@ bool report_and_break( spdlog::level::level_enum log_level, bool should_break, b
 	logger->log( log_level, "Line: {}", line );
 	logger->log( log_level, "==============================" );
 
+#ifndef NDEBUG
 	force_break( should_break );
+#endif
 
 	return true;
 }

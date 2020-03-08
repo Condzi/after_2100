@@ -49,7 +49,7 @@ Parallax_Background::Parallax_Background()
 
 	stars_particles_c->custom_transformation = stars_particles_b->custom_transformation = stars_particles_a->custom_transformation = [ptr = stars_particles_a]( auto& particle, r32 ) {
 		
-		constant sin_val = std::abs( std::sinf( particle.position.x / 200.0f )  * 0.5f ) + 0.5f;
+		constant sin_val = std::abs( std::sinf( particle.position.x / 150.0f )  * 0.5f ) + 0.5f;
 		particle.color.r = sin_val * ptr->settings.color.r;
 		particle.color.g = sin_val * ptr->settings.color.g;
 		particle.color.b = sin_val * ptr->settings.color.b;

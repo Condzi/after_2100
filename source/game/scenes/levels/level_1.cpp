@@ -59,19 +59,21 @@ Level_1::Level_1()
 	enemy_spawner->set_path( *enemy_path_1 );
 	enemy_spawner->set_enemy_type<Enemy_Base>();
 	enemy_spawner->spawn_interval = 1.9sec;
-	enemy_spawner->set_spawn_limit( 10 );
+	enemy_spawner->set_spawn_limit( 1 );
 	enemy_spawner->start();
 
 	// switch paths when one ends.
-	bond_disconnector( enemy_spawner->s_finished.connect( [spawner = enemy_spawner, p_2 = enemy_path_2, p_3 = enemy_path_3] {
+	bond_disconnector( enemy_spawner->s_finished.connect( [this, spawner = enemy_spawner, p_2 = enemy_path_2, p_3 = enemy_path_3] {
 		if ( spawner->spawn_interval is 1.9sec ) {
 			spawner->set_path( *p_2 );
 			spawner->spawn_interval = 1.5sec;
 		} else if ( spawner->spawn_interval is 1.5sec ) {
 			spawner->set_path( *p_3 );
 			spawner->spawn_interval = 1.3sec;
-		} else
+		} else {
+			last_stage = true;
 			return;
+		}
 
 		spawner->reset();
 		spawner->start();
@@ -124,4 +126,11 @@ Level_1::Level_1()
 	///////////////////////////////
 
 	log_info( "{} instantiated.", name );
+}
+
+void Level_1::update( r32 dt )
+{
+	if ( last_stage and enemy_spawner->is_finished() and enemy_spawner->get_enemies_alive_count() is 0 ) 		{
+		G_Flags[Flags::Level_Success] = true;
+	}
 }

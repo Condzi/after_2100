@@ -36,6 +36,11 @@
     "pl": "#No i klops...#"
   },
 
+  "#loc_level_won": {
+    "en": "#You won!#",
+    "pl":  "#Wygrywanko!#"
+  },
+
   "#loc_try_again": {
     "en": "Try again",
     "pl": "Spróbuj ponownie"

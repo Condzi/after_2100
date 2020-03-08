@@ -42,6 +42,7 @@ public:
 private:
 	Node* pause_screen;
 	Node* failure_screen;
+	Node* success_screen;
 	Node* level{ nullptr };
 
 	// We have to somethow re-instatntiate the level after player's failure.

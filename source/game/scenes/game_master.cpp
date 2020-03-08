@@ -8,6 +8,7 @@
 #include "game_master.hpp"
 #include "pause_screen.hpp"
 #include "failure_screen.hpp"
+#include "success_screen.hpp"
 
 #include "game/flags.hpp"
 
@@ -19,16 +20,18 @@ Game_Master::Game_Master()
 
 	pause_screen = attach<Pause_Screen>();
 	failure_screen = attach<Failure_Screen>();
+	success_screen = attach<Success_Screen>();
 
 	pause_screen->set_pause( true );
 	failure_screen->set_pause( true );
+	success_screen->set_pause( true );
 }
 
 void Game_Master::input( sf::Event const& ev )
 {
 	if ( ev.type is sf::Event::KeyReleased and
 		 ev.key.code is sf::Keyboard::Escape and
-		 failure_screen->is_paused() is true ) { // don't show pause menu when failure screen is on
+		 ( failure_screen->is_paused() or success_screen->is_paused() ) is_not true ) { // don't show pause menu when failure screen is on
 		G_Flags.flip( Flags::Pause );
 
 		update_pause_mode();
@@ -44,11 +47,9 @@ void Game_Master::reset_level()
 {
 	log_info( "Reseting the level ({})", level->name );
 
-	level->queue_for_delete();
 	level_instantiating_function();
 	failure_screen->set_pause( true );
-	// @ToDo:
-	// succes_screen->set_pasue(true);
+	success_screen->set_pause( true );
 }
 
 void Game_Master::update_pause_mode()
@@ -62,14 +63,20 @@ void Game_Master::update_pause_mode()
 
 void Game_Master::update( r32 dt )
 {
-	static auto level_failure = G_Flags[Flags::Level_Failure];
-
 	unused( dt );
 
-	// @ToDo
-	if ( level_failure ) {
+	static auto level_failure = G_Flags[Flags::Level_Failure];
+	static auto level_success = G_Flags[Flags::Level_Success];
+
+	// @ToDo: Special screen: ,,We've won... but at what cost?'' with waluigi!
+	if ( level_failure and level_success ) {
 		failure_screen->set_pause( false );
 		level->set_pause( true );
 		level_failure = false;
+		level_success = false;
+	} else if ( level_success ) {
+		success_screen->set_pause( false );
+		level->set_pause( true );
+		level_success = false;
 	}
 }

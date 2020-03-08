@@ -12,6 +12,6 @@ enum _ : con::u8
 {
 	Pause = 0,
 	Level_Failure,
-	Level_Succes
+	Level_Success
 };
 }

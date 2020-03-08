@@ -22,9 +22,12 @@ class Level_1 final :
 public:
 	Level_1();
 
+	void update( r32 dt ) override;
+
 private:
 	Player* player;
 
+	bool last_stage{ false };
 	Enemy_Spawner* enemy_spawner;
 	Path* enemy_path_1;
 	Path* enemy_path_2;

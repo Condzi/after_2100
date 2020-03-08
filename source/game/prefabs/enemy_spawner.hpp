@@ -35,6 +35,7 @@ public:
 	[[nodiscard]] auto get_already_spawned_count() const -> u32;
 	[[nodiscard]] auto is_spawning() const               -> bool;
 	[[nodiscard]] auto is_finished() const               -> bool;
+	[[nodiscard]] auto get_enemies_alive_count() const   -> s32;
 
 	void start();
 	void stop();
@@ -46,9 +47,10 @@ private:
 	using Spawning_Function = std::function<Enemy_Base&( )>;
 
 	Spawning_Function spawning_function;
-	Path const* path_to_follow{ nullptr };
+	Path const*       path_to_follow{ nullptr };
 	r32               time_since_last_spawn{ 0 };
 	u32               spawn_limit{ 0 };
 	u32               already_spawned_count{ 0 };
+	s32               enemies_alive{ 0 };
 	bool              spawning{ false };
 };

@@ -42,6 +42,11 @@ auto Enemy_Spawner::is_finished() const -> bool
 	return spawn_limit > 0 and already_spawned_count == spawn_limit;
 }
 
+auto Enemy_Spawner::get_enemies_alive_count() const -> s32
+{
+	return enemies_alive;
+}
+
 void Enemy_Spawner::start()
 {
 	if ( spawning ) {
@@ -97,6 +102,10 @@ void Enemy_Spawner::update( r32 delta )
 		Enemy_Base& enemy = spawning_function();
 		enemy.set_path( *path_to_follow );
 		enemy.start_following();
+
+		enemies_alive++;
+
+		bond_disconnector( enemy.s_destroy.connect( [this] { enemies_alive--; } ) );
 	}
 
 	if ( is_finished() ) {
