@@ -32,7 +32,7 @@ public:
 	[[nodiscard]] auto get_string() const -> sf::String const&;
 
 private:
-	Signal<>::Disconnector update_localized_string_disconnector;
+	Signal_Disconnector update_localized_string_disconnector;
 
 	bool use_locale{ false };
 	// It's just a pointer so don't bother with union or variant.

@@ -86,7 +86,7 @@ public:
 	//
 	// Use it when function connected to the signal will be invalidated
 	// after destruction of the node.
-	void bond_disconnector( std::function<void()> disconnector );
+	void bond_disconnector( Signal_Disconnector disconnector );
 
 	virtual void update( r32 delta ) {}
 	virtual void input( sf::Event const& event ) {}

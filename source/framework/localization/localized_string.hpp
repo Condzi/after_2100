@@ -22,7 +22,7 @@ public:
 	[[nodiscard]] auto get_localized_text() const -> sf::String const&;
 
 private:
-	Signal<>::Disconnector locale_language_change_disconnector;
+	Signal_Disconnector locale_language_change_disconnector;
 
 	sf::String locale_name;
 	sf::String const* localized_text{ &G_Locale.get_fallback_string() };

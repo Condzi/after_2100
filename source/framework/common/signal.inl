@@ -12,7 +12,7 @@ Signal<TArgs...>::Signal()
 }
 
 template <typename ...TArgs>
-auto Signal<TArgs...>::connect( Function function ) -> Disconnector
+auto Signal<TArgs...>::connect( Function function ) -> Signal_Disconnector
 {
 	unique_id_counter++;
 	functions.emplace_back( function );

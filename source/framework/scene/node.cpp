@@ -94,7 +94,7 @@ void Node::queue_for_delete()
 		child_nodes[i]->queue_for_delete();
 }
 
-void Node::bond_disconnector( std::function<void()> disconnector )
+void Node::bond_disconnector( Signal_Disconnector disconnector )
 {
 	auto dc = s_destroy.connect( disconnector );
 	// lifetime of connected disconnector is same as s_destroy signal, so it shouldn't make any problems.
