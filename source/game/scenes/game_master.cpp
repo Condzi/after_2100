@@ -72,7 +72,7 @@ void Game_Master::update( r32 dt )
 	static auto level_success = G_Flags[Flags::Level_Success];
 
 	// @ToDo: Special screen: ,,We've won... but at what cost?'' with waluigi!
-	if ( level_failure and level_success ) {
+	if ( level_failure or ( level_failure and level_success ) ) {
 		failure_screen->set_pause( false );
 		level->set_pause( true );
 		level_failure = false;

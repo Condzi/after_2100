@@ -21,6 +21,7 @@ auto Signal<TArgs...>::connect( Function function ) -> Signal_Disconnector
 
 		if ( functions.empty() or pos > functions.size() ) {
 			// Internal compiler error?
+			// Probably wrong disconnector is bonded.
 				std::cout<< "Signal is empty but still has destructor for id " << pos << std::endl;
 			} else
 			// just reset it.
