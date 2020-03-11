@@ -105,7 +105,7 @@ void Enemy_Spawner::update( r32 delta )
 
 		enemies_alive++;
 
-		bond_disconnector( enemy.s_destroy.connect( [this] { enemies_alive--; } ) );
+		enemy.bond_disconnector( enemy.s_destroy.connect( [this] { enemies_alive--; } ) );
 	}
 
 	if ( is_finished() ) {
