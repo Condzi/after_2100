@@ -5,6 +5,8 @@
 
 #include "pch.hpp"
 
+#include "framework/common/stl_extensions.hpp"
+
 #include "game_master.hpp"
 #include "pause_screen.hpp"
 #include "failure_screen.hpp"
@@ -31,7 +33,8 @@ void Game_Master::input( sf::Event const& ev )
 {
 	if ( ev.type is sf::Event::KeyReleased and
 		 ev.key.code is sf::Keyboard::Escape and
-		 ( failure_screen->is_paused() or success_screen->is_paused() ) is_not true ) { // don't show pause menu when failure screen is on
+		 failure_screen->is_paused() and success_screen->is_paused() and // don't show pause menu when failure or success screen is on
+		 string_begins_with( level->name, "level" ) ) { // only usable in actual levels @ToDo: add flag when switching levels that is set once, don't check this condition every time here.
 		G_Flags.flip( Flags::Pause );
 
 		update_pause_mode();
