@@ -57,6 +57,7 @@ Player::Player()
 
 
 	explosion = attach<Explosion>();
+	explosion->move( sprite->get_global_bounds().size * 0.5 );
 	explosion->layer = 5;
 	explosion->setup();
 
@@ -66,7 +67,6 @@ Player::Player()
 	exploded_sprite->degress_per_second = random_real( -360, 360 );
 	exploded_sprite->scale_per_second = 0.40;
 	exploded_sprite->visible = false;
-	// @ToDo: Wrong position? Too much to the right?
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 3;
 

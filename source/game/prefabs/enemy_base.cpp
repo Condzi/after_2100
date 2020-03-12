@@ -34,14 +34,15 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->rotate( -90.0deg );
 	exploded_sprite->degress_per_second = random_real( 0, 1 );
 	exploded_sprite->visible = false;
-	// hack - positioning sprite (and animation) right in the center of the real sprite
-	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 1;
+	// @ToDo: this bruh moment caused by rotation of sprites
+	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( Vec2( sprite->get_global_bounds().size.y, sprite->get_global_bounds().size.x ) * 0.5 ) );
 
 	health = attach<Health>();
 	health->set_max( 2 );
 
 	explosion = attach<Explosion>();
+	explosion->move( sprite->get_global_bounds().size * 0.5 );
 	explosion->layer = 2;
 	explosion->setup();
 
@@ -72,11 +73,12 @@ Enemy_Base::Enemy_Base()
 		explosion->particles_b->settings.initial_velocity = get_velocity();
 		explosion->particles_c->settings.initial_velocity = get_velocity();
 		explosion->particles_d->settings.initial_velocity = get_velocity();
-		
+
 		exploded_sprite->initial_velocity = get_velocity();
 		exploded_sprite->initialize( { 120, 180 } );
 
 		exploded_sprite->explode();
+		stop_following();
 
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 	} ) );

@@ -74,7 +74,7 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 		element.center = Vec2{ texture->getSize() } *0.25f;
 
 		element.render_states.transform = sf::Transform::Identity;
-		element.render_states.transform.rotate( get_rotation(), get_global_position() + Vec2( texture->getSize() ) * 0.5 );
+		element.render_states.transform.rotate( get_rotation(), get_global_position() + Vec2( texture->getSize() ) * 0.5f );
 	}
 
 	elements_initialized = true;
@@ -131,12 +131,12 @@ void Exploded_Sprite::update( r32 dt )
 	for ( auto& element : elements ) {
 		for ( size_t i = 0; i < 4; i++ ) {
 			auto& vertex = element.vertices[i];
-	//		vertex.position += cast<sf::Vector2f>( element.velocity * dt );
+			//		vertex.position += cast<sf::Vector2f>( element.velocity * dt );
 		}
 
-//		element.render_states.transform = sf::Transform::Identity;
-//		element.render_states.transform.rotate( get_rotation() /** element.random_scalar_for_rotation*/, element.center + element.vertices[0].position );
-//		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
+		//		element.render_states.transform = sf::Transform::Identity;
+		//		element.render_states.transform.rotate( get_rotation() /** element.random_scalar_for_rotation*/, element.center + element.vertices[0].position );
+		//		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
 	}
 
 	if ( not transformation_initialized )
