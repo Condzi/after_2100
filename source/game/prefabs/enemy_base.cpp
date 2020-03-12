@@ -33,7 +33,6 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
 	exploded_sprite->rotate( -90.0deg );
 	exploded_sprite->degress_per_second = random_real( -360, 360 );
-	exploded_sprite->initialize( { 120, 180 } );
 	exploded_sprite->visible = false;
 	// hack - positioning sprite (and animation) right in the center of the real sprite
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
@@ -78,7 +77,6 @@ Enemy_Base::Enemy_Base()
 		exploded_sprite->initialize( { 120, 180 } );
 
 		exploded_sprite->explode();
-		stop_following();
 
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 	} ) );

@@ -65,8 +65,8 @@ Player::Player()
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
 	exploded_sprite->degress_per_second = random_real( -360, 360 );
 	exploded_sprite->scale_per_second = 0.40;
-	exploded_sprite->initialize( { 120, 180 } );
 	exploded_sprite->visible = false;
+	// @ToDo: Wrong position? Too much to the right?
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
 	exploded_sprite->layer = 3;
 
@@ -82,8 +82,17 @@ Player::Player()
 		sprite->visible = false;
 		hitbox->collision_layer = -1;
 		hitbox->shape_color.a -= 200;
+
+		explosion->particles_a->settings.initial_velocity = velocity;
+		explosion->particles_b->settings.initial_velocity = velocity;
+		explosion->particles_c->settings.initial_velocity = velocity;
+		explosion->particles_d->settings.initial_velocity = velocity;
 		explosion->explode();
+
 		exploded_sprite->visible = true;
+		exploded_sprite->initial_velocity = velocity;
+		// @ToDo: Redo Exploded_Sprite::initialize to avoid calling it here. Call it in constructor, instead.
+		exploded_sprite->initialize( { 120, 180 } );
 		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 	} ) );
