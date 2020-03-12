@@ -99,8 +99,8 @@ Player::Player()
 		settings.angle_max = 360.0deg;
 		settings.color = sf::Color{ 240,190,15, 150 };
 		settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-		settings.initial_velocity_min = 256;
-		settings.initial_velocity_max = 300;
+		settings.random_initial_velocity_min = 256;
+		settings.random_initial_velocity_max = 300;
 		settings.lifetime = 0.5sec;
 		settings.spawn_interval = 0.0001sec;
 		settings.particles_limit = 160;
@@ -116,8 +116,8 @@ Player::Player()
 		settings.angle_max = 300.0deg;
 		settings.color = sf::Color{ 90,90,90, 200 };
 		settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-		settings.initial_velocity_min = 160;
-		settings.initial_velocity_max = 190;
+		settings.random_initial_velocity_min = 160;
+		settings.random_initial_velocity_max = 190;
 		settings.lifetime = 3.0sec;
 		settings.spawn_interval = 0.01sec;
 		settings.particles_limit = 512;

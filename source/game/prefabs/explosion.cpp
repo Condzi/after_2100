@@ -30,18 +30,23 @@ void Explosion::setup()
 {
 	is_ready = true;
 
+	auto& settings_a = particles_a->settings;
+	auto& settings_b = particles_b->settings;
+	auto& settings_c = particles_c->settings;
+	auto& settings_d = particles_d->settings;
+
 	particles_a->set_particles_count( 128 );
-	particles_a->settings.color = { 255, 245, 190 };
-	particles_a->settings.one_shot = true;
-	particles_a->settings.scale = 0.2;
-	particles_a->settings.particles_limit = 128;
-	particles_a->settings.lifetime = 0.5sec;
-	particles_a->settings.spawn_interval = 0.0001sec;
-	particles_a->settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-	particles_a->settings.initial_velocity_min = 25;
-	particles_a->settings.initial_velocity_max = 65;
-	particles_a->settings.angle_min = 0.0deg;
-	particles_a->settings.angle_max = 360.0deg;
+	settings_a.color = { 255, 245, 190 };
+	settings_a.one_shot = true;
+	settings_a.scale = 0.2;
+	settings_a.particles_limit = 128;
+	settings_a.lifetime = 0.5sec;
+	settings_a.spawn_interval = 0.0001sec;
+	settings_a.texture = G_Resources_Storage.get_texture( "round_particle" );
+	settings_a.random_initial_velocity_min = 25;
+	settings_a.random_initial_velocity_max = 65;
+	settings_a.angle_min = 0.0deg;
+	settings_a.angle_max = 360.0deg;
 	particles_a->custom_transformation = [ptr = particles_a]( auto& particle, r32 ) {
 		particle.color.a = ( particle.remaining_lifetime / ptr->settings.lifetime ) * ptr->settings.color.a;
 	};
@@ -49,51 +54,51 @@ void Explosion::setup()
 
 
 	particles_b->set_particles_count( 128 );
-	particles_b->settings.color = { 255, 215, 128 };
-	particles_b->settings.one_shot = true;
-	particles_b->settings.scale = 0.3;
-	particles_b->settings.particles_limit = 128;
-	particles_b->settings.lifetime = 0.5sec;
-	particles_b->settings.spawn_interval = 0.0001sec;
-	particles_b->settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-	particles_b->settings.initial_velocity_min = 75;
-	particles_b->settings.initial_velocity_max = 125;
-	particles_b->settings.angle_min = 0.0deg;
-	particles_b->settings.angle_max = 360.0deg;
+	settings_b.color = { 255, 215, 128 };
+	settings_b.one_shot = true;
+	settings_b.scale = 0.3;
+	settings_b.particles_limit = 128;
+	settings_b.lifetime = 0.5sec;
+	settings_b.spawn_interval = 0.0001sec;
+	settings_b.texture = G_Resources_Storage.get_texture( "round_particle" );
+	settings_b.random_initial_velocity_min = 75;
+	settings_b.random_initial_velocity_max = 125;
+	settings_b.angle_min = 0.0deg;
+	settings_b.angle_max = 360.0deg;
 	particles_b->custom_transformation = [ptr = particles_b]( auto& particle, r32 ) {
 		particle.color.a = ( particle.remaining_lifetime / ptr->settings.lifetime ) * ptr->settings.color.a;
 	};
 	particles_b->layer = layer;
 
 	particles_c->set_particles_count( 64 );
-	particles_c->settings.color = { 255, 170, 0 };
-	particles_c->settings.one_shot = true;
-	particles_c->settings.scale = 0.6;
-	particles_c->settings.particles_limit = 64;
-	particles_c->settings.lifetime = 0.6sec;
-	particles_c->settings.spawn_interval = 0.0001sec;
-	particles_c->settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-	particles_c->settings.initial_velocity_min = 150;
-	particles_c->settings.initial_velocity_max = 200;
-	particles_c->settings.angle_min = 0.0deg;
-	particles_c->settings.angle_max = 360.0deg;
+	settings_c.color = { 255, 170, 0 };
+	settings_c.one_shot = true;
+	settings_c.scale = 0.6;
+	settings_c.particles_limit = 64;
+	settings_c.lifetime = 0.6sec;
+	settings_c.spawn_interval = 0.0001sec;
+	settings_c.texture = G_Resources_Storage.get_texture( "round_particle" );
+	settings_c.random_initial_velocity_min = 150;
+	settings_c.random_initial_velocity_max = 200;
+	settings_c.angle_min = 0.0deg;
+	settings_c.angle_max = 360.0deg;
 	particles_c->custom_transformation = [ptr = particles_c]( auto& particle, r32 ) {
 		particle.color.a = ( particle.remaining_lifetime / ptr->settings.lifetime ) * ptr->settings.color.a;
 	};
 	particles_c->layer = layer;
 
 	particles_d->set_particles_count( 32 );
-	particles_d->settings.color = { 70, 70,70 };
-	particles_d->settings.one_shot = true;
-	particles_d->settings.scale = 0.8;
-	particles_d->settings.particles_limit = 32;
-	particles_d->settings.lifetime = 3.0sec;
-	particles_d->settings.spawn_interval = 0.0001sec;
-	particles_d->settings.texture = G_Resources_Storage.get_texture( "round_particle" );
-	particles_d->settings.initial_velocity_min = 50;
-	particles_d->settings.initial_velocity_max = 100;
-	particles_d->settings.angle_min = 0.0deg;
-	particles_d->settings.angle_max = 360.0deg;
+	settings_d.color = { 70, 70,70 };
+	settings_d.one_shot = true;
+	settings_d.scale = 0.8;
+	settings_d.particles_limit = 32;
+	settings_d.lifetime = 3.0sec;
+	settings_d.spawn_interval = 0.0001sec;
+	settings_d.texture = G_Resources_Storage.get_texture( "round_particle" );
+	settings_d.random_initial_velocity_min = 50;
+	settings_d.random_initial_velocity_max = 100;
+	settings_d.angle_min = 0.0deg;
+	settings_d.angle_max = 360.0deg;
 	particles_d->custom_transformation = [ptr = particles_d]( auto& particle, r32 ) {
 		particle.color.a = ( particle.remaining_lifetime / ptr->settings.lifetime ) * ptr->settings.color.a;
 	};

@@ -62,7 +62,8 @@ void Particle_Emitter::update( r32 dt )
 			continue;
 		}
 
-		particle.velocity += settings.force_to_apply;
+		particle.velocity += settings.constant_force_to_apply + settings.impulse_force_to_apply;
+		settings.impulse_force_to_apply = Vec2::Zero();
 		particle.position += particle.velocity * dt;
 		particle.rotation += settings.spin_velocity * dt;
 
@@ -87,6 +88,11 @@ void Particle_Emitter::draw( Drawing_Set& set )
 	}
 }
 
+void Particle_Emitter::apply_force( Vec2 const& force )
+{
+	settings.impulse_force_to_apply += force;
+}
+
 void Particle_Emitter::spawn_particle()
 {
 	if ( settings.texture is nullptr ) {
@@ -106,10 +112,10 @@ void Particle_Emitter::spawn_particle()
 
 	particle.position	        = get_global_position();
 	constant angle_to_set       = random_real( settings.angle_min, settings.angle_max ) * 3.1415 / 180;
-	constant velocity_to_set    = random_real( settings.initial_velocity_min, settings.initial_velocity_max );
-	particle.velocity	        = Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) } *velocity_to_set;
+	constant velocity_to_set    = random_real( settings.random_initial_velocity_min, settings.random_initial_velocity_max );
+	particle.velocity	        = settings.initial_velocity + Vec2{ std::sinf( angle_to_set ), std::cosf( angle_to_set ) } * velocity_to_set;
 	particle.remaining_lifetime = settings.lifetime;
-	particle.color              ={ settings.color.r, settings.color.g, settings.color.b, settings.color.a };
+	particle.color              = { settings.color.r, settings.color.g, settings.color.b, settings.color.a };
 
 	auto& spr = particles_sprites[idx];
 

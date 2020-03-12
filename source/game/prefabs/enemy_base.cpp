@@ -6,6 +6,7 @@
 #include "pch.hpp"
 
 #include "enemy_base.hpp"
+#include "player.hpp"
 
 #include "game/scenes/game_master.hpp"
 
@@ -45,6 +46,7 @@ Enemy_Base::Enemy_Base()
 	explosion->layer = 2;
 	explosion->setup();
 
+
 	bond_disconnector( hitbox->s_area_entered.connect(
 		[this]( Area& second ) {
 		auto player_node = get_node( "root/game_master" )->cast_to<Game_Master>()->get_level()->get_node( "player" );
@@ -62,10 +64,22 @@ Enemy_Base::Enemy_Base()
 		sprite->visible = false;
 		hitbox->collision_layer = -1;
 		hitbox->shape_color.a -= 200;
-		stop_following();
 		explosion->explode();
 		exploded_sprite->visible = true;
+		exploded_sprite->move_with_parent = false;
+		explosion->move_with_parent = false;
+
+		explosion->particles_a->settings.initial_velocity = get_velocity();
+		explosion->particles_b->settings.initial_velocity = get_velocity();
+		explosion->particles_c->settings.initial_velocity = get_velocity();
+		explosion->particles_d->settings.initial_velocity = get_velocity();
+		
+		exploded_sprite->initial_velocity = get_velocity();
+		exploded_sprite->initialize( { 120, 180 } );
+
 		exploded_sprite->explode();
+		stop_following();
+
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 	} ) );
 

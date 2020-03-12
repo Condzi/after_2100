@@ -19,6 +19,7 @@ class Exploded_Sprite :
 public:
 	Signal<> s_done_scaling;
 
+	Vec2 initial_velocity{ 0,0 };
 	bool visible{ true };
 	s32  layer{ 0 };
 	r32  scale_per_second{ 0.20 }; // how fast the object decreases

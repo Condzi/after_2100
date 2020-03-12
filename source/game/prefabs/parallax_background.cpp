@@ -32,8 +32,8 @@ Parallax_Background::Parallax_Background()
 		settings.texture = G_Resources_Storage.get_texture( "star_particle" );
 		settings.angle_max = 300;
 		settings.angle_min = 200;
-		settings.initial_velocity_min = 150;
-		settings.initial_velocity_max = 300;
+		settings.random_initial_velocity_min = 150;
+		settings.random_initial_velocity_max = 300;
 		settings.color = sf::Color{ 170,175,205, 200 };
 		settings.lifetime = 15.0sec;
 		settings.particles_limit = 256;
