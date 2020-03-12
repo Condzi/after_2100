@@ -59,7 +59,7 @@ Level_1::Level_1()
 	enemy_spawner->set_path( *enemy_path_1 );
 	enemy_spawner->set_enemy_type<Enemy_Base>();
 	enemy_spawner->spawn_interval = 1.9sec;
-	enemy_spawner->set_spawn_limit( 1 );
+	enemy_spawner->set_spawn_limit( 5 );
 	enemy_spawner->start();
 
 	// switch paths when one ends.

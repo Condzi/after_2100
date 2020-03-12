@@ -8,11 +8,11 @@
 	{ "player",           "resources/texture/player.png" },
 	{ "enemy_1",          "resources/texture/enemy_1.png" },
 	{ "missile_player",   "resources/texture/missile_player.png" },
-	{ "explosion",        "resources/texture/explosion.png" },
 	{ "space_background", "resources/texture/space_background.png" },
 
-	{ "round_particle",   "resources/texture/round_particle.png" },
+	{ "explosion_particle","resources/texture/explosion_particle.png" },
 	{ "star_particle",    "resources/texture/star_particle.png" },
+	{ "smoke_particle",    "resources/texture/smoke_particle.png" },
 
 	{ "arrow", "resources/texture/arrow.png" },
 	{ "portrait_commander", "resources/texture/commander_portrait.png" }

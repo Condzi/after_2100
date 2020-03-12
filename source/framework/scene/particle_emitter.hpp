@@ -21,6 +21,7 @@ private:
 		Vec2 position;
 		Vec2 velocity;
 		r32  rotation;
+		r32  spin_velocity;
 		r32  remaining_lifetime;
 		struct Color
 		{
@@ -53,7 +54,9 @@ public:
 		r32 spawn_interval{ 0.1sec };
 		s32 particles_limit{ 16 }; // Don't declare greater than DEFAULT_PARTICLES_COUNT
 
-		r32  spin_velocity{ 0 }; // in degrees
+		r32  initial_spin_velocity{ 0 }; // in degrees
+		r32  random_spin_velocity_min{ 0 };
+		r32  random_spin_velocity_max{ 0 };
 		Vec2 initial_velocity{ 0,0 };
 		r32  random_initial_velocity_min{ 100.0f };
 		r32  random_initial_velocity_max{ 100.0f };
