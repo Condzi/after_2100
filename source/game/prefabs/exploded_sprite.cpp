@@ -53,7 +53,7 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	initialize_next_vertex( vert_position( 50, 0 ), texture_position( 50, 0 ) );
 	initialize_next_vertex( vert_position( 100, 0 ), texture_position( 100, 0 ) );
 	initialize_next_vertex( vert_position( 100, 50 ), texture_position( 100, 50 ) );
-	initialize_next_vertex( vert_position( 0, 50 ), texture_position( 0, 50 ) );
+	initialize_next_vertex( vert_position( 50, 50 ), texture_position( 50, 50 ) );
 
 	initialize_next_vertex( vert_position( 0, 50 ), texture_position( 0, 50 ) );
 	initialize_next_vertex( vert_position( 50, 50 ), texture_position( 50, 50 ) );
@@ -72,6 +72,9 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	for ( auto& element : elements ) {
 		element.velocity = initial_velocity + random_velocity();
 		element.center = Vec2{ texture->getSize() } *0.25f;
+
+		element.render_states.transform = sf::Transform::Identity;
+		element.render_states.transform.rotate( get_rotation(), get_global_position() + Vec2( texture->getSize() ) * 0.5 );
 	}
 
 	elements_initialized = true;
@@ -128,12 +131,12 @@ void Exploded_Sprite::update( r32 dt )
 	for ( auto& element : elements ) {
 		for ( size_t i = 0; i < 4; i++ ) {
 			auto& vertex = element.vertices[i];
-			vertex.position += cast<sf::Vector2f>( element.velocity * dt );
+	//		vertex.position += cast<sf::Vector2f>( element.velocity * dt );
 		}
 
-		element.render_states.transform = sf::Transform::Identity;
-		element.render_states.transform.rotate( get_rotation() * element.random_scalar_for_rotation, element.center + element.vertices[0].position );
-		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
+//		element.render_states.transform = sf::Transform::Identity;
+//		element.render_states.transform.rotate( get_rotation() /** element.random_scalar_for_rotation*/, element.center + element.vertices[0].position );
+//		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
 	}
 
 	if ( not transformation_initialized )

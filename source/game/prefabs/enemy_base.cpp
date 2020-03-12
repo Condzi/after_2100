@@ -32,7 +32,7 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->name = "exploded_sprite";
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
 	exploded_sprite->rotate( -90.0deg );
-	exploded_sprite->degress_per_second = random_real( -360, 360 );
+	exploded_sprite->degress_per_second = random_real( 0, 1 );
 	exploded_sprite->visible = false;
 	// hack - positioning sprite (and animation) right in the center of the real sprite
 	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
