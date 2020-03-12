@@ -32,7 +32,7 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->name = "exploded_sprite";
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
 	exploded_sprite->rotate( -90.0deg );
-	exploded_sprite->degress_per_second = random_real( 0, 1 );
+	exploded_sprite->degress_per_second = random_real( -360, 360 );
 	exploded_sprite->visible = false;
 	exploded_sprite->layer = 1;
 	// @ToDo: this bruh moment caused by rotation of sprites

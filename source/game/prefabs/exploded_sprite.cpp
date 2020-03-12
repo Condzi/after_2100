@@ -119,7 +119,7 @@ void Exploded_Sprite::update( r32 dt )
 		return;
 
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )
-		set_scale( get_scale() - Vec2{ scale_per_second, scale_per_second } *dt );
+		set_scale( get_scale() * ( Vec2{ 1, 1 } -Vec2{ scale_factor, scale_factor } *dt ) );
 	else {
 		s_done_scaling.emit();
 		elements_initialized = false;
@@ -131,12 +131,11 @@ void Exploded_Sprite::update( r32 dt )
 	for ( auto& element : elements ) {
 		for ( size_t i = 0; i < 4; i++ ) {
 			auto& vertex = element.vertices[i];
-			//		vertex.position += cast<sf::Vector2f>( element.velocity * dt );
+			vertex.position += cast<sf::Vector2f>( element.velocity * dt );
 		}
 
-		//		element.render_states.transform = sf::Transform::Identity;
-		//		element.render_states.transform.rotate( get_rotation() /** element.random_scalar_for_rotation*/, element.center + element.vertices[0].position );
-		//		element.render_states.transform.scale( get_scale(), element.center + element.vertices[0].position );
+		element.render_states.transform.rotate( degress_per_second * dt * element.random_scalar_for_rotation, element.center + element.vertices[0].position );
+		element.render_states.transform.scale( Vec2{ 1,1 } -Vec2{ scale_factor, scale_factor } *dt, element.center + element.vertices[0].position );
 	}
 
 	if ( not transformation_initialized )

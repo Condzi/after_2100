@@ -22,7 +22,7 @@ public:
 	Vec2 initial_velocity{ 0,0 };
 	bool visible{ true };
 	s32  layer{ 0 };
-	r32  scale_per_second{ 0.20 }; // how fast the object decreases
+	r32  scale_factor{ 0.80 }; // how fast the object decreases
 	r32  degress_per_second{ 60.0deg };
 	s32  color_variation_range{ 100 }; // makes some parts of elements brighter, other darker
 	sf::Color color{ 125, 125, 125 }; // 255 is full color, 0 is black
