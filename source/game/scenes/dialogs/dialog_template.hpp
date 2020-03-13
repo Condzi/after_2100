@@ -18,9 +18,9 @@ class Dialog_Template :
 public:
 	Signal<> s_dialog_finished;
 
-	compile_constant DIALOG_TEXT_CHAR_SIZE    = 32;
+	compile_constant DIALOG_TEXT_CHAR_SIZE    = 24;
 	compile_constant CHARACTER_NAME_CHAR_SIZE = 20;
-	compile_constant CHARACTER_LIMIT_PER_LINE = 50;
+	compile_constant CHARACTER_LIMIT_PER_LINE = 67;
 
 	Image* actor_image;
 	Image* arrow_image;
