@@ -27,7 +27,7 @@ public:
 
 private:
 	sf::RenderWindow window;
-	u32 fps_limit{ 64 };
+	u32 fps_limit{ 0 };
 };
 }
 

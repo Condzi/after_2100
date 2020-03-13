@@ -34,6 +34,7 @@ Enemy_Base::Enemy_Base()
 	exploded_sprite->rotate( -90.0deg );
 	exploded_sprite->degress_per_second = random_real( -180, 180 );
 	exploded_sprite->visible = false;
+	exploded_sprite->scale_factor = 0.45f;
 	exploded_sprite->layer = 1;
 
 	health = attach<Health>();
