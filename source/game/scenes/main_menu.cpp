@@ -31,7 +31,7 @@ Main_Menu::Main_Menu()
 	label_new_game->text->update_vertices();
 	label_exit->text->update_vertices();
 
-	text_title->set_absolute_position( Percent_Position{ 20, 10 } );
+	text_title->set_absolute_position( Percent_Position{ 30, 10 } );
 	label_new_game->set_absolute_position( Percent_Position{ 40, 40 } );
 	label_exit->set_absolute_position( Percent_Position{ 40, 50 } );
 
@@ -46,8 +46,9 @@ Main_Menu::Main_Menu()
 
 	auto explosion = attach<Explosion>();
 
-	explosion->set_global_position( { 500, 500 } );
-	explosion->layer = 5;
+	explosion->set_global_position( { 640, 200} );
+	explosion->layer = 1;
+	explosion->set_scale( { 2,2 } );
 	explosion->setup();
 	explosion->explode();
 }
