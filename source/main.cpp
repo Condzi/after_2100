@@ -23,6 +23,7 @@ s8 splash_screen();
 
 int main()
 {
+	engine_log_info( "DO_PROFILING = {}", DO_PROFILING );
 	G_Performance_Profiler.begin_session( "Initlialization", "profile-initialization.json" );
 
 	if ( splash_screen() returned 1 ) {

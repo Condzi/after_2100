@@ -37,23 +37,33 @@ Performance_Profiler& Performance_Profiler::get_instance()
 
 void Performance_Profiler::begin_session( std::string_view name, std::string_view file )
 {
+#if DO_PROFILING == 1
+
 	output_file.open( file );
 
 	output_file << R"({"otherData": {},"traceEvents":[)";
 	output_file.flush();
+
+#endif
 }
 
 void Performance_Profiler::end_session()
 {
+#if DO_PROFILING == 1
+
 	output_file << "]}";
 	output_file.flush();
 	output_file.close();
 	session_name = "<no_session>";
 	profile_count = 0;
+
+#endif
 }
 
 void Performance_Profiler::write_profile( Profile profile )
 {
+#if DO_PROFILING == 1
+
 	if ( profile_count++ > 0 )
 		output_file << ',';
 
@@ -71,5 +81,7 @@ void Performance_Profiler::write_profile( Profile profile )
 	output_file << "}";
 
 	output_file.flush();
+
+#endif
 }
 }
