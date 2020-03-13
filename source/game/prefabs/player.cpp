@@ -57,17 +57,17 @@ Player::Player()
 
 
 	explosion = attach<Explosion>();
-	explosion->move( sprite->get_global_bounds().size * 0.5 );
+	explosion->set_local_position( { sprite_size.height / 2, sprite_size.width / 2 } );
 	explosion->layer = 5;
 	explosion->setup();
 
 	exploded_sprite = attach<Exploded_Sprite>();
 	exploded_sprite->name = "exploded_sprite";
 	exploded_sprite->set_texture_from_pointer( sprite->get_texture() );
-	exploded_sprite->degress_per_second = random_real( -360, 360 );
+	exploded_sprite->degress_per_second = random_real( -180, 180 );
 	exploded_sprite->scale_factor = 0.40;
 	exploded_sprite->visible = false;
-	exploded_sprite->set_global_position( sprite->get_sprite_raw().getPosition()- cast<sf::Vector2f>( sprite->get_global_bounds().size * 0.5 ) );
+	exploded_sprite->set_local_position( { sprite_size.height / 2, sprite_size.width / 2 } );
 	exploded_sprite->layer = 3;
 
 	health = attach<Health>();
@@ -92,7 +92,7 @@ Player::Player()
 		exploded_sprite->visible = true;
 		exploded_sprite->initial_velocity = velocity;
 		// @ToDo: Redo Exploded_Sprite::initialize to avoid calling it here. Call it in constructor, instead.
-		exploded_sprite->initialize( { 120, 180 } );
+		exploded_sprite->initialize( { 50, 100 } );
 		exploded_sprite->explode();
 		get_node( "root/game_camera" )->cast_to<Camera>()->add_shake_trauma( 0.25f );
 	} ) );

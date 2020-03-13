@@ -24,7 +24,7 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 
 	// in percents, <0, 100> - in texture space but with offset so it's in correct position
 	constant vert_position = [&]( r64 x, r64 y ) {
-		return texture_position( x, y ) + get_global_position();
+		return texture_position( x, y );
 	};
 
 	size_t vertex_idx{ 0 };
@@ -66,15 +66,15 @@ void Exploded_Sprite::initialize( Vec2 const& max_velocity )
 	initialize_next_vertex( vert_position( 50, 100 ), texture_position( 50, 100 ) );
 
 	constant random_velocity = [&max_velocity] {
-		return Vec2{ max_velocity } *Vec2{ random_real( 0.2, 1 ), random_real( -1, 1 ) };
+		return Vec2{ max_velocity } *random_real( -1, 1 );
 	};
 
 	for ( auto& element : elements ) {
 		element.velocity = initial_velocity + random_velocity();
-		element.center = Vec2{ texture->getSize() } *0.25f;
 
-		element.render_states.transform = sf::Transform::Identity;
-		element.render_states.transform.rotate( get_rotation(), get_global_position() + Vec2( texture->getSize() ) * 0.5f );
+		element.transformable.setPosition( get_global_position() );
+		element.transformable.setOrigin( Vec2( texture->getSize() ) * 0.5 );
+		element.transformable.setRotation( get_rotation() );
 	}
 
 	elements_initialized = true;
@@ -119,7 +119,7 @@ void Exploded_Sprite::update( r32 dt )
 		return;
 
 	if ( get_scale().x >= 0.01 and get_scale().y >= 0.01 )
-		set_scale( get_scale() * ( Vec2{ 1, 1 } -Vec2{ scale_factor, scale_factor } *dt ) );
+		set_scale( get_scale() - Vec2{ scale_factor, scale_factor } *dt );
 	else {
 		s_done_scaling.emit();
 		elements_initialized = false;
@@ -129,18 +129,17 @@ void Exploded_Sprite::update( r32 dt )
 	rotate( degress_per_second * dt );
 
 	for ( auto& element : elements ) {
-		for ( size_t i = 0; i < 4; i++ ) {
-			auto& vertex = element.vertices[i];
-			vertex.position += cast<sf::Vector2f>( element.velocity * dt );
-		}
+		element.transformable.move( element.velocity * dt );
+		element.transformable.setScale( get_scale() );
+		element.transformable.setRotation( get_rotation()  );
 
-		element.render_states.transform.rotate( degress_per_second * dt * element.random_scalar_for_rotation, element.center + element.vertices[0].position );
-		element.render_states.transform.scale( Vec2{ 1,1 } -Vec2{ scale_factor, scale_factor } *dt, element.center + element.vertices[0].position );
 	}
+
 
 	if ( not transformation_initialized )
 		transformation_initialized = true;
 }
+
 
 void Exploded_Sprite::draw( Drawing_Set& set )
 {
@@ -149,6 +148,7 @@ void Exploded_Sprite::draw( Drawing_Set& set )
 
 	for ( auto& element : elements ) {
 		element.render_states.texture = texture;
+		element.render_states.transform = element.transformable.getTransform();
 		set.add_drawable( element.vertices, layer, element.render_states );
 	}
 }
