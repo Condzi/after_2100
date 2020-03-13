@@ -42,6 +42,7 @@ Enemy_Base::Enemy_Base()
 
 	explosion = attach<Explosion>();
 	explosion->layer = 2;
+	explosion->set_scale( Vec2{ 1,1 } * random_real( 1, 1.3 ) );
 	explosion->setup();
 
 

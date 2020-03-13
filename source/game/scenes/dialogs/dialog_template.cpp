@@ -25,9 +25,9 @@ Dialog_Template::Dialog_Template()
 	arrow_image->set_texture_from_name( "arrow" );
 
 	dialog_text->character_size    = DIALOG_TEXT_CHAR_SIZE;
-	character_name->character_size = CHARACTER_NAME_CHAR_SIZE;
+	character_name->character_size = ACTOR_NAME_CHAR_SIZE;
 
-	dialog_text->update_vertices( CHARACTER_LIMIT_PER_LINE );
+	dialog_text->update_vertices( CHAR_LIMIT_PER_LINE );
 	character_name->update_vertices();
 
 	character_height = dialog_text->get_global_bounds().size.height;
@@ -172,7 +172,7 @@ void Dialog_Template::set_up_dialog( std::string const& id )
 	character_name->string.set_locale_name( character_data.at( "name" ) );
 	character_name->update_vertices();
 	dialog_text->string.set_locale_name( current_dialog_data.text );
-	dialog_text->update_vertices( CHARACTER_LIMIT_PER_LINE );
+	dialog_text->update_vertices( CHAR_LIMIT_PER_LINE );
 
 	if ( not current_dialog_data.responses.empty() ) {
 		selected_response = 1;
