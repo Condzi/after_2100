@@ -103,7 +103,7 @@ void Dialog_Template::input( sf::Event const& event )
 				if ( selected_response > 1 )
 					selected_response--;
 			} else if ( sf::Keyboard::S is event.key.code )
-				if ( selected_response < current_dialog_data.responses.size()+1 )
+				if ( selected_response < current_dialog_data.responses.size() )
 					selected_response++;
 
 			update_arrow_position();
