@@ -21,14 +21,19 @@
     "pl": "Wyjdź"
   },
 
-  "#loc_english": {
-    "en": "english",
-    "pl": "english"
+  "#loc_language": {
+    "en": "Language:",
+    "pl": "Język:"
   },
 
-  "#loc_polish": {
-    "en": "polski",
-    "pl": "polski"
+  "#loc_en": {
+    "en": "#EN#",
+    "pl": "#EN#"
+  },
+
+  "#loc_pl": {
+    "en": "#PL#",
+    "pl": "#PL#"
   },
 
   "#loc_level_failed": {

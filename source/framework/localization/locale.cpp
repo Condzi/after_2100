@@ -21,6 +21,7 @@ void Locale::set_current_language( std::string const& language )
 		engine_log_error( "'{}' language is not avaible.", language );
 	else {
 		current_language = language;
+		engine_log_info( "Current language: {}.", current_language );
 		G_Locale.reload();
 		s_language_change.emit();
 	}

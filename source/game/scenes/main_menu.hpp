@@ -20,4 +20,6 @@ private:
 	Rich_Text* text_title;
 	Clickable_Label* label_new_game;
 	Clickable_Label* label_exit;
+	Rich_Text* text_language;
+	Clickable_Label* label_language_selection;
 };
