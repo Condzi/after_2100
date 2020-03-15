@@ -31,7 +31,7 @@ public:
 
 private:
 	compile_constant VELOCITY_MAX = 280.0f;
-	compile_constant SLOWING_MULTIPLIER = 0.92f;
+	compile_constant SLOWING_MULTIPLIER = 2.0f;
 	compile_constant ACCELERATION_MULTIPLIER = 0.05f;
 	compile_constant TILT_MULTIPLIER = 0.09f;
 
@@ -54,7 +54,7 @@ private:
 	Sound_Source* low_health_sound;
 
 	void check_movement_keys();
-	void slow_down();
+	void slow_down( r32 dt );
 	void accelerate( r32 dt );
 	void correct_for_boundary_collision();
 	void update_tilt_transformation();

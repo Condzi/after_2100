@@ -42,7 +42,15 @@ int main()
 	auto gm = G_Root.attach<Game_Master>();
 	gm->change_level<Main_Menu>();
 
-	G_App.run();
+	try {
+		G_App.run();
+	}
+	catch ( std::exception const& ex ) {
+		engine_log_critical( "==============================" );
+		engine_log_critical( "Exception thrown! Info:" );
+		engine_log_critical( "\"{}\"", ex.what() );
+		engine_log_critical( "==============================" );
+	}
 
 	G_Performance_Profiler.end_session();
 }

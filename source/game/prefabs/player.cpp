@@ -179,11 +179,11 @@ void Player::update( r32 dt )
 	G_Audio_Listener.set_position( get_global_position() );
 
 	check_movement_keys();
-	move( velocity * dt );
-	correct_for_boundary_collision();
-	slow_down();
 	accelerate( dt );
+	correct_for_boundary_collision();
 	update_tilt_transformation();
+	move( velocity * dt );
+	slow_down( dt );
 }
 
 void Player::check_movement_keys()
@@ -213,22 +213,25 @@ void Player::check_movement_keys()
 
 		// @ToDo: Separate variable for recoil? According to Newton's law (am = -am)
 		// we need some mass multiplier.
-		constant recoil = gun_a->get_horizontal_velocity() * 0.8;
-		velocity.x -= recoil;
+		constant recoil = gun_a->get_horizontal_velocity() * 0.9;
+		if ( std::abs( velocity.x - recoil ) < VELOCITY_MAX )
+			velocity.x -= recoil;
+		else
+			velocity.x = -VELOCITY_MAX;
 	}
 }
 
-void Player::slow_down()
+void Player::slow_down( r32 dt )
 {
 	G_Profile_Function();
 
 	if ( acceleration_direction.x is 0 ) {
-		velocity.x *= SLOWING_MULTIPLIER;
+		velocity.x -= velocity.x * SLOWING_MULTIPLIER * dt;
 		if ( std::fabs( velocity.x ) < 1 )
 			velocity.x = 0;
 	}
 	if ( acceleration_direction.y is 0 ) {
-		velocity.y *= SLOWING_MULTIPLIER;
+		velocity.y -= velocity.y * SLOWING_MULTIPLIER * dt;
 		if ( std::fabs( velocity.y ) < 1 )
 			velocity.y = 0;
 	}

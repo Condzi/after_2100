@@ -112,17 +112,20 @@ Level_1::Level_1()
 		if ( G_Flags[Flags::Pause] )
 			return;
 
-		constant rotation_delta = -16.0deg * dt;
+		constant rotation_delta = -17.8deg * dt;
 		if ( cam->get_rotation() + rotation_delta < 0 )
 			cam->set_rotation( 0.0deg );
 		else
 			cam->rotate( rotation_delta );
 	} ) );
-	camera.max_velocity = 130;
+	camera.max_velocity = 140.8;
 	camera.minimum_distance = 1.0px;
 	camera.set_path( *camera_path );
 	camera.start_following();
 	camera.update_transformations();
+	// Bufgix for camera being in wrong position in the first frame of the rendered level.
+	// @ToDo: may cause GUI camera bugs?
+	G_Window.get_raw_window().setView( camera.get_view() );
 	///////////////////////////////
 
 	log_info( "{} instantiated.", name );
@@ -130,7 +133,9 @@ Level_1::Level_1()
 
 void Level_1::update( r32 dt )
 {
-	if ( last_stage and enemy_spawner->is_finished() and enemy_spawner->get_enemies_alive_count() is 0 ) 		{
+	if ( last_stage and
+		 enemy_spawner->is_finished() and
+		 enemy_spawner->get_enemies_alive_count() is 0 ) {
 		G_Flags[Flags::Level_Success] = true;
 	}
 }
