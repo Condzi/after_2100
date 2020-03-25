@@ -64,7 +64,7 @@ void Enemy_Spawner::start()
 		return;
 	}
 
-	if ( spawning_function is false ) {
+	if ( !spawning_function ) {
 		log_error( "No spawning function set for Enemy_Spawner. (no type was assigned)" );
 		return;
 	}

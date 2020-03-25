@@ -78,9 +78,6 @@ void Camera::stop_shaking()
 
 void Camera::update( r32 dt )
 {
-	if ( G_App.is_paused() )
-		return;
-
 	Path_Follower::update( dt );
 
 	update_shake( dt );

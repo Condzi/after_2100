@@ -27,7 +27,7 @@ int main()
 	engine_log_info( "DO_PROFILING = {}", DO_PROFILING );
 	engine_log_info( "LOCALE = {}", G_Locale.get_current_language() );
 
-	G_Performance_Profiler.begin_session( "Initlialization", "profile-initialization.json" );
+	G_Performance_Profiler.begin_session( "Initialization", "profile-initialization.json" );
 
 	if ( splash_screen() returned 1 ) {
 		engine_log_info( "Splash screen exit." );

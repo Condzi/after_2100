@@ -25,11 +25,8 @@ public:
 
 	// @ToDo: Probably somewhere else?
 	[[nodiscard]] auto get_root()  -> Root&;
-	[[nodiscard]] auto is_paused() const -> bool;
 
 	void exit_game();
-	// Just toggles flag. It's your job to handle it.
-	void toggle_pause();
 
 	static Application& get_instance();
 
@@ -40,7 +37,6 @@ private:
 	Camera* gui_camera;
 
 	bool exit{ false };
-	bool paused{ false };
 	Root root;
 
 	Application() = default;

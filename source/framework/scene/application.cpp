@@ -81,19 +81,9 @@ auto Application::get_root() -> Root&
 	return root;
 }
 
-auto Application::is_paused() const -> bool
-{
-	return paused;
-}
-
 void Application::exit_game()
 {
 	exit = true;
-}
-
-void Application::toggle_pause()
-{
-	paused = !paused;
 }
 
 Application& Application::get_instance()
