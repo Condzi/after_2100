@@ -24,7 +24,7 @@ void Sprite::update( r32 delta )
 void Sprite::draw( Drawing_Set& drawing_set )
 {
 	if ( visible )
-		report_warning_if( drawing_set.add_drawable( sprite, layer ) returned false );
+		drawing_set.add_drawable( sprite, layer );
 }
 
 void Sprite::set_texture_from_pointer( sf::Texture const* texture )

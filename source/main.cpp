@@ -80,7 +80,7 @@ s8 splash_screen()
 	// Have to split it to G_Window.initialize and G_App.initialize() because
 	// root has fps_counter label that is positioned relative to window that doesn't
 	// existed yet.
-	G_Window.initialize( 1280, 720, 144, "after_2100" );
+	G_Window.initialize( 1280, 720, 0, "after_2100" );
 
 	auto& window = G_Window.get_raw_window();
 	sf::Event ev;

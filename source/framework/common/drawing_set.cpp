@@ -7,27 +7,28 @@
 
 #include "drawing_set.hpp"
 
+#include <execution>
+
 namespace con
 {
-bool Drawing_Set::Drawable::operator<( Drawable const& second ) const
+void Drawing_Set::add_drawable( sf::Drawable& drawable, s32 const layer, sf::RenderStates const render_states )
 {
-	return layer < second.layer;
-}
-
-bool Drawing_Set::Drawable::operator==( Drawable const& second ) const
-{
-	return &drawable is &second.drawable;
-}
-
-bool Drawing_Set::add_drawable( sf::Drawable const& drawable, s32 const layer, sf::RenderStates const render_states )
-{
-	return drawables.emplace( Drawable{ layer, drawable, render_states } ) != drawables.end();
+	drawables.emplace_back( Drawable{ layer, &drawable, render_states } );
 }
 
 void Drawing_Set::display( sf::RenderTarget& target )
 {
+	std::sort( std::execution::par_unseq, drawables.begin(), drawables.end(), []( auto const& a, auto const& b ) {
+		return a.layer < b.layer;
+	} );
+
 	for ( constant& drawable : drawables )
-		target.draw( drawable.drawable, drawable.render_states );
+		target.draw( *drawable.drawable, drawable.render_states );
+}
+
+Drawing_Set::Drawing_Set()
+{
+	drawables.reserve( 512 );
 }
 
 void Drawing_Set::clear()
