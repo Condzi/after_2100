@@ -14,10 +14,9 @@ Signal<TArgs...>::Signal()
 template <typename ...TArgs>
 auto Signal<TArgs...>::connect( Function function ) -> Signal_Disconnector
 {
-	unique_id_counter++;
 	functions.emplace_back( function );
 
-	return[this, pos = unique_id_counter-1]{
+	return[this, pos = functions.size()-1]{
 
 		if ( functions.empty() or pos > functions.size() ) {
 			// Internal compiler error?

@@ -63,7 +63,7 @@ void Rich_Text::update_vertices( s32 max_char_per_line )
 
 	auto& str = string.get_string();
 
-	// Add \n characters if necassary
+	// Add \n characters if necessary
 	if ( max_char_per_line > 0 and str.getSize() > max_char_per_line ) {
 		s32 last_space_position = -1;
 		s32 char_count = 0; // we can't use i because there are formating characters such as $, # and %

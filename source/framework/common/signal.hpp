@@ -19,7 +19,6 @@ class Signal final
 	using Function = std::function<void( TArgs... )>;
 
 public:
-
 	Signal();
 
 	[[nodiscard]] auto connect( Function function ) -> Signal_Disconnector;
@@ -28,7 +27,6 @@ public:
 private:
 	compile_constant RESERVED = 8;
 
-	size_t                unique_id_counter{ 0 };
 	std::vector<Function> functions;
 };
 }
