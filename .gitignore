@@ -4,5 +4,4 @@
 *.dll
 
 .vs/
-bin/
-intermediate/
+_bin/
