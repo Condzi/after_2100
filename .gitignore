@@ -6,10 +6,3 @@
 .vs/
 bin/
 intermediate/
-dependencies/sfml
-dependencies/nlohmann
-dependencies/spdlog
-log.txt
-performance.json
-profile-initialization.json
-profile-runtime.json
