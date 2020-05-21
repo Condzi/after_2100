@@ -68,6 +68,6 @@ returning Temporary_Allocator::allocate( s32 size ) -> byte*
         highest_mark = mark;
     }
 
-    return memory;
+    return requested_memory;
 }
 }
