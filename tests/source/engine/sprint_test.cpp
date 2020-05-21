@@ -102,4 +102,23 @@ TEST_CASE( "sprint", "engine" )
 		Context.default_allocator = nullptr;
 		Context.temporary_storage_allocator = nullptr;
 	}
+
+	SECTION( "sprint" )
+	{
+		Temporary_Allocator ta;
+		Default_Allocator da;
+		Context.default_allocator = &da;
+		Context.temporary_storage_allocator = &ta;
+		ta.initialize();
+
+
+		constant str = sprint( "value_s32 = %, value_f32 = %, value_str = %."_cs, 1337, 21.37, "Oh, hi Mark!"_cs );
+
+		for ( s32 i = 0; i < str.size; ++i ) {
+			putchar( str.data[i] );
+		}
+
+		Context.default_allocator = nullptr;
+		Context.temporary_storage_allocator = nullptr;
+	}
 }
