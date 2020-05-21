@@ -110,6 +110,10 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\macro_config.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\typedefs.hpp">
       <SubType>
       </SubType>
