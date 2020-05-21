@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include <engine/macro_config.hpp>
+
 namespace con
 {
 using u8  = std::uint8_t;
@@ -22,12 +24,13 @@ using byte = u8;
 #define constant			auto const
 #define compile_constant	static constexpr auto
 #define file_scope			namespace
+#define returning			[[nodiscard]] auto 
+#define pure				void
 
 // 
 //	Defer's macro stuff here
 //
-#define CON_CONCAT_INTERNAL( x, y ) x##y
-#define CON_CONCAT( x, y ) CON_CONCAT_INTERNAL( x, y )
+
 
 namespace priv
 {
