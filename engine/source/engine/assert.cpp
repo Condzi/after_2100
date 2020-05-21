@@ -22,7 +22,7 @@ bool on_assert_fail( char const* const file, char const* const line, char const*
 	// D:/programming/games/after_2100/...
 	compile_constant skip_file_chars = 32;
 
-	if ( IsDebuggerPresent() && false ) {
+	if ( IsDebuggerPresent() ) {
 		constant chars_written = std::snprintf( assert_message_buffer, ASSERT_MESSAGE_BUFFER_SIZE, R"(
 === === === === === === === === === ===
 			Assertion failed!

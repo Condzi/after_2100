@@ -1,14 +1,16 @@
 #pragma once
 
-struct Default_Allocator;
-struct Temporary_Storage_Allocator;
+namespace con
+{
+struct Allocator;
+}
 
 namespace con::priv
 {
 struct Context_Data final
 {
-	Default_Allocator*			 default_allocator = nullptr;
-	Temporary_Storage_Allocator* temporary_storage_allocator = nullptr;
+	Allocator* default_allocator = nullptr;
+	Allocator* temporary_storage_allocator = nullptr;
 };
 
 struct Context_Helper final

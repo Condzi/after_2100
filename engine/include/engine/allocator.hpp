@@ -1,5 +1,7 @@
 #pragma once
 
+#include <engine/context.hpp>
+#include <engine/assert.hpp>
 #include <engine/macro_config.hpp>
 #include <engine/typedefs.hpp>
 
@@ -45,6 +47,8 @@ struct Temporary_Allocator final :
 	// Does nothing.
 	pure free( byte* location, s32 size ) override;
 
+	pure reset();
+
 	pure set_mark( s32 new_mark );
 	returning get_mark() -> s32;
 	returning get_highest_mark() -> s32;
@@ -55,5 +59,21 @@ private:
 	s32 mark;
 	s32 highest_mark;
 };
+
+
+//
+// Definitions
+//
+template <typename T>
+returning Default_Allocator::allocate( s32 amount ) -> T*
+{
+	return reinterpret_cast<T*>( allocate( sizeof( T ) * amount ) );
+}
+
+template <typename T>
+returning Temporary_Allocator::allocate( s32 amount ) -> T*
+{
+	return reinterpret_cast<T*>( allocate( sizeof( T ) * amount ) );
+}
 
 }
