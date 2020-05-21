@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 
+// @Robustness: We're leaking memory here. Not much, but still.
 TEST_CASE( "sprint", "engine" )
 {
 	using namespace con;
@@ -48,8 +49,57 @@ TEST_CASE( "sprint", "engine" )
 		REQUIRE( value_minus_str.data[7] == '5' );
 
 
+		Context.default_allocator = nullptr;
 		Context.temporary_storage_allocator = nullptr;
 	}
 
+	SECTION( "s32" )
+	{
+		Temporary_Allocator ta;
+		Default_Allocator da;
+		Context.default_allocator = &da;
+		Context.temporary_storage_allocator = &ta;
+		ta.initialize();
 
+
+		s32 const value_0     = 0;
+		s32 const value_plus  = 123456789;
+		s32 const value_minus = -987654321;
+
+		CString const value_0_str     = s32_to_cstring( value_0 );
+		CString const value_plus_str  = s32_to_cstring( value_plus );
+		CString const value_minus_str = s32_to_cstring( value_minus );
+
+		REQUIRE( value_0_str.size == 1 );
+		REQUIRE( value_0_str.data[0] == '0' );
+
+		REQUIRE( value_plus_str.size == 9 );
+		REQUIRE( value_plus_str.data[0] == '1' );
+		REQUIRE( value_plus_str.data[1] == '2' );
+		REQUIRE( value_plus_str.data[2] == '3' );
+		REQUIRE( value_plus_str.data[3] == '4' );
+		REQUIRE( value_plus_str.data[4] == '5' );
+		REQUIRE( value_plus_str.data[5] == '6' );
+		REQUIRE( value_plus_str.data[6] == '7' );
+		REQUIRE( value_plus_str.data[7] == '8' );
+		REQUIRE( value_plus_str.data[8] == '9' );
+
+
+		REQUIRE( value_minus_str.size == 10 );
+		REQUIRE( value_minus_str.data[0] == '-' );
+		REQUIRE( value_minus_str.data[1] == '9' );
+		REQUIRE( value_minus_str.data[2] == '8' );
+		REQUIRE( value_minus_str.data[3] == '7' );
+		REQUIRE( value_minus_str.data[4] == '6' );
+		REQUIRE( value_minus_str.data[5] == '5' );
+		REQUIRE( value_minus_str.data[6] == '4' );
+		REQUIRE( value_minus_str.data[7] == '3' );
+		REQUIRE( value_minus_str.data[8] == '2' );
+		REQUIRE( value_minus_str.data[9] == '1' );
+
+
+
+		Context.default_allocator = nullptr;
+		Context.temporary_storage_allocator = nullptr;
+	}
 }
