@@ -15,8 +15,8 @@ TEST_CASE( "sprint", "engine" )
 		Default_Allocator da;
 		Context.default_allocator = &da;
 		Context.temporary_storage_allocator = &ta;
+		da.initialize();
 		ta.initialize();
-
 
 		f32 const value_0     = 0.0f;
 		f32 const value_plus  = 123.321f;
@@ -51,6 +51,7 @@ TEST_CASE( "sprint", "engine" )
 
 		Context.default_allocator = nullptr;
 		Context.temporary_storage_allocator = nullptr;
+		da.shutdown();
 	}
 
 	SECTION( "s32" )
@@ -59,6 +60,7 @@ TEST_CASE( "sprint", "engine" )
 		Default_Allocator da;
 		Context.default_allocator = &da;
 		Context.temporary_storage_allocator = &ta;
+		da.initialize();
 		ta.initialize();
 
 
@@ -101,6 +103,7 @@ TEST_CASE( "sprint", "engine" )
 
 		Context.default_allocator = nullptr;
 		Context.temporary_storage_allocator = nullptr;
+		da.shutdown();
 	}
 
 	SECTION( "sprint" )
@@ -109,6 +112,7 @@ TEST_CASE( "sprint", "engine" )
 		Default_Allocator da;
 		Context.default_allocator = &da;
 		Context.temporary_storage_allocator = &ta;
+		da.initialize();
 		ta.initialize();
 
 		constant str = sprint( "value_s32 = %\nvalue_f32 = %\nvalue_str = %.\n"_cs, 1337, 21.37, "Oh, hi Mark!"_cs );
@@ -121,5 +125,6 @@ TEST_CASE( "sprint", "engine" )
 
 		Context.default_allocator = nullptr;
 		Context.temporary_storage_allocator = nullptr;
+		da.shutdown();
 	}
 }

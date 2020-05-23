@@ -4,6 +4,7 @@
 #include <engine/assert.hpp>
 #include <engine/macro_config.hpp>
 #include <engine/typedefs.hpp>
+#include <engine/bitset.hpp>
 
 namespace con
 {
@@ -31,8 +32,9 @@ struct Default_Allocator final :
 	pure free( byte* location, s32 size ) override;
 
 private:
-	byte* begin;
-	compile_constant size = CON_RESERVED_MEMORY;
+	byte* begin = nullptr;
+	compile_constant reserved_size = CON_RESERVED_MEMORY;
+	Bitset<reserved_size> used_bytes;
 };
 
 // Reserves and manages memory from Default_Allocator
