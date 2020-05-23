@@ -111,12 +111,13 @@ TEST_CASE( "sprint", "engine" )
 		Context.temporary_storage_allocator = &ta;
 		ta.initialize();
 
-
-		constant str = sprint( "value_s32 = %, value_f32 = %, value_str = %."_cs, 1337, 21.37, "Oh, hi Mark!"_cs );
+		constant str = sprint( "value_s32 = %\nvalue_f32 = %\nvalue_str = %.\n"_cs, 1337, 21.37, "Oh, hi Mark!"_cs );
 
 		for ( s32 i = 0; i < str.size; ++i ) {
 			putchar( str.data[i] );
 		}
+
+		printf( "Memory used: %i / %i bytes.\n", ta.get_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 
 		Context.default_allocator = nullptr;
 		Context.temporary_storage_allocator = nullptr;
