@@ -8,3 +8,26 @@ struct Array
     Allocator* allocator = Context.default_allocator;
 };
 ```
+* Logger class:
+    * Global, doesn't send the log data anywhere, just holds it in Temporary Buffer
+    * so you have to manually send the data to console or file
+
+```cpp
+// to use macro or to not use a macro?
+#define con_log( ... ) G_Logger.log( __VA_ARGS__ )
+// call before Temporary Buffer clear!!! maybe at the end of game frame for example
+void flush_logger()
+{
+    // Ptr + size so it's convinient to use CString
+    CString data = G_Logger.data();
+
+    log_to_file(data);
+    // We can probably add some ifdefs here -- we don't want to log to console when we're in
+    // the release mode. We maybe don't want to log to dev terminal either.
+    log_to_console();
+    log_to_dev_terminal();
+    // do other stuff with it?
+
+    // logger data is automatically cleared because it's stored in temporary buffer
+}
+```
