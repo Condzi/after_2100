@@ -7,35 +7,36 @@ namespace con
 pure Default_Allocator::initialize()
 {
 	begin = reinterpret_cast<byte*>( std::malloc( reserved_size ) );
+	used_bytes = reinterpret_cast<Used_Bytes_Bitset*>( std::malloc( sizeof( Used_Bytes_Bitset )  ) );
+	new( used_bytes ) Used_Bytes_Bitset{};
 }
 
 pure Default_Allocator::shutdown()
 {
 	std::free( begin );
+	std::free( used_bytes );
 }
 
 returning Default_Allocator::allocate( s32 size ) -> byte*
 {
-	byte* memory = nullptr;
-
 	s32 idx = 0;
 
 	for ( ; idx < reserved_size - size; ++idx ) {
-		idx = used_bytes.find_first_unset_bit( idx );
-		conassert( idx > reserved_size - size );
+		idx = used_bytes->find_first_unset_bit( idx );
+		conassert( idx < reserved_size - size );
 
-		if ( used_bytes.test( idx + size - 1 ) == false ) {
+		if ( used_bytes->test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
 			for ( ; bit < idx+size - 2; ++bit ) {
-				if ( used_bytes.test( bit ) == true ) {
+				if ( used_bytes->test( bit ) == true ) {
 					idx = idx + size;
 					break;
 				}
 			}
 
 			// Range is clear so we can return this memory.
-			if ( bit == idx + size - 1 ) {
-				used_bytes.set_range( idx, size );
+			if ( bit == idx + size - 2 ) {
+				used_bytes->set_range( idx, size );
 				return begin + idx;
 			}
 		}
@@ -49,7 +50,7 @@ pure Default_Allocator::free( byte* location, s32 size )
 	constant idx = static_cast<s32>( location - begin );
 	conassert( idx + size < reserved_size );
 
-	used_bytes.reset_range( idx, size );
+	used_bytes->reset_range( idx, size );
 }
 
 pure Temporary_Allocator::initialize( s32 reserved )

@@ -32,9 +32,11 @@ struct Default_Allocator final :
 	pure free( byte* location, s32 size ) override;
 
 private:
+	using Used_Bytes_Bitset = Bitset<CON_RESERVED_MEMORY>;
+
 	byte* begin = nullptr;
 	compile_constant reserved_size = CON_RESERVED_MEMORY;
-	Bitset<reserved_size> used_bytes;
+	Used_Bytes_Bitset* used_bytes = nullptr; // allocating on stack causes stack overflow
 };
 
 // Reserves and manages memory from Default_Allocator
