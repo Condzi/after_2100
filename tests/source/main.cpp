@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_DISABLE_EXCEPTIONS
 
-#if 1
+#if 0
 #define CATCH_CONFIG_MAIN
 #include <catch/catch.hpp>
 
@@ -8,10 +8,10 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch/catch.hpp>
 
-#include <engine/assert.hpp>
+#include <engine/entity_base.hpp>
 
 int main()
 {
-	con_assert( 550555==0 );
+	printf( "entity_base = %i", sizeof( con::Entity_Base ) );
 }
 #endif

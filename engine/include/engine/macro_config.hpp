@@ -40,3 +40,9 @@
 #define CON_DATA_FOLDER			"data\\"
 #define CON_ASSETS_FOLDER		CON_DATA_FOLDER "assets\\"
 #define CON_TEXTURES_FOLDER		CON_ASSETS_FOLDER "textures\\"
+
+//
+// Entities stuff
+//
+
+#define CON_MAX_ENTITY_FLAGS 8

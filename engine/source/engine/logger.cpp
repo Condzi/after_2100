@@ -16,7 +16,7 @@ pure Logger::initialize()
 {
 	auto* memory = reinterpret_cast<char*>( Context.default_allocator->allocate( CON_LOGGER_BUFFER_RESERVED_MEMORY ) );
 
-	buffer ={ memory, CON_LOGGER_BUFFER_RESERVED_MEMORY };
+	buffer = { memory, CON_LOGGER_BUFFER_RESERVED_MEMORY };
 	// @Robustness: this const_cast is ugly -- consider adding something like a 
 	// Byte_String / Binary_String?
 	next_free_slot = const_cast<char*>( buffer.data );
