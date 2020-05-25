@@ -68,11 +68,14 @@ We'll use a fasade pattern to hide these?
         * Texture and shader ( do we want shaders? ) is just OpenGL id?
         * Figure out how to handle TTF 
         * Figure out how to handle sounds (low priority)
+    * We can just check every 100ms / 100 frames (maybe counting frames can be less performance consuming since we're not calling timer)
+        for the last file change using `std::filesystem::last_write_time`
 
 ----
 **Bother with this later:**
 * Components as SoA
 * Entities as containers of handles to Components?
+    * remember to treat frame as a state ( and maybe interpolate between them in renderer?)
 * GUI
 * Signals? To notify others about stuff like collision
 * Performance Profiler

@@ -12,6 +12,6 @@
 
 int main()
 {
-	conassert( 550555==0 );
+	con_assert( 550555==0 );
 }
 #endif

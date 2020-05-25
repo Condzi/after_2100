@@ -23,7 +23,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 
 	for ( ; idx < reserved_size - size; ++idx ) {
 		idx = used_bytes->find_first_unset_bit( idx );
-		conassert( idx < reserved_size - size );
+		con_assert( idx < reserved_size - size );
 
 		if ( used_bytes->test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
@@ -48,7 +48,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 pure Default_Allocator::free( byte* location, s32 size )
 {
 	constant idx = static_cast<s32>( location - begin );
-	conassert( idx + size < reserved_size );
+	con_assert( idx + size < reserved_size );
 
 	used_bytes->reset_range( idx, size );
 }

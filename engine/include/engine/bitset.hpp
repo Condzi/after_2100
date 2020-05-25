@@ -39,14 +39,14 @@ private:
 template <s32 TSize, typename TBaseType>
 void Bitset<TSize, TBaseType>::set( s32 idx )
 {
-	conassert( idx < SIZE );
+	con_assert( idx < SIZE );
 	data[idx / BASE_TYPE_SIZE_IN_BITS] |= ( 1 << ( idx%BASE_TYPE_SIZE_IN_BITS ) );
 }
 
 template <s32 TSize, typename TBaseType>
 void Bitset<TSize, TBaseType>::reset( s32 idx )
 {
-	conassert( idx < SIZE );
+	con_assert( idx < SIZE );
 	data[idx / BASE_TYPE_SIZE_IN_BITS] &= ~( 1 << ( idx%BASE_TYPE_SIZE_IN_BITS ) );
 }
 
@@ -56,7 +56,7 @@ pure Bitset<TSize, TBaseType>::set_range( s32 idx, s32 size )
 	// @Performance: we probably can do better than that (setting every byte instead of every individual
 	// bit), but we don't need such microoptimalizations
 
-	conassert( idx + size < SIZE );
+	con_assert( idx + size < SIZE );
 	for ( s32 i = idx; i < idx + size; ++i ) {
 		data[i / BASE_TYPE_SIZE_IN_BITS] |= ( 1 << ( i%BASE_TYPE_SIZE_IN_BITS ) );
 	}
@@ -65,7 +65,7 @@ pure Bitset<TSize, TBaseType>::set_range( s32 idx, s32 size )
 template <s32 TSize, typename TBaseType>
 void Bitset<TSize, TBaseType>::reset_range( s32 idx, s32 size )
 {
-	conassert( idx + size < SIZE );
+	con_assert( idx + size < SIZE );
 	for ( s32 i = idx; i < idx + size; ++i ) {
 		data[i / BASE_TYPE_SIZE_IN_BITS] &= ~( 1 << ( i%BASE_TYPE_SIZE_IN_BITS ) );
 	}
@@ -74,7 +74,7 @@ void Bitset<TSize, TBaseType>::reset_range( s32 idx, s32 size )
 template <s32 TSize, typename TBaseType>
 void Bitset<TSize, TBaseType>::flip( s32 idx )
 {
-	conassert( idx < SIZE );
+	con_assert( idx < SIZE );
 	data[idx/ BASE_TYPE_SIZE_IN_BITS] ^= ( 1 << idx%BASE_TYPE_SIZE_IN_BITS );
 }
 
@@ -87,7 +87,7 @@ void Bitset<TSize, TBaseType>::clear()
 template <s32 TSize, typename TBaseType>
 auto Bitset<TSize, TBaseType>::test( s32 idx ) const -> bool
 {
-	conassert( idx < SIZE );
+	con_assert( idx < SIZE );
 	return ( data[idx / BASE_TYPE_SIZE_IN_BITS] & ( 1 << ( idx % BASE_TYPE_SIZE_IN_BITS ) ) );
 }
 
@@ -100,7 +100,7 @@ returning Bitset<TSize, TBaseType>::find_first_unset_bit( s32 begin ) const -> s
 			continue;
 		}
 		
-		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; true; ++i ) {
+		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; true; ++bit ) {
 			if ( test( bit ) == false ) {
 				return bit;
 			}

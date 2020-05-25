@@ -32,8 +32,8 @@ bool on_assert_fail( char const* const file, char const* const line, char const*
 === === === === === === === === === === 
 )", file + skip_file_chars, line, condition );
 
-		release_conassert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
-		release_conassert( chars_written > 0 );
+		release_con_assert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
+		release_con_assert( chars_written > 0 );
 
 		OutputDebugStringA( assert_message_buffer );
 
@@ -50,8 +50,8 @@ Thank you!
 )", CON_LOGS_FOLDER, file + skip_file_chars, line, condition );
 
 		// Bad idea?
-		release_conassert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
-		release_conassert( chars_written > 0 );
+		release_con_assert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
+		release_con_assert( chars_written > 0 );
 
 		MessageBoxA(
 			NULL,
@@ -80,8 +80,8 @@ void on_glfw_error( s32 error_code, char const* message )
 === === === === === === === === === === 
 )", error_code, message );
 
-		release_conassert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
-		release_conassert( chars_written > 0 );
+		release_con_assert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
+		release_con_assert( chars_written > 0 );
 
 		OutputDebugStringA( assert_message_buffer );
 
@@ -99,8 +99,8 @@ Error code: %i
 )", CON_LOGS_FOLDER, error_code, message );
 
 		// Bad idea?
-		release_conassert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
-		release_conassert( chars_written > 0 );
+		release_con_assert( chars_written < ASSERT_MESSAGE_BUFFER_SIZE );
+		release_con_assert( chars_written > 0 );
 
 		MessageBoxA(
 			NULL,

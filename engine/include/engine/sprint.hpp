@@ -32,39 +32,45 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 {
 	compile_constant args_count = sizeof...( TArgs );
 
-	Temporary_Allocator& temporary_allocator = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_storage_allocator );
 
-	static CString str_args[args_count];
-	{
-		s32 current_arg{ -1 };
-		( void( str_args[++current_arg] = T_to_cstring( args ) ), ... );
-		conassert( current_arg == args_count - 1);
-	}
+	// @Robustness: should we allocate or should we not? hmmm
+	if constexpr ( args_count == 0 ) {
+		return fmt;
+	} else {
+		Temporary_Allocator& temporary_allocator = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_storage_allocator );
 
-	constant final_string_size = [&] {
-		s32 size = fmt.size - args_count; // - args_count because we don't want to count '%'
-		for ( constant str : str_args )
-			size += str.size;
-		return size;
-	}( );
-
-	char* final_string_buffer = temporary_allocator.allocate<char>( final_string_size );
-
-	s32 fmt_it, fs_it, arg_it;
-	fmt_it = fs_it = arg_it = 0;
-	for ( ; fmt_it < fmt.size; ++fmt_it ) {
-		if ( fmt.data[fmt_it] == '%' && arg_it < args_count ) {
-			std::memcpy( final_string_buffer + fs_it, str_args[arg_it].data, str_args[arg_it].size );
-			fs_it += str_args[arg_it].size;
-			++arg_it;
-		} else {
-			final_string_buffer[fs_it] = fmt.data[fmt_it];
-			++fs_it;
+		static CString str_args[args_count];
+		{
+			s32 current_arg{ -1 };
+			( void( str_args[++current_arg] = T_to_cstring( args ) ), ... );
+			con_assert( current_arg == args_count - 1 );
 		}
+
+		constant final_string_size = [&] {
+			s32 size = fmt.size - args_count; // - args_count because we don't want to count '%'
+			for ( constant str : str_args )
+				size += str.size;
+			return size;
+		}( );
+
+		char* final_string_buffer = temporary_allocator.allocate<char>( final_string_size );
+
+		s32 fmt_it, fs_it, arg_it;
+		fmt_it = fs_it = arg_it = 0;
+		for ( ; fmt_it < fmt.size; ++fmt_it ) {
+			if ( fmt.data[fmt_it] == '%' && arg_it < args_count ) {
+				std::memcpy( final_string_buffer + fs_it, str_args[arg_it].data, str_args[arg_it].size );
+				fs_it += str_args[arg_it].size;
+				++arg_it;
+			} else {
+				final_string_buffer[fs_it] = fmt.data[fmt_it];
+				++fs_it;
+			}
+		}
+
+		con_assert( fs_it == final_string_size );
+
+		return { final_string_buffer, final_string_size };
 	}
-
-	conassert( fs_it == final_string_size );
-
-	return { final_string_buffer, final_string_size };
 }
 }
