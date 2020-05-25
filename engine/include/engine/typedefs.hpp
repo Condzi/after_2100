@@ -4,8 +4,28 @@
 
 #include <engine/macro_config.hpp>
 
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/mat4x4.hpp>
+
+
 namespace con
 {
+//
+// GLM stuff
+//
+using v2   = glm::vec2;
+using v3   = glm::vec2;
+using v4   = glm::vec2;
+using mat3 = glm::mat3;
+using mat4 = glm::mat4;
+
+
+//
+//	Typedefs for C++ types.
+//
 using u8  = std::uint8_t;
 using s8  = std::int8_t;
 using u16 = std::uint16_t;
@@ -19,6 +39,10 @@ using f32 = float;
 using f64 = double;
 
 using byte = u8;
+
+//
+// Handy macros
+//
 
 #define unused( x )			( ( void )( x ) )
 #define constant			auto const
@@ -40,8 +64,8 @@ struct Exit_Scope final
 	T lambda;
 	Exit_Scope( T l ) : lambda( l ) {}
 	~Exit_Scope() { lambda(); }
-	Exit_Scope( const Exit_Scope& ) = delete;
-	Exit_Scope& operator=( const Exit_Scope& ) = delete;
+	Exit_Scope( Exit_Scope const& ) = delete;
+	Exit_Scope& operator=( Exit_Scope const& ) = delete;
 };
 
 struct Exit_Scope_Help final
