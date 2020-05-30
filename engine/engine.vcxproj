@@ -119,7 +119,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="include\engine\entity_base.hpp">
+    <ClInclude Include="include\engine\entity.hpp">
       <SubType>
       </SubType>
     </ClInclude>

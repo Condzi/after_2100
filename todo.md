@@ -10,3 +10,10 @@ struct Array
     Allocator* allocator = Context.default_allocator;
 };
 ```
+* Hotloading from a file
+    * just one file for everything? this would simplify stuff
+```cpp
+// from = "all.variables/section" or just "section" if we have only one file
+#define Hotload_Type(name, type, from) type& name = Hotload_Watch<type>(from, #name);
+```
+^^ we are using a reference because Hotload_Watch returns us a reference from global table of content

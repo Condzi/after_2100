@@ -32,7 +32,6 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 {
 	compile_constant args_count = sizeof...( TArgs );
 
-
 	// @Robustness: should we allocate or should we not? hmmm
 	if constexpr ( args_count == 0 ) {
 		return fmt;
@@ -48,8 +47,9 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 
 		constant final_string_size = [&] {
 			s32 size = fmt.size - args_count; // - args_count because we don't want to count '%'
-			for ( constant str : str_args )
+			for ( constant str : str_args ) {
 				size += str.size;
+			}
 			return size;
 		}( );
 

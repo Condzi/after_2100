@@ -11,7 +11,7 @@ namespace con::priv
 
 #if CON_DEBUG
 // @Robustess: Add math_conassert
-#define con_assert( x ) unused( ( !!( x ) ) || ( con::priv::on_assert_fail( __FILE__, CON_STR( __LINE__ ), #x ) ) )
+#define con_assert( x )  unused( ( !!( x ) ) || ( con::priv::on_assert_fail( __FILE__, CON_STR( __LINE__ ), #x ) ) )
 #else
 #define con_assert( x ) 
 #endif
