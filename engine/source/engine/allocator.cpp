@@ -29,7 +29,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 			s32 bit = idx + 1;
 			for ( ; bit < idx+size - 2; ++bit ) {
 				if ( used_bytes->test( bit ) == true ) {
-					idx = idx + size;
+					idx = idx + bit;
 					break;
 				}
 			}
@@ -47,6 +47,10 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 
 void Default_Allocator::free( byte* location, s32 size )
 {
+	if ( size <= 0 ) {
+		return;
+	}
+
 	constant idx = static_cast<s32>( location - begin );
 	con_assert( idx + size < reserved_size );
 

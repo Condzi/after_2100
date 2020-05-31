@@ -25,6 +25,9 @@
 #define CON_TEMPORARY_STORAGE_RESERVED_MEMORY  CON_MEGABYTES( 8 )
 #define CON_LOGGER_BUFFER_RESERVED_MEMORY  CON_MEGABYTES( 1 )
 
+//
+//	Debug flags
+//
 #define CON_GL_DEBUG false
 
 #ifdef NDEBUG
@@ -40,10 +43,16 @@
 #define CON_DATA_FOLDER			"data\\"
 #define CON_ASSETS_FOLDER		CON_DATA_FOLDER "assets\\"
 #define CON_TEXTURES_FOLDER		CON_ASSETS_FOLDER "textures\\"
-
+#define CON_CONFIG_FILE			CON_DATA_FOLDER "local.variables"
 //
 // Entities stuff
 //
 
 #define CON_ENTITIES_COUNT 128
 #define CON_MAX_ENTITY_FLAGS 8
+
+//
+// Config file stuff
+//
+#define CON_CONFIG_SECTION_MARK ":/"
+#define CON_CONFIG_COMMENT_MARK "#"

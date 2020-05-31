@@ -7,7 +7,7 @@ namespace con
 struct CString final
 {
 	// Holds 'size' characters + \0 (but we don't include NULL in our size variable)
-	char const* const data =  nullptr;
+	char const* const data = nullptr;
 	// @Robustness: We don't really have that log strings. Maybe we can use s16 here?
 	s32 const size = 0;
 
@@ -16,8 +16,13 @@ struct CString final
 	template <s32 SIZE>
 	constexpr CString( char const ( &cstr )[SIZE] );
 
+	returning begins_with( CString str ) const -> bool;
+
 	CString& operator=( CString const& other );
 };
+
+returning operator==( CString const& lhs, CString const rhs ) -> bool;
+returning hash_cstring( CString cstring ) -> u32;
 
 //
 // Definitions

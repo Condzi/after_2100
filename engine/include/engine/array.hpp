@@ -11,12 +11,15 @@ template <typename T>
 class Array final
 {
 public:
-	explicit Array( s32 the_size_, Allocator* allocator_ = Context.default_allocator );
-	~Array();
+	Array() = default;
+
+	void initialize( s32 the_size_, Allocator* allocator_ = Context.default_allocator );
+	void shutdown();
 
 	returning operator[]( s32 idx ) -> T&;
 	returning operator[]( s32 idx ) const -> T const&;
 
+	returning data() -> T*;
 	returning size() const -> s32;
 
 private:
@@ -29,40 +32,49 @@ private:
 //	Definitions
 //
 
-template<typename T>
-Array<T>::Array( s32 the_size_, Allocator* allocator_ )
+template <typename T>
+void Array<T>::initialize( s32 the_size_, Allocator* allocator_ )
 {
 	con_assert( the_size_ > 0 );
 	con_assert( allocator_ != nullptr );
+	con_assert( begin == nullptr ); // You have to shutdown the array first before reinitializing it.
 
 	allocator = allocator_;
 	size_ = the_size_;
 
-	begin = reinterpret_cast<T*>( allocator->allocate( size_ ) );
+	begin = reinterpret_cast<T*>( allocator->allocate( sizeof( T ) * size_ ) );
 }
 
 template<typename T>
-Array<T>::~Array()
+void Array<T>::shutdown()
 {
-	allocator->free( begin, size_ );
+	allocator->free( reinterpret_cast<byte*>( begin ), sizeof( T ) * size_ );
+	begin = nullptr;
+	size_ = -1;
 }
 
 template<typename T>
 returning Array<T>::operator[]( s32 idx ) -> T&
 {
-	con_assert( idx > 0 );
+	con_assert( idx >= 0 );
 	con_assert( idx < size_ );
 
-	return begin + idx;
+	return *( begin + idx );
 }
 
 template<typename T>
 returning Array<T>::operator[]( s32 idx ) const -> T const&
 {
-	con_assert( idx > 0 );
+	con_assert( idx >= 0 );
 	con_assert( idx < size_ );
 
-	return begin + idx;
+	return *( begin + idx );
+}
+
+template<typename T>
+returning Array<T>::data() -> T*
+{
+	return begin;
 }
 
 template<typename T>

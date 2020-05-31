@@ -1,0 +1,9 @@
+# I'm a comment!
+:/display
+# I'm a comment, too!
+vsync true
+window_size 1920 1080
+
+:/debug
+dev_console false
+# Another comment.

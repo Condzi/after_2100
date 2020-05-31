@@ -74,8 +74,9 @@ struct Exit_Scope_Help final
 };
 
 }
-#define defer	 constant CON_CONCAT( defer__, __LINE__ ) = con::priv::Exit_Scope_Help{} + [&]
+#define defer  constant CON_CONCAT( defer__, __LINE__ ) = con::priv::Exit_Scope_Help{} + [&]
 //
 // End of defer's macro stuff.
 //
+
 }
