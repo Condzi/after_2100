@@ -107,6 +107,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\array.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\assert.hpp">
       <SubType>
       </SubType>
@@ -120,6 +124,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="include\engine\entity.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="include\engine\entity_manager.hpp">
       <SubType>
       </SubType>
     </ClInclude>
