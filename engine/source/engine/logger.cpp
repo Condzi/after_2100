@@ -2,7 +2,7 @@
 
 namespace con
 {
-pure Logger::set_instance( Logger* instance_ )
+void Logger::set_instance( Logger* instance_ )
 {
 	instance = instance_;
 }
@@ -12,7 +12,7 @@ returning Logger::get_instance() -> Logger&
 	return *instance;
 }
 
-pure Logger::initialize()
+void Logger::initialize()
 {
 	auto* memory = reinterpret_cast<char*>( Context.default_allocator->allocate( CON_LOGGER_BUFFER_RESERVED_MEMORY ) );
 
@@ -22,12 +22,12 @@ pure Logger::initialize()
 	next_free_slot = const_cast<char*>( buffer.data );
 }
 
-pure Logger::shutdown()
+void Logger::shutdown()
 {
 	Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( buffer.data ) ), buffer.size );
 }
 
-pure Logger::log( CString message, s32 indent )
+void Logger::log( CString message, s32 indent )
 {
 	constant end = buffer.data + buffer.size;
 	con_assert( next_free_slot +  message.size + indent < end );
@@ -41,7 +41,7 @@ pure Logger::log( CString message, s32 indent )
 	next_free_slot += message.size;
 }
 
-pure Logger::reset_buffer()
+void Logger::reset_buffer()
 {
 	next_free_slot = const_cast<char*>( buffer.data );
 }

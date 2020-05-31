@@ -20,16 +20,16 @@ public:
 	compile_constant BASE_TYPE_SIZE_IN_BITS = static_cast<s32>( sizeof( TBaseType ) * 8 );
 	compile_constant SIZE_IN_BASE_TYPES = SIZE / BASE_TYPE_SIZE_IN_BITS + 1;
 
-	pure set( s32 idx );
-	pure reset( s32 idx );
-	pure set_range( s32 idx, s32 size );
-	pure reset_range( s32 idx, s32 size );
+	void set( s32 idx );
+	void reset( s32 idx );
+	void set_range( s32 idx, s32 size );
+	void reset_range( s32 idx, s32 size );
 
-	pure flip( s32 idx );
-	pure clear();
+	void flip( s32 idx );
+	void clear();
 	returning test( s32 idx ) const -> bool;
 
-	returning find_first_unset_bit( s32 begin = 0 )const -> s32;
+	returning find_first_unset_bit( s32 begin = 0 ) const -> s32;
 
 private:
 	TBaseType data[SIZE_IN_BASE_TYPES] = { 0 };
@@ -51,7 +51,7 @@ void Bitset<TSize, TBaseType>::reset( s32 idx )
 }
 
 template <s32 TSize, typename TBaseType>
-pure Bitset<TSize, TBaseType>::set_range( s32 idx, s32 size )
+void Bitset<TSize, TBaseType>::set_range( s32 idx, s32 size )
 {
 	// @Performance: we probably can do better than that (setting every byte instead of every individual
 	// bit), but we don't need such microoptimalizations

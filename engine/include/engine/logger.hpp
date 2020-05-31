@@ -10,14 +10,14 @@ namespace con
 class Logger final
 {
 public:
-	pure static set_instance( Logger* instance_ );
+	void static set_instance( Logger* instance_ );
 	returning static get_instance() -> Logger&;
 
-	pure initialize();
-	pure shutdown();
+	void initialize();
+	void shutdown();
 
-	pure log( CString message, s32 indent = 0 );
-	pure reset_buffer();
+	void log( CString message, s32 indent = 0 );
+	void reset_buffer();
 
 	returning get_buffer() -> CString;
 

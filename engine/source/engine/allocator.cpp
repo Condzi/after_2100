@@ -4,14 +4,14 @@
 
 namespace con
 {
-pure Default_Allocator::initialize()
+void Default_Allocator::initialize()
 {
 	begin = reinterpret_cast<byte*>( std::malloc( reserved_size ) );
 	used_bytes = reinterpret_cast<Used_Bytes_Bitset*>( std::malloc( sizeof( Used_Bytes_Bitset )  ) );
 	new( used_bytes ) Used_Bytes_Bitset{};
 }
 
-pure Default_Allocator::shutdown()
+void Default_Allocator::shutdown()
 {
 	std::free( begin );
 	std::free( used_bytes );
@@ -45,7 +45,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 	return nullptr;
 }
 
-pure Default_Allocator::free( byte* location, s32 size )
+void Default_Allocator::free( byte* location, s32 size )
 {
 	constant idx = static_cast<s32>( location - begin );
 	con_assert( idx + size < reserved_size );
@@ -53,25 +53,25 @@ pure Default_Allocator::free( byte* location, s32 size )
 	used_bytes->reset_range( idx, size );
 }
 
-pure Temporary_Allocator::initialize( s32 reserved )
+void Temporary_Allocator::initialize( s32 reserved )
 {
 	memory = Context.default_allocator->allocate( reserved );
 	size = reserved;
 	mark = highest_mark = 0;
 }
 
-pure Temporary_Allocator::free( byte* location, s32 size )
+void Temporary_Allocator::free( byte* location, s32 size )
 {
 	unused( location );
 	unused( size );
 }
 
-pure Temporary_Allocator::reset()
+void Temporary_Allocator::reset()
 {
 	mark = 0;
 }
 
-pure Temporary_Allocator::set_mark( s32 new_mark )
+void Temporary_Allocator::set_mark( s32 new_mark )
 {
 	mark = new_mark;
 }

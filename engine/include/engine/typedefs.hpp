@@ -49,7 +49,6 @@ using byte = u8;
 #define compile_constant	static constexpr auto
 #define file_scope			namespace
 #define returning			[[nodiscard]] auto 
-#define pure				void
 
 // 
 //	Defer's macro stuff here

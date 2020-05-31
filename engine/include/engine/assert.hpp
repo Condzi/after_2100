@@ -6,7 +6,7 @@
 namespace con::priv
 {
 [[noreturn]] bool on_assert_fail( char const* const file, char const* const line, char const* const condition );
-[[noreturn]] pure on_glfw_error( s32 error_code, char const* message );
+[[noreturn]] void on_glfw_error( s32 error_code, char const* message );
 }
 
 #if CON_DEBUG

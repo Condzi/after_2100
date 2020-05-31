@@ -11,7 +11,7 @@ namespace con
 struct Allocator
 {
 	returning virtual allocate( s32 size ) -> byte* = 0;
-	pure virtual free( byte* location, s32 size ) = 0;
+	void virtual free( byte* location, s32 size ) = 0;
 };
 
 // @ToDo: Make 4 byte sized blocks and keep track of free memory using
@@ -22,14 +22,14 @@ struct Default_Allocator final :
 {
 	// @ToDo:
 	// Allocates CON_RESERVED_MEMORY amount of memory.
-	pure initialize();
-	pure shutdown();
+	void initialize();
+	void shutdown();
 
 	returning allocate( s32 size ) -> byte* override;
 	// Just allocates amount*sizeof(T) bytes and does reinterpret_cast 
 	template <typename T>
 	returning allocate( s32 amount = 1 ) -> T*;
-	pure free( byte* location, s32 size ) override;
+	void free( byte* location, s32 size ) override;
 
 private:
 	using Used_Bytes_Bitset = Bitset<CON_RESERVED_MEMORY>;
@@ -43,17 +43,17 @@ private:
 struct Temporary_Allocator final :
 	Allocator
 {
-	pure initialize( s32 reserved = CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
+	void initialize( s32 reserved = CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 
 	returning allocate( s32 size ) -> byte* override;
 	template <typename T>
 	returning allocate( s32 amount = 1 ) -> T*;
 	// Does nothing.
-	pure free( byte* location, s32 size ) override;
+	void free( byte* location, s32 size ) override;
 
-	pure reset();
+	void reset();
 
-	pure set_mark( s32 new_mark );
+	void set_mark( s32 new_mark );
 	returning get_mark() -> s32;
 	returning get_highest_mark() -> s32;
 
