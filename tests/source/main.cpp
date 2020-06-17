@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_DISABLE_EXCEPTIONS
 
-#if 0
+#if 1
 #define CATCH_CONFIG_MAIN
 #include <catch/catch.hpp>
 

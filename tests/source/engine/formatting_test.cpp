@@ -127,3 +127,19 @@ TEST_CASE( "sprint", "engine" )
 		da.shutdown();
 	}
 }
+
+TEST_CASE( "CString to T", "engine" )
+{
+	using namespace con;
+
+	s32 const s32_value = 42069420;
+	f32 const f32_value = 6969.69420f;
+	CString const s32_str = "42069420";
+	CString const f32_str = "6969.69420";
+
+	s32 const s32_converted = cstring_to_s32( s32_str );
+	f32 const f32_converted = cstring_to_f32( f32_str );
+
+	REQUIRE( s32_converted == s32_value );
+	REQUIRE( f32_converted == f32_value );
+}

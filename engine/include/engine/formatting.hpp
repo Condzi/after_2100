@@ -9,8 +9,31 @@
 
 namespace con
 {
+//
+//	Value -> CString
+//
 returning s32_to_cstring( s32 value ) -> CString;
 returning f32_to_cstring( f32 value ) -> CString;
+
+template <typename T>
+returning T_to_cstring( T value ) -> CString;
+
+// @ToDo: benchmark against C
+template <typename ...TArgs>
+returning sprint( CString fmt, TArgs ...args ) -> CString;
+
+//
+//	CString -> Value
+//
+returning cstring_to_s32( CString str ) -> s32;
+returning cstring_to_f32( CString str ) -> f32;
+
+template <typename T>
+returning cstring_to_T( CString str ) -> T;
+
+//
+//	Definitions
+//
 
 template <typename T>
 returning T_to_cstring( T value ) -> CString
@@ -22,11 +45,10 @@ returning T_to_cstring( T value ) -> CString
 	} else if constexpr ( std::is_floating_point_v<T> ) {
 		return f32_to_cstring( static_cast<f32>( value ) );
 	} else {
-		static_assert( false, "Unsupported type. Maybe you forget _cs?" );
+		static_assert( false, "Unsupported type (T to CString). Maybe you forget _cs?" );
 	}
 }
 
-// @ToDo: benchmark against C
 template <typename ...TArgs>
 returning sprint( CString fmt, TArgs ...args ) -> CString
 {
@@ -71,6 +93,20 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 		con_assert( fs_it == final_string_size );
 
 		return { final_string_buffer, final_string_size };
+	}
+}
+
+template <typename T>
+returning cstring_to_T( CString str ) -> T
+{
+	if constexpr ( std::is_same_v<T, CString> ) {
+		return str;
+	} else if constexpr ( std::is_integral_v<T> ) {
+		return cstring_to_s32( str );
+	} else if constexpr ( std::is_floating_point_v<T> ) {
+		return cstring_to_f32( str );
+	} else {
+		static_assert( false, "Unsupported type (CString to T)." );
 	}
 }
 }

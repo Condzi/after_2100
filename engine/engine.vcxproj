@@ -166,7 +166,7 @@
     <ClCompile Include="source\engine\config_file.cpp" />
     <ClCompile Include="source\engine\cstring.cpp" />
     <ClCompile Include="source\engine\logger.cpp" />
-    <ClCompile Include="source\engine\sprint.cpp" />
+    <ClCompile Include="source\engine\formatting.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

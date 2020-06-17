@@ -104,7 +104,7 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\engine\sprint_test.cpp">
+    <ClCompile Include="source\engine\formatting_test.cpp">
       <SubType>
       </SubType>
     </ClCompile>

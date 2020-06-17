@@ -38,4 +38,24 @@ returning f32_to_cstring( f32 value ) -> CString
 
 	return { string_data, string_size };
 }
+
+returning cstring_to_s32( CString str ) -> s32
+{
+	s32 converted_value = 0;
+	constant errc = std::from_chars( str.data, str.data + str.size, converted_value ).ec;
+
+	con_assert( errc == std::errc{} );
+
+	return converted_value;
+}
+
+returning cstring_to_f32( CString str ) -> f32
+{
+	f32 converted_value = 0;
+	constant errc = std::from_chars( str.data, str.data + str.size, converted_value ).ec;
+
+	con_assert( errc == std::errc{} );
+
+	return converted_value;
+}
 }
