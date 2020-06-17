@@ -11,7 +11,7 @@ CString::CString( char const* const runtime_str, s32 size_ ) :
 
 returning CString::begins_with( CString str ) const -> bool
 {
-	return size > str.size && memcmp( data, str.data, str.size ) == 0;
+	return size >= str.size && memcmp( data, str.data, str.size ) == 0;
 }
 
 CString& CString::operator=( CString const& other )

@@ -27,7 +27,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 
 		if ( used_bytes->test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
-			for ( ; bit < idx+size - 2; ++bit ) {
+			for ( ; bit < idx+size - 1; ++bit ) {
 				if ( used_bytes->test( bit ) == true ) {
 					idx = idx + bit;
 					break;
@@ -35,7 +35,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 			}
 
 			// Range is clear so we can return this memory.
-			if ( bit == idx + size - 2 ) {
+			if ( bit == idx + size - 1 ) {
 				used_bytes->set_range( idx, size );
 				return begin + idx;
 			}

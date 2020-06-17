@@ -3,7 +3,7 @@
 #include <engine/context.hpp>
 #include <engine/typedefs.hpp>
 #include <engine/cstring.hpp>
-#include <engine/sprint.hpp>
+#include <engine/formatting.hpp>
 
 namespace con
 {

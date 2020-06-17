@@ -1,5 +1,5 @@
 #include <catch/catch.hpp>
-#include <engine/sprint.hpp>
+#include <engine/formatting.hpp>
 
 #include <sstream>
 #include <string>

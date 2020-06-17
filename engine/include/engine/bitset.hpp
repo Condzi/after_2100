@@ -96,11 +96,11 @@ returning Bitset<TSize, TBaseType>::find_first_unset_bit( s32 begin ) const -> s
 {
 	for ( s32 i = begin; i < SIZE_IN_BASE_TYPES; ++i ) {
 		// If all bits are set, continue.
-		if ( data[i] == std::numeric_limits<TBaseType>::min() - 1 ) {
+		if ( data[i] == std::numeric_limits<TBaseType>::max() ) {
 			continue;
 		}
 		
-		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; true; ++bit ) {
+		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; bit < (i+1)*BASE_TYPE_SIZE_IN_BITS; ++bit ) {
 			if ( test( bit ) == false ) {
 				return bit;
 			}

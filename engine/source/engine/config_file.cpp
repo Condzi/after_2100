@@ -66,7 +66,8 @@ void Config_File::parse( CString path )
 		CString temp{ file_content.data() + idx, file_content.size() - idx };
 
 		if ( !temp.begins_with( section_mark ) &&
-			 !temp.begins_with( comment_mark ) ) {
+			 !temp.begins_with( comment_mark ) &&
+			 temp.size != 0 ) {
 			++config_values_count;
 		}
 	}
@@ -77,6 +78,9 @@ void Config_File::parse( CString path )
 	s32 current_config_value = 0;
 	for ( s32 idx = 0; idx < file_content.size(); ) {
 		idx = ate_whitespace( file_content, idx );
+		if ( idx == file_content.size() ) {
+			break;
+		}
 		constant endline_idx = ate_chars_until( file_content, idx, '\n' );
 		CString temp{ file_content.data() + idx, endline_idx - idx };
 
@@ -96,7 +100,7 @@ void Config_File::parse( CString path )
 		CString name{ file_content.data() + name_idx_begin, name_idx_end - name_idx_begin };
 		constant name_hash = hash_cstring( name );
 		constant value_idx = ate_whitespace( file_content, name_idx_end );
-		constant value_str_size = ( ate_whitespace_reversed(file_content, endline_idx) + 1 ) - value_idx;
+		constant value_str_size = ( ate_whitespace_reversed( file_content, endline_idx - 1 ) + 1 ) - value_idx;
 		CString value{ reinterpret_cast<char*>( Context.default_allocator->allocate( value_str_size ) ), value_str_size };
 		memcpy( const_cast<char*>( value.data ), file_content.data() + value_idx, value_str_size );
 

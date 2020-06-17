@@ -1,4 +1,5 @@
 # **todo**
+* add game loop with fps independent updates
 * add `Allocator::realloc`
 * think about how to allocate a Game State. Should we save the individual positions of everything? Or maybe only of dynamic entities? Does camera count?
     * What **is** a game state?
