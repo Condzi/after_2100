@@ -10,7 +10,7 @@ TEST_CASE( "config_file", "engine" )
 	Default_Allocator da;
 	Temporary_Allocator ta;
 	Context.default_allocator = &da;
-	Context.temporary_storage_allocator = &ta;
+	Context.temporary_allocator = &ta;
 	da.initialize();
 	ta.initialize();
 
@@ -31,5 +31,5 @@ TEST_CASE( "config_file", "engine" )
 	}
 
 	da.shutdown();
-	Context.default_allocator = Context.temporary_storage_allocator = nullptr;
+	Context.default_allocator = Context.temporary_allocator = nullptr;
 }

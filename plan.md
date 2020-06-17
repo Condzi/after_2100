@@ -14,6 +14,21 @@
 * We're not going to use threads heavly. Probably only in few loops? But must possibly - none at all.
 * Don't forget to call `std::ios_base::sync_with_stdio(false)` thing
 ----
+* **Startup + Application class**
+    * Startup
+        * Memory
+        * Context
+        * Logger
+        * Window
+        * Splash screen stuff? 
+        * Resource loading (+config file)
+    * Running
+    * Shutdown (just like startup but in reverse order)
+
+    * Other stuff:
+        * global timer started right before memory allocation?
+        * fixed / independent timestep
+---
 * **Engine configuration** -- `macro_config.hpp`
     * Memory block size
     * temporary storage size
@@ -38,6 +53,8 @@
     * basic allocator
     * temporary storage allocator
     * hotloaded variables?
+    * game running time (useful for animations / random stuff)
+    * some global flags? like "exit game" 
 ----
 * **Logger**, just one.
     * (is it a good idea tho?) log in AppData folder, see `std::getenv( "appdata" )` for specific path
@@ -90,6 +107,10 @@
         * startup level
         * allow developer commands 
         * and more!...
+---
+* **Random variables**
+    * Maybe in Context?
+    * Use some simply function, not the slow standard one. Maybe we can depend on current system time and that's it. We don't need any hardcore accurate stuff, really
 ----
 **Bother with this later:**
 * Resource Manager

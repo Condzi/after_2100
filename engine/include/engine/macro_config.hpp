@@ -4,11 +4,11 @@
 //	Helper macros
 //
 
-#define CON_STR_( x ) #x
-#define CON_STR( x ) CON_STR_( x )
+#define CON_STR_( x )  #x
+#define CON_STR( x )  CON_STR_( x )
 
-#define CON_CONCAT_INTERNAL( x, y ) x##y
-#define CON_CONCAT( x, y ) CON_CONCAT_INTERNAL( x, y )
+#define CON_CONCAT_INTERNAL( x, y )  x##y
+#define CON_CONCAT( x, y )  CON_CONCAT_INTERNAL( x, y )
 
 #define CON_BYTES( x )		 x
 #define CON_KILOBYTES( x )	 CON_BYTES( x ) * 1000
@@ -44,10 +44,10 @@
 #define CON_ASSETS_FOLDER		CON_DATA_FOLDER "assets\\"
 #define CON_TEXTURES_FOLDER		CON_ASSETS_FOLDER "textures\\"
 #define CON_CONFIG_FILE			CON_DATA_FOLDER "local.variables"
+
 //
 // Entities stuff
 //
-
 #define CON_ENTITIES_COUNT 128
 #define CON_MAX_ENTITY_FLAGS 8
 

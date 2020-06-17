@@ -10,9 +10,6 @@ namespace con
 class Logger final
 {
 public:
-	void static set_instance( Logger* instance_ );
-	returning static get_instance() -> Logger&;
-
 	void initialize();
 	void shutdown();
 
@@ -28,8 +25,7 @@ private:
 };
 }
 
-// @ToDo: Maybe a part of Context? This way we could have different loggers for different parts of the game
-// for example. But maybe it's too fancy?
-#define G_Logger  con::Logger::get_instance()
-#define con_log_indented( indent, msg, ... )  G_Logger.log( con::sprint( msg "\n", __VA_ARGS__ ), indent )
+// Logs 'msg' with '...' args to Context.logger with 'indent' indentation
+#define con_log_indented( indent, msg, ... )  Context.logger->log( con::sprint( msg "\n", __VA_ARGS__ ), indent )
+// Logs 'msg' with '...' args to Context.logger with no indentation
 #define con_log( msg, ... ) con_log_indented( 0, msg, __VA_ARGS__ )

@@ -58,7 +58,7 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 	if constexpr ( args_count == 0 ) {
 		return fmt;
 	} else {
-		Temporary_Allocator& temporary_allocator = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_storage_allocator );
+		Temporary_Allocator& temporary_allocator = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 
 		static CString str_args[args_count];
 		{

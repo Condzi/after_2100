@@ -107,6 +107,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\application.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\array.hpp">
       <SubType>
       </SubType>
@@ -161,6 +165,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\engine\application.cpp" />
     <ClCompile Include="source\engine\allocator.cpp" />
     <ClCompile Include="source\engine\assert.cpp" />
     <ClCompile Include="source\engine\config_file.cpp" />

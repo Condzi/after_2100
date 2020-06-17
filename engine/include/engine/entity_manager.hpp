@@ -52,8 +52,8 @@ struct Entity_Manager final
 {
 	struct
 	{
-		Array<Entity::Hot>  _hot{ CON_ENTITIES_COUNT, Context.default_allocator };
-		Array<Entity::Cold> _cold{ CON_ENTITIES_COUNT, Context.default_allocator };
+		Array<Entity::Hot>  _hot ;
+		Array<Entity::Cold> _cold;
 	} by_type;
 };
 

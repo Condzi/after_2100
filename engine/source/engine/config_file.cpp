@@ -42,7 +42,7 @@ void Config_File::parse( CString path )
 {
 	con_assert( config_values.size() <= 0 ); // only one config file per parse for now.
 
-	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_storage_allocator );
+	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 	constant mark = temporary_allocator->get_mark();
 	defer{ temporary_allocator->set_mark( mark ); };
 

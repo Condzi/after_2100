@@ -2,16 +2,6 @@
 
 namespace con
 {
-void Logger::set_instance( Logger* instance_ )
-{
-	instance = instance_;
-}
-
-returning Logger::get_instance() -> Logger&
-{
-	return *instance;
-}
-
 void Logger::initialize()
 {
 	auto* memory = reinterpret_cast<char*>( Context.default_allocator->allocate( CON_LOGGER_BUFFER_RESERVED_MEMORY ) );

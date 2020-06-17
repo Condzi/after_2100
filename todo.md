@@ -1,7 +1,27 @@
 # **todo**
+* default config values
+```cpp
+struct Default_Config_Values final
+{
+    static constexpr f32 ups = 1 / 60.0f;
+    static constexpr bool vsync = true;
+    // window dimensions'n stuff
+};
+```
 * add game loop with fps independent updates
+* add time stuff
+* add random number generator (see comment in plan.md file. we may want to use a simple approach instead of using C++'s)
 * add `Allocator::realloc`
 * think about how to allocate a Game State. Should we save the individual positions of everything? Or maybe only of dynamic entities? Does camera count?
     * What **is** a game state?
 * set allocator type in bitset; consider adding it as a template? because sometimes we want to use stack, so if we pass special class as a parameter, let's say like that: `Bitset<16, Stack_Allocator>` we can use stack. But this way we're breaking the schemantics of using `bitset.allocator = my_allocator` so IDK.
+    * Idea about stack allocator: 
+```cpp
+#define CON_STACK_ALLOCATOR_SIZE 1024 // be carefull -- we don't want stack overflow
+struct Stack_Allocator
+{
+    // works just like the default allocator?
+    byte stack[CON_STACK_ALLOCATOR_SIZE];
+};
+```
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 

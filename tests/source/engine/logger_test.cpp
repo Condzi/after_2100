@@ -10,13 +10,13 @@ TEST_CASE( "logger", "engine" )
 	Default_Allocator da;
 	Temporary_Allocator ta;
 	Context.default_allocator = &da;
-	Context.temporary_storage_allocator = &ta;
+	Context.temporary_allocator = &ta;
 	da.initialize();
 	ta.initialize();
 
 	Logger l;
-	l.set_instance( &l );
 	l.initialize();
+	Context.logger = &l;
 
 	con_log( "[LOGGER TEST BEGIN]" );
 	con_log( "My_Value = %. Other value = %. String = %.", 69420, 21.37, "I'm a string!"_cs );
@@ -25,7 +25,7 @@ TEST_CASE( "logger", "engine" )
 	con_log( "val = %. This should be normal!", 321 );
 	con_log( "[LOGGER TEST END]" );
 
-	constant buffer = G_Logger.get_buffer();
+	constant buffer = Context.logger->get_buffer();
 
 	// Hack: we know that buffer.data[buffer.size] is a valid memory so we put \0 there.
 	// This way we don't have to call putchar in a loop.
@@ -36,5 +36,5 @@ TEST_CASE( "logger", "engine" )
 
 	da.shutdown();
 	
-	Context.default_allocator = Context.temporary_storage_allocator = nullptr;
+	Context.default_allocator = Context.temporary_allocator = nullptr;
 }

@@ -14,7 +14,7 @@ TEST_CASE( "sprint", "engine" )
 		Temporary_Allocator ta;
 		Default_Allocator da;
 		Context.default_allocator = &da;
-		Context.temporary_storage_allocator = &ta;
+		Context.temporary_allocator = &ta;
 		da.initialize();
 		ta.initialize();
 
@@ -50,7 +50,7 @@ TEST_CASE( "sprint", "engine" )
 
 
 		Context.default_allocator = nullptr;
-		Context.temporary_storage_allocator = nullptr;
+		Context.temporary_allocator = nullptr;
 		da.shutdown();
 	}
 
@@ -59,7 +59,7 @@ TEST_CASE( "sprint", "engine" )
 		Temporary_Allocator ta;
 		Default_Allocator da;
 		Context.default_allocator = &da;
-		Context.temporary_storage_allocator = &ta;
+		Context.temporary_allocator = &ta;
 		da.initialize();
 		ta.initialize();
 
@@ -101,7 +101,7 @@ TEST_CASE( "sprint", "engine" )
 
 
 		Context.default_allocator = nullptr;
-		Context.temporary_storage_allocator = nullptr;
+		Context.temporary_allocator = nullptr;
 		da.shutdown();
 	}
 
@@ -110,7 +110,7 @@ TEST_CASE( "sprint", "engine" )
 		Temporary_Allocator ta;
 		Default_Allocator da;
 		Context.default_allocator = &da;
-		Context.temporary_storage_allocator = &ta;
+		Context.temporary_allocator = &ta;
 		da.initialize();
 		ta.initialize();
 
@@ -123,7 +123,7 @@ TEST_CASE( "sprint", "engine" )
 		printf( "\tMemory used: %i / %i bytes.\n[END OF SPRINT TEST]\n\n", ta.get_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 
 		Context.default_allocator = nullptr;
-		Context.temporary_storage_allocator = nullptr;
+		Context.temporary_allocator = nullptr;
 		da.shutdown();
 	}
 }
