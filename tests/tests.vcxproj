@@ -102,6 +102,7 @@
     <ClCompile Include="source\engine\config_file_test.cpp" />
     <ClCompile Include="source\engine\logger_test.cpp" />
     <ClCompile Include="source\engine\defer_test.cpp" />
+    <ClCompile Include="source\engine\time_test.cpp" />
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>

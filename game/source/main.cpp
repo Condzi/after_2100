@@ -6,6 +6,7 @@
 //
 //	Use this project only as a entry point. We want all of our code to be in the engine, actually.
 //
+// @ToDo: Use WinMain in release mode.
 int main()
 {
 	using Init_Error_Code = con::Application::Initialization_Error_Code;
@@ -19,4 +20,7 @@ int main()
 	release_con_assert( init_error_code == Init_Error_Code::Success );
 	app.run();
 	app.shutdown();
+
+	constant now = con::Time::now();
+	printf( "\n\tEleapsed: %fs\n", con::Time::to_seconds( con::Time::difference( Context.startup_time_point, now ) ) );
 }

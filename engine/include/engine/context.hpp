@@ -1,5 +1,7 @@
 #pragma once
 
+#include <engine/time.hpp>
+
 namespace con
 {
 struct Allocator;
@@ -11,6 +13,8 @@ namespace con::priv
 {
 struct Context_Data final
 {
+	Time_Period const startup_time_point = Time::now();
+
 	Allocator* default_allocator = nullptr;
 	Allocator* temporary_allocator = nullptr;
 	Entity_Manager* entity_manager = nullptr;
