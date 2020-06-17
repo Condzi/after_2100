@@ -10,6 +10,9 @@ class Config_File final
 public:
 	void parse( CString path );
 
+	// @Robustness: ctor calls allocator->free which may be problematic. Maybe use:
+	// defer { config_file.free() }; 
+	// Or something along these lines...
 	~Config_File();
 
 	returning get_value( CString section, CString name ) -> CString;
