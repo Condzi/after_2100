@@ -41,7 +41,7 @@
     * global / file_local etc. macros? (use unnamed namesapces)
     * `#define constant auto const`?
     * `#define compile_constant inline static constexpr auto`?
-    * Jai's `defer`? **`// Note: do we need it?`**
+    * Jai's `defer`
     * Use own string literal `_cs` that converts null-terminated c-string to our own data + size structure (see `CString` class)
 ----
 * **Memory Allocation**
@@ -58,11 +58,11 @@
     * some global flags? like "exit game" 
 ----
 * **Logger**, just one.
-    * (is it a good idea tho?) log in AppData folder, see `std::getenv( "appdata" )` for specific path
+    * (is it a good idea tho?) log in AppData folder, see `std::getenv( "appdata" )` for specific path **`// IT SOMETIMES FAILS`**
         * Try the logging to opened `notepad.exe` instance thing from [here](http://kylehalladay.com/blog/2020/05/20/Rendering-With-Notepad.html) (but probably it's too hacky-whacky to use)
     * custom indentation looks cool 
 ----
-* **Hotloading** variables from a file (use Windows ability to notify us when the file changes)
+* **Hotloading** variables from a file (we can use Windows ability to notify us when the file changes)
     * Hotloading of resources
         * Texture and shader ( do we want shaders? ) is just OpenGL id?
         * Figure out how to handle TTF 

@@ -1,4 +1,6 @@
 # **todo**
+* add config file hotloading (by checking every X frames (100?) if the file change date matches our and if not, reloading it)
+* we need better info about how parse of the cfg file went -- did it failed because file didint open or because of some human error?
 * Config_File::parse should return a bool instead of asserting.
 * use WinMain for release mode
     * and for debug too, but we don't have dev console yet.
