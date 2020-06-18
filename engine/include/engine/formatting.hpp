@@ -1,5 +1,6 @@
 #pragma once
 
+#include <engine/array.hpp>
 #include <engine/cstring.hpp>
 #include <engine/allocator.hpp>
 #include <engine/context.hpp>
@@ -30,6 +31,14 @@ returning cstring_to_f32( CString str ) -> f32;
 
 template <typename T>
 returning cstring_to_T( CString str ) -> T;
+
+// C style of parsing, still useful (used in sscan implementation for folding expressions)
+template <typename T>
+void cstring_to_T( CString str, T& t );
+
+// Returns true on successfull parsing.
+template <typename ...TArgs>
+returning sscan( CString format, CString str, TArgs& ...args ) -> bool;
 
 //
 //	Definitions
@@ -108,5 +117,62 @@ returning cstring_to_T( CString str ) -> T
 	} else {
 		static_assert( false, "Unsupported type (CString to T)." );
 	}
+}
+
+template <typename T>
+void cstring_to_T( CString str, T& t )
+{
+	t = cstring_to_T<T>( str );
+}
+
+template <typename ...TArgs>
+returning sscan( CString format, CString str, TArgs& ...args ) -> bool
+{
+	compile_constant args_count = sizeof...( TArgs );
+
+	static_assert( args_count > 0, "No arguments for sscan" );
+
+	// @ToDo: reset mark?
+	Temporary_Allocator& temporary_allocator = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
+	constant ta_mark = temporary_allocator.get_mark();
+	defer{ temporary_allocator.set_mark( ta_mark ); };
+
+	Array<CString> strings_to_parse;
+	strings_to_parse.initialize( args_count, &temporary_allocator );
+
+	// i = idx in format; j = idx in str
+	s32 current_arg = 0;
+	for ( s32 i = 0, j = 0; i < format.size && j < str.size && current_arg < args_count; ) {
+		// Skip matching characters
+		while ( format.data[i] == str.data[j] ) {
+			++i;
+			++j;
+		}
+
+		// Fail if character that differenciate is not a %.
+		con_assert( format.data[i] == '%' );
+		if ( format.data[i] != '%' ) {
+			return false;
+		}
+		// Don't forget to increment index in the format string!
+		++i;
+
+		constant start = j;
+		// Skip characters that make the number until you find the next format character or 
+		// end of the string.
+		while ( str.data[++j] != format.data[i] && j < str.size );
+		constant size = j - start;
+		strings_to_parse[current_arg] = CString{ str.data +start, size };
+		++current_arg;
+	}
+
+	// We haven't found all of the arguments.
+	con_assert( current_arg == args_count );
+
+	current_arg = -1; // -1 because folding expressions.
+
+	( void( cstring_to_T( strings_to_parse[++current_arg], args ) ), ... );
+
+	return true;
 }
 }

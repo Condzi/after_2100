@@ -143,3 +143,56 @@ TEST_CASE( "CString to T", "engine" )
 	REQUIRE( s32_converted == s32_value );
 	REQUIRE( f32_converted == f32_value );
 }
+
+TEST_CASE( "sscan", "engine" )
+{
+	using namespace con;
+
+	Temporary_Allocator ta;
+	Default_Allocator da;
+	Context.default_allocator = &da;
+	Context.temporary_allocator = &ta;
+	da.initialize();
+	ta.initialize();
+
+	{
+		s32 const s32_value = 4202;
+		f32 const f32_value = 69.09f;
+
+		CString const str_1    = "4202 69.09";
+		CString const format_1 = "% %";
+
+		CString const str_2    = "blah 69.09! 4202! bleh";
+		CString const format_2 = "blah %! %! bleh";
+
+		s32 s32_1 = 0;
+		s32 s32_2 = 0;
+		f32 f32_1 = 0;
+		f32 f32_2 = 0;
+
+		sscan( format_1, str_1, s32_1, f32_1 );
+		REQUIRE( s32_1 == s32_value );
+		REQUIRE( f32_1 == f32_value );
+
+		sscan( format_2, str_2, f32_2, s32_2 );
+		REQUIRE( s32_2 == s32_value );
+		REQUIRE( f32_2 == f32_value );
+	}
+
+	{
+		s32 const s32_value_1 = 5505;
+		s32 const s32_value_2 = 123;
+
+		CString const str = "5505.123";
+		CString const format = "%.%";
+
+		s32 s32_1 = 0;
+		s32 s32_2 = 0;
+
+		sscan( format, str, s32_1, s32_2 );
+		REQUIRE( s32_value_1 == s32_1 );
+		REQUIRE( s32_value_2 == s32_2 );
+	}
+
+	da.shutdown();
+}
