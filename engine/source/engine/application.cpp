@@ -10,6 +10,7 @@ returning Application::initialize() -> bool
 	Context.temporary_allocator = &temporary_allocator;
 	Context.entity_manager = &entity_manager;
 	Context.logger = &main_logger;
+	Context.config_file = &config_file;
 
 	default_allocator.initialize();
 	temporary_allocator.initialize();
@@ -31,6 +32,15 @@ returning Application::initialize() -> bool
 		return false;
 	}
 	con_log( "Paths are correct." );
+	con_log( "Loading config file..." );
+	flush_logger();
+
+	// @Robustness: I'm fired. It's a stupid-ass idea to not return a bool
+	// here. 
+	// @ToDo: Fallback to default values somehow. Maybe hold struct of const
+	// references / values isntead strings.
+	config_file.parse( CON_CONFIG_FILE );
+	con_log_indented( 1, "(FIXME) Probably done loading config file. IDK because I'm fired" );
 
 	// @ToDo: Load config here and fallback to default values if necessary
 	// @ToDo: Splash screen stuff?? in separate thread? use it 
@@ -53,6 +63,7 @@ void Application::shutdown()
 {
 	flush_logger();
 	con_log( "Application shutdown..." );
+	config_file.free();
 	// @ToDo: entity_manager.shutdown();
 	// @ToDo: window.shutdown()...
 	flush_logger(); // flushing last messages here...

@@ -7,6 +7,7 @@ namespace con
 struct Allocator;
 struct Entity_Manager;
 struct Logger;
+struct Config_File;
 }
 
 namespace con::priv
@@ -19,6 +20,7 @@ struct Context_Data final
 	Allocator* temporary_allocator = nullptr;
 	Entity_Manager* entity_manager = nullptr;
 	Logger* logger = nullptr;
+	Config_File* config_file = nullptr;
 };
 
 struct Context_Helper final

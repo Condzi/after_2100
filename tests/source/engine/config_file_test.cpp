@@ -28,6 +28,8 @@ TEST_CASE( "config_file", "engine" )
 		con_assert( vsync == vsync_ );
 		con_assert( window_size == window_size_ );
 		con_assert( dev_console == dev_console_ );
+
+		cfg.free();
 	}
 
 	da.shutdown();

@@ -116,7 +116,7 @@ void Config_File::parse( CString path )
 	con_assert( config_values_count == current_config_value );
 }
 
-Config_File::~Config_File()
+void Config_File::free()
 {
 	for ( s32 i = 0; i < config_values.size(); ++i ) {
 		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( config_values[i].value.data ) ), config_values[i].value.size );

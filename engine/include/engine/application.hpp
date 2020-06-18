@@ -7,6 +7,7 @@
 #include <engine/allocator.hpp>
 #include <engine/entity_manager.hpp>
 #include <engine/logger.hpp>
+#include <engine/config_file.hpp>
 
 namespace con
 {
@@ -25,6 +26,7 @@ private:
 	Entity_Manager entity_manager;
 	Logger main_logger;
 	FILE* main_logger_file = nullptr;
+	Config_File config_file;
 	// @ToDo: game timer here
 
 	// @Idea: Global struct that contains values like that? Or just hold it in the 

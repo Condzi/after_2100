@@ -1,4 +1,5 @@
 # **todo**
+* Config_File::parse should return a bool instead of asserting.
 * use WinMain for release mode
     * and for debug too, but we don't have dev console yet.
 
