@@ -1,8 +1,10 @@
 #include <engine/application.hpp>
 
+#include <filesystem>
+
 namespace con
 {
-returning Application::initialize() -> Initialization_Error_Code
+returning Application::initialize() -> bool
 {
 	Context.default_allocator = &default_allocator;
 	Context.temporary_allocator = &temporary_allocator;
@@ -15,13 +17,29 @@ returning Application::initialize() -> Initialization_Error_Code
 	// entity_manager.initialze() ?
 	main_logger.initialize();
 
+	con_log( "Initializing main logger..." );
+	set_up_log_folder();
+	main_logger_file = std::fopen( CON_DEFAULT_LOG_FILE, "wb" );
+	if ( main_logger_file == nullptr ) {
+		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
+	} else {
+		con_log_indented( 1, "Logger file successfully opened." );
+	}
+
+	con_log( "Checking necessary paths..." );
+	if ( !check_necessary_paths() ) {
+		return false;
+	}
+	con_log( "Paths are correct." );
+
 	// @ToDo: Load config here and fallback to default values if necessary
 	// @ToDo: Splash screen stuff?? in separate thread? use it 
 	// @ToDo: Initialize window here.
 	// @ToDo: Load resources here.
 
-	con_log( "Application initialized!" );
-	return Initialization_Error_Code::Success;
+	con_log( "Initialization completed." );
+	flush_logger();
+	return true;
 }
 void Application::run()
 {
@@ -33,12 +51,62 @@ void Application::run()
 
 void Application::shutdown()
 {
+	flush_logger();
 	con_log( "Application shutdown..." );
 	// @ToDo: entity_manager.shutdown();
 	// @ToDo: window.shutdown()...
-	// @ToDo: Call last -- we may want to log some errors during shutdown. Also, 
-	// don't forget to flush data here.
+	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
+	std::fclose( main_logger_file );
 	default_allocator.shutdown();
+}
+
+void Application::flush_logger()
+{
+	// @ToDo: Check if we're in release mode. If yes, don't try to log to console.
+	constant data_to_log = main_logger.get_buffer();
+	if ( data_to_log.size == 0 ) {
+		return;
+	}
+
+	std::fputs( data_to_log.data, stdout );
+	if ( main_logger_file != nullptr ) {
+		std::fputs( data_to_log.data, main_logger_file );
+	}
+	main_logger.reset_buffer();
+}
+
+returning Application::set_up_log_folder() -> bool
+{
+	namespace fs = std::filesystem;
+
+	if ( !fs::exists( CON_LOGS_FOLDER ) ) {
+		con_log_indented( 1, "Logs folder is missing. Creating \"%\".", CString{ CON_LOGS_FOLDER } );
+		if ( !fs::create_directory( CON_LOGS_FOLDER ) ) {
+			con_log_indented( 1, "Couldn't create!!!" );
+			return false;
+		}
+	}
+	return true;
+}
+
+returning Application::check_necessary_paths() const -> bool
+{
+	namespace fs = std::filesystem;
+	bool success = true;
+	constant path_exists = [&success]( CString path ) {
+		if ( fs::exists( { path.data, path.data + path.size } ) == false ) {
+			con_log_indented( 1, "Error! Missing path \"%\".", path );
+			success = false;
+		}
+	};
+
+
+	path_exists( CON_DATA_FOLDER );
+	path_exists( CON_ASSETS_FOLDER );
+	path_exists( CON_TEXTURES_FOLDER );
+	path_exists( CON_CONFIG_FILE );
+
+	return success;
 }
 }

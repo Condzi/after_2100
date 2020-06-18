@@ -1,0 +1,12 @@
+:/display
+    vsync true
+    window_size 1920 1080
+
+
+:/gameplay
+    # Physic updates per second
+    ups 60
+
+
+:/debug
+    dev_console false

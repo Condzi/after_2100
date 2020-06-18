@@ -38,6 +38,13 @@ void Logger::reset_buffer()
 
 returning Logger::get_buffer() -> CString
 {
-	return { buffer.data, static_cast<s32>( next_free_slot - buffer.data ) };
+	constant messages_size = static_cast<s32>( next_free_slot - buffer.data );
+	if ( messages_size == 0 ) {
+		return { nullptr, 0 };
+	}
+	// We're adding \0 for C's puts at the end, so we need an extra space.
+	release_con_assert( messages_size + 1 < buffer.size );
+	*next_free_slot = '\0';
+	return { buffer.data, messages_size };
 }
 }

@@ -1,15 +1,7 @@
 # **todo**
-* default config values
-```cpp
-struct Default_Config_Values final
-{
-    static constexpr f32 ups = 1 / 60.0f;
-    static constexpr bool vsync = true;
-    // window dimensions'n stuff
-};
-```
-* add game loop with fps independent updates
-* add time stuff
+* use WinMain for release mode
+    * and for debug too, but we don't have dev console yet.
+
 * add random number generator (see comment in plan.md file. we may want to use a simple approach instead of using C++'s)
 * add `Allocator::realloc`
 * think about how to allocate a Game State. Should we save the individual positions of everything? Or maybe only of dynamic entities? Does camera count?
@@ -25,3 +17,5 @@ struct Stack_Allocator
 };
 ```
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
+* better indentation handling in the logger. Consider adding a "current_indent" variable that we can change that is the default one for logging. This
+    way we could have less cluttered looking calls and less indentation problems. However, this is a rahter low priority thing.

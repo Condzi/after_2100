@@ -19,6 +19,7 @@
         * Memory
         * Context
         * Logger
+            * check if all needed paths exist (data folder, logs folder...)
         * Window
         * Splash screen stuff? 
         * Resource loading (+config file)

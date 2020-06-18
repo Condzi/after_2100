@@ -43,7 +43,9 @@
 #define CON_DATA_FOLDER			"data\\"
 #define CON_ASSETS_FOLDER		CON_DATA_FOLDER "assets\\"
 #define CON_TEXTURES_FOLDER		CON_ASSETS_FOLDER "textures\\"
+
 #define CON_CONFIG_FILE			CON_DATA_FOLDER "local.variables"
+#define CON_DEFAULT_LOG_FILE	CON_LOGS_FOLDER "log.txt"
 
 //
 // Entities stuff

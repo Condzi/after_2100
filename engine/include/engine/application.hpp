@@ -13,16 +13,7 @@ namespace con
 class Application final
 {
 public:
-	// @ToDo: this enum to string conversion, we just use it to print error
-	// messages.
-	enum class Initialization_Error_Code : s8
-	{
-		Success,
-		Window_Creation_Failure
-		// ... Other stuff ...
-	};
-
-	returning initialize() -> Initialization_Error_Code;
+	returning initialize() -> bool;
 	// @Idea: Return codes? Different for exit because failure / crash?
 	// Or maybe just check the Context's flags (flags.exit_flags[error_blah])?
 	void run();
@@ -33,13 +24,16 @@ private:
 	Temporary_Allocator temporary_allocator;
 	Entity_Manager entity_manager;
 	Logger main_logger;
+	FILE* main_logger_file = nullptr;
 	// @ToDo: game timer here
 
 	// @Idea: Global struct that contains values like that? Or just hold it in the 
 	// config file? Or maybe just gather it once in the run() function from the global config file?
 	f32 ups = 1.0f / 60; // = default value; @ToDo ! ! ! !
 
-	// @ToDo: Add flushing of logger at the beginning of every frame!!!
-	// void flush_logger();
+	void flush_logger();
+
+	returning set_up_log_folder() -> bool;
+	returning check_necessary_paths() const -> bool;
 };
 }

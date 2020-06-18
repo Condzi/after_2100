@@ -16,6 +16,7 @@ public:
 	void log( CString message, s32 indent = 0 );
 	void reset_buffer();
 
+	// Returns \0 terminated CString.
 	returning get_buffer() -> CString;
 
 private:
