@@ -38,7 +38,7 @@ returning ate_whitespace( Array<char>& arr, s32 current_idx ) -> s32
 }
 }
 
-void Config_File::parse( CString path )
+void Config_File::parse_from_file( CString path )
 {
 	con_assert( config_values.size() <= 0 ); // only one config file per parse for now.
 
@@ -103,6 +103,77 @@ void Config_File::parse( CString path )
 		constant value_str_size = ( ate_whitespace_reversed( file_content, endline_idx - 1 ) + 1 ) - value_idx;
 		CString value{ reinterpret_cast<char*>( Context.default_allocator->allocate( value_str_size ) ), value_str_size };
 		memcpy( const_cast<char*>( value.data ), file_content.data() + value_idx, value_str_size );
+
+		config_values[current_config_value] ={
+			.section_hash = current_section_hash,
+			.name_hash = name_hash,
+			.value = value
+		};
+		++current_config_value;
+		idx = endline_idx;
+	}
+
+	con_assert( config_values_count == current_config_value );
+}
+
+void Config_File::parse_from_source( CString source )
+{
+	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
+	constant mark = temporary_allocator->get_mark();
+	defer{ temporary_allocator->set_mark( mark ); };
+
+	// @Robustness: We can avoid this by having methods that accept CString instead of Array<char>.
+	// This will do it for now tho.
+	Array<char> source_content;
+	source_content.initialize( source.size, temporary_allocator );
+	memcpy( source_content.data(), source.data, source.size );
+
+	// Count lines which aren't empty, aren't a comment and aren't a section beginning.
+	// We use this value to determine how much memory we need for `config_values`
+	s32 config_values_count = 0;
+
+	for ( s32 idx = 0; idx < source_content.size(); idx = ate_chars_until( source_content, idx, '\n' ) ) {
+		idx = ate_whitespace( source_content, idx );
+		CString temp{ source_content.data() + idx, source_content.size() - idx };
+
+		if ( !temp.begins_with( section_mark ) &&
+			 !temp.begins_with( comment_mark ) &&
+			 temp.size != 0 ) {
+			++config_values_count;
+		}
+	}
+
+	config_values.initialize( config_values_count, Context.default_allocator );
+
+	u32 current_section_hash = 0;
+	s32 current_config_value = 0;
+	for ( s32 idx = 0; idx < source_content.size(); ) {
+		idx = ate_whitespace( source_content, idx );
+		if ( idx == source_content.size() ) {
+			break;
+		}
+		constant endline_idx = ate_chars_until( source_content, idx, '\n' );
+		CString temp{ source_content.data() + idx, endline_idx - idx };
+
+		if ( temp.begins_with( comment_mark ) ) {
+			idx = endline_idx;
+			continue;
+		} else if ( temp.begins_with( section_mark ) ) {
+			constant section_name_begin = idx + section_mark.size;
+			constant section_name_end = ate_chars_until_whitespace( source_content, section_name_begin );
+			current_section_hash = hash_cstring( { source_content.data() + section_name_begin, section_name_end - section_name_begin } );
+			idx = endline_idx;
+			continue;
+		}
+
+		constant name_idx_begin = idx;
+		constant name_idx_end = ate_chars_until_whitespace( source_content, idx );
+		CString name{ source_content.data() + name_idx_begin, name_idx_end - name_idx_begin };
+		constant name_hash = hash_cstring( name );
+		constant value_idx = ate_whitespace( source_content, name_idx_end );
+		constant value_str_size = ( ate_whitespace_reversed( source_content, endline_idx - 1 ) + 1 ) - value_idx;
+		CString value{ reinterpret_cast<char*>( Context.default_allocator->allocate( value_str_size ) ), value_str_size };
+		memcpy( const_cast<char*>( value.data ), source_content.data() + value_idx, value_str_size );
 
 		config_values[current_config_value] ={
 			.section_hash = current_section_hash,

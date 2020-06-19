@@ -1,36 +1,38 @@
 #pragma once
 
+#include <engine/cstring.hpp>
 #include <engine/typedefs.hpp>
 
 namespace con
 {
-// The values you should default to if reading from config file failes for some reason.
+// The values we default to if reading from file failes.
 // !!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!
 // !!									 !!
 // !! Please, keep it up to date with    !!
 // !! the original local.variables file! !!
 // !!									 !!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-struct Default_Config_Values final
-{
-	// @Robustness: Should be in settings file instead? This way we wouldn't have to
-	// fail entire program if the settings file would not be found. We could just 
-	// recreate it using this values.
-	struct display final
-	{
-		compile_constant vsync = true;
-		compile_constant window_size_x = 1280;
-		compile_constant window_size_y = 720;
-	};
+compile_constant DEFAULT_CONFIG_CSTRING = CString{
+R"(
+# Should be in settings configuration file instead?
+# Used only at window creation.
+:/display
+    debug_context_version   4.4
+    release_context_version 3.0
 
-	struct gameplay final
-	{
-		compile_constant ups = 60;
-	};
+    vsync true
+    frame_cap 120
+    fullscreen false
+    window_size 1280 720
 
-	struct debug final
-	{
-		compile_constant dev_console = false;
-	};
-};
+
+:/gameplay
+    # Physic updates per second
+    ups 60
+
+
+:/debug
+    dev_console false
+    gl_debug    true
+)" };
 }

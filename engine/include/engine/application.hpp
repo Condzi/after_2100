@@ -8,6 +8,7 @@
 #include <engine/entity_manager.hpp>
 #include <engine/logger.hpp>
 #include <engine/config_file.hpp>
+#include <engine/window.hpp>
 
 namespace con
 {
@@ -27,7 +28,7 @@ private:
 	Logger main_logger;
 	FILE* main_logger_file = nullptr;
 	Config_File config_file;
-	// @ToDo: game timer here
+	Window window;
 
 	// @Idea: Global struct that contains values like that? Or just hold it in the 
 	// config file? Or maybe just gather it once in the run() function from the global config file?

@@ -58,4 +58,9 @@ returning cstring_to_f32( CString str ) -> f32
 
 	return converted_value;
 }
+
+auto cstring_to_bool( CString str ) -> bool
+{
+	return str == "true"_cs || str == "TRUE"_cs;
+}
 }

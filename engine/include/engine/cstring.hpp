@@ -23,6 +23,8 @@ struct CString final
 
 returning operator==( CString const& lhs, CString const rhs ) -> bool;
 returning hash_cstring( CString cstring ) -> u32;
+// Stupid name tbh. Makes CString from C-string at runtime.
+returning cstring_from_cstr( char const* cstr ) -> CString;
 
 //
 // Definitions

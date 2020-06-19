@@ -1,5 +1,7 @@
 #include <engine/application.hpp>
 
+#include <engine/default_config_values.hpp>
+
 #include <filesystem>
 
 namespace con
@@ -33,19 +35,27 @@ returning Application::initialize() -> bool
 	}
 	con_log( "Paths are correct." );
 	con_log( "Loading config file..." );
+	if ( !std::filesystem::exists( CON_CONFIG_FILE ) ) {
+		con_log_indented( 1, "Config file couldn't be found at \"%\", loading the default one." );
+		config_file.parse_from_source( DEFAULT_CONFIG_CSTRING );
+	} else {
+		// @Robustness: I'm fired. It's a stupid-ass idea to not return a bool
+		// here. Just load the default config if this failes.
+		config_file.parse_from_file( CON_CONFIG_FILE );
+	}
 	flush_logger();
 
-	// @Robustness: I'm fired. It's a stupid-ass idea to not return a bool
-	// here. 
-	// @ToDo: Fallback to default values somehow. Maybe hold struct of const
-	// references / values isntead strings.
-	config_file.parse( CON_CONFIG_FILE );
 	con_log_indented( 1, "(FIXME) Probably done loading config file. IDK because I'm fired" );
 
 	// @ToDo: Load config here and fallback to default values if necessary
 	// @ToDo: Splash screen stuff?? in separate thread? use it 
 	// @ToDo: Initialize window here.
 	// @ToDo: Load resources here.
+
+	con_log( "Initializing window..." );
+	window.initialize();
+	con_log( "Window initialized." );
+	flush_logger();
 
 	con_log( "Initialization completed." );
 	flush_logger();
@@ -56,6 +66,7 @@ void Application::run()
 	con_log( "Application runs..." );
 
 	// @ToDo: while(Context.flags.exit_flags.all_unset() == true ) ?
+	// Don't forget about logger flush!
 	return;
 }
 
@@ -64,8 +75,8 @@ void Application::shutdown()
 	flush_logger();
 	con_log( "Application shutdown..." );
 	config_file.free();
+	window.shutdown();
 	// @ToDo: entity_manager.shutdown();
-	// @ToDo: window.shutdown()...
 	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
 	std::fclose( main_logger_file );
@@ -116,8 +127,7 @@ returning Application::check_necessary_paths() const -> bool
 	path_exists( CON_DATA_FOLDER );
 	path_exists( CON_ASSETS_FOLDER );
 	path_exists( CON_TEXTURES_FOLDER );
-	path_exists( CON_CONFIG_FILE );
-
+	
 	return success;
 }
 }

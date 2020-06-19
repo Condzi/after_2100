@@ -1,7 +1,13 @@
 # Should be in settings configuration file instead?
+# Used only at window creation.
 :/display
+    debug_context_version   4.4
+    release_context_version 3.0
+
     vsync true
-    window_size 1920 1080
+    frame_cap 120
+    fullscreen false
+    window_size 1280 720
 
 
 :/gameplay
@@ -11,3 +17,4 @@
 
 :/debug
     dev_console false
+    gl_debug    true

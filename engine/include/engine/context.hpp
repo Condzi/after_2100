@@ -21,6 +21,13 @@ struct Context_Data final
 	Entity_Manager* entity_manager = nullptr;
 	Logger* logger = nullptr;
 	Config_File* config_file = nullptr;
+
+	struct
+	{
+		bool exit : 1       = false;
+		bool glfw_error : 1 = false;
+		bool gl_error : 1   = false;
+	} engine_flags;
 };
 
 struct Context_Helper final

@@ -29,7 +29,7 @@ int main()
 	ta.initialize();
 
 	Config_File cfg;
-	cfg.parse( CON_CONFIG_FILE );
+	cfg.parse_from_file( CON_CONFIG_FILE );
 
 	CString const vsync = "true";
 	CString const window_size = "1920 1080";

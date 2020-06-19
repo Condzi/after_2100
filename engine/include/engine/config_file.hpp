@@ -8,7 +8,8 @@ namespace con
 class Config_File final
 {
 public:
-	void parse( CString path );
+	void parse_from_file( CString path );
+	void parse_from_source( CString source );
 
 	// Acts like a dtor but we have control over its lifetime.
 	void free();

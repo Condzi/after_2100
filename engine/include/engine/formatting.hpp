@@ -28,6 +28,7 @@ returning sprint( CString fmt, TArgs ...args ) -> CString;
 //
 returning cstring_to_s32( CString str ) -> s32;
 returning cstring_to_f32( CString str ) -> f32;
+returning cstring_to_bool( CString str ) -> bool;
 
 template <typename T>
 returning cstring_to_T( CString str ) -> T;
@@ -111,7 +112,11 @@ returning cstring_to_T( CString str ) -> T
 	if constexpr ( std::is_same_v<T, CString> ) {
 		return str;
 	} else if constexpr ( std::is_integral_v<T> ) {
-		return cstring_to_s32( str );
+		if constexpr ( std::is_same_v<T, bool> ) {
+			return cstring_to_bool( str );
+		} else {
+			return cstring_to_s32( str );
+		}
 	} else if constexpr ( std::is_floating_point_v<T> ) {
 		return cstring_to_f32( str );
 	} else {

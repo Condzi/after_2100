@@ -38,4 +38,9 @@ returning hash_cstring( CString cstring ) -> u32
 	}
 	return hash;
 }
+
+returning cstring_from_cstr( char const* cstr ) -> CString
+{
+	return { cstr, static_cast<s32>( strlen( cstr ) ) };
+}
 }
