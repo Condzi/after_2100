@@ -75,6 +75,33 @@
     * `Entity Manager` holds arrays of entities + *one instance of player Entity*
 
 ----
+* **Resource Manager**
+    * Resources are:
+        * Textures
+        * Fonts
+        * Music
+        * Sound
+        * Localized Strings
+    * Note how many resources are currently loaded
+    * have a list of all resources that we can request (as a hash table)
+    * have a way to reload all resources
+    * we want to free unused resources somehow
+    * We want to hotload stuff.
+    * how we can provide fast lookup + hotload?
+        * when we're rendering we want to get texture ids quickly. 
+        * maybe we can return a watcher-like object that updates its content every frame? Then we would call at the end of the frame to check if we have to update our value, or maybe even just do `resource.gl_resource_id = manager.get_resource<Texture_ID>(resource.id_in_resource_manager)`. That structure would look like this:
+```cpp
+struct GL_Resource
+{ 
+    // sounds in SFML implementation use ids like that too?
+    // We can't use this approach only for localized strings i think. But we're setting them very seldom so
+    // we don't actually need a very quick lookup times?
+    GLUint gl_resource_id; // texture, shader. maybe something else if we want to reuse it
+    s32 id_in_resource_manager;
+}
+```
+    
+----
 * **Rendering**
     * `Renderer` loops over `Cold` data in `Entity`: the `Render_Info` field. **`// Maybe store pointer to that in the Cold, but the array be in the Renderer structure?`**
     * `Render_Info` contains:
@@ -114,7 +141,8 @@
     * Use some simply function, not the slow standard one. Maybe we can depend on current system time and that's it. We don't need any hardcore accurate stuff, really
 ----
 **Bother with this later:**
-* Resource Manager
+* Art
+* Story
 * GUI
 * Serialization
 * Signals? To notify others about stuff like collision

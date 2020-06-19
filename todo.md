@@ -1,10 +1,12 @@
 # **todo**
+* do a basic sprite renderer
+* figure out ttf fonts
+* do a debug console (without editing for now, just one color messages + scrolling)
 * add config file hotloading (by checking every X frames (100?) if the file change date matches our and if not, reloading it)
 * we need better info about how parse of the cfg file went -- did it failed because file didint open or because of some human error?
 * Config_File::parse should return a bool instead of asserting.
 * use WinMain for release mode
     * and for debug too, but we don't have dev console yet.
-
 * add random number generator (see comment in plan.md file. we may want to use a simple approach instead of using C++'s)
 * add `Allocator::realloc`
 * think about how to allocate a Game State. Should we save the individual positions of everything? Or maybe only of dynamic entities? Does camera count?
