@@ -1,6 +1,8 @@
 #include <engine/application.hpp>
 
 #include <engine/default_config_values.hpp>
+// @ToDo: Remove after adding input stuff. We use this only to poll events from window.
+#include <GLFW/glfw3.h>
 
 #include <filesystem>
 
@@ -61,13 +63,48 @@ returning Application::initialize() -> bool
 	flush_logger();
 	return true;
 }
+
 void Application::run()
 {
 	con_log( "Application runs..." );
 
-	// @ToDo: while(Context.flags.exit_flags.all_unset() == true ) ?
-	// Don't forget about logger flush!
-	return;
+	glfwSetKeyCallback( window.get_internal_handle(), []( GLFWwindow*, int key, int, int, int ) {
+		if ( key == GLFW_KEY_ESCAPE ) {
+			Context.engine_flags.exit = true;
+		}
+	} );
+
+	Time_Period frame_start = Time::now();
+	Time_Period frame_end;
+	f32 frame_dt = 0;
+	f32 accumulated_dt = 0;
+	constant ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay", "ups" ) );
+
+
+	// @ToDo: Stop also when there is a GL or GLFW error.
+	while ( Context.engine_flags.exit == false ) {
+		glfwPollEvents();
+
+		accumulated_dt += frame_dt;
+		while ( accumulated_dt >= ups ) {
+			// Physic update here...
+			// world.update_physic(ups)...
+			accumulated_dt -= ups;
+		}
+
+		// normal update here...
+		// world.update(frame_dt);
+
+		window.clear();
+		window.display();
+
+		flush_logger();
+		temporary_allocator.set_mark( 0 );
+
+		frame_end = Time::now();
+		frame_dt = Time::to_seconds( Time::difference( frame_start, frame_end ) );
+		frame_start = frame_end;
+	}
 }
 
 void Application::shutdown()
@@ -77,6 +114,7 @@ void Application::shutdown()
 	config_file.free();
 	window.shutdown();
 	// @ToDo: entity_manager.shutdown();
+	con_log( "Highest TA mark: % / %.", temporary_allocator.get_highest_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
 	std::fclose( main_logger_file );
@@ -127,7 +165,7 @@ returning Application::check_necessary_paths() const -> bool
 	path_exists( CON_DATA_FOLDER );
 	path_exists( CON_ASSETS_FOLDER );
 	path_exists( CON_TEXTURES_FOLDER );
-	
+
 	return success;
 }
 }

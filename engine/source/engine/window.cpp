@@ -77,6 +77,15 @@ void Window::initialize()
 	glfwWindowHint( GLFW_CENTER_CURSOR, GL_FALSE );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, gl_major );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, gl_minor );
+	
+	if ( vsync ) {
+		glfwWindowHint( GLFW_DOUBLEBUFFER, GL_TRUE );
+	} else {
+		glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
+		if ( frame_cap > 0 ) {
+			con_log_indented( 2, "Frame cap is not implemented yet!!" );
+		}
+	}
 
 	if ( gl_debug ) {
 		glfwWindowHint( GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE );
@@ -96,7 +105,7 @@ void Window::initialize()
 	//
 	con_log_indented( 1, "Initializing OpenGL..." );
 	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) == true );
-	con_log_indented( 2, "Avaible OpenGL: %.%; needed: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
+	con_log_indented( 2, "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
 
 	if ( vsync ) {
 		glfwSwapInterval( 1 );

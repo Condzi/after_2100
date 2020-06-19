@@ -14,7 +14,7 @@
     # Physic updates per second
     ups 60
 
-
+# Probably shut be cut of from public game builds?
 :/debug
     dev_console false
     gl_debug    true
