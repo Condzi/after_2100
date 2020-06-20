@@ -1,8 +1,6 @@
 #include <engine/application.hpp>
 
 #include <engine/default_config_values.hpp>
-// @ToDo: Remove after adding input stuff. We use this only to poll events from window.
-#include <GLFW/glfw3.h>
 
 #include <filesystem>
 
@@ -15,6 +13,7 @@ returning Application::initialize() -> bool
 	Context.entity_manager = &entity_manager;
 	Context.logger = &main_logger;
 	Context.config_file = &config_file;
+	Context.input = &input;
 
 	default_allocator.initialize();
 	temporary_allocator.initialize();
@@ -59,6 +58,10 @@ returning Application::initialize() -> bool
 	con_log( "Window initialized." );
 	flush_logger();
 
+	con_log( "Initializing input..." );
+	input.initialize( window );
+	con_log( "Input initialized." );
+
 	con_log( "Initialization completed." );
 	flush_logger();
 	return true;
@@ -68,11 +71,9 @@ void Application::run()
 {
 	con_log( "Application runs..." );
 
-	glfwSetKeyCallback( window.get_internal_handle(), []( GLFWwindow*, int key, int, int, int ) {
-		if ( key == GLFW_KEY_ESCAPE ) {
-			Context.engine_flags.exit = true;
-		}
-	} );
+
+	input.add_binding( "exit_button"_hcs, Key::Keyboard_ESCAPE );
+	input.add_binding( "binding_change_test"_hcs, Key::Mouse_MIDDLE );
 
 	Time_Period frame_start = Time::now();
 	Time_Period frame_end;
@@ -83,7 +84,23 @@ void Application::run()
 
 	// @ToDo: Stop also when there is a GL or GLFW error.
 	while ( Context.engine_flags.exit == false ) {
-		glfwPollEvents();
+		if ( window.should_close() ) {
+			// @ToDo: Add flags to distinguish what type of exit we have -- is it
+			// because of error, closed window (alt+F4) or because player clicks 'Exit' 
+			// button in main menu?
+			Context.engine_flags.exit = true;
+		}
+
+		if ( input.is_key_pressed( "exit_button"_hcs ) ) {
+			Context.engine_flags.exit = true;
+		}
+
+		if ( input.is_key_released( "binding_change_test"_hcs ) ) {
+			input.change_binding( "exit_button"_hcs, Key::Keyboard_SPACE );
+			con_log( "MMB released!" );
+		}
+
+		input.poll_events();
 
 		accumulated_dt += frame_dt;
 		while ( accumulated_dt >= ups ) {
@@ -113,6 +130,7 @@ void Application::shutdown()
 	con_log( "Application shutdown..." );
 	config_file.free();
 	window.shutdown();
+	input.shutdown();
 	// @ToDo: entity_manager.shutdown();
 	con_log( "Highest TA mark: % / %.", temporary_allocator.get_highest_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 	flush_logger(); // flushing last messages here...

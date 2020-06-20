@@ -24,3 +24,4 @@ struct Stack_Allocator
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
 * better indentation handling in the logger. Consider adding a "current_indent" variable that we can change that is the default one for logging. This
     way we could have less cluttered looking calls and less indentation problems. However, this is a rahter low priority thing.
+* Gamepad support

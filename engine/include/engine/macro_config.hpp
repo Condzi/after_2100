@@ -14,9 +14,20 @@
 #define CON_KILOBYTES( x )	 CON_BYTES( x ) * 1000
 #define CON_MEGABYTES( x )	 CON_KILOBYTES( x ) * 1000
 
+// We pack glfw keys to one enum so we have to offset them.
+#define CON_INPUT_MOUSE_KEYS_OFFSET ( con::Key::Keyboard_MENU + 1 )
+#define CON_INPUT_GAMEPAD_KEYS_OFFSET ( con::Key::Mouse_8 + 1 )
+
+
 //
 // Engine and game stuff
 //
+
+#ifdef NDEBUG
+#define CON_DEBUG false
+#else
+#define CON_DEBUG true
+#endif
 
 #define CON_VERSION_STRING "1.0"
 #define CON_WINDOW_TITLE   "after_2100 / v" CON_VERSION_STRING
@@ -25,11 +36,7 @@
 #define CON_TEMPORARY_STORAGE_RESERVED_MEMORY  CON_MEGABYTES( 8 )
 #define CON_LOGGER_BUFFER_RESERVED_MEMORY  CON_MEGABYTES( 1 )
 
-#ifdef NDEBUG
-#define CON_DEBUG false
-#else
-#define CON_DEBUG true
-#endif
+#define CON_MAX_INPUT_BINDINGS  8
 
 //
 // Paths relative to run tree.

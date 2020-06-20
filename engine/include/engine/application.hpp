@@ -9,6 +9,7 @@
 #include <engine/logger.hpp>
 #include <engine/config_file.hpp>
 #include <engine/window.hpp>
+#include <engine/input.hpp>
 
 namespace con
 {
@@ -29,6 +30,7 @@ private:
 	FILE* main_logger_file = nullptr;
 	Config_File config_file;
 	Window window;
+	Input input;
 
 	// @Idea: Global struct that contains values like that? Or just hold it in the 
 	// config file? Or maybe just gather it once in the run() function from the global config file?

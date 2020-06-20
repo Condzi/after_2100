@@ -147,6 +147,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\input.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="include\engine\input_keys.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\logger.hpp">
       <SubType>
       </SubType>
@@ -186,6 +194,7 @@
     <ClCompile Include="source\engine\assert.cpp" />
     <ClCompile Include="source\engine\config_file.cpp" />
     <ClCompile Include="source\engine\cstring.cpp" />
+    <ClCompile Include="source\engine\input.cpp" />
     <ClCompile Include="source\engine\logger.cpp" />
     <ClCompile Include="source\engine\formatting.cpp" />
     <ClCompile Include="source\engine\time.cpp" />

@@ -8,6 +8,7 @@ struct Allocator;
 struct Entity_Manager;
 struct Logger;
 struct Config_File;
+struct Input;
 }
 
 namespace con::priv
@@ -21,6 +22,7 @@ struct Context_Data final
 	Entity_Manager* entity_manager = nullptr;
 	Logger* logger = nullptr;
 	Config_File* config_file = nullptr;
+	Input* input = nullptr;
 
 	struct
 	{
