@@ -1,7 +1,7 @@
 #pragma once
 
 #include <engine/array.hpp>
-#include <engine/cstring.hpp>
+#include <engine/hashed_cstring.hpp>
 
 namespace con
 {
@@ -14,7 +14,7 @@ public:
 	// Acts like a dtor but we have control over its lifetime.
 	void free();
 
-	returning get_value( CString section, CString name ) -> CString;
+	returning get_value( Hashed_CString section, Hashed_CString name ) -> CString;
 
 private:
 	struct Config_Value_Info final

@@ -78,7 +78,7 @@ void Application::run()
 	Time_Period frame_end;
 	f32 frame_dt = 0;
 	f32 accumulated_dt = 0;
-	constant ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay", "ups" ) );
+	constant ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay"_hcs, "ups"_hcs ) );
 
 
 	// @ToDo: Stop also when there is a GL or GLFW error.

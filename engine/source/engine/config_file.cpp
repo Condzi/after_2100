@@ -196,15 +196,12 @@ void Config_File::free()
 	config_values.shutdown();
 }
 
-returning Config_File::get_value( CString section, CString name ) -> CString
+returning Config_File::get_value( Hashed_CString section, Hashed_CString name ) -> CString
 {
-	constant section_hash = hash_cstring( section );
-	constant name_hash    = hash_cstring( name );
-
 	for ( s32 i = 0; i < config_values.size(); ++i ) {
 		auto& info = config_values[i];
-		if ( info.section_hash == section_hash &&
-			 info.name_hash == name_hash ) {
+		if ( info.section_hash == section.hash &&
+			 info.name_hash == name.hash ) {
 			return info.value;
 		}
 	}

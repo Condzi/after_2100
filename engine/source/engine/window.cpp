@@ -33,22 +33,22 @@ void Window::initialize()
 	con_log_indented( 1, "Gathering the window config values..." );
 	auto& cfg = *Context.config_file;
 
-	constant gl_debug   = cstring_to_bool( cfg.get_value( "debug", "gl_debug" ) );
-	constant vsync      = cstring_to_bool( cfg.get_value( "display", "vsync" ) );
-	constant fullscreen = cstring_to_bool( cfg.get_value( "display", "fullscreen" ) );
-	constant frame_cap  = cstring_to_s32( cfg.get_value( "display", "frame_cap" ) );;
+	constant gl_debug   = cstring_to_bool( cfg.get_value( "debug"_hcs, "gl_debug"_hcs ) );
+	constant vsync      = cstring_to_bool( cfg.get_value( "display"_hcs, "vsync"_hcs ) );
+	constant fullscreen = cstring_to_bool( cfg.get_value( "display"_hcs, "fullscreen"_hcs ) );
+	constant frame_cap  = cstring_to_s32( cfg.get_value( "display"_hcs, "frame_cap"_hcs ) );;
 	s32 gl_major = -1, gl_minor = -1;
 	s32 win_width = -1, win_height = -1;
 
 	CString gl_context_version_cstring;
 	if ( gl_debug ) {
-		gl_context_version_cstring = cfg.get_value( "display", "debug_context_version" );
+		gl_context_version_cstring = cfg.get_value( "display"_hcs, "debug_context_version"_hcs );
 	} else {
-		gl_context_version_cstring = cfg.get_value( "display", "release_context_version" );
+		gl_context_version_cstring = cfg.get_value( "display"_hcs, "release_context_version"_hcs );
 	}
 
 	sscan( "%.%", gl_context_version_cstring, gl_major, gl_minor );
-	constant window_size_cstring = cfg.get_value( "display", "window_size" );
+	constant window_size_cstring = cfg.get_value( "display"_hcs, "window_size"_hcs );
 	sscan( "% %", window_size_cstring, win_width, win_height );
 
 	//

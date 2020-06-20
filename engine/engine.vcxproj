@@ -143,6 +143,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\hashed_cstring.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\logger.hpp">
       <SubType>
       </SubType>

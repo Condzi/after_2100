@@ -21,9 +21,9 @@ TEST_CASE( "config_file", "engine" )
 		CString const vsync = "true";
 		CString const window_size = "1920 1080";
 		CString const dev_console = "false";
-		constant vsync_ = cfg.get_value( "display", "vsync" );
-		constant window_size_ = cfg.get_value( "display", "window_size" );
-		constant dev_console_ = cfg.get_value( "debug", "dev_console" );
+		constant vsync_ = cfg.get_value( "display"_hcs, "vsync"_hcs );
+		constant window_size_ = cfg.get_value( "display"_hcs, "window_size"_hcs );
+		constant dev_console_ = cfg.get_value( "debug"_hcs, "dev_console"_hcs );
 
 		con_assert( vsync == vsync_ );
 		con_assert( window_size == window_size_ );
