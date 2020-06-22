@@ -25,9 +25,8 @@
 
 # name_in_game file width height
 :/textures
-player player.png 512 512
-test 
+    player player.png 512 512
 
-# testing if we get notification about empty/unitialized variable
-:/test
-the_test_name
+# name_in_game file default_size?
+:/fonts
+    default Oxanium-Regular.ttf 32

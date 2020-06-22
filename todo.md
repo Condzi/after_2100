@@ -1,10 +1,8 @@
 # **todo**
-* add stack allocator
 * make bitset use allocator instead of stack
 * do a basic sprite renderer
 * figure out ttf fonts
 * do a debug console (without editing for now, just one color messages + scrolling)
-* add config file hotloading (by checking every X frames (100?) if the file change date matches our and if not, reloading it)
 * we need better info about how parse of the cfg file went -- did it failed because file didint open or because of some human error?
 * Config_File::parse should return a bool instead of asserting.
 * use WinMain for release mode
@@ -16,7 +14,7 @@
 * set allocator type in bitset; consider adding it as a template? because sometimes we want to use stack, so if we pass special class as a parameter, let's say like that: `Bitset<16, Stack_Allocator>` we can use stack. But this way we're breaking the schemantics of using `bitset.allocator = my_allocator` so IDK.
     * Idea about stack allocator: 
 ```cpp
-#define CON_STACK_ALLOCATOR_SIZE 1024 // be carefull -- we don't want stack overflow
+#define CON_STACK_ALLOCATOR_SIZE 1024 // be careful -- we don't want stack overflow
 struct Stack_Allocator
 {
     // works just like the default allocator?
@@ -28,3 +26,4 @@ struct Stack_Allocator
     way we could have less cluttered looking calls and less indentation problems. However, this is a rahter low priority thing.
 * Gamepad support
 * we'll need ascii text input handling later (for dev console)
+* don't forget to add licenses!

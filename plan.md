@@ -87,11 +87,13 @@
         * Music
         * Sound
         * Localized Strings
+    * Every scene has associated .scene_resources file in which it specifies what resources it needs
+    * we have `defaults.scene_resources` wchich specifies most frequent data that should be loaded all the time (something like most common enemy texture, player texture, ui textures, default font)
     * Note how many resources are currently loaded
     * have a list of all resources that we can request (as a hash table)
     * have a way to reload all resources
     * we want to free unused resources somehow
-    * how we can provide fast lookup + hotload?
+    * how we can provide fast lookup + reload
         * when we're rendering we want to get texture ids quickly. 
         * maybe we can return a watcher-like object that updates its content every frame? Then we would call at the end of the frame to check if we have to update our value, or maybe even just do `resource.gl_resource_id = manager.get_resource<Texture_ID>(resource.id_in_resource_manager)`. That structure would look like this:
 ```cpp

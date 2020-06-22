@@ -1,0 +1,11 @@
+# We specify here most common resources which we don't want to
+# reload all the time. This list should contain stuff like player's sprite,
+# default font, most common enemy sprite, maybe UI textures.
+# Please note that this file format differes from .variables.
+
+TEXTURES
+player
+enemy
+
+FONTS
+default

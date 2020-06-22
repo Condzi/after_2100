@@ -1,7 +1,3 @@
-* think about resource manager and plan it
-* actually do a decent resource manager
-
-
 ```cpp
 // Every scene should have its own config file which specifies which exactly resources it needs. This way we won't have to touch code if we find a typo in name, just reload the resources from game level or relaunch it.
 
@@ -34,4 +30,13 @@ if(ids_to_reload.contains( cold.render_info.texture.resource_id ))
 ```
 
 # Reloading
-We don't want to free stuff we gonna use in the next scene (UI textures, fonts, sounds, player texture?). Therefore, we probably want to compare what scene needs vs what we have already loaded. This leads us to not having `manager.free_resources(...)` function at all - this behavior shall be handled by `.prepare_from_file` which should do the comparasion mentioned above.
+We don't want to free stuff we gonna use in the next scene (UI textures, fonts, sounds, player texture?). Therefore, we probably want to compare what scene needs vs what we have already loaded. This leads us to not having `manager.free_resources(...)` function at all - this behavior shall be handled by `.prepare_from_file` which should do the comparasion mentioned above. 
+## Ergo
+We may want to have some resources loaded for entire lifetime, like:
+default font, player texture...?
+
+# **Current Tasks**
+* parser of `.scene_resources` files
+* loading of textures (we'll add other stuff during developement)
+* keeping track of what is loaded (how many textures, fonts and for which scene id)
+* `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
