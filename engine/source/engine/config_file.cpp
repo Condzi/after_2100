@@ -1,5 +1,6 @@
 #include <engine/config_file.hpp>
 #include <engine/allocator.hpp>
+#include <engine/logger.hpp>
 
 #include <cstring>
 #include <filesystem>
@@ -97,9 +98,15 @@ void Config_File::parse_from_file( CString path )
 
 		constant name_idx_begin = idx;
 		constant name_idx_end = ate_chars_until_whitespace( file_content, idx );
-		CString name{ file_content.data() + name_idx_begin, name_idx_end - name_idx_begin };
+		CString const name{ file_content.data() + name_idx_begin, name_idx_end - name_idx_begin };
 		constant name_hash = hash_cstring( name );
 		constant value_idx = ate_whitespace( file_content, name_idx_end );
+		if ( value_idx >= endline_idx ) {
+			con_log_indented( 1, R"(Warning: in file "%" field "%" has no value assigned!)", path, name );
+			idx = endline_idx;
+			++current_config_value; // We're wasting space here but no value is a bug either way so it's not bad. 
+			continue;
+		}
 		constant value_str_size = ( ate_whitespace_reversed( file_content, endline_idx - 1 ) + 1 ) - value_idx;
 		CString value{ reinterpret_cast<char*>( Context.default_allocator->allocate( value_str_size ) ), value_str_size };
 		memcpy( const_cast<char*>( value.data ), file_content.data() + value_idx, value_str_size );
@@ -171,6 +178,12 @@ void Config_File::parse_from_source( CString source )
 		CString name{ source_content.data() + name_idx_begin, name_idx_end - name_idx_begin };
 		constant name_hash = hash_cstring( name );
 		constant value_idx = ate_whitespace( source_content, name_idx_end );
+		if ( value_idx >= endline_idx ) {
+			con_log_indented( 1, R"(Warning: in DEFAULT CONFIG field "%" has no value assigned!)", name );
+			idx = endline_idx;
+			++current_config_value; // We're wasting space here but no value is a bug either way so it's not bad. 
+			continue;
+		}
 		constant value_str_size = ( ate_whitespace_reversed( source_content, endline_idx - 1 ) + 1 ) - value_idx;
 		CString value{ reinterpret_cast<char*>( Context.default_allocator->allocate( value_str_size ) ), value_str_size };
 		memcpy( const_cast<char*>( value.data ), source_content.data() + value_idx, value_str_size );

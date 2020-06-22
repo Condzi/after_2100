@@ -20,7 +20,7 @@ Context.prepared_resources = &resource_manager.prepared_resources;
 ```
 # Updating textures after change
 This feature will be useful only in developement -- we should disable
-it in release build, I think. It should not be perfomed automatically since it would be very ineffective - it's a corner case, most of the time (99.999%) we won't be performing this action.
+it in release build, I think. It should not be perfomed automatically since it would be very ineffective - it's a corner case, most of the time (99.999%) we won't be performing this action. I'll bind it to some key (F1).
 ```cpp
 // Just update every entity in the array that has texture!!!
 // this thing applies to all other resources. We could even do this
