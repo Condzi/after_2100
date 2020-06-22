@@ -1,4 +1,6 @@
 # **todo**
+* add stack allocator
+* make bitset use allocator instead of stack
 * do a basic sprite renderer
 * figure out ttf fonts
 * do a debug console (without editing for now, just one color messages + scrolling)
@@ -25,3 +27,4 @@ struct Stack_Allocator
 * better indentation handling in the logger. Consider adding a "current_indent" variable that we can change that is the default one for logging. This
     way we could have less cluttered looking calls and less indentation problems. However, this is a rahter low priority thing.
 * Gamepad support
+* we'll need ascii text input handling later (for dev console)

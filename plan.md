@@ -62,6 +62,7 @@
         * Try the logging to opened `notepad.exe` instance thing from [here](http://kylehalladay.com/blog/2020/05/20/Rendering-With-Notepad.html) (but probably it's too hacky-whacky to use)
     * custom indentation looks cool 
 ----
+# No hotloading - we can just call reload command
 * **Hotloading** variables from a file (we can use Windows ability to notify us when the file changes)
     * Hotloading of resources
         * Texture and shader ( do we want shaders? ) is just OpenGL id?
@@ -73,10 +74,14 @@
     * Use Hold / Cold data approach. Store everything in arrays. See `hot_cold_entities.cpp` for better reference.
     * Don't use inheritance! And ECS. Just include the `Entity` using pointers and references.
     * `Entity Manager` holds arrays of entities + *one instance of player Entity*
+    * Scene has additional `.scene_resources` file associated with it that holds resources that it needs
 
 ----
 * **Resource Manager**
+    * ToDo: We gonna need need handling of texture atlases.
+    * ToDo: Color values? That we can set in config file. Different enemies could have different colors but same texture for example.
     * Resources are:
+        * Animations (Sprite sheet + frame size + play speed)
         * Textures
         * Fonts
         * Music
@@ -86,7 +91,6 @@
     * have a list of all resources that we can request (as a hash table)
     * have a way to reload all resources
     * we want to free unused resources somehow
-    * We want to hotload stuff.
     * how we can provide fast lookup + hotload?
         * when we're rendering we want to get texture ids quickly. 
         * maybe we can return a watcher-like object that updates its content every frame? Then we would call at the end of the frame to check if we have to update our value, or maybe even just do `resource.gl_resource_id = manager.get_resource<Texture_ID>(resource.id_in_resource_manager)`. That structure would look like this:

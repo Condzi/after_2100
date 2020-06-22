@@ -8,6 +8,7 @@
 
 namespace con
 {
+// @Robustness: Use initialize and shutdown and allocator instead of templated size.
 // @Performance: Add find_first_unset_bit() -> idx method 
 // because we're often using it that way and doing test(i) for
 // everything kinda suck. We can check every byte instead of bit.

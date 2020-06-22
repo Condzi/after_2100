@@ -71,9 +71,7 @@ void Application::run()
 {
 	con_log( "Application runs..." );
 
-
 	input.add_binding( "exit_button"_hcs, Key::Keyboard_ESCAPE );
-	input.add_binding( "binding_change_test"_hcs, Key::Mouse_MIDDLE );
 
 	Time_Period frame_start = Time::now();
 	Time_Period frame_end;
@@ -93,11 +91,6 @@ void Application::run()
 
 		if ( input.is_key_pressed( "exit_button"_hcs ) ) {
 			Context.engine_flags.exit = true;
-		}
-
-		if ( input.is_key_released( "binding_change_test"_hcs ) ) {
-			input.change_binding( "exit_button"_hcs, Key::Keyboard_SPACE );
-			con_log( "MMB released!" );
 		}
 
 		input.poll_events();
