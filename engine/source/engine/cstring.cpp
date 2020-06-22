@@ -30,4 +30,8 @@ returning cstring_from_cstr( char const* cstr ) -> CString
 {
 	return { cstr, static_cast<s32>( strlen( cstr ) ) };
 }
+returning cstring_from_stdstring( std::string const& str ) -> CString
+{
+	return { str.data(), static_cast<s32>( str.size() ) };
+}
 }

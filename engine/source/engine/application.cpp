@@ -1,6 +1,7 @@
 #include <engine/application.hpp>
 
 #include <engine/default_config_values.hpp>
+#include <engine/scene_resources_file_parser.hpp>
 
 #include <filesystem>
 
@@ -58,9 +59,40 @@ returning Application::initialize() -> bool
 	con_log( "Window initialized." );
 	flush_logger();
 
+	// We don't want to save it for now.
+	Context.default_allocator = &temporary_allocator;
+	Array<CString> textures, fonts, shaders;
+	con_log( "====================" );
+	con_log( "Loading default scene resources info" );
+	flush_logger();
+	if ( !parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE, textures, fonts, shaders ) ) {
+		con_log_indented( 1, "Parsing failed." );
+	} else {
+		con_log_indented( 1, "Parsing succedded. Printing stuff now:" );
+		con_log( "Textures:" );
+		for ( s32 i = 0; i < textures.size(); ++i ) {
+			con_log_indented( 1, "%. %", i+1, textures[i] );
+		}
+
+		con_log( "Fonts:" );
+		for ( s32 i = 0; i < fonts.size(); ++i ) {
+			con_log_indented( 1, "%. %", i+1, fonts[i] );
+		}
+
+		con_log( "Shaders:" );
+		for ( s32 i = 0; i < shaders.size(); ++i ) {
+			con_log_indented( 1, "%. %", i+1, shaders[i] );
+		}
+	}
+	Context.default_allocator = &default_allocator;
+	con_log( "====================" );
+	flush_logger();
+
 	con_log( "Initializing input..." );
 	input.initialize( window );
 	con_log( "Input initialized." );
+	flush_logger();
+
 
 	con_log( "Initialization completed." );
 	flush_logger();

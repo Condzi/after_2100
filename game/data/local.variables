@@ -30,3 +30,7 @@
 # name_in_game file default_size?
 :/fonts
     default Oxanium-Regular.ttf 32
+
+:/shaders
+    sprite_default sprite_default.shaders
+    sprite_tinted sprite_tinted.shaders

@@ -3,9 +3,17 @@
 # default font, most common enemy sprite, maybe UI textures.
 # Please note that this file format differes from .variables.
 
-TEXTURES
+:/textures
 player
 enemy
+third
 
-FONTS
+:/fonts
 default
+second
+
+:/shaders
+sprite_default
+blah
+bla_bla_bla
+_4th

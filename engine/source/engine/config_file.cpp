@@ -64,7 +64,7 @@ void Config_File::parse_from_file( CString path )
 
 	for ( s32 idx = 0; idx < file_content.size(); idx = ate_chars_until( file_content, idx, '\n' ) ) {
 		idx = ate_whitespace( file_content, idx );
-		CString temp{ file_content.data() + idx, file_content.size() - idx };
+		CString temp{ file_content.data() + idx, file_size - idx };
 
 		if ( !temp.begins_with( section_mark ) &&
 			 !temp.begins_with( comment_mark ) &&

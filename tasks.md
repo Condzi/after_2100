@@ -11,7 +11,6 @@ resource_manager.prepare_from_file("scene1.variables");
 // We don't need ability to load/free stuff, only the actual resources
 // are needed for creation of the entities.
 // Maybe put it to the .prepare_from_file(..)?
-// And set it to nullptr if the resource_manager frees stuff?
 Context.prepared_resources = &resource_manager.prepared_resources;
 ```
 # Updating textures after change
@@ -22,10 +21,11 @@ it in release build, I think. It should not be perfomed automatically since it w
 // this thing applies to all other resources. We could even do this
 // in separate thread at the beginning of the frame -- we would have plenty
 // of time to update these values.
-for(auto& cold : entities) {
-if(ids_to_reload.contains( cold.render_info.texture.resource_id ))
-{
-    cold.render_info.texture.gl_id = resource_manager.get_texture(resource_id);
+for( auto& cold : entities ) {
+    if( ids_to_reload.contains( cold.render_info.texture.resource_id ) )
+    {
+        cold.render_info.texture.gl_id = resource_manager.get_texture   (resource_id);
+    }
 }
 ```
 

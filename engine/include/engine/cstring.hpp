@@ -1,6 +1,7 @@
 #pragma once
 
 #include <engine/typedefs.hpp>
+#include <string>
 
 namespace con
 {
@@ -36,6 +37,7 @@ returning constexpr hash_cstring( CString const cstring ) -> u32
 }
 // Stupid name tbh. Makes CString from C-string at runtime.
 returning cstring_from_cstr( char const* cstr ) -> CString;
+returning cstring_from_stdstring( std::string const& str ) -> CString;
 
 //
 // Definitions
