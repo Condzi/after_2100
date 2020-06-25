@@ -20,6 +20,7 @@ public:
 	returning operator[]( s32 idx ) const -> T const&;
 
 	returning data() -> T*;
+	returning data() const -> T const*;
 	returning size() const -> s32;
 
 private:
@@ -73,6 +74,12 @@ returning Array<T>::operator[]( s32 idx ) const -> T const&
 
 template<typename T>
 returning Array<T>::data() -> T*
+{
+	return begin;
+}
+
+template <typename T>
+returning Array<T>::data() const -> T const*
 {
 	return begin;
 }

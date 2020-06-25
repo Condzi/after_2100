@@ -87,6 +87,8 @@
         * Music
         * Sound
         * Localized Strings
+    * Because we specify every texture size, we may take advantage of that and generate correctly sized "null" textures for them (if we fail to load them for some reason)
+        * if we don't event have the texture mentioned in the config file, we should return an invalid texture of some kind... a checkboard?
     * Every scene has associated .scene_resources file in which it specifies what resources it needs
     * we have `defaults.scene_resources` wchich specifies most frequent data that should be loaded all the time (something like most common enemy texture, player texture, ui textures, default font)
     * Note how many resources are currently loaded
@@ -124,6 +126,7 @@ struct GL_Resource
     * Instantiated rendering / render N vertices at one time thing?
         * True Type Font Rendering
         * Bitmap Font rendering (for dev console; maybe just use TTF^?)
+    * Vertex and fragment shaders in one file (I've seen a macro trick to achieve this in GLSL)
 
 ----
 * Built-in **developer console**

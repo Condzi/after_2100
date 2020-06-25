@@ -35,6 +35,13 @@ We don't want to free stuff we gonna use in the next scene (UI textures, fonts, 
 We may want to have some resources loaded for entire lifetime, like:
 default font, player texture...?
 
+# Other stuff
+Because resources are simply structs we may want to know more about data they are storing. `Resource Manager` may share with us information about texture, its size for example, using `.get_info<Texture_Info>("player"_hcs)`. This function relies on information given by designer in `local.variables` file, which we should validate during loading from file process.
+
+We may just call `.get_texture_info` instad... Because not everything may have complicated info. 
+
+We should specify the default wrapping of the textures and additional wrapping parameter? For example `GL_CLAMP_REPEAT` might be ok.
+
 # **Current Tasks**
 * parser of `.scene_resources` files
 * loading of textures (we'll add other stuff during developement)

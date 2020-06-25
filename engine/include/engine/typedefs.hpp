@@ -10,6 +10,7 @@
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
 
+#include <glad/glad.h>
 
 namespace con
 {
@@ -39,6 +40,7 @@ using f32 = float;
 using f64 = double;
 
 using byte = u8;
+using gl_id = GLuint;
 
 //
 // Handy macros

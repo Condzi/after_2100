@@ -1,4 +1,5 @@
 # **todo**
+* add growing array like a vector and use it in config file parser and scene resources info file parser. Now it's rather clumsy and overcomplicated.
 * make bitset use allocator instead of stack
 * do a basic sprite renderer
 * figure out ttf fonts
