@@ -43,22 +43,30 @@
 
 #define CON_MAX_INPUT_BINDINGS  8
 
+//
+// Data files extensions
+//
+#define CON_LOG_FILE_EXTENSION ".txt"
+#define CON_CONFIG_FILE_EXTENSION ".variables"
+#define CON_SCENE_RESOURCES_FILE_EXTENSION ".scene_resources"
+#define CON_SHADERS_FILE_EXTENSION ".shaders"
 
 //
 // Paths relative to run tree.
 //
 #define CON_LOGS_FOLDER			"logs\\"
 #define CON_DATA_FOLDER			"data\\"
-#define CON_SCENES_FOLDER		CON_DATA_FOLDER "scenes\\"
 
 #define CON_ASSETS_FOLDER		CON_DATA_FOLDER   "assets\\"
+#define CON_SCENES_FOLDER		CON_ASSETS_FOLDER "scenes\\"
 #define CON_TEXTURES_FOLDER		CON_ASSETS_FOLDER "textures\\"
 #define CON_FONTS_FOLDER		CON_ASSETS_FOLDER "fonts\\"
 #define CON_SHADERS_FOLDER		CON_ASSETS_FOLDER "shaders\\"
 
-#define CON_CONFIG_FILE			CON_DATA_FOLDER "local.variables"
-#define CON_DEFAULT_LOG_FILE	CON_LOGS_FOLDER "log.txt"
-#define CON_DEFAULT_SCENE_RESOURCES_INFO_FILE   CON_SCENES_FOLDER "default.scene_resources"
+#define CON_CONFIG_FILE			CON_DATA_FOLDER "local" CON_CONFIG_FILE_EXTENSION
+#define CON_DEFAULT_LOG_FILE	CON_LOGS_FOLDER "log" CON_LOG_FILE_EXTENSION
+#define CON_DEFAULT_SCENE_RESOURCES_INFO_FILE   CON_SCENES_FOLDER "default" CON_SCENE_RESOURCES_FILE_EXTENSION
+#define CON_ASSETS_CONFIG_FILE  CON_DATA_FOLDER "asset" CON_CONFIG_FILE_EXTENSION
 
 //
 // Entities stuff

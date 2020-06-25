@@ -29,3 +29,6 @@ struct Stack_Allocator
 * we'll need ascii text input handling later (for dev console)
 * don't forget to add licenses!
 * maybe use cascadia monospace font?
+* log the hardware info (RAM, max texture size, this kind of stuff)
+* add support for const char* const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`'
+* sort todo by categories (quality of life, important, progress, bug...)

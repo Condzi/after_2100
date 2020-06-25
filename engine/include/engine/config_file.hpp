@@ -8,6 +8,13 @@ namespace con
 class Config_File final
 {
 public:
+	// Used by get_section function
+	struct Hash_Value_Pair final
+	{
+		u32 hash;
+		CString value;
+	};
+
 	void parse_from_file( CString path );
 	void parse_from_source( CString source );
 
@@ -15,6 +22,7 @@ public:
 	void free();
 
 	returning get_value( Hashed_CString section, Hashed_CString name ) -> CString;
+	returning get_section( Hashed_CString section ) -> Array<Hash_Value_Pair>;
 
 private:
 	struct Config_Value_Info final

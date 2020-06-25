@@ -36,8 +36,12 @@ returning constexpr hash_cstring( CString const cstring ) -> u32
 	return hash;
 }
 // Stupid name tbh. Makes CString from C-string at runtime.
+// @Robustness: should we create these in temporary buffer?
 returning cstring_from_cstr( char const* cstr ) -> CString;
 returning cstring_from_stdstring( std::string const& str ) -> CString;
+
+// Allocates in temporary storage. Just adds \0 to the end
+returning cstring_to_cstr( CString str ) -> CString;
 
 //
 // Definitions

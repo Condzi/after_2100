@@ -183,6 +183,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\resource_loader.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="include\engine\resource_types.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\scene_resources_file_parser.hpp">
       <SubType>
       </SubType>
@@ -210,6 +218,7 @@
     <ClCompile Include="source\engine\logger.cpp" />
     <ClCompile Include="source\engine\formatting.cpp" />
     <ClCompile Include="source\engine\prepared_resources.cpp" />
+    <ClCompile Include="source\engine\resource_loader.cpp" />
     <ClCompile Include="source\engine\scene_resources_file_parser.cpp" />
     <ClCompile Include="source\engine\time.cpp" />
     <ClCompile Include="source\engine\window.cpp" />

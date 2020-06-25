@@ -49,6 +49,10 @@ void Array<T>::initialize( s32 the_size_, Allocator* allocator_ )
 template<typename T>
 void Array<T>::shutdown()
 {
+	if ( begin == nullptr || size_ < 0 ) {
+		return;
+	}
+
 	allocator->free( reinterpret_cast<byte*>( begin ), sizeof( T ) * size_ );
 	begin = nullptr;
 	size_ = -1;

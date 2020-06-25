@@ -1,4 +1,5 @@
 #include <engine/cstring.hpp>
+#include <engine/allocator.hpp>
 
 #include <cstring>
 
@@ -33,5 +34,15 @@ returning cstring_from_cstr( char const* cstr ) -> CString
 returning cstring_from_stdstring( std::string const& str ) -> CString
 {
 	return { str.data(), static_cast<s32>( str.size() ) };
+}
+
+returning cstring_to_cstr( CString str ) -> CString
+{
+	char* new_str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.size + 1) );
+	memcpy( new_str_data, str.data, str.size );
+	new_str_data[str.size] = '\0';
+	
+	return CString{ new_str_data, str.size+1 };
+
 }
 }

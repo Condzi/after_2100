@@ -47,3 +47,4 @@ We should specify the default wrapping of the textures and additional wrapping p
 * loading of textures (we'll add other stuff during developement)
 * keeping track of what is loaded (how many textures, fonts and for which scene id)
 * `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
+* we probably need to update paths to check at application startup since we added a few

@@ -87,10 +87,11 @@
         * Music
         * Sound
         * Localized Strings
+    * Shaders are actually pretty common so let's have them for entire lifetime? (add them to `default.scene_resources`)
     * Because we specify every texture size, we may take advantage of that and generate correctly sized "null" textures for them (if we fail to load them for some reason)
         * if we don't event have the texture mentioned in the config file, we should return an invalid texture of some kind... a checkboard?
     * Every scene has associated .scene_resources file in which it specifies what resources it needs
-    * we have `defaults.scene_resources` wchich specifies most frequent data that should be loaded all the time (something like most common enemy texture, player texture, ui textures, default font)
+    * we have `default.scene_resources` wchich specifies most frequent data that should be loaded all the time (something like most common enemy texture, player texture, ui textures, default font)
     * Note how many resources are currently loaded
     * have a list of all resources that we can request (as a hash table)
     * have a way to reload all resources

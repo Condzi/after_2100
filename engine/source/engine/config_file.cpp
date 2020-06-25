@@ -221,4 +221,41 @@ returning Config_File::get_value( Hashed_CString section, Hashed_CString name ) 
 
 	return {};
 }
+
+returning Config_File::get_section( Hashed_CString section ) -> Array<Hash_Value_Pair>
+{
+	// @Robustness: Another use-case for a growing array.
+
+	// First, we have to count how much elements requested section has.
+	s32 entries_count = 0;
+	for ( s32 i = 0; i < config_values.size(); ++i ) {
+		if ( config_values[i].section_hash == section.hash ) {
+			++entries_count;
+		}
+	}
+
+	con_assert( entries_count > 0 );
+	if ( entries_count == 0 ) {
+		return {};
+	}
+
+	// Now we're actually gathering them
+	Array<Hash_Value_Pair> to_return;
+	to_return.initialize( entries_count, Context.temporary_allocator );
+
+	s32 current_entry = 0;
+	for ( s32 i = 0; i < config_values.size() && current_entry < entries_count; ++i ) {
+		constant& cfg_val = config_values[i];
+		if ( cfg_val.section_hash == section.hash ) {
+			auto& entry = to_return[current_entry];
+
+			entry.hash = cfg_val.name_hash;
+			entry.value = cfg_val.value;
+			++current_entry;
+		}
+	}
+
+	con_assert( current_entry == entries_count );
+	return to_return;
+}
 }
