@@ -49,43 +49,14 @@ returning Application::initialize() -> bool
 
 	con_log_indented( 1, "(FIXME) Probably done loading config file. IDK because I'm fired" );
 
-	// @ToDo: Load config here and fallback to default values if necessary
 	// @ToDo: Splash screen stuff?? in separate thread? use it 
-	// @ToDo: Initialize window here.
-	// @ToDo: Load resources here.
 
 	con_log( "Initializing window..." );
 	window.initialize();
 	con_log( "Window initialized." );
 	flush_logger();
 
-	// We don't want to save it for now.
-	Context.default_allocator = &temporary_allocator;
-	Array<CString> textures, fonts, shaders;
-	con_log( "====================" );
-	con_log( "Loading default scene resources info" );
-	flush_logger();
-	if ( !parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE, textures, fonts, shaders ) ) {
-		con_log_indented( 1, "Parsing failed." );
-	} else {
-		con_log_indented( 1, "Parsing succedded. Printing stuff now:" );
-		con_log( "Textures:" );
-		for ( s32 i = 0; i < textures.size(); ++i ) {
-			con_log_indented( 1, "%. %", i+1, textures[i] );
-		}
-
-		con_log( "Fonts:" );
-		for ( s32 i = 0; i < fonts.size(); ++i ) {
-			con_log_indented( 1, "%. %", i+1, fonts[i] );
-		}
-
-		con_log( "Shaders:" );
-		for ( s32 i = 0; i < shaders.size(); ++i ) {
-			con_log_indented( 1, "%. %", i+1, shaders[i] );
-		}
-	}
-	Context.default_allocator = &default_allocator;
-	con_log( "====================" );
+	// @ToDo: Load resources here...
 	flush_logger();
 
 	con_log( "Initializing input..." );

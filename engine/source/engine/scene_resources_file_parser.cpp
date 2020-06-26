@@ -35,13 +35,13 @@ returning ate_whitespace( Array<char>& arr, s32 current_idx ) -> s32
 }
 }
 
-returning parse_scene_resources_file( CString path, Array<CString>& textures, Array<CString>& fonts, Array<CString>& shaders ) -> bool
+returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<u32>& fonts, Array<u32>& shaders ) -> bool
 {
 	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 	constant mark = temporary_allocator->get_mark();
 	defer{ temporary_allocator->set_mark( mark ); };
 
-	std::ifstream input( std::string{ path.data, path.data + path.size }, std::ios::binary );
+	std::ifstream input( cstring_to_stdsv( path ), std::ios::binary );
 	if ( input.is_open() == false ) {
 		con_log_indented( 1, R"(Error opening file "%".)", path );
 		return false;
@@ -94,7 +94,7 @@ returning parse_scene_resources_file( CString path, Array<CString>& textures, Ar
 			} else if ( potential_section.begins_with( "shaders" ) ) {
 				current_section = Shaders;
 			} else {
-				con_log_indented( 1, R"(Error: unknown resource section in "%": "%")", path, potential_section );
+				con_log_indented( 2, R"(Error: unknown resource section in "%": "%")", path, potential_section );
 				return false;
 			}
 
@@ -113,10 +113,16 @@ returning parse_scene_resources_file( CString path, Array<CString>& textures, Ar
 		idx = endline_idx;
 	}
 
-	con_log_indented( 1, "Entries count found: % textures, % fonts, % shaders.", textures_entries, fonts_entries, shaders_entries );
-	textures.initialize( textures_entries );
-	fonts.initialize( fonts_entries );
-	shaders.initialize( shaders_entries );
+	con_log_indented( 2, "Entries found: % textures, % fonts, % shaders.", textures_entries, fonts_entries, shaders_entries );
+	if ( textures_entries > 0 ) {
+		textures.initialize( textures_entries );
+	}
+	if ( fonts_entries > 0 ) {
+		fonts.initialize( fonts_entries );
+	}
+	if ( shaders_entries > 0 ) {
+		shaders.initialize( shaders_entries );
+	}
 
 	//
 	// Actually getting the data.
@@ -145,7 +151,7 @@ returning parse_scene_resources_file( CString path, Array<CString>& textures, Ar
 			} else if ( potential_section.begins_with( "shaders" ) ) {
 				current_section = Shaders;
 			} else {
-				con_log_indented( 1, R"(Error: unknown resource section in "%": "%")", path, potential_section );
+				con_log_indented( 2, R"(Error: unknown resource section in "%": "%")", path, potential_section );
 				return false;
 			}
 
@@ -155,11 +161,12 @@ returning parse_scene_resources_file( CString path, Array<CString>& textures, Ar
 
 		constant word_length = ate_chars_until_whitespace( file_content, idx ) - idx;
 		CString const word{ temp.data, word_length };
+		constant hash = hash_cstring( word );
 
 		switch ( current_section ) {
-		case Textures: textures[++textures_idx] = word; break;
-		case Fonts:    fonts[++fonts_idx] = word;       break;
-		case Shaders:  shaders[++shaders_idx] = word;   break;
+		case Textures: textures[++textures_idx] = hash; break;
+		case Fonts:    fonts[++fonts_idx] = hash;       break;
+		case Shaders:  shaders[++shaders_idx] = hash;   break;
 		}
 
 		idx = endline_idx;

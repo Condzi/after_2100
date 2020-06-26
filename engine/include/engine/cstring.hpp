@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/typedefs.hpp>
+#include <engine/array.hpp>
 #include <string>
 
 namespace con
@@ -39,10 +39,11 @@ returning constexpr hash_cstring( CString const cstring ) -> u32
 // @Robustness: should we create these in temporary buffer?
 returning cstring_from_cstr( char const* cstr ) -> CString;
 returning cstring_from_stdstring( std::string const& str ) -> CString;
+returning cstring_from_array( Array<char> const& arr ) -> CString;
 
 // Allocates in temporary storage. Just adds \0 to the end
 returning cstring_to_cstr( CString str ) -> CString;
-
+returning cstring_to_stdsv( CString str ) -> std::string_view;
 //
 // Definitions
 //

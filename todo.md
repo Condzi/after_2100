@@ -28,6 +28,7 @@ struct Stack_Allocator
 * log the hardware info (RAM, max texture size, this kind of stuff)
 * use WinMain for release mode
     * and for debug too, but we don't have dev console yet.
+* add `load_entire_file_binary( path ) -> Array<char>` ( or `<byte>`? )
 
 # **For later**
 * don't forget to **add licenses**!

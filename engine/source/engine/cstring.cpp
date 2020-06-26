@@ -36,6 +36,11 @@ returning cstring_from_stdstring( std::string const& str ) -> CString
 	return { str.data(), static_cast<s32>( str.size() ) };
 }
 
+returning cstring_from_array( Array<char> const& arr ) -> CString
+{
+	return CString{ arr.data(), arr.size() };
+}
+
 returning cstring_to_cstr( CString str ) -> CString
 {
 	char* new_str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.size + 1) );
@@ -44,5 +49,10 @@ returning cstring_to_cstr( CString str ) -> CString
 	
 	return CString{ new_str_data, str.size+1 };
 
+}
+
+returning cstring_to_stdsv( CString str ) -> std::string_view
+{
+	return std::string_view{ str.data, static_cast<size_t>( str.size ) };
 }
 }

@@ -11,9 +11,11 @@ class Resource_Loader final
 {
 public:
 	// Works like reload but doesn't attempt to update entities.
+	// Just loads the metadata and default resources.
 	void initialize();
+	void shutdown();
 
-	// We're not reloading local.variables file.
+	// We're not reloading local.variables file!
 	// We're reloading:
 	// -- .scene_resources file (and default.scene_resources)
 	// -- assets.variables
@@ -21,7 +23,7 @@ public:
 	// scene_resources file).
 	void reload();
 
-	void prepare_resources_for_scene( CString scene_name );
+	returning prepare_resources_for_scene( CString scene_name ) -> bool;
 
 private:
 	struct
@@ -40,6 +42,7 @@ private:
 	struct
 	{
 		Array<u32> textures;
+		Array<u32> fonts; // @Incomplete: no font support rn
 		Array<u32> shaders;
 	} defaults; // don't unload these!
 

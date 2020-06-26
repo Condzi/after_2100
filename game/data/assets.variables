@@ -1,6 +1,10 @@
 # name_in_game file width height
 :/textures
-    player player.png 512 512
+    player player.png 140 108
+
+# We're not using fonts right now.
+:/fonts
+    todo 321
 
 :/shaders
     sprite_default sprite_default.shaders

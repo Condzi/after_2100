@@ -1,0 +1,6 @@
+# level0.scene
+textures:
+enemy
+
+shaders:
+sprite_default

@@ -1531,6 +1531,10 @@ typedef void (APIENTRYP PFNGLBINDTEXTUREPROC)(GLenum target, GLuint texture);
 GLAPI PFNGLBINDTEXTUREPROC glad_glBindTexture;
 #define glBindTexture glad_glBindTexture
 
+typedef void (APIENTRYP PFNGLDELETETEXTURESPROC)(GLsizei n, const GLuint *textures);
+GLAPI PFNGLDELETETEXTURESPROC glad_glDeleteTextures;
+#define glDeleteTextures glad_glDeleteTextures
+
 typedef void (APIENTRYP PFNGLBINDVERTEXARRAYPROC)(GLuint array);
 GLAPI PFNGLBINDVERTEXARRAYPROC glad_glBindVertexArray;
 #define glBindVertexArray glad_glBindVertexArray
@@ -1559,6 +1563,10 @@ typedef void (APIENTRYP PFNGLCOMPILESHADERPROC)(GLuint shader);
 GLAPI PFNGLCOMPILESHADERPROC glad_glCompileShader;
 #define glCompileShader glad_glCompileShader
 
+typedef GLuint (APIENTRYP PFNGLCREATEPROGRAMPROC)(void);
+GLAPI PFNGLCREATEPROGRAMPROC glad_glCreateProgram;
+#define glCreateProgram glad_glCreateProgram
+
 typedef GLuint (APIENTRYP PFNGLCREATESHADERPROC)(GLenum type);
 GLAPI PFNGLCREATESHADERPROC glad_glCreateShader;
 #define glCreateShader glad_glCreateShader
@@ -1566,6 +1574,10 @@ GLAPI PFNGLCREATESHADERPROC glad_glCreateShader;
 typedef void (APIENTRYP PFNGLDELETEBUFFERSPROC)(GLsizei n, const GLuint *buffers);
 GLAPI PFNGLDELETEBUFFERSPROC glad_glDeleteBuffers;
 #define glDeleteBuffers glad_glDeleteBuffers
+
+typedef void (APIENTRYP PFNGLDELETEPROGRAMPROC)(GLuint program);
+GLAPI PFNGLDELETEPROGRAMPROC glad_glDeleteProgram;
+#define glDeleteProgram glad_glDeleteProgram
 
 typedef void (APIENTRYP PFNGLDELETESHADERPROC)(GLuint shader);
 GLAPI PFNGLDELETESHADERPROC glad_glDeleteShader;

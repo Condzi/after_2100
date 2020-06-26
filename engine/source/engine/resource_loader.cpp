@@ -1,11 +1,14 @@
 #include <engine/resource_loader.hpp>
+#include <engine/algorithms.hpp>
 #include <engine/allocator.hpp>
 #include <engine/logger.hpp>
 #include <engine/config_file.hpp>
 #include <engine/scene_resources_file_parser.hpp>
+#include <engine/prepared_resources.hpp>
 
 #include <glad/glad.h>
 
+#include <fstream>
 #include <filesystem>
 //
 // Defining own STB_Image stuff. We use temporary storage for fast allocations, we
@@ -26,6 +29,9 @@ ptr = reinterpret_cast<decltype( ptr )>( new_ptr_ ); \
 
 namespace con
 {
+// 
+// This fuctions allocate their data using temporary allocator!
+//
 file_scope
 {
 returning load_texture_data( CString path, s16 const decl_width, s16 const decl_height ) -> byte*
@@ -34,7 +40,7 @@ returning load_texture_data( CString path, s16 const decl_width, s16 const decl_
 
 	s32 loaded_width = -1, loaded_height = -1;
 	s32 channels = -1;
-	byte* data = reinterpret_cast<byte*>( stbi_load( path.data, &loaded_width, &loaded_height, &channels, 0 ) );
+	byte* data = reinterpret_cast<byte*>( stbi_load( path.data, &loaded_width, &loaded_height, &channels, STBI_rgb_alpha ) );
 
 	// idk if we actually have to remove \0 so I do this just in case it messes
 	// up logger / fputs
@@ -58,10 +64,67 @@ returning load_texture_data( CString path, s16 const decl_width, s16 const decl_
 
 	return data;
 }
+
+returning load_shader_source( CString path ) -> CString
+{
+	std::ifstream input( cstring_to_stdsv( path ), std::ios::binary );
+	if ( input.is_open() == false ) {
+		con_log_indented( 1, R"(Error opening file "%".)", path );
+		return {};
+	}
+
+	std::error_code fs_error_code;
+	constant file_size = static_cast<s32>( std::filesystem::file_size( { path.data, path.data + path.size }, fs_error_code ) );
+	if ( fs_error_code ) {
+		con_log_indented( 1, R"(Error reading file size for "%", info: "%")", path, cstring_from_stdstring( fs_error_code.message() ) );
+		return {};
+	}
+
+	Array<char> file_content;
+	file_content.initialize( file_size, Context.temporary_allocator );
+	input.read( file_content.data(), file_size );
+
+	return cstring_from_array( file_content );
+}
+
+returning build_shader_program( CString source ) -> gl_id
+{
+	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
+	constant mark = ta.get_mark();
+	defer{ ta.set_mark( mark ); };
+
+	compile_constant vertex_shader_header   = CString{ "#version 330\n#define VERTEX_SHADER\n" };
+	compile_constant fragment_shader_header = CString{ "#version 330\n#define FRAGMENT_SHADER\n" };
+
+	// @ToDo: Check if we can remove the \0?
+	constant vertex_shader_source   = sprint( "%%", vertex_shader_header, source );
+	constant fragment_shader_source = sprint( "%%", fragment_shader_header, source );
+
+	constant vertex_shader_id   = glCreateShader( GL_VERTEX_SHADER );
+	constant fragment_shader_id = glCreateShader( GL_FRAGMENT_SHADER );
+	constant program_id         = glCreateProgram();
+
+	glShaderSource( vertex_shader_id, 1, &vertex_shader_source.data, &vertex_shader_source.size );
+	glCompileShader( vertex_shader_id );
+
+	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &vertex_shader_source.size );
+	glCompileShader( fragment_shader_id );
+
+	glAttachShader( program_id, vertex_shader_id );
+	glAttachShader( program_id, fragment_shader_id );
+	glLinkProgram( program_id );
+
+	glDeleteShader( vertex_shader_id );
+	glDeleteShader( fragment_shader_id );
+
+	return program_id;
+}
 }
 
 void Resource_Loader::initialize()
 {
+	stbi_set_flip_vertically_on_load( true ); // Because OpenGL... shrug
+
 	check_scene_folder_content();
 
 	//
@@ -150,12 +213,185 @@ void Resource_Loader::initialize()
 
 	assets_config.free();
 	con_log_indented( 1, "Metadata loaded." );
+
+	//
+	// Loading default resources info specified in default.scene_resources
+	//
+
+	con_log_indented( 1, R"(Loading default resources info from "%".)", CString{ CON_DEFAULT_SCENE_RESOURCES_INFO_FILE } );
+	defaults.textures.shutdown();
+	defaults.fonts.shutdown();
+	defaults.shaders.shutdown();
+
+	if ( !parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE, defaults.textures, defaults.fonts, defaults.shaders ) ) {
+		con_log_indented( 1, "Error: Loading failed!" );
+	} else {
+		con_log_indented( 1, "Loading succeed." );
+	}
+
+	//
+	// Loading resources data and creating OpenGL stuff for them.
+	//
+
+	if ( defaults.textures.size() > 0 ) {
+		con_log_indented( 1, "Loading default textures..." );
+
+		auto& prepared_textures = Context.prepared_resources->textures;
+		prepared_textures.initialize( defaults.textures.size() );
+
+		for ( s32 i = 0; i < defaults.textures.size(); ++i ) {
+			prepared_textures[i].name_hash = defaults.textures[i];
+
+			constant[texture_width, texture_height] = texture_data[i];
+
+			if ( auto data = load_texture_data( paths.textures[i], texture_width, texture_height );
+				 data != nullptr ) {
+				// @Performance: maybe we could call `glGenTextures` with an array of textures? 
+				// I have to test it when we make this one work.
+				gl_id texture_id = 0;
+				glGenTextures( 1, &texture_id );
+				glBindTexture( GL_TEXTURE_2D, texture_id );
+
+				// set the texture wrapping parameters
+				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );	// set texture wrapping to GL_REPEAT (default wrapping method)
+				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+				// set texture filtering parameters
+				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+				glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data );
+			}
+		}
+	} else {
+		con_log_indented( 1, "No default textures to load." );
+	}
+
+	con_log_indented( 1, "Loading default fonts... (@INCOMPLETE, dummy)" );
+
+	if ( defaults.shaders.size() > 0 ) {
+		con_log_indented( 1, "Loading default shaders..." );
+
+		auto& prepared_shaders = Context.prepared_resources->shaders;
+		prepared_shaders.initialize( defaults.shaders.size() );
+
+		for ( s32 i = 0; i < defaults.shaders.size(); ++i ) {
+			prepared_shaders[i].name_hash = defaults.textures[i];
+
+			constant source = load_shader_source( paths.shaders[i] );
+
+			if ( source.size > 0 ) {
+				constant shader_id = build_shader_program( source );
+				prepared_shaders[i].id = shader_id;
+			}
+		}
+	} else {
+		con_log_indented( 1, "No default shaders to load." );
+	}
+
+}
+
+void Resource_Loader::shutdown()
+{
+	name_hashes.textures.shutdown();
+	name_hashes.shaders.shutdown();
+
+	for ( s32 i = 0; i < paths.textures.size(); ++i ) {
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.textures[i].data ) ), paths.textures[i].size );
+	}
+
+	for ( s32 i = 0; i < paths.shaders.size(); ++i ) {
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.shaders[i].data ) ), paths.shaders[i].size );
+	}
+
+	paths.textures.shutdown();
+	paths.shaders.shutdown();
+
+	defaults.textures.shutdown();
+	defaults.fonts.shutdown();
+	defaults.shaders.shutdown();
+
+	scene_folder_content.hashes.shutdown();
+
+	texture_data.shutdown();
+}
+
+returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> bool
+{
+	//
+	// Check if this scene file exists (we could use the filesystem here too?)
+	//
+	constant scene_name_hash = hash_cstring( scene_name );
+
+	constant result = linear_find( scene_folder_content.hashes, scene_name_hash );
+	if ( !result.found() ) {
+		con_log_indented( 1, R"(Error: can't find resource file for scene "%". Is name correct?)", scene_name );
+		return false;
+	}
+
+	//
+	// Get what resources we have to load. Skip the default ones.
+	//
+	constant scene_file_path = sprint( "%%%", CString{ CON_SCENES_FOLDER }, scene_name, CString{ CON_SCENE_RESOURCES_FILE_EXTENSION } );
+
+	Array<u32> textures, fonts, shaders;
+
+	if ( !parse_scene_resources_file( scene_file_path, textures, fonts, shaders ) ) {
+		return false;
+	}
+
+	// @Robustness: another use-case for growing array?
+
+	//
+	// Check how many textures we have to load.
+	//
+	s32 textures_to_load_count = 0;
+	auto& prepared_textures = Context.prepared_resources->textures;
+
+	for ( s32 i = 0; i < textures.size(); ++i ) {
+		constant result = linear_find_if( prepared_textures, [&]( Texture const& texture ) {
+			return texture.name_hash == textures[i];
+		} );
+
+		if ( !result.found() ) {
+			++textures_to_load_count;
+		}
+	}
+
+	if ( textures_to_load_count > 0 ) {
+		con_log_indented( 1, "Found % textures to load." );
+	} else {
+		con_log_indented( 1, "No textures to load this time." );
+	}
+
+	//
+	// Check how many textures we have to free (excluding default ones), and
+	// free them.
+	//
+	s32 textures_to_free_count = 0;
+	for ( s32 i = defaults.textures.size()-1; i < prepared_textures.size(); ++i ) {
+		constant result = linear_find( textures, prepared_textures[i].name_hash );
+
+		if ( !result.found() ) {
+			++textures_to_free_count;
+			glDeleteTextures( 1, &prepared_textures[i].id );
+		}
+	}
+
+	if ( textures_to_free_count > 0 ) {
+		con_log_indented( 1, "Found % textures to free." );
+	} else {
+		con_log_indented( 1, "No textures to free this time." );
+	}
+
+	// Continue here. I stopped to add a growing array ffs.
+
+	return true;
 }
 
 void Resource_Loader::check_scene_folder_content()
 {
 	namespace fs = std::filesystem;
-	
+
 	scene_folder_content.hashes.shutdown();
 
 	// @Robustness!!!!!!
@@ -187,7 +423,7 @@ void Resource_Loader::check_scene_folder_content()
 	if ( files_count == 0 ) {
 		con_log_indented( 2, "Warning: no scene files found." );
 		return;
-	} 
+	}
 	con_log_indented( 2, R"(Found % "%" files.)", files_count, CString{ CON_SCENE_RESOURCES_FILE_EXTENSION } );
 
 	scene_folder_content.hashes.initialize( files_count );

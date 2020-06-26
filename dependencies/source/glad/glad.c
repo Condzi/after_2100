@@ -285,11 +285,14 @@ PFNGLBUFFERSUBDATAPROC glad_glBufferSubData = NULL;
 PFNGLCLEARPROC glad_glClear = NULL;
 PFNGLCLEARCOLORPROC glad_glClearColor = NULL;
 PFNGLCOMPILESHADERPROC glad_glCompileShader = NULL;
+PFNGLCREATEPROGRAMPROC glad_glCreateProgram = NULL;
 PFNGLCREATESHADERPROC glad_glCreateShader = NULL;
 PFNGLDEBUGMESSAGECALLBACKPROC glad_glDebugMessageCallback = NULL;
 PFNGLDEBUGMESSAGECONTROLPROC glad_glDebugMessageControl = NULL;
 PFNGLDELETEBUFFERSPROC glad_glDeleteBuffers = NULL;
+PFNGLDELETEPROGRAMPROC glad_glDeleteProgram = NULL;
 PFNGLDELETESHADERPROC glad_glDeleteShader = NULL;
+PFNGLDELETETEXTURESPROC glad_glDeleteTextures = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glad_glDeleteVertexArrays = NULL;
 PFNGLDRAWELEMENTSPROC glad_glDrawElements = NULL;
 PFNGLENABLEPROC glad_glEnable = NULL;
@@ -348,6 +351,7 @@ static void load_GL_VERSION_1_1(GLADloadproc load) {
 	glad_glDrawElements = (PFNGLDRAWELEMENTSPROC)load("glDrawElements");
 	glad_glBindTexture = (PFNGLBINDTEXTUREPROC)load("glBindTexture");
 	glad_glGenTextures = (PFNGLGENTEXTURESPROC)load("glGenTextures");
+    glad_glDeleteTextures = (PFNGLDELETETEXTURESPROC)load("glDeleteTextures");
 }
 static void load_GL_VERSION_1_2(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_2) return;
@@ -371,7 +375,9 @@ static void load_GL_VERSION_2_0(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_2_0) return;
 	glad_glAttachShader = (PFNGLATTACHSHADERPROC)load("glAttachShader");
 	glad_glCompileShader = (PFNGLCOMPILESHADERPROC)load("glCompileShader");
+    glad_glCreateProgram = (PFNGLCREATEPROGRAMPROC)load("glCreateProgram");
 	glad_glCreateShader = (PFNGLCREATESHADERPROC)load("glCreateShader");
+    glad_glDeleteProgram = (PFNGLDELETEPROGRAMPROC)load("glDeleteProgram");
 	glad_glDeleteShader = (PFNGLDELETESHADERPROC)load("glDeleteShader");
 	glad_glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)load("glEnableVertexAttribArray");
 	glad_glGetProgramiv = (PFNGLGETPROGRAMIVPROC)load("glGetProgramiv");

@@ -22,6 +22,9 @@ struct Find_Result final
 template <typename TType, typename TPredicate>
 returning linear_find_if( Array<TType> const& arr, TPredicate predicate ) -> Find_Result;
 
+template <typename TType>
+returning linear_find( Array<TType> const& arr, TType const& val ) -> Find_Result;
+
 // TComparator should just return if for given value a: a < value.
 template <typename TType, typename TComparator, typename TPredicate>
 returning binary_find_if( Array<TType> const& arr, TComparator comparator, TPredicate predicate ) -> Find_Result;
@@ -37,6 +40,22 @@ returning linear_find_if( Array<TType> const& arr, TPredicate predicate ) -> Fin
 	s32 idx = 0;
 
 	while ( predicate( arr[idx] ) == false &&
+			idx < size ) {
+		++idx;
+	}
+
+	idx = ( idx == size ) ? -1 : idx;
+
+	return { .idx = idx };
+}
+
+template <typename TType>
+returning linear_find( Array<TType> const & arr, TType const & val ) -> Find_Result
+{
+	constant size = arr.size();
+	s32 idx = 0;
+
+	while ( arr[idx] != val &&
 			idx < size ) {
 		++idx;
 	}
