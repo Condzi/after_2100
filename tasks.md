@@ -43,6 +43,7 @@ We may just call `.get_texture_info` instad... Because not everything may have c
 We should specify the default wrapping of the textures and additional wrapping parameter? For example `GL_CLAMP_REPEAT` might be ok.
 
 # **Current Tasks**
+* fix bitset
 * add growing array
 * refactor resource_loader code to use growing array
 * complete the `prepare_resources_for_scene`.

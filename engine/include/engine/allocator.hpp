@@ -14,14 +14,19 @@ struct Allocator
 	void virtual free( byte* location, s32 size ) = 0;
 };
 
+struct C_Allocator final :
+	Allocator
+{
+	returning allocate( s32 size ) -> byte* override;
+	void free( byte* location, s32 size ) override;
+};
+
 // @ToDo: Make 4 byte sized blocks and keep track of free memory using
 // our bitset class. (position in bitset*4 = position in memory).
 // For now just use malloc/free.
 struct Default_Allocator final :
 	Allocator
 {
-	// @ToDo:
-	// Allocates CON_RESERVED_MEMORY amount of memory.
 	void initialize();
 	void shutdown();
 

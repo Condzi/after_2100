@@ -11,6 +11,7 @@ returning Application::initialize() -> bool
 {
 	Context.default_allocator = &default_allocator;
 	Context.temporary_allocator = &temporary_allocator;
+	Context.c_allocator = &c_allocator;
 	Context.entity_manager = &entity_manager;
 	Context.logger = &main_logger;
 	Context.config_file = &config_file;

@@ -6,15 +6,15 @@ namespace con
 {
 void Default_Allocator::initialize()
 {
-	begin = reinterpret_cast<byte*>( std::malloc( reserved_size ) );
-	used_bytes = reinterpret_cast<Used_Bytes_Bitset*>( std::malloc( sizeof( Used_Bytes_Bitset )  ) );
+	begin = Context.c_allocator->allocate( reserved_size );
+	used_bytes = reinterpret_cast<Used_Bytes_Bitset*>( Context.c_allocator->allocate( sizeof( Used_Bytes_Bitset )  ) );
 	new( used_bytes ) Used_Bytes_Bitset{};
 }
 
 void Default_Allocator::shutdown()
 {
-	std::free( begin );
-	std::free( used_bytes );
+	Context.c_allocator->free( begin, reserved_size );
+	Context.c_allocator->free( reinterpret_cast<byte*>( used_bytes ), sizeof( Used_Bytes_Bitset ) );
 }
 
 returning Default_Allocator::allocate( s32 size ) -> byte*
@@ -100,5 +100,17 @@ returning Temporary_Allocator::allocate( s32 size ) -> byte*
 	}
 
 	return requested_memory;
+}
+
+returning C_Allocator::allocate( s32 size ) -> byte*
+{
+	return reinterpret_cast<byte*>( malloc( size ) );
+}
+
+void C_Allocator::free( byte* location, s32 size )
+{
+	unused( size );
+
+	::free( location );
 }
 }
