@@ -7,14 +7,13 @@ namespace con
 void Default_Allocator::initialize()
 {
 	begin = Context.c_allocator->allocate( reserved_size );
-	used_bytes = reinterpret_cast<Used_Bytes_Bitset*>( Context.c_allocator->allocate( sizeof( Used_Bytes_Bitset ) ) );
-	new( used_bytes ) Used_Bytes_Bitset{};
+	used_bytes.initialize( reserved_size, Context.c_allocator );
 }
 
 void Default_Allocator::shutdown()
 {
 	Context.c_allocator->free( begin, reserved_size );
-	Context.c_allocator->free( reinterpret_cast<byte*>( used_bytes ), sizeof( Used_Bytes_Bitset ) );
+	used_bytes.shutdown();
 }
 
 returning Default_Allocator::allocate( s32 size ) -> byte*
@@ -22,13 +21,13 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 	s32 idx = 0;
 
 	for ( ; idx < reserved_size - size; ++idx ) {
-		idx = used_bytes->find_first_unset_bit( idx );
+		idx = used_bytes.find_first_unset_bit( idx );
 		con_assert( idx < reserved_size - size );
 
-		if ( used_bytes->test( idx + size - 1 ) == false ) {
+		if ( used_bytes.test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
 			for ( ; bit < idx+size - 1; ++bit ) {
-				if ( used_bytes->test( bit ) == true ) {
+				if ( used_bytes.test( bit ) == true ) {
 					idx = idx + bit;
 					break;
 				}
@@ -36,7 +35,7 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 
 			// Range is clear so we can return this memory.
 			if ( bit == idx + size - 1 ) {
-				used_bytes->set_range( idx, size );
+				used_bytes.set_range( idx, size );
 				return begin + idx;
 			}
 		}
@@ -54,7 +53,7 @@ void Default_Allocator::free( byte* location, s32 size )
 	constant idx = static_cast<s32>( location - begin );
 	con_assert( idx + size < reserved_size );
 
-	used_bytes->reset_range( idx, size );
+	used_bytes.reset_range( idx, size );
 }
 
 void Temporary_Allocator::initialize( s32 reserved )
@@ -116,14 +115,12 @@ void C_Allocator::free( byte* location, s32 size )
 
 void Stack_Allocator::initialize()
 {
-	used_bytes = reinterpret_cast<Used_Bytes_Bitset*>( Context.c_allocator->allocate( sizeof( Used_Bytes_Bitset ) ) );
-
-	new( used_bytes ) Used_Bytes_Bitset{};
+	used_bytes.initialize( reserved_size, Context.c_allocator );
 }
 
 void Stack_Allocator::shutdown()
 {
-	Context.c_allocator->free( reinterpret_cast<byte*>( used_bytes ), sizeof( Used_Bytes_Bitset ) );
+	used_bytes.shutdown();
 }
 
 returning Stack_Allocator::allocate( s32 size ) -> byte* 
@@ -131,13 +128,13 @@ returning Stack_Allocator::allocate( s32 size ) -> byte*
 	s32 idx = 0;
 
 	for ( ; idx < reserved_size - size; ++idx ) {
-		idx = used_bytes->find_first_unset_bit( idx );
+		idx = used_bytes.find_first_unset_bit( idx );
 		con_assert( idx < reserved_size - size );
 
-		if ( used_bytes->test( idx + size - 1 ) == false ) {
+		if ( used_bytes.test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
 			for ( ; bit < idx+size - 1; ++bit ) {
-				if ( used_bytes->test( bit ) == true ) {
+				if ( used_bytes.test( bit ) == true ) {
 					idx = idx + bit;
 					break;
 				}
@@ -145,7 +142,7 @@ returning Stack_Allocator::allocate( s32 size ) -> byte*
 
 			// Range is clear so we can return this memory.
 			if ( bit == idx + size - 1 ) {
-				used_bytes->set_range( idx, size );
+				used_bytes.set_range( idx, size );
 				return buffer + idx;
 			}
 		}
@@ -163,6 +160,6 @@ void Stack_Allocator::free( byte* location, s32 size )
 	constant idx = static_cast<s32>( location - buffer );
 	con_assert( idx + size < reserved_size );
 
-	used_bytes->reset_range( idx, size );
+	used_bytes.reset_range( idx, size );
 }
 }
