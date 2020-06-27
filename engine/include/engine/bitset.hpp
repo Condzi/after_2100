@@ -95,7 +95,9 @@ auto Bitset<TSize, TBaseType>::test( s32 idx ) const -> bool
 template<s32 TSize, typename TBaseType>
 returning Bitset<TSize, TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 {
-	for ( s32 i = begin; i < SIZE_IN_BASE_TYPES; ++i ) {
+	constant begin_in_base_types = begin / BASE_TYPE_SIZE_IN_BITS;
+
+	for ( s32 i = begin_in_base_types; i < SIZE_IN_BASE_TYPES; ++i ) {
 		// If all bits are set, continue.
 		if ( data[i] == std::numeric_limits<TBaseType>::max() ) {
 			continue;
