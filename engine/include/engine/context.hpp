@@ -21,6 +21,7 @@ struct Context_Data final
 	Allocator* default_allocator   = nullptr;
 	Allocator* temporary_allocator = nullptr;
 	Allocator* c_allocator		   = nullptr;
+	Allocator* stack_allocator	   = nullptr;
 	Entity_Manager* entity_manager = nullptr;
 	Logger* logger				   = nullptr;
 	Config_File* config_file	   = nullptr;

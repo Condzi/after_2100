@@ -26,6 +26,7 @@ private:
 	Default_Allocator default_allocator;
 	Temporary_Allocator temporary_allocator;
 	C_Allocator c_allocator;
+	Stack_Allocator stack_allocator;
 	Entity_Manager entity_manager;
 	Logger main_logger;
 	FILE* main_logger_file = nullptr;

@@ -69,6 +69,24 @@ private:
 	s32 highest_mark;
 };
 
+// Allocates stuff on stack.
+struct Stack_Allocator final :
+	Allocator
+{
+	void initialize();
+	void shutdown();
+
+	returning allocate( s32 size ) -> byte* override;
+	void free( byte* location, s32 size ) override;
+
+private:
+	using Used_Bytes_Bitset = Bitset<CON_STACK_RESERVED_MEMORY>;
+
+	compile_constant reserved_size = CON_STACK_RESERVED_MEMORY;
+
+	byte buffer[reserved_size] ={ 0 };
+	Used_Bytes_Bitset* used_bytes = nullptr;
+};
 
 //
 // Definitions

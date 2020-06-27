@@ -12,6 +12,7 @@ returning Application::initialize() -> bool
 	Context.default_allocator = &default_allocator;
 	Context.temporary_allocator = &temporary_allocator;
 	Context.c_allocator = &c_allocator;
+	Context.stack_allocator = &stack_allocator;
 	Context.entity_manager = &entity_manager;
 	Context.logger = &main_logger;
 	Context.config_file = &config_file;
@@ -19,6 +20,7 @@ returning Application::initialize() -> bool
 
 	default_allocator.initialize();
 	temporary_allocator.initialize();
+	stack_allocator.initialize();
 	// @ToDo: we have to initialize it's arrays.
 	// entity_manager.initialze() ?
 	main_logger.initialize();
@@ -134,6 +136,7 @@ void Application::shutdown()
 	main_logger.shutdown();
 	std::fclose( main_logger_file );
 	default_allocator.shutdown();
+	stack_allocator.shutdown();
 }
 
 void Application::flush_logger()
