@@ -15,8 +15,8 @@ public:
 		CString value;
 	};
 
-	void parse_from_file( CString path );
-	void parse_from_source( CString source );
+	returning parse_from_file( CString path ) -> bool;
+	returning parse_from_source( CString source ) -> bool;
 
 	// Acts like a dtor but we have control over its lifetime.
 	void free();

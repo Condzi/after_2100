@@ -87,6 +87,7 @@
 // 
 
 #define CON_MAX_SCENES_IN_FOLDER 32
+#define CON_MAX_CONFIG_ENTRIES   64
 
 
 // Fallback texture color in range <0, 255>

@@ -35,38 +35,52 @@ returning Application::initialize() -> bool
 		con_log_indented( 1, "Logger file successfully opened." );
 	}
 
+	flush_logger();
 	con_log( "Checking necessary paths..." );
 	if ( !check_necessary_paths() ) {
 		return false;
 	}
 	con_log( "Paths are correct." );
+	flush_logger();
+
 	con_log( "Loading config file..." );
+	flush_logger();
 	if ( !std::filesystem::exists( CON_CONFIG_FILE ) ) {
-		con_log_indented( 1, "Config file couldn't be found at \"%\", loading the default one." );
-		config_file.parse_from_source( DEFAULT_CONFIG_CSTRING );
+		con_log_indented( 1, R"(Config file couldn't be found at "%", loading the default one.)" );
+		if ( config_file.parse_from_source( DEFAULT_CONFIG_CSTRING ) ) {
+			con_log_indented( 2, "Default config has been loaded correctly." );
+		} else {
+			con_log_indented( 2, "Fatal error: can't load even the default config! WTF happened??" );
+			return false;
+		}
 	} else {
-		// @Robustness: I'm fired. It's a stupid-ass idea to not return a bool
-		// here. Just load the default config if this failes.
-		config_file.parse_from_file( CON_CONFIG_FILE );
+		if ( config_file.parse_from_file( CON_CONFIG_FILE ) ) {
+			con_log( "Loading of config file succeeded." );
+		} else {
+			con_log( "Error: loading of config file has failed." );
+		}
 	}
 	flush_logger();
 
-	con_log_indented( 1, "(FIXME) Probably done loading config file. IDK because I'm fired" );
 
 	// @ToDo: Splash screen stuff?? in separate thread? use it 
 
 	con_log( "Initializing window..." );
+	flush_logger();
 	window.initialize();
 	con_log( "Window initialized." );
 	flush_logger();
 
+
 	con_log( "Initializing resource loader..." );
+	flush_logger();
 	resource_loader.initialize();
 	con_log( "Resource loader initialized." );
 
 	flush_logger();
 
 	con_log( "Initializing input..." );
+	flush_logger();
 	input.initialize( window );
 	con_log( "Input initialized." );
 	flush_logger();
@@ -116,6 +130,7 @@ void Application::run()
 		// world.update(frame_dt);
 
 		window.clear();
+
 		window.display();
 
 		flush_logger();
