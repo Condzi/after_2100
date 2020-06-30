@@ -16,7 +16,7 @@ public:
 	void initialize( s32 the_size_, Allocator* allocator_ = Context.default_allocator );
 	void shutdown();
 
-	void shrink( s32 amount_of_elements_to_shrink );
+	void shrink( s32 new_size );
 
 	returning operator[]( s32 idx ) -> T&;
 	returning operator[]( s32 idx ) const -> T const&;
@@ -61,13 +61,13 @@ void Array<T>::shutdown()
 }
 
 template <typename T>
-void Array<T>::shrink( s32 amount_of_elements_to_shrink )
+void Array<T>::shrink( s32 new_size )
 {
-	con_assert( amount_of_elements_to_shrink <= size_ );
+	con_assert( new_size < size_ );
 
-	size_ -= amount_of_elements_to_shrink;
+	allocator->free( reinterpret_cast<byte*>( begin + new_size ), sizeof( T ) * ( size_ - new_size ) );
 
-	allocator->free( reinterpret_cast<byte*>( begin + size_ ), sizeof( T ) * amount_of_elements_to_shrink );
+	size_ = new_size;
 }
 
 template<typename T>

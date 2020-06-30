@@ -80,3 +80,20 @@
 //
 #define CON_CONFIG_SECTION_MARK ":/"
 #define CON_CONFIG_COMMENT_MARK "#"
+
+//
+// We're using this values to estimate how much space do we need at max. We do this to allocate
+// only once and then "shrink" the array (by freeing the memory).
+// 
+
+#define CON_MAX_SCENES_IN_FOLDER 32
+
+
+// Fallback texture color in range <0, 255>
+#define CON_FALLBACK_TEXTURE_COLOR_R  255
+#define CON_FALLBACK_TEXTURE_COLOR_G  28
+#define CON_FALLBACK_TEXTURE_COLOR_B  221
+#define CON_FALLBACK_TEXTURE_COLOR_A  255
+
+#define CON_FALLBACK_TEXTURE_SIZE 64
+

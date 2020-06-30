@@ -162,7 +162,8 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 		constant word_length = ate_chars_until_whitespace( file_content, idx ) - idx;
 		CString const word{ temp.data, word_length };
 		constant hash = hash_cstring( word );
-
+		
+		// @Robustness: check here if the hash matches the default resources one. If yes, then skip it.
 		switch ( current_section ) {
 		case Textures: textures[++textures_idx] = hash; break;
 		case Fonts:    fonts[++fonts_idx] = hash;       break;

@@ -41,9 +41,9 @@ private:
 
 	struct
 	{
-		Array<u32> textures;
+		Array<Texture> textures;
 		Array<u32> fonts; // @Incomplete: no font support rn
-		Array<u32> shaders;
+		Array<Shader> shaders;
 	} defaults; // don't unload these!
 
 	// @Incomplete: We have to have some default shader (maybe simple sprite one)
@@ -68,5 +68,7 @@ private:
 	// handling in the Bitset class)
 
 	void check_scene_folder_content();
+	
+	returning init_texture( byte* data, s16 width, s16 height ) -> gl_id;
 };
 }
