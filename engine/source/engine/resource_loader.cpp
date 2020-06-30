@@ -124,7 +124,6 @@ returning build_shader_program( CString source ) -> gl_id
 	compile_constant vertex_shader_header   = CString{ "#version 330\n#define VERTEX_SHADER\n" };
 	compile_constant fragment_shader_header = CString{ "#version 330\n#define FRAGMENT_SHADER\n" };
 
-	// @ToDo: Check if we can remove the \0?
 	constant vertex_shader_source   = sprint( "%%", vertex_shader_header, source );
 	constant fragment_shader_source = sprint( "%%", fragment_shader_header, source );
 

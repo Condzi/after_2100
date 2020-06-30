@@ -63,11 +63,16 @@ void Array<T>::shutdown()
 template <typename T>
 void Array<T>::shrink( s32 new_size )
 {
+	con_assert( new_size >= 0 );
 	con_assert( new_size < size_ );
 
 	allocator->free( reinterpret_cast<byte*>( begin + new_size ), sizeof( T ) * ( size_ - new_size ) );
 
 	size_ = new_size;
+
+	if ( size_ == 0 ) {
+		begin = nullptr;
+	}
 }
 
 template<typename T>
