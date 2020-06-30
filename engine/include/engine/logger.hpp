@@ -17,12 +17,13 @@ public:
 	void reset_buffer();
 
 	// Returns \0 terminated CString.
-	returning get_buffer() -> CString;
+	returning get_buffer() const -> CString;
 
 private:
-	inline static Logger* instance = nullptr;
-	CString buffer;
-	char* next_free_slot;
+	compile_constant buffer_size = CON_LOGGER_BUFFER_RESERVED_MEMORY;
+	char* begin = nullptr;
+	char const* end = nullptr;
+	char* next_free_slot = nullptr;
 };
 }
 
