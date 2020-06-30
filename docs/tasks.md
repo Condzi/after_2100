@@ -42,7 +42,7 @@ We may just call `.get_texture_info` instad... Because not everything may have c
 
 We should specify the default wrapping of the textures and additional wrapping parameter? For example `GL_CLAMP_REPEAT` might be ok.
 
-# **Current Tasks**
-* we probably need to update paths to check at application startup since we added a few
 * `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
+
+# **Current Tasks**
 * refactor the rest of the code to use a growing array

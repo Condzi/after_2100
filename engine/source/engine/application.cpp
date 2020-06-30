@@ -34,7 +34,7 @@ returning Application::initialize() -> bool
 	if ( main_logger_file == nullptr ) {
 		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
 	} else {
-		con_log_indented( 1, "Logger file successfully opened." );
+		con_log_indented( 1, "Logger file successfully created." );
 	}
 	con_log( "Main logger initialized." );
 
@@ -99,8 +99,8 @@ returning Application::initialize() -> bool
 	con_log( "Input initialized." );
 	flush_logger();
 
-
 	con_log( "Initialization completed." );
+	
 	flush_logger();
 	return true;
 }

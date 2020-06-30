@@ -28,6 +28,8 @@
 #define CON_VERSION_STRING "1.0"
 #define CON_WINDOW_TITLE   "after_2100 / v" CON_VERSION_STRING " | Compiled at " __DATE__ ", " __TIME__ " CET"
 
+#define CON_ASSERT_MESSAGE_BUFFER_SIZE 512
+
 #define CON_RESERVED_MEMORY  CON_MEGABYTES( 64 )
 #define CON_TEMPORARY_STORAGE_RESERVED_MEMORY  CON_MEGABYTES( 2 )
 #define CON_STACK_RESERVED_MEMORY  CON_KILOBYTES( 128 )
@@ -39,7 +41,7 @@
 //
 
 // We pack glfw keys to one enum so we have to offset them.
-#define CON_INPUT_MOUSE_KEYS_OFFSET ( con::Key::Keyboard_MENU + 1 )
+#define CON_INPUT_MOUSE_KEYS_OFFSET   ( con::Key::Keyboard_MENU + 1 )
 #define CON_INPUT_GAMEPAD_KEYS_OFFSET ( con::Key::Mouse_8 + 1 )
 
 #define CON_MAX_INPUT_BINDINGS  8
@@ -47,10 +49,10 @@
 //
 // Data files extensions
 //
-#define CON_LOG_FILE_EXTENSION ".txt"
-#define CON_CONFIG_FILE_EXTENSION ".variables"
-#define CON_SCENE_RESOURCES_FILE_EXTENSION ".scene_resources"
-#define CON_SHADERS_FILE_EXTENSION ".shaders"
+#define CON_LOG_FILE_EXTENSION  ".txt"
+#define CON_CONFIG_FILE_EXTENSION  ".variables"
+#define CON_SCENE_RESOURCES_FILE_EXTENSION  ".scene_resources"
+#define CON_SHADERS_FILE_EXTENSION  ".shaders"
 
 //
 // Paths relative to run tree.
