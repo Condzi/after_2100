@@ -237,27 +237,17 @@ returning Config_File::get_value( Hashed_CString section, Hashed_CString name ) 
 
 returning Config_File::get_section( Hashed_CString section ) -> Array<Hash_Value_Pair>
 {
-	// @Robustness: Another use-case for a growing array.
+	// We're allocating on TS, but only once -- when we initialize the to_return
+	// array. Because of that, it's legal to call set_mark to free the storage memory.
+	// It ain't much, but it's always something!
 
-	// First, we have to count how much elements requested section has.
-	s32 entries_count = 0;
-	for ( s32 i = 0; i < config_values.size(); ++i ) {
-		if ( config_values[i].section_hash == section.hash ) {
-			++entries_count;
-		}
-	}
-
-	con_assert( entries_count > 0 );
-	if ( entries_count == 0 ) {
-		return {};
-	}
-
-	// Now we're actually gathering them
 	Array<Hash_Value_Pair> to_return;
-	to_return.initialize( entries_count, Context.temporary_allocator );
+	// In worst case (which won't happen), we return (copy) all stored values.
+	to_return.initialize( config_values.size(), Context.temporary_allocator );
 
+	// We use this value to see how much memory we can free.
 	s32 current_entry = 0;
-	for ( s32 i = 0; i < config_values.size() && current_entry < entries_count; ++i ) {
+	for ( s32 i = 0; i < config_values.size(); ++i ) {
 		constant& cfg_val = config_values[i];
 		if ( cfg_val.section_hash == section.hash ) {
 			auto& entry = to_return[current_entry];
@@ -268,7 +258,19 @@ returning Config_File::get_section( Hashed_CString section ) -> Array<Hash_Value
 		}
 	}
 
-	con_assert( current_entry == entries_count );
+	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
+
+	// We didin't find any matching entry, so we return the requested memory back to
+	// the TA.
+	if ( current_entry < 0 ) {
+		ta.set_mark( ta.get_mark() - to_return.size() );
+		return {};
+	}
+
+	// Shrink the array and "return" the unused memory by moving the mark.
+	to_return.shrink( current_entry );
+	ta.set_mark( ta.get_mark() - ( config_values.size() - current_entry ) );
+	
 	return to_return;
 }
 }
