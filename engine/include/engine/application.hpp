@@ -10,6 +10,9 @@
 #include <engine/config_file.hpp>
 #include <engine/window.hpp>
 #include <engine/input.hpp>
+#include <engine/resource_loader.hpp>
+#include <engine/prepared_resources.hpp>
+#include <engine/resource_loader.hpp>
 
 namespace con
 {
@@ -23,6 +26,7 @@ public:
 	void shutdown();
 
 private:
+	// Context structure stuff.
 	Default_Allocator default_allocator;
 	Temporary_Allocator temporary_allocator;
 	C_Allocator c_allocator;
@@ -33,6 +37,9 @@ private:
 	Config_File config_file;
 	Window window;
 	Input input;
+	Prepared_Resources prepared_resources;
+
+	Resource_Loader resource_loader;
 
 	// @Idea: Global struct that contains values like that? Or just hold it in the 
 	// config file? Or maybe just gather it once in the run() function from the global config file?

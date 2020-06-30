@@ -14,17 +14,20 @@
 // Defining own STB_Image stuff. We use temporary storage for fast allocations, we
 // don't need images to live long anyway.
 //
+
+static void* con_realloc( void* ptr, int old_size, int new_size )
+{
+	con::byte* new_ptr_ = Context.temporary_allocator->allocate( new_size );
+	memcpy( new_ptr_, ptr, old_size );
+	return new_ptr_;
+}
+
 #define STBI_ONLY_PNG
 #define STBI_ASSERT( x ) con_assert( x )
 #define STBI_MALLOC( x ) Context.temporary_allocator->allocate( x )
-#define STBI_REALLOC_SIZED( ptr, old_size, new_size ) \
-{ \
-con::byte* new_ptr_ = Context.temporary_allocator->allocate( new_size ); \
-memcpy( new_ptr_, ptr, old_size ); \
-ptr = reinterpret_cast<decltype( ptr )>( new_ptr_ ); \
-}
+#define STBI_REALLOC_SIZED( ptr, old_size, new_size ) con_realloc( ptr, old_size, new_size )
 #define STBI_FREE( x ) // we're using temporary storage so we're not freeing anything
-
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
 namespace con
@@ -34,9 +37,9 @@ namespace con
 //
 file_scope
 {
-returning load_texture_data( CString path, s16 const decl_width, s16 const decl_height ) -> byte*
+returning load_texture_data( CString file, s16 const decl_width, s16 const decl_height ) -> byte*
 {
-	path = cstring_to_cstr( path );
+	auto path = cstring_to_cstr( sprint( "%%\0", CString{ CON_TEXTURES_FOLDER }, file ) );
 
 	s32 loaded_width = -1, loaded_height = -1;
 	s32 channels = -1;
@@ -88,8 +91,10 @@ returning generate_sized_fallback_texture( s32 size ) -> byte*
 	return reinterpret_cast<byte*>( data );
 }
 
-returning load_shader_source( CString path ) -> CString
+returning load_shader_source( CString file ) -> CString
 {
+	constant path = sprint( "%%\0", CString{ CON_SHADERS_FOLDER }, file );
+
 	std::ifstream input( cstring_to_stdsv( path ), std::ios::binary );
 	if ( input.is_open() == false ) {
 		con_log_indented( 1, R"(Error opening file "%".)", path );
@@ -130,7 +135,7 @@ returning build_shader_program( CString source ) -> gl_id
 	glShaderSource( vertex_shader_id, 1, &vertex_shader_source.data, &vertex_shader_source.size );
 	glCompileShader( vertex_shader_id );
 
-	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &vertex_shader_source.size );
+	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &fragment_shader_source.size );
 	glCompileShader( fragment_shader_id );
 
 	glAttachShader( program_id, vertex_shader_id );
@@ -227,7 +232,7 @@ void Resource_Loader::initialize()
 		} else {
 			for ( s32 i = 0; i < shaders_section.size(); ++i ) {
 				constant& it = shaders_section[i];
-				name_hashes.textures[current_shader_idx] = it.hash;
+				name_hashes.shaders[current_shader_idx] = it.hash;
 
 				if ( !sscan( "%", it.value, path ) ) {
 					con_log_indented( 1, R"(Error: can't format the shader path "%"!)", it.value );

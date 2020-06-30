@@ -17,6 +17,7 @@ returning Application::initialize() -> bool
 	Context.logger = &main_logger;
 	Context.config_file = &config_file;
 	Context.input = &input;
+	Context.prepared_resources = &prepared_resources;
 
 	default_allocator.initialize();
 	temporary_allocator.initialize();
@@ -59,7 +60,10 @@ returning Application::initialize() -> bool
 	con_log( "Window initialized." );
 	flush_logger();
 
-	// @ToDo: Load resources here...
+	con_log( "Initializing resource loader..." );
+	resource_loader.initialize();
+	con_log( "Resource loader initialized." );
+
 	flush_logger();
 
 	con_log( "Initializing input..." );
@@ -129,9 +133,10 @@ void Application::shutdown()
 	con_log( "Application shutdown..." );
 	config_file.free();
 	window.shutdown();
+	resource_loader.shutdown();
 	input.shutdown();
 	// @ToDo: entity_manager.shutdown();
-	con_log( "Highest TA mark: % / %.", temporary_allocator.get_highest_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
+	con_log( "Highest TA mark: % / % (bytes).", temporary_allocator.get_highest_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
 	std::fclose( main_logger_file );
