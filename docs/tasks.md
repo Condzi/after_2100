@@ -46,3 +46,4 @@ We should specify the default wrapping of the textures and additional wrapping p
 * `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
 * we probably need to update paths to check at application startup since we added a few
 * refactor the rest of the code to use a growing array
+* better config loading fail messages
