@@ -68,7 +68,7 @@ void Window::initialize()
 	GLFWvidmode const* const monitor_video_mode = glfwGetVideoMode( monitor );
 	con_assert( monitor_video_mode != nullptr );
 
-	// @Robustness: Does char = utf-8? ughhh I hope so
+	// Does char = utf-8? ughhh I hope so
 	con_log_indented( 1, "Creating window on monitor \"%\" (% x %, %Hz).", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate );
 
 	glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_API );
@@ -104,7 +104,7 @@ void Window::initialize()
 	// Initializing OpenGL
 	//
 	con_log_indented( 1, "Initializing OpenGL..." );
-	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) == true );
+	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) != 0 );
 	con_log_indented( 2, "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
 
 	if ( vsync ) {

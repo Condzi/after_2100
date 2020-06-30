@@ -156,9 +156,12 @@ void Input::glfw_keyboard_key_callback( GLFWwindow* window, int key, int scancod
 void Input::glfw_mouse_key_callback( GLFWwindow* window, int button, int action, int mods )
 {
 	unused( mods );
+	unused( window );
+
 	Key_ID our_key = -1;
 	if ( button == GLFW_KEY_UNKNOWN ) {
-		con_log_indented(1,  "Error:Unknown mouse button (GLFW code: %i).", button );
+		con_log_indented( 1, " Error: unknown mouse button (GLFW code: %i).", button );
+		return;
 	}
 
 	our_key = glfw_mouse_key_to_con_key( button );

@@ -49,7 +49,7 @@ constexpr CString::CString( char const( &cstr )[SIZE] ) :
 	size( SIZE-1 )
 {}
 
-static CString operator "" _cs( char const* const str, size_t size )
+inline CString operator "" _cs( char const* const str, size_t size )
 {
 	return CString( str, static_cast<s32>( size ) );
 }

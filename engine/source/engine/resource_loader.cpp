@@ -166,7 +166,11 @@ void Resource_Loader::initialize()
 	con_log_indented( 1, "Loading resource metadata from \"%\"...", CString{ CON_ASSETS_CONFIG_FILE } );
 	Config_File assets_config;
 	defer{ assets_config.free(); };
-	assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE );
+	if ( !assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE ) ) 		{
+		con_log_indented( 1, "Error: couldn't parse from file." );
+		// @ToDo: raise a flag!
+		return;
+	}
 	// Config_File::get_section returns temporary storage memory, so we can reset it after we
 	// use the array.
 	auto& da = *reinterpret_cast<Default_Allocator*>( Context.default_allocator );

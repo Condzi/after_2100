@@ -6,10 +6,10 @@ namespace con
 {
 struct Allocator;
 struct Entity_Manager;
-struct Logger;
-struct Config_File;
-struct Input;
-struct Prepared_Resources;
+class Logger;
+class Config_File;
+class Input;
+class Prepared_Resources;
 }
 
 namespace con::priv

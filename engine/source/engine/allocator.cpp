@@ -63,10 +63,10 @@ void Temporary_Allocator::initialize( s32 reserved )
 	mark = highest_mark = 0;
 }
 
-void Temporary_Allocator::free( byte* location, s32 size )
+void Temporary_Allocator::free( byte* location, s32 size_ )
 {
 	unused( location );
-	unused( size );
+	unused( size_ );
 }
 
 void Temporary_Allocator::reset()
@@ -89,10 +89,10 @@ returning Temporary_Allocator::get_highest_mark() -> s32
 	return highest_mark;
 }
 
-returning Temporary_Allocator::allocate( s32 size ) -> byte*
+returning Temporary_Allocator::allocate( s32 size_ ) -> byte*
 {
 	byte* requested_memory = memory + mark;
-	mark += size;
+	mark += size_;
 
 	if ( mark > highest_mark ) {
 		highest_mark = mark;

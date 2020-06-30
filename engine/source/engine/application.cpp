@@ -28,9 +28,11 @@ returning Application::initialize() -> bool
 
 
 	con_log( "Initializing main logger..." );
-	set_up_log_folder();
-
-	main_logger_file = std::fopen( CON_DEFAULT_LOG_FILE, "wb" );
+	if ( !set_up_log_folder() ) {
+		con_log_indented( 1, R"(Fatal error: couldn't initialize log folder at "%".)", CString{ CON_DEFAULT_LOG_FILE } );
+		return false;
+	}
+	main_logger_file = fopen( CON_DEFAULT_LOG_FILE, "wb" );
 	if ( main_logger_file == nullptr ) {
 		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
 	} else {
@@ -115,7 +117,7 @@ void Application::run()
 	Time_Period frame_end;
 	f32 frame_dt = 0;
 	f32 accumulated_dt = 0;
-	constant ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay"_hcs, "ups"_hcs ) );
+	ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay"_hcs, "ups"_hcs ) );
 
 
 	// @ToDo: Stop also when there is a GL or GLFW error.

@@ -13,7 +13,7 @@ struct Hashed_CString final
 	{}
 };
 
-static Hashed_CString operator "" _hcs( char const* const str, size_t size )
+inline Hashed_CString operator "" _hcs( char const* const str, size_t size )
 {
 	return { CString( str, static_cast<s32>( size ) ) };
 }
