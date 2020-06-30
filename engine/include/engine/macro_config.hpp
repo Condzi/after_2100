@@ -26,7 +26,7 @@
 #endif
 
 #define CON_VERSION_STRING "1.0"
-#define CON_WINDOW_TITLE   "after_2100 / v" CON_VERSION_STRING " / " __DATE__ ", " __TIME__
+#define CON_WINDOW_TITLE   "after_2100 / v" CON_VERSION_STRING " | Compiled at " __DATE__ ", " __TIME__ " CET"
 
 #define CON_RESERVED_MEMORY  CON_MEGABYTES( 64 )
 #define CON_TEMPORARY_STORAGE_RESERVED_MEMORY  CON_MEGABYTES( 2 )

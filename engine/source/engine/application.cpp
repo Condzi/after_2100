@@ -26,14 +26,18 @@ returning Application::initialize() -> bool
 	// entity_manager.initialze() ?
 	main_logger.initialize();
 
+
 	con_log( "Initializing main logger..." );
 	set_up_log_folder();
+
 	main_logger_file = std::fopen( CON_DEFAULT_LOG_FILE, "wb" );
 	if ( main_logger_file == nullptr ) {
 		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
 	} else {
 		con_log_indented( 1, "Logger file successfully opened." );
 	}
+	con_log( "Main logger initialized." );
+
 
 	flush_logger();
 	con_log( "Checking necessary paths..." );
@@ -43,10 +47,19 @@ returning Application::initialize() -> bool
 	con_log( "Paths are correct." );
 	flush_logger();
 
+
 	con_log( "Loading config file..." );
 	flush_logger();
-	if ( !std::filesystem::exists( CON_CONFIG_FILE ) ) {
-		con_log_indented( 1, R"(Config file couldn't be found at "%", loading the default one.)" );
+	std::error_code fs_error_code;
+	constant config_file_exists = std::filesystem::exists( CON_CONFIG_FILE, fs_error_code );
+
+	if ( fs_error_code || !config_file_exists ) {
+		if ( fs_error_code ) {
+			con_log_indented( 1, R"(Warning: couldn't check if config file exists at "%", loading config from memory.)", CString{ CON_CONFIG_FILE } );
+		} else {
+			con_log_indented( 1, R"(Warning: config file couldn't be found at "%", loading config from memory.)", CString{ CON_CONFIG_FILE } );
+		}
+
 		if ( config_file.parse_from_source( DEFAULT_CONFIG_CSTRING ) ) {
 			con_log_indented( 2, "Default config has been loaded correctly." );
 		} else {
@@ -55,15 +68,16 @@ returning Application::initialize() -> bool
 		}
 	} else {
 		if ( config_file.parse_from_file( CON_CONFIG_FILE ) ) {
-			con_log( "Loading of config file succeeded." );
+			con_log( "Config file loaded and parsed." );
 		} else {
-			con_log( "Error: loading of config file has failed." );
+			con_log( "Error: loading of the config file has failed." );
 		}
 	}
 	flush_logger();
 
 
 	// @ToDo: Splash screen stuff?? in separate thread? use it 
+
 
 	con_log( "Initializing window..." );
 	flush_logger();
@@ -76,8 +90,8 @@ returning Application::initialize() -> bool
 	flush_logger();
 	resource_loader.initialize();
 	con_log( "Resource loader initialized." );
-
 	flush_logger();
+
 
 	con_log( "Initializing input..." );
 	flush_logger();
@@ -178,10 +192,23 @@ returning Application::set_up_log_folder() -> bool
 {
 	namespace fs = std::filesystem;
 
-	if ( !fs::exists( CON_LOGS_FOLDER ) ) {
-		con_log_indented( 1, "Logs folder is missing. Creating \"%\".", CString{ CON_LOGS_FOLDER } );
-		if ( !fs::create_directory( CON_LOGS_FOLDER ) ) {
-			con_log_indented( 1, "Couldn't create!!!" );
+	std::error_code fs_error_code;
+	constant folder_exists = fs::exists( CON_LOGS_FOLDER, fs_error_code );
+
+	if ( fs_error_code ) {
+		con_log_indented( 1, R"(Error: couldn't check if logs folder at "%" exists. Info: "%".)", CString{ CON_LOGS_FOLDER }, cstring_from_stdstring( fs_error_code.message() ) );
+		return false;
+	}
+
+	if ( !folder_exists ) {
+		con_log_indented( 1, R"(Logs folder is missing, creating new one at "%".)", CString{ CON_LOGS_FOLDER } );
+
+		fs_error_code ={};
+		fs::create_directory( CON_LOGS_FOLDER, fs_error_code );
+
+		if ( fs_error_code ) {
+			con_log_indented( 2, R"(Error: couldn't create! Info: "%")", cstring_from_stdstring( fs_error_code.message() ) );
+
 			return false;
 		}
 	}
@@ -191,6 +218,7 @@ returning Application::set_up_log_folder() -> bool
 returning Application::check_necessary_paths() const -> bool
 {
 	namespace fs = std::filesystem;
+
 	bool success = true;
 	constant path_exists = [&success]( CString path ) {
 		if ( fs::exists( { path.data, path.data + path.size } ) == false ) {
@@ -202,7 +230,13 @@ returning Application::check_necessary_paths() const -> bool
 
 	path_exists( CON_DATA_FOLDER );
 	path_exists( CON_ASSETS_FOLDER );
+	path_exists( CON_SCENES_FOLDER );
 	path_exists( CON_TEXTURES_FOLDER );
+	path_exists( CON_FONTS_FOLDER );
+	path_exists( CON_SHADERS_FOLDER );
+
+	path_exists( CON_ASSETS_CONFIG_FILE );
+	path_exists( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE );
 
 	return success;
 }

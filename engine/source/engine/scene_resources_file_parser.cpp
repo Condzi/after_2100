@@ -85,7 +85,7 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 		} else if ( temp.begins_with( section_mark ) ) {
 			// Using of hashed cstring here is possible, but probably not beneficial.
 			CString const potential_section{ temp.data + section_mark.size, endline_idx };
-			// @Robustness: We may want to remove magic strings like "textures" to macro_config
+			// @Idea: We may want to remove magic strings like "textures" to macro_config
 
 			if ( potential_section.begins_with( "textures" ) ) {
 				current_section = Textures;
