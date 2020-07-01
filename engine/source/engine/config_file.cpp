@@ -1,44 +1,12 @@
 #include <engine/config_file.hpp>
 #include <engine/allocator.hpp>
 #include <engine/logger.hpp>
+#include <engine/utility.hpp>
 
 #include <cstring>
-#include <filesystem>
-#include <fstream>
 
 namespace con
 {
-file_scope
-{
-returning ate_chars_until( Array<char>& arr, s32 current_idx, char c ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != arr.size() && arr[idx] != c; ++idx );
-	return idx;
-}
-
-returning ate_chars_until_whitespace( Array<char>& arr, s32 current_idx ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != arr.size() && ::isspace( arr[idx] ) == 0; ++idx );
-	return idx;
-}
-
-returning ate_whitespace_reversed( Array<char>& arr, s32 current_idx ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != 0 && ::isspace( arr[idx] ) != 0; --idx );
-	return idx;
-}
-
-returning ate_whitespace( Array<char>& arr, s32 current_idx ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != arr.size() && ::isspace( arr[idx] ) != 0; ++idx );
-	return idx;
-}
-}
-
 returning Config_File::parse_from_file( CString path ) -> bool
 {
 	con_assert( config_values.size() <= 0 ); // only one config file per parse for now.
@@ -48,28 +16,11 @@ returning Config_File::parse_from_file( CString path ) -> bool
 	constant mark = temporary_allocator->get_mark();
 	defer{ temporary_allocator->set_mark( mark ); };
 
-	//
-	// Get file size, open it and copy its content.
-	//
+	constant[file_content, success] = load_entire_file_binary( path );
 
-	std::error_code fs_error_code;
-	constant file_size = static_cast<s32>( std::filesystem::file_size( cstring_to_stdsv( path ), fs_error_code ) );
-
-	if ( fs_error_code ) {
-		con_log_indented( 1, R"(Error: can't get file size for "%". Error message: "%".)", path, cstring_from_stdstring( fs_error_code.message() ) );
-	}
-
-	std::ifstream input( cstring_to_stdsv( path ), std::ios::binary );
-
-	if ( !input.is_open() ) {
-		con_log_indented( 1, R"(Error: can't open file "%".)", path );
+	if ( !success ) {
 		return false;
 	}
-
-	Array<char> file_content;
-	file_content.initialize( file_size, temporary_allocator );
-	input.read( file_content.data(), file_size );
-	input.close();
 
 	//
 	// Get the config entries.
@@ -270,7 +221,7 @@ returning Config_File::get_section( Hashed_CString section ) -> Array<Hash_Value
 	// Shrink the array and "return" the unused memory by moving the mark.
 	to_return.shrink( current_entry );
 	ta.set_mark( ta.get_mark() - ( config_values.size() - current_entry ) );
-	
+
 	return to_return;
 }
 }

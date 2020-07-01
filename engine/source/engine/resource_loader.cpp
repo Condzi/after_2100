@@ -5,6 +5,7 @@
 #include <engine/config_file.hpp>
 #include <engine/scene_resources_file_parser.hpp>
 #include <engine/prepared_resources.hpp>
+#include <engine/utility.hpp>
 
 #include <glad/glad.h>
 
@@ -95,22 +96,11 @@ returning load_shader_source( CString file ) -> CString
 {
 	constant path = sprint( "%%\0", CString{ CON_SHADERS_FOLDER }, file );
 
-	std::ifstream input( cstring_to_stdsv( path ), std::ios::binary );
-	if ( input.is_open() == false ) {
-		con_log_indented( 1, R"(Error opening file "%".)", path );
+	constant[file_content, success] = load_entire_file_binary( path );
+
+	if ( !success ) {
 		return {};
 	}
-
-	std::error_code fs_error_code;
-	constant file_size = static_cast<s32>( std::filesystem::file_size( { path.data, path.data + path.size }, fs_error_code ) );
-	if ( fs_error_code ) {
-		con_log_indented( 1, R"(Error reading file size for "%", info: "%")", path, cstring_from_stdstring( fs_error_code.message() ) );
-		return {};
-	}
-
-	Array<char> file_content;
-	file_content.initialize( file_size, Context.temporary_allocator );
-	input.read( file_content.data(), file_size );
 
 	return cstring_from_array( file_content );
 }

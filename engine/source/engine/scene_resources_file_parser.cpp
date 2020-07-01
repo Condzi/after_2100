@@ -2,39 +2,12 @@
 
 #include <engine/logger.hpp>
 #include <engine/assert.hpp>
+#include <engine/utility.hpp>
 
-#include <filesystem>
-#include <fstream>
 #include <string>
 
 namespace con
 {
-// @Robustness: It's redundant with config_file.cpp content -- move it to different file.
-// For now it'll do.
-file_scope
-{
-returning ate_chars_until( Array<char> const& arr, s32 current_idx, char c ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != arr.size() && arr[idx] != c; ++idx );
-	return idx;
-}
-
-returning ate_chars_until_whitespace( Array<char> const& arr, s32 current_idx ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != arr.size() && ::isspace( arr[idx] ) == 0; ++idx );
-	return idx;
-}
-
-returning ate_whitespace( Array<char> const& arr, s32 current_idx ) -> s32
-{
-	s32 idx = current_idx;
-	for ( ; idx != arr.size() && ::isspace( arr[idx] ) != 0; ++idx );
-	return idx;
-}
-}
-
 returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<u32>& fonts, Array<u32>& shaders ) -> bool
 {
 	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
@@ -45,25 +18,11 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 	// Open the file and read its content.
 	//
 
-	// @Cleanup: we use the same code for reading entire file. Abstract it?
-	std::error_code fs_error_code;
-	constant file_size = static_cast<s32>( std::filesystem::file_size( { path.data, path.data + path.size }, fs_error_code ) );
+	constant[file_content, success] = load_entire_file_binary( path );
 
-	if ( fs_error_code ) {
-		con_log_indented( 1, R"(Error: can't read file size for "%". Info: "%")", path, cstring_from_stdstring( fs_error_code.message() ) );
+	if ( !success ) {
 		return false;
 	}
-
-	std::ifstream input( cstring_to_stdsv( path ), std::ios::binary );
-	if ( input.is_open() == false ) {
-		con_log_indented( 1, R"(Error: couldn't open file "%".)", path );
-		return false;
-	}
-
-	Array<char> file_content;
-	file_content.initialize( file_size, temporary_allocator );
-	input.read( file_content.data(), file_size );
-	input.close();
 
 	compile_constant comment_mark = CString{ CON_CONFIG_COMMENT_MARK };
 	compile_constant section_mark = CString{ CON_CONFIG_SECTION_MARK };
@@ -85,7 +44,7 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 		Textures, Fonts, Shaders
 	} current_section = Textures;
 
-	for ( s32 idx = 0; idx < file_size; ) {
+	for ( s32 idx = 0; idx < file_content.size(); ) {
 		idx = ate_whitespace( file_content, idx );
 		constant endline_idx = ate_chars_until( file_content, idx, '\n' );
 		CString const temp{ file_content.data() + idx, endline_idx };

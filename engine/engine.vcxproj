@@ -47,7 +47,7 @@
     <OutDir>$(SolutionDir)_bin\</OutDir>
     <IntDir>$(SolutionDir)_bin\intermediate\$(TargetName)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
@@ -55,7 +55,7 @@
     <OutDir>$(SolutionDir)_bin\</OutDir>
     <IntDir>$(SolutionDir)_bin\intermediate\$(TargetName)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
@@ -209,6 +209,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\utility.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\window.hpp">
       <SubType>
       </SubType>
@@ -227,6 +231,7 @@
     <ClCompile Include="source\engine\resource_loader.cpp" />
     <ClCompile Include="source\engine\scene_resources_file_parser.cpp" />
     <ClCompile Include="source\engine\time.cpp" />
+    <ClCompile Include="source\engine\utility.cpp" />
     <ClCompile Include="source\engine\window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
