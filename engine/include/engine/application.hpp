@@ -41,9 +41,7 @@ private:
 
 	Resource_Loader resource_loader;
 
-	// @Idea: Global struct that contains values like that? Or just hold it in the 
-	// config file? Or maybe just gather it once in the run() function from the global config file?
-	f32 ups = 1.0f / 60; // = default value; @ToDo ! ! ! !
+	f32 ups = -1;
 
 	void flush_logger();
 

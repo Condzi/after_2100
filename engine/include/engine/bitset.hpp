@@ -8,10 +8,7 @@
 
 namespace con
 {
-// @Robustness: Use initialize and shutdown and allocator instead of templated size.
-// @Performance: Add find_first_unset_bit() -> idx method 
-// because we're often using it that way and doing test(i) for
-// everything kinda suck. We can check every byte instead of bit.
+// @Idea: don't use template at all, just `byte`? Or maybe u16?
 // @Important: Use unsigned types as TBaseType!!!
 template <typename TBaseType = byte>
 class Bitset final
@@ -37,7 +34,7 @@ public:
 	returning find_first_unset_bit( s32 begin = 0 ) const -> s32;
 
 private:
-	Allocator* allocator;
+	Allocator* allocator = nullptr;
 	s32 size_in_bits = -1;
 	s32 size_in_base_types = -1;
 	TBaseType* data = nullptr;
@@ -92,7 +89,7 @@ template <typename TBaseType>
 void Bitset<TBaseType>::set_range( s32 idx, s32 size )
 {
 	// @Performance: we probably can do better than that (setting every byte instead of every individual
-	// bit), but we don't need such microoptimalizations
+	// bit), but we don't need such microoptimalizations right now
 
 	con_assert( idx + size < size_in_bits );
 	for ( s32 i = idx; i < idx + size; ++i ) {

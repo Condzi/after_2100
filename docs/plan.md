@@ -111,10 +111,11 @@ struct GL_Resource
 ```
     
 ----
-* **Rendering**
-    * `Renderer` loops over `Cold` data in `Entity`: the `Render_Info` field. **`// Maybe store pointer to that in the Cold, but the array be in the Renderer structure?`**
+* **Rendering** 
+    * `Renderer` loops over `Cold` data in `Entity`: the `Render_Info` field. **`// Maybe add Render_Info as separete field alongside with Cold and Hot?`**
+    * Since we'll be loopng over every entity type individually, we may use some ifs when rendering stuff and setting up matrices depending on the entity type (according to the field stored in `Hot`)
     * `Render_Info` contains:
-        * vao, vbo, ebo **`// have one EBO for every sprite/quad?`**
+        * vao, vbo, ebo **`// have one EBO for every sprite/quad`**
         * amount of vertices
         * vertex size (we may use 3D positioning system for ships, but usually we just want 2D. We may also want to use texture without tint/coloring.)
         * drawing layer
@@ -145,10 +146,19 @@ struct GL_Resource
         * startup level
         * allow developer commands 
         * and more!...
----
+----
 * **Random variables**
     * Maybe in Context?
     * Use some simply function, not the slow standard one. Maybe we can depend on current system time and that's it. We don't need any hardcore accurate stuff, really
+
+----
+* **Performance profiler**
+    * Add plotting to graph at runtime (like jblow's Sokoban)
+        * render using `GL_LINES` and update every 1ms, with a scanline sortof thing
+    * Just profile few important functions to not affect performance
+----
+* **Collisions**
+    * store collision info (about what collided with what) in global array which will be updated every frame. The collision detection should also happen somewhere at the end of the upated of the entities, so we won't be making weird situations. (*frame start **->** update entities **->** delete old collision info **->** check collisions **->** frame end **->** frame start **->** ...*)
 ----
 **Bother with this later:**
 * Art

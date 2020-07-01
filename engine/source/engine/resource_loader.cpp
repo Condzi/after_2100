@@ -584,7 +584,7 @@ void Resource_Loader::check_scene_folder_content()
 	}
 }
 
-returning Resource_Loader::init_texture( byte* data, s16 width, s16 height ) -> gl_id
+returning Resource_Loader::init_texture( byte const * data, s16 width, s16 height ) -> gl_id
 {
 	// @Performance: maybe we could call `glGenTextures` with an array of textures? 
 // I have to test it when we make this one work.

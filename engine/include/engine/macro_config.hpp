@@ -26,7 +26,7 @@
 #endif
 
 #define CON_VERSION_STRING "1.0"
-#define CON_WINDOW_TITLE   "after_2100 / v" CON_VERSION_STRING " | Compiled at " __DATE__ ", " __TIME__ " CET"
+#define CON_WINDOW_TITLE   "after_2100 / v" CON_VERSION_STRING " | Compiled on " __DATE__ " at " __TIME__ " CET"
 
 #define CON_ASSERT_MESSAGE_BUFFER_SIZE 512
 

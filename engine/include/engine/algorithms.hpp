@@ -50,7 +50,7 @@ returning linear_find_if( Array<TType> const& arr, TPredicate predicate ) -> Fin
 }
 
 template <typename TType>
-returning linear_find( Array<TType> const & arr, TType const & val ) -> Find_Result
+returning linear_find( Array<TType> const& arr, TType const & val ) -> Find_Result
 {
 	constant size = arr.size();
 	s32 idx = 0;

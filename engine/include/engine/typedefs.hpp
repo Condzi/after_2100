@@ -62,7 +62,7 @@ namespace priv
 template <typename T>
 struct Exit_Scope final
 {
-	T lambda;
+	T const lambda;
 	Exit_Scope( T l ) : lambda( l ) {}
 	~Exit_Scope() { lambda(); }
 	Exit_Scope( Exit_Scope const& ) = delete;
@@ -72,7 +72,7 @@ struct Exit_Scope final
 struct Exit_Scope_Help final
 {
 	template <typename T>
-	Exit_Scope<T> operator+( T t ) { return Exit_Scope{ t }; }
+	Exit_Scope<T> operator+( T t ) const { return Exit_Scope{ t }; }
 };
 
 }
