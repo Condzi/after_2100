@@ -88,7 +88,7 @@ returning Config_File::parse_from_file( CString path ) -> bool
 			break;
 		}
 		constant endline_idx = ate_chars_until( file_content, idx, '\n' );
-		CString temp{ file_content.data() + idx, endline_idx - idx };
+		CString const temp{ file_content.data() + idx, endline_idx - idx };
 
 		if ( temp.begins_with( comment_mark ) ) {
 			idx = endline_idx;
@@ -163,7 +163,7 @@ returning Config_File::parse_from_source( CString source ) -> bool
 			break;
 		}
 		constant endline_idx = ate_chars_until( source_content, idx, '\n' );
-		CString temp{ source_content.data() + idx, endline_idx - idx };
+		CString const temp{ source_content.data() + idx, endline_idx - idx };
 
 		if ( temp.begins_with( comment_mark ) ) {
 			idx = endline_idx;

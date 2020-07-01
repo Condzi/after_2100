@@ -69,6 +69,6 @@ private:
 
 	void check_scene_folder_content();
 	
-	returning init_texture( byte* data, s16 width, s16 height ) -> gl_id;
+	returning init_texture( byte const* data, s16 width, s16 height ) -> gl_id;
 };
 }

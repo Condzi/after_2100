@@ -47,14 +47,16 @@
     <OutDir>$(SolutionDir)_bin\</OutDir>
     <IntDir>$(SolutionDir)_bin\intermediate\$(TargetName)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\</OutDir>
     <IntDir>$(SolutionDir)_bin\intermediate\$(TargetName)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <ClCompile>

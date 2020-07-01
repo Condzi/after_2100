@@ -103,7 +103,7 @@ returning Temporary_Allocator::allocate( s32 size_ ) -> byte*
 
 returning C_Allocator::allocate( s32 size ) -> byte*
 {
-	return reinterpret_cast<byte*>( malloc( size ) );
+	return static_cast<byte*>( malloc( size ) );
 }
 
 void C_Allocator::free( byte* location, s32 size )
