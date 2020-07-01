@@ -185,6 +185,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\render_info.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\resource_loader.hpp">
       <SubType>
       </SubType>

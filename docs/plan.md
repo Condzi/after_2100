@@ -166,8 +166,7 @@ struct GL_Resource
 * GUI
 * Serialization
 * Signals? To notify others about stuff like collision
-* Performance Profiler
-* Internationalization
+        * Internationalization
 * Editor
 
 # **Game**

@@ -3,9 +3,13 @@
 #include <engine/bitset.hpp>
 #include <engine/typedefs.hpp>
 
+#include <engine/render_info.hpp>
+
 namespace con
 {
-struct Entity final
+// We allow only one class deep inheritance.
+// Holds references to the elements of array in Entity_Manager.
+struct Entity
 {
 	compile_constant INVALID_ID    = std::numeric_limits<s16>::min();
 	compile_constant INVALID_TYPE  = std::numeric_limits<s16>::min();
@@ -15,7 +19,7 @@ struct Entity final
 	{
 		v2 position;
 		v2 velocity;
-		void* data = nullptr;
+		void* data = nullptr; // Pointer to the actual implementation / child?
 		f32 rotation_z;
 		s16 u_id  = INVALID_ID;
 		s16 type  = INVALID_TYPE; // Player, Enemy, Background, Planet, Explosion etc...
@@ -27,8 +31,9 @@ struct Entity final
 	{
 		// @Incomplete: Add actual data here.
 		// Collision_Info collision_info; // hitbox etc
-		// Drawing_Info drawing_info; // buffers, texture, layer, shaders...
-		s32 dummy_;
+		Render_Info basic_render_info;
 	} &cold;
+
+	virtual ~Entity() = default;
 };
 }
