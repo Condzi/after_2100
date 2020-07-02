@@ -71,6 +71,12 @@ void Renderer::render()
 	// We can shrink it later if needed. Right now it's rough approximation.
 	constant render_infos_max_count = entities.occupied_hot_cold_slots.count_set_bits();
 
+	// No stuff to render. Will this be actually possible in normal game?
+	// @Robustness: remove in release builds?
+	if ( render_infos_max_count == 0 ) {
+		return;
+	}
+
 	Array<Render_Info> render_infos;
 	render_infos.initialize( render_infos_max_count, Context.temporary_allocator );
 
@@ -78,7 +84,8 @@ void Renderer::render()
 	s32 idx_in_render_infos = 0;
 	constant& colds = entities.by_type._cold;
 
-	for ( s32 i = 0; i < colds.size(); ++i ) {
+	// We can't have more than render_infos_max_count, so stop if we reach that value.
+	for ( s32 i = 0; i < colds.size() && idx_in_render_infos < render_infos_max_count; ++i ) {
 		if ( entities.occupied_hot_cold_slots.test( i ) == false ) {
 			continue;
 		}

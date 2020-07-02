@@ -110,11 +110,18 @@ returning Application::initialize() -> bool
 	con_log( "Initializing renderer..." );
 	flush_logger();
 	renderer.initialize();
+
+	// get and set renderer windows size (for projection matrix)
+	s32 win_width = -1, win_height = -1;
+	constant window_size_cstring = config_file.get_value( "display"_hcs, "window_size"_hcs );
+	sscan( "% %", window_size_cstring, win_width, win_height );
+	renderer.set_window_size( static_cast<s16>( win_width ), static_cast<s16>( win_height ) );
+
 	con_log( "Renderer initialized." );
 	flush_logger();
 
 	con_log( "Initialization completed." );
-	
+
 	flush_logger();
 	return true;
 }
