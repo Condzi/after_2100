@@ -13,6 +13,7 @@
 #include <engine/resource_loader.hpp>
 #include <engine/prepared_resources.hpp>
 #include <engine/resource_loader.hpp>
+#include <engine/renderer.hpp>
 
 namespace con
 {
@@ -40,6 +41,7 @@ private:
 	Prepared_Resources prepared_resources;
 
 	Resource_Loader resource_loader;
+	Renderer renderer;
 
 	f32 ups = -1;
 

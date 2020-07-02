@@ -74,7 +74,7 @@
 //
 // Entities stuff
 //
-#define CON_ENTITIES_COUNT 128
+#define CON_ENTITIES_LIMIT 128
 #define CON_MAX_ENTITY_FLAGS 8
 
 //

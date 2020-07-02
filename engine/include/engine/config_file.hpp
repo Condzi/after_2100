@@ -19,6 +19,7 @@ public:
 	returning parse_from_source( CString source ) -> bool;
 
 	// Acts like a dtor but we have control over its lifetime.
+	// @ToDo: rename to shutdown. Add initialize() ? _from_file, _from_source?
 	void free();
 
 	returning get_value( Hashed_CString section, Hashed_CString name ) -> CString;

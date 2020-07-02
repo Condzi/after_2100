@@ -22,8 +22,6 @@ returning Application::initialize() -> bool
 	default_allocator.initialize();
 	temporary_allocator.initialize();
 	stack_allocator.initialize();
-	// @ToDo: we have to initialize it's arrays.
-	// entity_manager.initialze() ?
 	main_logger.initialize();
 
 
@@ -101,6 +99,20 @@ returning Application::initialize() -> bool
 	con_log( "Input initialized." );
 	flush_logger();
 
+
+	con_log( "Initializing entity manager..." );
+	flush_logger();
+	entity_manager.initialize();
+	con_log( "Entity manager initialized." );
+	flush_logger();
+
+
+	con_log( "Initializing renderer..." );
+	flush_logger();
+	renderer.initialize();
+	con_log( "Renderer initialized." );
+	flush_logger();
+
 	con_log( "Initialization completed." );
 	
 	flush_logger();
@@ -146,7 +158,7 @@ void Application::run()
 		// world.update(frame_dt);
 
 		window.clear();
-
+		renderer.render();
 		window.display();
 
 		flush_logger();
@@ -162,6 +174,8 @@ void Application::shutdown()
 {
 	flush_logger();
 	con_log( "Application shutdown..." );
+	entity_manager.shutdown();
+	renderer.shutdown();
 	config_file.free();
 	window.shutdown();
 	resource_loader.shutdown();

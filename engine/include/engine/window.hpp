@@ -22,7 +22,7 @@ public:
 	
 	returning should_close() const -> bool;
 
-	// @ToDo: we'll eventually need this stuff if we wanna have a serious game. Don't forget the glViewport calls!
+	// @ToDo: we'll eventually need this stuff if we wanna have a serious game. Don't forget the glViewport calls! And update the renderer window size too!
 	// void change_resloution( s32 width, s32 height );
 	// void switch_to_fullscreen();
 	// void switch_from_fullscreen( s32 width, s32 height );

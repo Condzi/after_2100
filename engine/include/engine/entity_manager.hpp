@@ -36,20 +36,16 @@ returning entity_type_to_id() -> s16
 	}
 }
 
-// File_Scope?
 namespace priv
 {
-// @Robustness: Is it necessary to have it here? Maybe move it to separate file, with Entity_Type stuff?
-// We still have to access this from this file tho, because of templates madness and factory pattern.
-// @Robustness: Second thing, do we need `Entity_Manager` pointer? I believe we can just use Context.entity_manager instead.
-// We're not planning more than one EM, do we?
-returning create_enemy( Entity_Manager* entity_manager ) -> Enemy*;
+// returning create_enemy( Entity_Manager* entity_manager ) -> Enemy*;
 returning create_player( Entity_Manager* entity_manager ) -> Player*;
 }
 
 
 struct Entity_Manager final
 {
+	compile_constant entities_limit = CON_ENTITIES_LIMIT;
 	//
 	// *Every* entity has _hot and _cold data, therefore we can check if they're
 	// alive using a bitset. idx in bitset = idx in _hot, _cold. It doesn't match
@@ -62,6 +58,10 @@ struct Entity_Manager final
 		Array<Entity::Hot>  _hot ;
 		Array<Entity::Cold> _cold;
 	} by_type;
+
+
+	void initialize();
+	void shutdown();
 };
 
 }
