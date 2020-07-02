@@ -7,7 +7,8 @@ namespace con
 {
 struct Render_Info final
 {
-	mat4 combined_matrix; // projection_mat * view_mat * model_mat
+//	mat4 combined_matrix; // projection_mat * view_mat * model_mat
+	mat4 model_mat;
 
 	gl_id vao = 0;
 	gl_id vbo = 0;

@@ -29,6 +29,9 @@ returning linear_find( Array<TType> const& arr, TType const& val ) -> Find_Resul
 template <typename TType, typename TComparator, typename TPredicate>
 returning binary_find_if( Array<TType> const& arr, TComparator comparator, TPredicate predicate ) -> Find_Result;
 
+template <typename TType, typename TComparator>
+void insertion_sort( Array<TType>& arr, TComparator comparator );
+
 //
 //	Definitions
 //
@@ -50,7 +53,7 @@ returning linear_find_if( Array<TType> const& arr, TPredicate predicate ) -> Fin
 }
 
 template <typename TType>
-returning linear_find( Array<TType> const& arr, TType const & val ) -> Find_Result
+returning linear_find( Array<TType> const& arr, TType const& val ) -> Find_Result
 {
 	constant size = arr.size();
 	s32 idx = 0;
@@ -87,5 +90,23 @@ returning binary_find_if( Array<TType> const& arr, TComparator comparator, TPred
 	}
 
 	return { .idx = -1 };
+}
+
+template<typename TType, typename TComparator>
+void insertion_sort( Array<TType>& arr, TComparator comparator )
+{
+	con_assert( arr.size() > 1 );
+
+	for ( s32 j = 1; j < arr.size(); ++j ) {
+		constant& key = arr[j];
+
+		s32 i = j - 1;
+		while ( i >= 0 && comparator( arr[i], key ) ) {
+			arr[i + 1] = arr[i];
+			++i;
+		}
+
+		arr[i+1] = key;
+	}
 }
 }

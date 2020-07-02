@@ -35,7 +35,7 @@ public:
 	returning test( s32 idx ) const -> bool;
 
 	returning find_first_unset_bit( s32 begin = 0 ) const -> s32;
-	returning count_set_bits() -> s32;
+	returning count_set_bits() const -> s32;
 
 private:
 	Allocator* allocator = nullptr;
@@ -160,13 +160,13 @@ returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 }
 
 template <typename TBaseType>
-returning Bitset_Base<TBaseType>::count_set_bits() -> s32
+returning Bitset_Base<TBaseType>::count_set_bits() const -> s32
 {
 	static_assert( std::is_same_v<u16, TBaseType>, "count_set_bits is working only for u16" );
 
 	s32 sum = 0;
 	for ( s32 i = 0; i < size_in_base_types; ++i ) {
-		sum += count_set_bits( data[i] );
+		sum += con::count_set_bits( data[i] );
 	}
 
 	return sum;

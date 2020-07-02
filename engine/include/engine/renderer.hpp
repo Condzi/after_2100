@@ -24,7 +24,7 @@ struct Textured_Vertex2D final
 
 //
 // Rendering stages:
-// 0. (rarely) update projection and/or view matrices.
+// 0. (rarely) update projection_view_multiplied_matrix.
 // 1. Loop over entities in Entity Manager and gather necessary drawing data (Render_Info + entity type?)
 // 2. Sort by layer.
 // 3. Draw. (set the shader uniform variables according to entity type and shader type)
@@ -49,8 +49,7 @@ private:
 	mat4 view_matrix{ 1 }; // identity for now. @ToDo: make working camera.
 	mat4 projection_view_multiplied_matrix;
 
-	bool update_projection_matrix = true;
-	bool update_view_matrix = true;
+	bool update_projection_view_multiplied_matrix = true;
 
 	gl_id quad_ebo = 0;
 };
