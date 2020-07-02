@@ -1651,6 +1651,10 @@ typedef void (APIENTRYP PFNGLTEXPARAMETERIPROC)(GLenum target, GLenum pname, GLi
 GLAPI PFNGLTEXPARAMETERIPROC glad_glTexParameteri;
 #define glTexParameteri glad_glTexParameteri
 
+typedef void (APIENTRYP PFNGLPOLYGONMODEPROC)(GLenum face, GLenum mode);
+GLAPI PFNGLPOLYGONMODEPROC glad_glPolygonMode;
+#define glPolygonMode glad_glPolygonMode
+
 typedef void (APIENTRYP PFNGLUSEPROGRAMPROC)(GLuint program);
 GLAPI PFNGLUSEPROGRAMPROC glad_glUseProgram;
 #define glUseProgram glad_glUseProgram

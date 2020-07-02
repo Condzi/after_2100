@@ -308,6 +308,7 @@ PFNGLGETSTRINGPROC glad_glGetString = NULL;
 PFNGLGETUNIFORMLOCATIONPROC glad_glGetUniformLocation = NULL;
 PFNGLLINKPROGRAMPROC glad_glLinkProgram = NULL;
 PFNGLPIXELSTOREIPROC glad_glPixelStorei = NULL;
+PFNGLPOLYGONMODEPROC glad_glPolygonMode = NULL;
 PFNGLSHADERSOURCEPROC glad_glShaderSource = NULL;
 PFNGLTEXIMAGE2DPROC glad_glTexImage2D = NULL;
 PFNGLTEXPARAMETERIPROC glad_glTexParameteri = NULL;
@@ -337,6 +338,7 @@ PFNGLVIEWPORTPROC glad_glViewport = NULL;
 static void load_GL_VERSION_1_0(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_0) return;
 	glad_glTexParameteri = (PFNGLTEXPARAMETERIPROC)load("glTexParameteri");
+    glad_glPolygonMode = (PFNGLPOLYGONMODEPROC)load("glPolygonMode");
 	glad_glTexImage2D = (PFNGLTEXIMAGE2DPROC)load("glTexImage2D");
 	glad_glClear = (PFNGLCLEARPROC)load("glClear");
 	glad_glClearColor = (PFNGLCLEARCOLORPROC)load("glClearColor");

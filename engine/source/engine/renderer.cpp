@@ -21,7 +21,7 @@ void Renderer::initialize()
 
 	glGenBuffers( 1, &quad_ebo );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, quad_ebo );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, 6, quad_ebo_indecies, GL_STATIC_DRAW );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(u32), quad_ebo_indecies, GL_STATIC_DRAW );
 }
 
 void Renderer::shutdown()
@@ -62,7 +62,7 @@ void Renderer::render()
 		update_projection_view_multiplied_matrix = false;
 
 		projection_view_multiplied_matrix = mat4{ 1 };
-		projection_view_multiplied_matrix = projection_matrix * view_matrix;
+		projection_view_multiplied_matrix = projection_matrix /* * view_matrix */;
 	}
 
 	//
@@ -143,18 +143,10 @@ void Renderer::render()
 			glUseProgram( current_shader );
 		}
 
+
 		// @Performance: don't recompute this matrix every time!
 		mat4 mvp_mat{ 1.0f };
 		mvp_mat = projection_view_multiplied_matrix * render_info.model_mat;
-
-		// debug
-		v2 player_center = Context.entity_manager->by_type.player->_hot.position;
-		v3 player_multiplied = mvp_mat * v4( player_center, 0.0f, 1.0f ) ;
-		
-		con_log( "------------" );
-		con_log( "Before: x = % | y = %", player_center.x, player_center.y );
-		con_log( "After:  x = % | y = % | z = %", player_multiplied.x, player_multiplied.y, player_multiplied.z );
-		con_log( "------------" );
 
 		// @Robustness: different shaders may require different uniforms to set. Use
 		// some if statements to determine what shader is being used and then set the data
@@ -200,7 +192,7 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 	v0.texture_point ={ 0,0 };
 	v1.texture_point ={ 0,1 };
 	v2.texture_point ={ 1,1 };
-	v3.texture_point ={ 0,1 };
+	v3.texture_point ={ 1,0 };
 
 	return vertices;
 }
