@@ -226,6 +226,7 @@
     <ClCompile Include="source\engine\application.cpp" />
     <ClCompile Include="source\engine\allocator.cpp" />
     <ClCompile Include="source\engine\assert.cpp" />
+    <ClCompile Include="source\engine\bitset.cpp" />
     <ClCompile Include="source\engine\config_file.cpp" />
     <ClCompile Include="source\engine\cstring.cpp" />
     <ClCompile Include="source\engine\input.cpp" />

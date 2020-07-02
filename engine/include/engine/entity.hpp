@@ -24,7 +24,7 @@ struct Entity
 		s16 u_id  = INVALID_ID;
 		s16 type  = INVALID_TYPE; // Player, Enemy, Background, Planet, Explosion etc...
 		s16 group = INVALID_GROUP;
-		Bitset<byte> flags;
+		Bitset flags;
 	} &hot;
 
 	struct Cold final

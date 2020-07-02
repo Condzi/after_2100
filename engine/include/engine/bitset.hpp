@@ -2,22 +2,25 @@
 
 #include <engine/assert.hpp>
 #include <engine/typedefs.hpp>
+#include <engine/context.hpp>
 
 #include <cstring>
 #include <limits>
 
 namespace con
 {
+returning count_set_bits( u16 value ) -> s32;
+
 // @Idea: don't use template at all, just `byte`? Or maybe u16?
 // @Important: Use unsigned types as TBaseType!!!
-template <typename TBaseType = byte>
-class Bitset final
+template <typename TBaseType = u16>
+class Bitset_Base final
 {
 public:
 	compile_constant BASE_TYPE_SIZE_IN_BYTES = static_cast<s32>( sizeof( TBaseType ) );
 	compile_constant BASE_TYPE_SIZE_IN_BITS = BASE_TYPE_SIZE_IN_BYTES * 8;
 
-	Bitset() = default;
+	Bitset_Base() = default;
 
 	void initialize( s32 size_, Allocator* allocator_ = Context.stack_allocator );
 	void shutdown();
@@ -32,6 +35,7 @@ public:
 	returning test( s32 idx ) const -> bool;
 
 	returning find_first_unset_bit( s32 begin = 0 ) const -> s32;
+	returning count_set_bits() -> s32;
 
 private:
 	Allocator* allocator = nullptr;
@@ -40,9 +44,15 @@ private:
 	TBaseType* data = nullptr;
 };
 
+// Using u16 allows us to use compiler intrinsic functions.
+using Bitset = Bitset_Base<u16>;
+
+//
+// Definitions
+//
 
 template <typename TBaseType>
-void Bitset<TBaseType>::initialize( s32 size_, Allocator* allocator_ )
+void Bitset_Base<TBaseType>::initialize( s32 size_, Allocator* allocator_ )
 {
 	con_assert( size_ > 0 );
 	con_assert( allocator_ != nullptr );
@@ -58,13 +68,13 @@ void Bitset<TBaseType>::initialize( s32 size_, Allocator* allocator_ )
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::shutdown()
+void Bitset_Base<TBaseType>::shutdown()
 {
 	if ( data == nullptr ) {
 		return;
 	}
 	
-	allocator->free( data, BASE_TYPE_SIZE_IN_BYTES * size_in_base_types );
+	allocator->free( reinterpret_cast<byte*>( data ), BASE_TYPE_SIZE_IN_BYTES * size_in_base_types );
 	data = nullptr;
 	size_in_bits = -1;
 	size_in_base_types = -1;
@@ -72,21 +82,21 @@ void Bitset<TBaseType>::shutdown()
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::set( s32 idx )
+void Bitset_Base<TBaseType>::set( s32 idx )
 {
 	con_assert( idx < size_in_bits );
 	data[idx / BASE_TYPE_SIZE_IN_BITS] |= ( 1 << ( idx%BASE_TYPE_SIZE_IN_BITS ) );
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::reset( s32 idx )
+void Bitset_Base<TBaseType>::reset( s32 idx )
 {
 	con_assert( idx < size_in_bits );
 	data[idx / BASE_TYPE_SIZE_IN_BITS] &= ~( 1 << ( idx%BASE_TYPE_SIZE_IN_BITS ) );
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::set_range( s32 idx, s32 size )
+void Bitset_Base<TBaseType>::set_range( s32 idx, s32 size )
 {
 	// @Performance: we probably can do better than that (setting every byte instead of every individual
 	// bit), but we don't need such microoptimalizations right now
@@ -98,7 +108,7 @@ void Bitset<TBaseType>::set_range( s32 idx, s32 size )
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::reset_range( s32 idx, s32 size )
+void Bitset_Base<TBaseType>::reset_range( s32 idx, s32 size )
 {
 	con_assert( idx + size < size_in_bits );
 	for ( s32 i = idx; i < idx + size; ++i ) {
@@ -107,27 +117,28 @@ void Bitset<TBaseType>::reset_range( s32 idx, s32 size )
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::flip( s32 idx )
+void Bitset_Base<TBaseType>::flip( s32 idx )
 {
 	con_assert( idx < size_in_bits );
 	data[idx/ BASE_TYPE_SIZE_IN_BITS] ^= ( 1 << idx%BASE_TYPE_SIZE_IN_BITS );
 }
 
 template <typename TBaseType>
-void Bitset<TBaseType>::clear()
+void Bitset_Base<TBaseType>::clear()
 {
 	memset( data, 0, BASE_TYPE_SIZE_IN_BYTES * size_in_base_types );
 }
 
 template <typename TBaseType>
-auto Bitset<TBaseType>::test( s32 idx ) const -> bool
+auto Bitset_Base<TBaseType>::test( s32 idx ) const -> bool
 {
 	con_assert( idx < size_in_bits );
+	// @Performance: we can use intrinsic here _bittest
 	return ( data[idx / BASE_TYPE_SIZE_IN_BITS] & ( 1 << ( idx % BASE_TYPE_SIZE_IN_BITS ) ) );
 }
 
 template<typename TBaseType>
-returning Bitset<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
+returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 {
 	constant begin_in_base_types = begin / BASE_TYPE_SIZE_IN_BITS;
 
@@ -137,6 +148,7 @@ returning Bitset<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 			continue;
 		}
 
+		// @Performance: use intrincics (BitScanForward / backward?)
 		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; bit < ( i+1 )*BASE_TYPE_SIZE_IN_BITS; ++bit ) {
 			if ( test( bit ) == false ) {
 				return bit;
@@ -145,5 +157,18 @@ returning Bitset<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 	}
 
 	return -1;
+}
+
+template <typename TBaseType>
+returning Bitset_Base<TBaseType>::count_set_bits() -> s32
+{
+	static_assert( std::is_same_v<u16, TBaseType>, "count_set_bits is working only for u16" );
+
+	s32 sum = 0;
+	for ( s32 i = 0; i < size_in_base_types; ++i ) {
+		sum += count_set_bits( data[i] );
+	}
+
+	return sum;
 }
 }

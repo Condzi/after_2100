@@ -40,7 +40,7 @@ private:
 	compile_constant reserved_size = CON_RESERVED_MEMORY;
 
 	byte* begin = nullptr;
-	Bitset<byte> used_bytes;
+	Bitset used_bytes;
 };
 
 // Reserves and manages memory from Default_Allocator
@@ -82,7 +82,7 @@ private:
 	compile_constant reserved_size = CON_STACK_RESERVED_MEMORY;
 
 	byte buffer[reserved_size] ={ 0 };
-	Bitset<byte> used_bytes;
+	Bitset used_bytes;
 };
 
 //

@@ -32,7 +32,7 @@ returning entity_type_to_id() -> s16
 	} else if constexpr ( std::is_same_v<Player, T> ) {
 		return Entity_Type::Player;
 	} else {
-		static_assert( false, "Invalid entity type! Have you forget about adding it to the `entity_ty_to_id`?" );
+		static_assert( false, R"(Invalid entity type! Have you forget about adding it to the "entity_type_to_id"?)" );
 	}
 }
 
@@ -50,6 +50,13 @@ returning create_player( Entity_Manager* entity_manager ) -> Player*;
 
 struct Entity_Manager final
 {
+	//
+	// *Every* entity has _hot and _cold data, therefore we can check if they're
+	// alive using a bitset. idx in bitset = idx in _hot, _cold. It doesn't match
+	// idx in other arrays!
+	//
+	Bitset occupied_hot_cold_slots;
+
 	struct
 	{
 		Array<Entity::Hot>  _hot ;
