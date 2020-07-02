@@ -1,6 +1,7 @@
 # **Important**
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
 * figure out ttf fonts
+* add `__functionsig__` (or something like that, check msvc docs) to `con_assert`.
 
 # **Quality of life**
 * add support for const char* const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`

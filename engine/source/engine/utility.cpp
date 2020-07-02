@@ -16,7 +16,7 @@ returning load_entire_file_binary( CString path ) -> File_Loading_Result
 	constant file_size = static_cast<s32>( fs::file_size( path_sv, fs_error_code ) );
 
 	if ( fs_error_code ) {
-		con_log_indented( 1, R"(Error: can't read file size for "%". Info: "%")", path, cstring_from_stdstring( fs_error_code.message() ) );
+		con_log_indented( 1, R"(Error: can't read file size for "%". Info: "%".)", path, cstring_from_stdstring( fs_error_code.message() ) );
 		return { .success = false };
 	}
 
