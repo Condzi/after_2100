@@ -95,8 +95,6 @@ returning binary_find_if( Array<TType> const& arr, TComparator comparator, TPred
 template<typename TType, typename TComparator>
 void insertion_sort( Array<TType>& arr, TComparator comparator )
 {
-	con_assert( arr.size() > 1 );
-
 	for ( s32 j = 1; j < arr.size(); ++j ) {
 		constant& key = arr[j];
 

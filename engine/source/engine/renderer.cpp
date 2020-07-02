@@ -6,6 +6,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// @nocheckin: for debug only
+#include <entities/player.hpp>
+
 namespace con
 {
 
@@ -93,24 +96,29 @@ void Renderer::render()
 		constant& cold = colds[i];
 
 		if ( cold.basic_render_info.visible ) {
-			render_infos[i] = cold.basic_render_info;
+			render_infos[idx_in_render_infos] = cold.basic_render_info;
+			++idx_in_render_infos;
 		}
 	}
 
-	render_infos.shrink( idx_in_render_infos );
+	if ( idx_in_render_infos < render_infos_max_count ) {
+		render_infos.shrink( idx_in_render_infos );
+	}
 
 	//
 	// 2. sort by group and by layer.
 	//
 
-	// We don't have that many data to sort so it shouldn't matter which algorithm we'll use.
-	insertion_sort( render_infos, []( Render_Info const& a, Render_Info const& b ) {
-		if ( a.drawing_group == b.drawing_group ) {
-			return a.drawing_layer > b.drawing_layer;
-		}
+	if ( render_infos.size() > 1 ) {
+		// We don't have that many data to sort so it shouldn't matter which algorithm we'll use.
+		insertion_sort( render_infos, []( Render_Info const& a, Render_Info const& b ) {
+			if ( a.drawing_group == b.drawing_group ) {
+				return a.drawing_layer > b.drawing_layer;
+			}
 
-		return a.drawing_group > b.drawing_group;
-	} );
+			return a.drawing_group > b.drawing_group;
+		} );
+	}
 
 	//
 	// 3. Draw.
@@ -138,6 +146,15 @@ void Renderer::render()
 		// @Performance: don't recompute this matrix every time!
 		mat4 mvp_mat{ 1.0f };
 		mvp_mat = projection_view_multiplied_matrix * render_info.model_mat;
+
+		// debug
+		v2 player_center = Context.entity_manager->by_type.player->_hot.position;
+		v3 player_multiplied = mvp_mat * v4( player_center, 0.0f, 1.0f ) ;
+		
+		con_log( "------------" );
+		con_log( "Before: x = % | y = %", player_center.x, player_center.y );
+		con_log( "After:  x = % | y = % | z = %", player_multiplied.x, player_multiplied.y, player_multiplied.z );
+		con_log( "------------" );
 
 		// @Robustness: different shaders may require different uniforms to set. Use
 		// some if statements to determine what shader is being used and then set the data

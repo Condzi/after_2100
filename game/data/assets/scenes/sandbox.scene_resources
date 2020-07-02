@@ -1,6 +1,6 @@
 # sandbox.scene_resources
-textures:
-enemy
+:/textures
+player 
 
-shaders:
+:/shaders
 sprite_default

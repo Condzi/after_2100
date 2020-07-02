@@ -8,7 +8,7 @@ namespace con
 struct Render_Info final
 {
 //	mat4 combined_matrix; // projection_mat * view_mat * model_mat
-	mat4 model_mat;
+	mat4 model_mat{ 1.0f };
 
 	gl_id vao = 0;
 	gl_id vbo = 0;
@@ -17,11 +17,11 @@ struct Render_Info final
 	Texture texture;
 	Shader shader;
 
-	s16 drawing_layer;
-	s16 drawing_group;
+	s16 drawing_layer = 0;
+	s16 drawing_group = 0;
 
 	// Pass to glDrawElements
-	s8 elements_count;
+	s8 elements_count = -1;
 
 	bool visible = true;
 };

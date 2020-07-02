@@ -33,8 +33,11 @@ struct Player final
 
 		auto& render_info = _cold.basic_render_info;
 
+		render_info = Render_Info{};
+
 		render_info.texture = texture;
 		render_info.shader = shader;
+		render_info.elements_count = 6; // 6 elemets in ebo for a quad
 
 		_hot.position ={ 200,200 };
 

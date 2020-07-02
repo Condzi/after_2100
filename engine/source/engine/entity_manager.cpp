@@ -51,5 +51,7 @@ returning con::priv::create_player( Entity_Manager* entity_manager ) -> Player*
 
 	player->initialize();
 
+	em->by_type.player = player;
+
 	return player;
 }

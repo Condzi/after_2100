@@ -33,7 +33,11 @@ returning cstring_from_cstr( char const* cstr ) -> CString
 }
 returning cstring_from_stdstring( std::string const& str ) -> CString
 {
-	return { str.data(), static_cast<s32>( str.size() ) };
+	char* str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.size() ) );
+
+	memcpy( str_data, str.c_str(), str.size() );
+
+	return { str_data, static_cast<s32>( str.size() ) };
 }
 
 returning cstring_from_array( Array<char> const& arr ) -> CString

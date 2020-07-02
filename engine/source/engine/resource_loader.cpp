@@ -156,7 +156,7 @@ void Resource_Loader::initialize()
 	con_log_indented( 1, "Loading resource metadata from \"%\"...", CString{ CON_ASSETS_CONFIG_FILE } );
 	Config_File assets_config;
 	defer{ assets_config.free(); };
-	if ( !assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE ) ) 		{
+	if ( !assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE ) ) {
 		con_log_indented( 1, "Error: couldn't parse from file." );
 		// @ToDo: raise a flag!
 		return;
@@ -432,7 +432,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	// create an OpenGL texture out of it.
 	//
 
-	memcpy( p_textures.data(), defaults.textures.data(), default_textures_count );
+	memcpy( p_textures.data(), defaults.textures.data(), default_textures_count * sizeof( Texture ) );
 
 	// We're using TA to load textures and to generate fallback ones, so we can reset (free) 
 	// the used memory by reseting the mark in every step of the loop.
@@ -493,18 +493,18 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	//
 
 	p_shaders.initialize( default_shaders_count + r_shaders.size() );
-	memcpy( p_shaders.data(), defaults.shaders.data(), default_shaders_count );
+	memcpy( p_shaders.data(), defaults.shaders.data(), default_shaders_count * sizeof( Shader ) );
 
 	if ( r_shaders.size() == 0 ) {
 		con_log_indented( 1, "No shaders specified to load, only default are now present." );
 	} else {
 		constant ta_mark = ta.get_mark();
 
-		for ( s32 i = default_shaders_count; i < p_shaders.size(); ++i ) {
+		for ( s32 i = default_shaders_count, j = 0; i < p_shaders.size(); ++i, ++j ) {
 			defer{ ta.set_mark( ta_mark ); };
 			auto& current_shader = p_shaders[i];
 
-			current_shader.name_hash = r_shaders[i];
+			current_shader.name_hash = r_shaders[j];
 
 			constant result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
@@ -557,10 +557,11 @@ void Resource_Loader::check_scene_folder_content()
 
 		if ( strcmp( path.extension().generic_string().c_str(), CON_SCENE_RESOURCES_FILE_EXTENSION ) == 0 ) {
 
-			// @IMPORTANT: DOESNT WORK????? gives some garbage in memory ???
-			constant filename = cstring_from_stdstring( path.filename().generic_string() );
+			constant full_filename = cstring_from_stdstring( path.filename().generic_string() );
 
-			scene_folder_content.hashes[current_file] = hash_cstring( filename );
+			constant without_exension = CString{ full_filename.data, full_filename.size - CString{CON_SCENE_RESOURCES_FILE_EXTENSION}.size };
+
+			scene_folder_content.hashes[current_file] = hash_cstring( without_exension );
 
 			++current_file;
 		}
@@ -575,7 +576,7 @@ void Resource_Loader::check_scene_folder_content()
 	}
 }
 
-returning Resource_Loader::init_texture( byte const * data, s16 width, s16 height ) -> gl_id
+returning Resource_Loader::init_texture( byte const* data, s16 width, s16 height ) -> gl_id
 {
 	// @Performance: maybe we could call `glGenTextures` with an array of textures? 
 // I have to test it when we make this one work.
