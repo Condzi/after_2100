@@ -18,6 +18,7 @@ returning Application::initialize() -> bool
 	Context.config_file = &config_file;
 	Context.input = &input;
 	Context.prepared_resources = &prepared_resources;
+	Context.renderer = &renderer;
 
 	default_allocator.initialize();
 	temporary_allocator.initialize();
@@ -76,7 +77,7 @@ returning Application::initialize() -> bool
 	flush_logger();
 
 
-	// @ToDo: Splash screen stuff?? in separate thread? use it 
+	// @ToDo: Splash screen stuff?? in separate thread?
 
 
 	con_log( "Initializing window..." );
@@ -120,6 +121,18 @@ returning Application::initialize() -> bool
 	con_log( "Renderer initialized." );
 	flush_logger();
 
+
+	con_log( "\n\n=======================" );
+	con_log( "Debug spawn player..." );
+	flush_logger();
+	resource_loader.prepare_resources_for_scene( "sandbox" );
+	flush_logger();
+	entity_manager.spawn_entity<Player>();
+	con_log( "Player spawned." );
+	con_log( "=======================\n\n" );
+	flush_logger();
+
+
 	con_log( "Initialization completed." );
 
 	flush_logger();
@@ -138,6 +151,7 @@ void Application::run()
 	f32 accumulated_dt = 0;
 	ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay"_hcs, "ups"_hcs ) );
 
+	flush_logger();
 
 	// @ToDo: Stop also when there is a GL or GLFW error.
 	while ( Context.engine_flags.exit == false ) {

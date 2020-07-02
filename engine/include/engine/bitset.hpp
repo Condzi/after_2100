@@ -156,6 +156,8 @@ returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 		}
 	}
 
+	// @Robustness: maybe return Find_Result which is more straightforward when it comes
+	// to the success of find?
 	return -1;
 }
 

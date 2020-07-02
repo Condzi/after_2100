@@ -10,6 +10,7 @@ class Logger;
 class Config_File;
 class Input;
 class Prepared_Resources;
+class Renderer;
 }
 
 namespace con::priv
@@ -27,6 +28,7 @@ struct Context_Data final
 	Config_File* config_file	   = nullptr;
 	Input* input				   = nullptr;
 	Prepared_Resources* prepared_resources = nullptr;
+	Renderer* renderer			   = nullptr;
 
 	struct
 	{

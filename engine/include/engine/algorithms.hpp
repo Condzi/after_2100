@@ -42,8 +42,8 @@ returning linear_find_if( Array<TType> const& arr, TPredicate predicate ) -> Fin
 	constant size = arr.size();
 	s32 idx = 0;
 
-	while ( predicate( arr[idx] ) == false &&
-			idx < size ) {
+	while ( idx < size &&
+			predicate( arr[idx] ) == false ) {
 		++idx;
 	}
 
@@ -58,8 +58,8 @@ returning linear_find( Array<TType> const& arr, TType const& val ) -> Find_Resul
 	constant size = arr.size();
 	s32 idx = 0;
 
-	while ( arr[idx] != val &&
-			idx < size ) {
+	while ( idx < size &&
+			arr[idx] != val ) {
 		++idx;
 	}
 

@@ -20,6 +20,8 @@ returning Prepared_Resources::get_texture( Hashed_CString name ) -> Texture
 	}
 	*/
 
+	con_assert( textures.size() > 0 );
+
 	constant result = linear_find_if( textures, [&name]( constant& a ) {
 		return a.name_hash == name.hash;
 	} );
@@ -33,6 +35,8 @@ returning Prepared_Resources::get_texture( Hashed_CString name ) -> Texture
 }
 returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 {
+	con_assert( shaders.size() > 0 );
+
 	constant result = linear_find_if( shaders, [&name]( constant& a ) {
 		return a.name_hash == name.hash;
 	} );

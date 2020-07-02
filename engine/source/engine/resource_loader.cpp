@@ -557,6 +557,7 @@ void Resource_Loader::check_scene_folder_content()
 
 		if ( strcmp( path.extension().generic_string().c_str(), CON_SCENE_RESOURCES_FILE_EXTENSION ) == 0 ) {
 
+			// @IMPORTANT: DOESNT WORK????? gives some garbage in memory ???
 			constant filename = cstring_from_stdstring( path.filename().generic_string() );
 
 			scene_folder_content.hashes[current_file] = hash_cstring( filename );
