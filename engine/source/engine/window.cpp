@@ -61,7 +61,7 @@ void Window::initialize()
 	glfwWindowHint( GLFW_CENTER_CURSOR, GL_FALSE );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, gl_major );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, gl_minor );
-	
+
 	if ( vsync ) {
 		glfwWindowHint( GLFW_DOUBLEBUFFER, GL_TRUE );
 	} else {
@@ -210,11 +210,9 @@ void Window::set_title( CString title )
 {
 	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 	constant mark = ta.get_mark();
-	defer { ta.set_mark( mark ); };
-	char* title_cstr = ta.allocate<char>( title.size );
-	memcpy( title_cstr, title.data, title.size );
+	defer{ ta.set_mark( mark ); };
 
-	glfwSetWindowTitle( handle, title_cstr );
+	glfwSetWindowTitle( handle, cstring_to_cstr( title ).data );
 }
 
 void Window::set_clear_color( u8 r, u8 g, u8 b )
