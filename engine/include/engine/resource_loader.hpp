@@ -46,8 +46,6 @@ private:
 		Array<Shader> shaders;
 	} defaults; // don't unload these!
 
-	// @Incomplete: We have to have some default shader (maybe simple sprite one)
-	// and simple default texture (single color / checkerboard?)
 	struct
 	{
 		Texture texture;

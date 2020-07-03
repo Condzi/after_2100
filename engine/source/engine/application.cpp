@@ -122,14 +122,12 @@ returning Application::initialize() -> bool
 	flush_logger();
 
 
-	con_log( "\n\n=======================" );
 	con_log( "Debug spawn player..." );
 	flush_logger();
 	resource_loader.prepare_resources_for_scene( "sandbox" );
 	flush_logger();
 	entity_manager.spawn_entity<Player>();
 	con_log( "Player spawned." );
-	con_log( "=======================\n\n" );
 	flush_logger();
 
 
@@ -153,13 +151,15 @@ void Application::run()
 
 	flush_logger();
 
-	while ( Context.exit_requested_by_user == false ) {
+	while ( !( Context.exit_flags.requested_by_app ||
+			   Context.exit_flags.requested_by_user ) ) {
+
 		if ( window.should_close() ) {
-			Context.exit_requested_by_user = true;
+			Context.exit_flags.requested_by_user = true;
 		}
 
 		if ( input.is_key_pressed( "exit_button"_hcs ) ) {
-			Context.exit_requested_by_user = true;
+			Context.exit_flags.requested_by_user = true;
 		}
 
 		input.poll_events();
@@ -189,15 +189,19 @@ void Application::run()
 
 void Application::shutdown()
 {
-	flush_logger();
 	con_log( "Application shutdown..." );
+	flush_logger();
+
+	con_log( "Exit flags: " );
+	con_log_indented( 1, "requested_by_user = %", Context.exit_flags.requested_by_user );
+	con_log_indented( 1, "requested_by_app  = %", Context.exit_flags.requested_by_app  );
+
 	entity_manager.shutdown();
 	renderer.shutdown();
 	config_file.free();
 	window.shutdown();
 	resource_loader.shutdown();
 	input.shutdown();
-	// @ToDo: entity_manager.shutdown();
 	con_log( "Highest TA mark: % / % (bytes).", temporary_allocator.get_highest_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();

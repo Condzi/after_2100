@@ -30,7 +30,11 @@ struct Context_Data final
 	Prepared_Resources* prepared_resources = nullptr;
 	Renderer* renderer			   = nullptr;
 
-	bool exit_requested_by_user = false;
+	struct
+	{
+		bool requested_by_user = false;
+		bool requested_by_app  = false;
+	} exit_flags;
 };
 
 struct Context_Helper final

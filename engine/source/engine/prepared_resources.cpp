@@ -5,21 +5,6 @@ namespace con
 {
 returning Prepared_Resources::get_texture( Hashed_CString name ) -> Texture
 {
-	/*
-	constant result = binary_find_if( textures, [&name]( Texture const& a ) {
-		return a.name_hash < name.hash;
-	}, [&name]( Texture const& a ) {
-		return a.name_hash == name.hash;
-	} );
-
-	if ( result.found() ) {
-		return textures[result.idx];
-	} else {
-		release_con_assert( false );
-		return {};
-	}
-	*/
-
 	con_assert( textures.size() > 0 );
 
 	constant result = linear_find_if( textures, [&name]( constant& a ) {
@@ -29,8 +14,7 @@ returning Prepared_Resources::get_texture( Hashed_CString name ) -> Texture
 	if ( result.found() ) {
 		return textures[result.idx];
 	} else {
-		release_con_assert( false );
-		return {};
+		return fallback_texture;
 	}
 }
 returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
@@ -44,8 +28,7 @@ returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 	if ( result.found() ) {
 		return shaders[result.idx];
 	} else {
-		release_con_assert( false );
-		return {};
+		return fallback_shader;
 	}
 }
 returning Prepared_Resources::textures_count() const -> s32

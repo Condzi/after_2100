@@ -11,6 +11,15 @@ file_scope
 namespace con
 {
 
+returning bool_to_cstring( bool value ) -> CString
+{
+	if ( value ) {
+		return "true"_cs;
+	}
+
+	return "false"_cs;
+}
+
 returning s32_to_cstring( s32 value ) -> CString
 {
 	auto [ptr, errc] = std::to_chars( conversion_buffer, conversion_buffer + conversion_buffer_size, value );

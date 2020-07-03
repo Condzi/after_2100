@@ -13,6 +13,7 @@ namespace con
 //
 //	Value -> CString
 //
+returning bool_to_cstring( bool value ) -> CString;
 returning s32_to_cstring( s32 value ) -> CString;
 returning f32_to_cstring( f32 value ) -> CString;
 
@@ -48,8 +49,10 @@ returning sscan( CString format, CString str, TArgs& ...args ) -> bool;
 template <typename T>
 returning T_to_cstring( T value ) -> CString
 {
-	if constexpr ( std::is_same_v<T, CString> ) {
+	if        constexpr ( std::is_same_v<T, CString> ) {
 		return value;
+	} else if constexpr ( std::is_same_v<T, bool> ) {
+		return bool_to_cstring( value );
 	} else if constexpr ( std::is_integral_v<T> ) {
 		return s32_to_cstring( static_cast<s32>( value ) );
 	} else if constexpr ( std::is_floating_point_v<T> ) {

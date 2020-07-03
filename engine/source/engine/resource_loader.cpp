@@ -143,10 +143,16 @@ void Resource_Loader::initialize()
 	stbi_set_flip_vertically_on_load( true ); // Because OpenGL... shrug
 
 	// Create the fallback texture
-	// @Incomplete: create fallback shader?
 
 	fallback.texture.name_hash = 0xdeadbeef;
 	fallback.texture.id = init_texture( generate_sized_fallback_texture( CON_FALLBACK_TEXTURE_SIZE * CON_FALLBACK_TEXTURE_SIZE ), CON_FALLBACK_TEXTURE_SIZE, CON_FALLBACK_TEXTURE_SIZE );
+
+	// @Robustness: right now the fallback resources are reduntant in prepared_resources.
+	// Decide where they should be stored -- in resource_loader or in prepared_resources?
+	Context.prepared_resources->fallback_texture = fallback.texture;
+	// @Incomplete: no fallback shader right now.
+	Context.prepared_resources->fallback_shader  = fallback.shader;
+
 
 	check_scene_folder_content();
 
@@ -158,7 +164,7 @@ void Resource_Loader::initialize()
 	defer{ assets_config.free(); };
 	if ( !assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE ) ) {
 		con_log_indented( 1, "Error: couldn't parse from file." );
-		// @ToDo: raise a flag!
+		Context.exit_flags.requested_by_app = true;
 		return;
 	}
 	// Config_File::get_section returns temporary storage memory, so we can reset it after we

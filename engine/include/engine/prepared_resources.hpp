@@ -25,5 +25,8 @@ private:
 	// We're assuming that first N resources are the default ones (which don't change)
 	Array<Texture> textures;
 	Array<Shader> shaders;
+
+	Texture fallback_texture;
+	Shader  fallback_shader;
 };
 }

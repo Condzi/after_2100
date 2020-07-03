@@ -95,7 +95,7 @@ returning Config_File::parse_from_source( CString source ) -> bool
 	constant mark = temporary_allocator->get_mark();
 	defer{ temporary_allocator->set_mark( mark ); };
 
-	// @Robustness: We can avoid this by having methods that accept CString instead of Array<char>.
+	// @Performance: We can avoid this by having methods that accept CString instead of Array<char>.
 	// This will do it for now tho.
 	Array<char> source_content;
 	source_content.initialize( source.size, temporary_allocator );
