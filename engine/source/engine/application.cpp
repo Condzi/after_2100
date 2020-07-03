@@ -166,13 +166,12 @@ void Application::run()
 
 		accumulated_dt += frame_dt;
 		while ( accumulated_dt >= ups ) {
-			// Physic update here...
-			// world.update_physic(ups)...
+			entity_manager.physic_update( ups );
 			accumulated_dt -= ups;
 		}
 
-		// normal update here...
-		// world.update(frame_dt);
+
+		entity_manager.frame_update( frame_dt );
 
 		window.clear();
 		renderer.render();

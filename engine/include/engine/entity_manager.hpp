@@ -58,7 +58,7 @@ struct Entity_Manager final
 		Array<Entity::Hot>  _hot;
 		Array<Entity::Cold> _cold;
 
-		// Only one in entire game, so we let ourselfs have it like that.
+		// Only one in entire game, so we let ourself have it like that.
 		Player* player = nullptr;
 	} by_type;
 
@@ -66,18 +66,28 @@ struct Entity_Manager final
 	void initialize();
 	void shutdown();
 
+	void physic_update( f32 ups );
+	void frame_update( f32 dt );
+
 	template <typename T>
-	returning spawn_entity() -> T*
-	{
-		if constexpr ( std::is_same_v<T, Player> ) {
-			// @Robustness: this syntax seems odd. Do we really need to pass
-			// this pointer? I think it'd be better to just have it as private
-			// function.
-			return priv::create_player( this );
-		} else {
-			static_assert( false, "Unsupported entity type!" );
-		}
-	}
+	returning spawn_entity() -> T*;
 };
 
+
+//
+// Definitions
+//
+
+template <typename T>
+returning Entity_Manager::spawn_entity() -> T*
+{
+	if constexpr ( std::is_same_v<T, Player> ) {
+		// @Cleanup: this syntax seems odd. Do we really need to pass
+		// this pointer? I think it'd be better to just have it as private
+		// function.
+		return priv::create_player( this );
+	} else {
+		static_assert( false, "Unsupported entity type!" );
+	}
+}
 }

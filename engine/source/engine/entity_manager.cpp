@@ -28,6 +28,16 @@ void Entity_Manager::shutdown()
 	by_type._hot.shutdown();
 	by_type._cold.shutdown();
 }
+
+void Entity_Manager::physic_update( f32 ups )
+{
+	by_type.player->physic_update( ups );
+}
+
+void Entity_Manager::frame_update( f32 dt )
+{
+	by_type.player->frame_update( dt );
+}
 }
 
 returning con::priv::create_player( Entity_Manager* entity_manager ) -> Player*

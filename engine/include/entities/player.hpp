@@ -8,6 +8,7 @@
 #include <engine/logger.hpp>
 
 #include <engine/renderer.hpp>
+#include <engine/input.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -18,7 +19,7 @@ struct Player final
 	Entity::Hot& _hot;
 	Entity::Cold& _cold;
 
-	// Can be a macro, actually.
+	// @Cleanup: can be a macro, actually.
 	Player( Entity::Hot& hot, Entity::Cold& cold ) :
 		_hot( hot ),
 		_cold( cold )
@@ -40,12 +41,6 @@ struct Player final
 		render_info.shader = shader;
 		render_info.elements_count = 6; // 6 elemets in ebo for a quad
 
-		_hot.position ={ 200,200 };
-
-		auto& model_mat = render_info.model_mat;
-		model_mat = glm::translate( model_mat, v3{ _hot.position.x, _hot.position.y,  0 } );
-		//model_mat = glm::rotate( model_mat, _hot.rotation_z, v3{ 0, 0, 1.0f } );
-
 		// Use actual texture dimensions here, gathered from Resource_Loader?
 		auto quad = construct_2d_textured_quad( 140, 108 );
 
@@ -55,13 +50,13 @@ struct Player final
 		glBindVertexArray( render_info.vao );
 
 		glBindBuffer( GL_ARRAY_BUFFER, render_info.vbo );
-		glBufferData( GL_ARRAY_BUFFER, sizeof( f32 ) * 2 * 2 * 4, quad.data(), GL_STATIC_DRAW );
+		glBufferData( GL_ARRAY_BUFFER, sizeof( Textured_Vertex2D ) * 4, quad.data(), GL_STATIC_DRAW );
 
 		// position 
-		glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof( f32 ), (void*)0 );
+		glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)0 );
 		glEnableVertexAttribArray( 0 );
 		// texture coord
-		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof( f32 ), (void*)( 2* sizeof( f32 ) ) );
+		glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)( 2* sizeof( f32 ) ) );
 		glEnableVertexAttribArray( 1 );
 
 		// Initialize element buffer and use only one for every sprite.
@@ -69,13 +64,58 @@ struct Player final
 
 		glBindVertexArray( 0 );
 
-	//	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		//	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
+		Context.input->add_binding( "enlarge"_hcs, con::Key::Keyboard_E );
+		Context.input->add_binding( "decrease"_hcs, con::Key::Keyboard_D );
 	}
+
 
 	void shutdown()
 	{
-		glDeleteBuffers( 1, &_cold.basic_render_info.vao );
+		glDeleteVertexArrays( 1, &_cold.basic_render_info.vao );
 		glDeleteBuffers( 1, &_cold.basic_render_info.vbo );
+	}
+
+
+	f32 accumulated_ups = 0;
+	f32 radious = 100.0f;
+	compile_constant radious_delta = 100.0f;
+
+	void physic_update( f32 ups )
+	{
+		compile_constant origin_x = 1280/2.0f;
+		compile_constant origin_y = 720/2.0f;
+
+		accumulated_ups += ups;
+
+		auto& position = _hot.position;
+
+		position.x = origin_x + cosf( accumulated_ups /* * velocity on orbit */ ) * radious;
+		position.y = origin_y + sinf( accumulated_ups ) * radious;
+	}
+
+	void frame_update( f32 dt )
+	{
+		auto& model_mat = _cold.basic_render_info.model_mat;
+		model_mat = mat4{ 1.0f };
+		model_mat = glm::translate( model_mat, v3{ _hot.position.x, _hot.position.y,  0 } );
+
+		if ( Context.input->is_key_held( "enlarge"_hcs ) ) {
+			if ( radious <= 400 ) {
+				radious += radious_delta * dt;
+			} else {
+				radious = 400;
+			}
+		}
+
+		if ( Context.input->is_key_held( "decrease"_hcs ) ) {
+			if ( radious >= 100 ) {
+				radious -= radious_delta * dt;
+			} else {
+				radious = 100;
+			}
+		}
 	}
 };
 }
