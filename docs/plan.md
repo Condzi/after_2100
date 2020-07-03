@@ -116,7 +116,7 @@ struct GL_Resource
     * Since we'll be loopng over every entity type individually, we may use some ifs when rendering stuff and setting up matrices depending on the entity type (according to the field stored in `Hot`)
     * `Render_Info` contains:
         * vao, vbo, ebo **`// have one EBO for every sprite/quad`**
-        * amount of vertices
+        * amount of elements
         * vertex size (we may use 3D positioning system for ships, but usually we just want 2D. We may also want to use texture without tint/coloring.)
         * drawing layer
         * drawing group? (GUI, Debug Console, Game, Menu...?) depending on that we order the draw calls

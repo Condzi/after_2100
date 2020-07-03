@@ -140,7 +140,9 @@ returning build_shader_program( CString source ) -> gl_id
 
 void Resource_Loader::initialize()
 {
-	stbi_set_flip_vertically_on_load( true ); // Because OpenGL... shrug
+	// We actually don't need it, maybe it's because of how our projection
+	// matrix is set up.
+	// stbi_set_flip_vertically_on_load( true ); // Because OpenGL... shrug
 
 	// Create the fallback texture
 

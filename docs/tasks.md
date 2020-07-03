@@ -1,2 +1,4 @@
 # **Current Tasks**
-* add stuff to entity manager (update calls, player movement)
+* add text rendering
+    * add ttf font
+* add developer console (text printing and scrolling only for now)
