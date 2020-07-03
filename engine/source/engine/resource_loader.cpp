@@ -394,6 +394,10 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		}
 	}
 
+	// We're using TA to load textures and other resources and to generate fallback ones, 
+	// so we can reset (free) the used memory by reseting the mark.
+	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
+
 	//
 	// Get list of resources that scene wants to have.
 	//
@@ -424,7 +428,6 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		p_textures.shutdown();
 	}
 
-	p_textures.initialize( default_textures_count + r_textures.size() );
 
 	//
 	// Copy the default textures, then load the new data.
@@ -432,45 +435,74 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	// create an OpenGL texture out of it.
 	//
 
+	p_textures.initialize( default_textures_count + r_textures.size() );
 	memcpy( p_textures.data(), defaults.textures.data(), default_textures_count * sizeof( Texture ) );
 
-	// We're using TA to load textures and to generate fallback ones, so we can reset (free) 
-	// the used memory by reseting the mark in every step of the loop.
-	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 
-	for ( s32 i = default_textures_count, j = 0; i < p_textures.size(); ++i, ++j ) {
+	if ( r_textures.size() <= 0 ) {
+		con_log_indented( 1, "No textures specified to load, onl default are now present." );
+	} else {
+
 		constant mark = ta.get_mark();
-		defer{ ta.set_mark( mark ); };
 
-		auto current_texture = p_textures[i];
-		current_texture.name_hash = r_textures[j];
+		// idx_in_p_textures is also it's size.
+		s32 idx_in_p_textures = default_textures_count;
+		s32 idx_in_r_textures = 0;
 
-		constant result = linear_find( name_hashes.textures, current_texture.name_hash );
+		while ( idx_in_p_textures < p_textures.size() &&
+				idx_in_r_textures < r_textures.size() ) {
+			defer{ ta.set_mark( mark ); };
 
-		byte* data = nullptr;
-		if ( !result.found() ) {
-			data = generate_sized_fallback_texture( CON_FALLBACK_TEXTURE_SIZE * CON_FALLBACK_TEXTURE_SIZE );
+			auto current_texture = p_textures[idx_in_p_textures];
+			current_texture.name_hash = r_textures[idx_in_r_textures];
 
-			current_texture.id = init_texture( data, CON_FALLBACK_TEXTURE_SIZE, CON_FALLBACK_TEXTURE_SIZE );
+			constant result = linear_find( name_hashes.textures, current_texture.name_hash );
 
-			continue;
+			// In the name_hashses array, first ones are default, so if the idx is 
+			// less than default resources count, it means it's a default one and therefore we should skip.
+			if ( result.idx < defaults.textures.size() ) {
+				con_log_indented( 2, "Requested default texture, skipping... (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
+
+				++idx_in_r_textures;
+				continue;
+			}
+
+			byte* data = nullptr;
+			if ( !result.found() ) {
+				// @ToDo: if we request a texture that isn't loaded we should just return the fallback texture tbh.
+				/*
+				data = generate_sized_fallback_texture( CON_FALLBACK_TEXTURE_SIZE *		CON_FALLBACK_TEXTURE_SIZE );
+
+				current_texture.id = init_texture( data, CON_FALLBACK_TEXTURE_SIZE, CON_FALLBACK_TEXTURE_SIZE );
+				*/
+
+
+				con_log_indented( 2, "Error: can't find texture (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
+				++idx_in_r_textures;
+				continue;
+			}
+
+			constant idx = result.idx;
+			constant& path = paths.textures[idx];
+			constant width = texture_data[idx].width;
+			constant height = texture_data[idx].height;
+
+			data = load_texture_data( path, width, height );
+
+			if ( data == nullptr ) {
+				data = generate_sized_fallback_texture( width * height );
+			}
+
+			current_texture.id = init_texture( data, width, height );
+
+			++idx_in_p_textures;
+			++idx_in_r_textures;
 		}
 
-		constant idx = result.idx;
-		constant& path = paths.textures[idx];
-		constant width = texture_data[idx].width;
-		constant height = texture_data[idx].height;
+		con_log_indented( 1, "Requested % textures, loaded %, active now: %.", r_textures.size(), idx_in_p_textures - default_textures_count, idx_in_p_textures );
 
-		data = load_texture_data( path, width, height );
-
-		if ( data == nullptr ) {
-			data = generate_sized_fallback_texture( width * height );
-		}
-
-		current_texture.id = init_texture( data, width, height );
+		p_textures.shrink( idx_in_p_textures );
 	}
-
-	con_log_indented( 1, "Prepared % textures. (Total: %)", r_textures.size(), p_textures.size() );
 
 
 	auto& p_shaders = Context.prepared_resources->shaders;
@@ -495,21 +527,36 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	p_shaders.initialize( default_shaders_count + r_shaders.size() );
 	memcpy( p_shaders.data(), defaults.shaders.data(), default_shaders_count * sizeof( Shader ) );
 
-	if ( r_shaders.size() == 0 ) {
+	if ( r_shaders.size() <= 0 ) {
 		con_log_indented( 1, "No shaders specified to load, only default are now present." );
 	} else {
 		constant ta_mark = ta.get_mark();
 
-		for ( s32 i = default_shaders_count, j = 0; i < p_shaders.size(); ++i, ++j ) {
-			defer{ ta.set_mark( ta_mark ); };
-			auto& current_shader = p_shaders[i];
+		// idx_in_p_shaders is also size of the final aray.
+		s32 idx_in_p_shaders = default_shaders_count;
+		s32 idx_in_r_shaders = 0;
 
-			current_shader.name_hash = r_shaders[j];
+		while ( idx_in_p_shaders < p_shaders.size() && idx_in_r_shaders < r_shaders.size() ) {
+			defer{ ta.set_mark( ta_mark ); };
+			auto& current_shader = p_shaders[idx_in_p_shaders];
+
+			current_shader.name_hash = r_shaders[idx_in_r_shaders];
 
 			constant result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
+			// In the name_hashses array, first ones are default, so if the idx is 
+			// less than default resources count, it means it's a default one and therefore we should skip.
+			if ( result.idx < defaults.shaders.size() ) {
+				con_log_indented( 2, "Requested default shader, skipping... (hash = %, idx = %)", current_shader.name_hash, result.idx );
+
+				++idx_in_r_shaders;
+				continue;
+			}
+
 			if ( !result.found() ) {
-				con_log_indented( 2, "Error: can't find shader (hash %, i = %).", current_shader.name_hash, i );
+				con_log_indented( 2, "Error: can't find shader (hash %, idx_in_r_shaders = %).", current_shader.name_hash, idx_in_r_shaders );
+
+				++idx_in_r_shaders;
 				continue;
 			}
 
@@ -521,10 +568,17 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 				current_shader.id = build_shader_program( source );
 			} else {
 				con_log_indented( 2, "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
+				++idx_in_r_shaders;
+				continue;
 			}
+
+			++idx_in_p_shaders;
+			++idx_in_r_shaders;
 		}
 
-		con_log_indented( 1, "Prepared % shaders. (Total: %)", r_shaders.size(), p_shaders.size() );
+		con_log_indented( 1, "Requested % shaders, loaded %, active now: %.", r_shaders.size(), idx_in_p_shaders - default_shaders_count, idx_in_p_shaders );
+
+		p_shaders.shrink( idx_in_p_shaders );
 	}
 
 	return true;
