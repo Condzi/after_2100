@@ -161,7 +161,7 @@ struct GL_Resource
     * store collision info (about what collided with what) in global array which will be updated every frame. The collision detection should also happen somewhere at the end of the upated of the entities, so we won't be making weird situations. (*frame start **->** update entities **->** delete old collision info **->** check collisions **->** frame end **->** frame start **->** ...*)
 ----
 * **Planets**
-    * are described by a `.variables` kind of file
+    * are described by a `planets.variables` kind of file
     * we can compose levels/scenes using them like this:
     ```
     # other stuff related to scene...

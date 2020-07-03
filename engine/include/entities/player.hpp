@@ -25,13 +25,16 @@ struct Player final
 		_cold( cold )
 	{
 		_hot.data = this;
+		// Entity_Type should have the same name as class?
+		// This way we could have simple ENTITY_DEF( Player ) macro.
+		_hot.type = Entity_Type::Player; 
 	}
 
 	void initialize()
 	{
-		auto& resources = *Context.prepared_resources;
+		auto& resources  = *Context.prepared_resources;
 		constant texture = resources.get_texture( "player"_hcs );
-		constant shader = resources.get_shader( "sprite_default"_hcs );
+		constant shader  = resources.get_shader( "sprite_default"_hcs );
 
 		auto& render_info = _cold.basic_render_info;
 
@@ -40,6 +43,9 @@ struct Player final
 		render_info.texture = texture;
 		render_info.shader = shader;
 		render_info.elements_count = 6; // 6 elemets in ebo for a quad
+
+		// @Robustness: abstract this stuff away, we should be able to call create_sprite()
+		// or something like that. 
 
 		// Use actual texture dimensions here, gathered from Resource_Loader?
 		auto quad = construct_2d_textured_quad( 140, 108 );
@@ -79,20 +85,20 @@ struct Player final
 
 
 	f32 accumulated_ups = 0;
-	f32 radious = 100.0f;
-	compile_constant radious_delta = 100.0f;
+	f32 radius = 100.0f;
+	compile_constant radius_delta = 100.0f;
 
 	void physic_update( f32 ups )
 	{
-		compile_constant origin_x = 1280/2.0f;
-		compile_constant origin_y = 720/2.0f;
+		constant origin_x = 1280/2.0f;
+		constant origin_y = 720/2.0f;
 
 		accumulated_ups += ups;
 
 		auto& position = _hot.position;
 
-		position.x = origin_x + cosf( accumulated_ups /* * velocity on orbit */ ) * radious;
-		position.y = origin_y + sinf( accumulated_ups ) * radious;
+		position.x = origin_x + cosf( accumulated_ups /* * velocity on orbit */ ) * radius;
+		position.y = origin_y + sinf( accumulated_ups ) * radius;
 	}
 
 	void frame_update( f32 dt )
@@ -102,18 +108,18 @@ struct Player final
 		model_mat = glm::translate( model_mat, v3{ _hot.position.x, _hot.position.y,  0 } );
 
 		if ( Context.input->is_key_held( "enlarge"_hcs ) ) {
-			if ( radious <= 400 ) {
-				radious += radious_delta * dt;
+			if ( radius <= 400 ) {
+				radius += radius_delta * dt;
 			} else {
-				radious = 400;
+				radius = 400;
 			}
 		}
 
 		if ( Context.input->is_key_held( "decrease"_hcs ) ) {
-			if ( radious >= 100 ) {
-				radious -= radious_delta * dt;
+			if ( radius >= 100 ) {
+				radius -= radius_delta * dt;
 			} else {
-				radious = 100;
+				radius = 100;
 			}
 		}
 	}

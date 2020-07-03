@@ -36,13 +36,6 @@ returning entity_type_to_id() -> s16
 	}
 }
 
-namespace priv
-{
-// returning create_enemy( Entity_Manager* entity_manager ) -> Enemy*;
-returning create_player( Entity_Manager* entity_manager ) -> Player*;
-}
-
-
 struct Entity_Manager final
 {
 	compile_constant entities_limit = CON_ENTITIES_LIMIT;
@@ -71,6 +64,9 @@ struct Entity_Manager final
 
 	template <typename T>
 	returning spawn_entity() -> T*;
+
+private:
+	returning create_player() -> Player*;
 };
 
 
@@ -82,10 +78,7 @@ template <typename T>
 returning Entity_Manager::spawn_entity() -> T*
 {
 	if constexpr ( std::is_same_v<T, Player> ) {
-		// @Cleanup: this syntax seems odd. Do we really need to pass
-		// this pointer? I think it'd be better to just have it as private
-		// function.
-		return priv::create_player( this );
+		return create_player();
 	} else {
 		static_assert( false, "Unsupported entity type!" );
 	}
