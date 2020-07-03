@@ -81,4 +81,15 @@ struct Exit_Scope_Help final
 // End of defer's macro stuff.
 //
 
+// Structure returned by every find function.
+struct Find_Result final
+{
+	s32 const idx = -1;
+
+	returning found() const -> bool
+	{
+		return idx >= 0;
+	}
+};
+
 }

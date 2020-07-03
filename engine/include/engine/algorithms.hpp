@@ -5,17 +5,6 @@
 
 namespace con
 {
-// Structure returned by every find function.
-struct Find_Result final
-{
-	s32 const idx = -1;
-
-	returning found() const -> bool
-	{
-		return idx >= 0;
-	}
-};
-
 //
 //	Declarations
 //
@@ -101,7 +90,7 @@ void insertion_sort( Array<TType>& arr, TComparator comparator )
 		s32 i = j - 1;
 		while ( i >= 0 && comparator( arr[i], key ) ) {
 			arr[i + 1] = arr[i];
-			++i;
+			--i;
 		}
 
 		arr[i+1] = key;
