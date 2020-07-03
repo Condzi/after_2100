@@ -9,22 +9,6 @@
 
 namespace con
 {
-file_scope
-{
-void glfw_error_callback( s32 error_code, char const* message_cstr )
-{
-	constant message = cstring_from_cstr( message_cstr );
-
-	Context.engine_flags.glfw_error = true;
-
-	con_log( "~~~~~~~~~~~~~~~~~~~~" );
-	con_log_indented( 2, "\n\nGLFW Error!" );
-	con_log_indented( 1, "Code: %", error_code );
-	con_log_indented( 1, "%", message );
-	con_log( "~~~~~~~~~~~~~~~~~~~~" );
-}
-}
-
 void Window::initialize()
 {
 	//
@@ -55,7 +39,7 @@ void Window::initialize()
 	// Initializing GLFW and setting up the window
 	//
 	con_log_indented( 1, "Initializing GLFW and setting up the window..." );
-	glfwSetErrorCallback( glfw_error_callback );
+	glfwSetErrorCallback( con::priv::on_glfw_error );
 
 	release_con_assert( glfwInit() == GLFW_TRUE );
 
@@ -175,7 +159,6 @@ void Window::initialize()
 			return "PORTABILITY"_cs;
 
 			case GL_DEBUG_TYPE_ERROR:
-			Context.engine_flags.gl_error = true;
 			return "ERROR"_cs;
 
 			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:

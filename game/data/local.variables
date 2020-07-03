@@ -5,7 +5,8 @@
     release_context_version 3.0
 
     vsync true
-    frame_cap 120
+    # doesn't work
+    frame_cap 120 
     fullscreen false
     window_size 1280 720
 

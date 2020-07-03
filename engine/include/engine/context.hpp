@@ -30,12 +30,7 @@ struct Context_Data final
 	Prepared_Resources* prepared_resources = nullptr;
 	Renderer* renderer			   = nullptr;
 
-	struct
-	{
-		bool exit : 1       = false;
-		bool glfw_error : 1 = false;
-		bool gl_error : 1   = false;
-	} engine_flags; // @Idea: rename to `exit_flags` to indicate why we are exiting?
+	bool exit_requested_by_user = false;
 };
 
 struct Context_Helper final

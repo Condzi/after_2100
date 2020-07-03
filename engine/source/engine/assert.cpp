@@ -62,8 +62,6 @@ Thank you!
 			MB_TOPMOST | MB_ICONERROR | MB_OK
 		);
 
-
-		// @Robustness: Call shutdown of Window, Logger and other stuff
 		std::exit( EXIT_FAILURE );
 	}
 
@@ -111,10 +109,6 @@ Error code: %i
 			MB_TOPMOST | MB_ICONERROR | MB_OK
 		);
 
-
-		// @Robustness: Better exit upon failed assert.
-		// Raise flag "emergency_exit" which skips actual shutdown? Because
-		// we may have corrupted stuff and actual shutdown may not be avaible.
 		std::exit( EXIT_FAILURE );
 	}
 }

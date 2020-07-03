@@ -153,17 +153,13 @@ void Application::run()
 
 	flush_logger();
 
-	// @ToDo: Stop also when there is a GL or GLFW error.
-	while ( Context.engine_flags.exit == false ) {
+	while ( Context.exit_requested_by_user == false ) {
 		if ( window.should_close() ) {
-			// @ToDo: Add flags to distinguish what type of exit we have -- is it
-			// because of error, closed window (alt+F4) or because player clicks 'Exit' 
-			// button in main menu?
-			Context.engine_flags.exit = true;
+			Context.exit_requested_by_user = true;
 		}
 
 		if ( input.is_key_pressed( "exit_button"_hcs ) ) {
-			Context.engine_flags.exit = true;
+			Context.exit_requested_by_user = true;
 		}
 
 		input.poll_events();
