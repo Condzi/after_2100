@@ -536,7 +536,8 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		s32 idx_in_p_shaders = default_shaders_count;
 		s32 idx_in_r_shaders = 0;
 
-		while ( idx_in_p_shaders < p_shaders.size() && idx_in_r_shaders < r_shaders.size() ) {
+		while ( idx_in_p_shaders < p_shaders.size() &&
+				idx_in_r_shaders < r_shaders.size() ) {
 			defer{ ta.set_mark( ta_mark ); };
 			auto& current_shader = p_shaders[idx_in_p_shaders];
 

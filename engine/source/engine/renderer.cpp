@@ -6,9 +6,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// @nocheckin: for debug only
-#include <entities/player.hpp>
-
 namespace con
 {
 
@@ -21,7 +18,7 @@ void Renderer::initialize()
 
 	glGenBuffers( 1, &quad_ebo );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, quad_ebo );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(u32), quad_ebo_indecies, GL_STATIC_DRAW );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof( u32 ), quad_ebo_indecies, GL_STATIC_DRAW );
 }
 
 void Renderer::shutdown()
@@ -43,7 +40,7 @@ void Renderer::set_window_size( s16 width, s16 height )
 	constant h = static_cast<f32>( height );
 
 	compile_constant left = 0.0f;
-	compile_constant top = 0.0f;
+	compile_constant top  = 0.0f;
 	compile_constant near = -1.0f;
 	compile_constant far  = 1.0f;
 
