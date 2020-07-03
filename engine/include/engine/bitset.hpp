@@ -34,7 +34,7 @@ public:
 	void clear();
 	returning test( s32 idx ) const -> bool;
 
-	returning find_first_unset_bit( s32 begin = 0 ) const -> s32;
+	returning find_first_unset_bit( s32 begin = 0 ) const -> Find_Result;
 	returning count_set_bits() const -> s32;
 
 private:
@@ -138,7 +138,7 @@ auto Bitset_Base<TBaseType>::test( s32 idx ) const -> bool
 }
 
 template<typename TBaseType>
-returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
+returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> Find_Result
 {
 	constant begin_in_base_types = begin / BASE_TYPE_SIZE_IN_BITS;
 
@@ -151,14 +151,12 @@ returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> s32
 		// @Performance: use intrincics (BitScanForward / backward?)
 		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; bit < ( i+1 )*BASE_TYPE_SIZE_IN_BITS; ++bit ) {
 			if ( test( bit ) == false ) {
-				return bit;
+				return { .idx = bit };
 			}
 		}
 	}
 
-	// @Robustness: maybe return Find_Result which is more straightforward when it comes
-	// to the success of find?
-	return -1;
+	return { .idx = -1 };
 }
 
 template <typename TBaseType>

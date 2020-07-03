@@ -21,7 +21,10 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 	s32 idx = 0;
 
 	for ( ; idx < reserved_size - size; ++idx ) {
-		idx = used_bytes.find_first_unset_bit( idx );
+		constant result = used_bytes.find_first_unset_bit( idx );
+		con_assert( result.found() );
+
+		idx = result.idx;
 		con_assert( idx < reserved_size - size );
 
 		if ( used_bytes.test( idx + size - 1 ) == false ) {
@@ -123,12 +126,15 @@ void Stack_Allocator::shutdown()
 	used_bytes.shutdown();
 }
 
-returning Stack_Allocator::allocate( s32 size ) -> byte* 
+returning Stack_Allocator::allocate( s32 size ) -> byte*
 {
 	s32 idx = 0;
 
 	for ( ; idx < reserved_size - size; ++idx ) {
-		idx = used_bytes.find_first_unset_bit( idx );
+		constant result = used_bytes.find_first_unset_bit( idx );
+		con_assert( result.found() );
+
+		idx = result.idx;
 		con_assert( idx < reserved_size - size );
 
 		if ( used_bytes.test( idx + size - 1 ) == false ) {

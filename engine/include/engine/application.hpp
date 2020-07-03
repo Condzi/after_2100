@@ -21,10 +21,9 @@ class Application final
 {
 public:
 	returning initialize() -> bool;
-	// @Idea: Return codes? Different for exit because failure / crash?
-	// Or maybe just check the Context's flags (flags.exit_flags[error_blah])?
-	void run();
 	void shutdown();
+
+	void run();
 
 private:
 	// Context structure stuff.

@@ -39,7 +39,7 @@ returning con::priv::create_player( Entity_Manager* entity_manager ) -> Player*
 	player = reinterpret_cast<Player*>( Context.default_allocator->allocate( sizeof( Player ) ) );
 
 	// Find first free slot to use.
-	auto idx = em->occupied_hot_cold_slots.find_first_unset_bit();
+	auto idx = em->occupied_hot_cold_slots.find_first_unset_bit().idx;
 	// @ToDo: Assert for now, change to con_log later (to fail with style!)
 	con_assert( idx != -1 );
 
