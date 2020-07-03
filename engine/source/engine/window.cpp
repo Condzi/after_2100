@@ -43,17 +43,6 @@ void Window::initialize()
 
 	release_con_assert( glfwInit() == GLFW_TRUE );
 
-	GLFWmonitor* const monitor = glfwGetPrimaryMonitor();
-	con_assert( monitor != nullptr );
-
-	// @ToDo: here we can get what video mode is best and create window using
-	// that info. For now we just make default window.
-
-	GLFWvidmode const* const monitor_video_mode = glfwGetVideoMode( monitor );
-	con_assert( monitor_video_mode != nullptr );
-
-	// Does char = utf-8? ughhh I hope so
-	con_log_indented( 1, "Creating window on monitor \"%\" (% x %, %Hz).", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate );
 
 	glfwWindowHint( GLFW_CLIENT_API, GLFW_OPENGL_API );
 	glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
@@ -79,10 +68,29 @@ void Window::initialize()
 		glfwWindowHint( GLFW_OPENGL_DEBUG_CONTEXT, GL_FALSE );
 	}
 
-	// pass monitor if you want fullscreen
-	handle = glfwCreateWindow( win_width, win_height, CON_WINDOW_TITLE, /*monitor*/nullptr, nullptr );
-	release_con_assert( handle != nullptr );
-	glfwMakeContextCurrent( handle );
+
+	if ( fullscreen ) {
+		GLFWmonitor* const monitor = glfwGetPrimaryMonitor();
+		con_assert( monitor != nullptr );
+		GLFWvidmode const* const monitor_video_mode = glfwGetVideoMode( monitor );
+		con_assert( monitor_video_mode != nullptr );
+		// Does char = utf-8? ughhh I hope so
+		con_log_indented( 1, "Creating fullscreen window on monitor \"%\" (% x %, %Hz), window size is % x %.", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate, win_width, win_height );
+
+		// @ToDo: irl use monitor_video_mode to find the best resoulution. Maybe use the gatherded
+		// resolution if resoulution in cfg file is really tiny? Like "if width < monitor_width/4 or height < monitor_height < 4" or something like that? 
+		// But this should happen only when settings file isn't generated / on the first launch, I belive
+		// becuase maybe someone wants to play in 800x600 on a 4k monitor?!
+		handle = glfwCreateWindow( win_width, win_height, CON_WINDOW_TITLE, monitor, nullptr );
+		release_con_assert( handle != nullptr );
+		glfwMakeContextCurrent( handle );
+	} else {
+		con_log_indented( 1, "Creating windowed window, size % x %.", win_width, win_height );
+		// pass monitor if you want fullscreen
+		handle = glfwCreateWindow( win_width, win_height, CON_WINDOW_TITLE, nullptr, nullptr );
+		release_con_assert( handle != nullptr );
+		glfwMakeContextCurrent( handle );
+	}
 
 	//
 	// Initializing OpenGL

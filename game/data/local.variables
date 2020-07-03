@@ -7,8 +7,10 @@
     vsync true
     # doesn't work
     frame_cap 120 
-    fullscreen false
-    window_size 1280 720
+    fullscreen true
+    # uncomment when you choose fullscreen
+     window_size 1920 1080
+    # window_size 1280 720
 
 
 :/gameplay
