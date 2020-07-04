@@ -16,7 +16,7 @@ file_scope
 static char assert_message_buffer[CON_ASSERT_MESSAGE_BUFFER_SIZE] = { 0 };
 }
 
-bool on_assert_fail( char const* const file, char const* const line, char const* const condition )
+bool on_assert_fail( char const* const file, char const* const line, char const* const function_name, char const* const condition )
 {
 	// Cutting off the whole "D:/dev/after2100/" (or other, that may be different
 	// on different enviroments) part by using __FILE__ and subtracting
@@ -29,10 +29,10 @@ bool on_assert_fail( char const* const file, char const* const line, char const*
 === === === === === === === === === ===
 			Assertion failed!
 
-	"%s":%s
+	"%s":%s, %s
 	"%s"
 === === === === === === === === === === 
-)", file + skip_file_chars, line, condition );
+)", file + skip_file_chars, line, function_name, condition );
 
 		release_con_assert( chars_written < CON_ASSERT_MESSAGE_BUFFER_SIZE );
 		release_con_assert( chars_written > 0 );
@@ -47,9 +47,9 @@ Please, take a screenshot of this dialog box and send it to the devs. Also, plea
 Thank you!
 
 ===== Debug info =====
-"%s":%s
+"%s":%s, %s
 "%s"
-)", CON_LOGS_FOLDER, file + skip_file_chars, line, condition );
+)", CON_LOGS_FOLDER, file + skip_file_chars, function_name, line, condition );
 
 		// Bad idea?
 		release_con_assert( chars_written < CON_ASSERT_MESSAGE_BUFFER_SIZE );
