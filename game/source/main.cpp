@@ -4,6 +4,14 @@
 #include <engine/application.hpp>
 
 //
+// Give windows a hint that we want to use dedicated GPU. 
+// Using dedicated GPU also gives us more OpenGL messages.
+//
+// @ToDo: move it to somewhere else. 
+extern "C" __declspec( dllexport ) con::u32 NvOptimusEnablement = 1;
+extern "C" __declspec( dllexport ) con::u32 AmdPowerXpressRequestHighPerformance = 1;
+
+//
 //	Use this project only as a entry point. We want all of our code to be in the engine, actually.
 //
 // @ToDo: Use WinMain in release mode.
@@ -14,7 +22,6 @@ int main()
 	// std::printf( "AppData path = %s", std::getenv( "appdata" ) );
 
 	con::Application app;
-
 	// @ToDo: Better error message (dedicated error box instead of assert?)
 	if ( app.initialize() ) {
 		app.run();
