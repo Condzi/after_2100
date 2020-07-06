@@ -654,7 +654,7 @@ void Resource_Loader::check_scene_folder_content()
 returning Resource_Loader::init_texture( byte const* data, s16 width, s16 height ) -> gl_id
 {
 	// @Performance: maybe we could call `glGenTextures` with an array of textures? 
-// I have to test it when we make this one work.
+	// I have to test it when we make this one work.
 	gl_id texture_id = 0;
 	glGenTextures( 1, &texture_id );
 	glBindTexture( GL_TEXTURE_2D, texture_id );
@@ -666,7 +666,7 @@ returning Resource_Loader::init_texture( byte const* data, s16 width, s16 height
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-	constant texture_width = static_cast<s32>( width );
+	constant texture_width  = static_cast<s32>( width );
 	constant texture_height = static_cast<s32>( height );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data );

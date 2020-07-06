@@ -77,6 +77,30 @@ TEST_CASE( "bitset", "engine" )
 
 		// 1. end, 2. begin
 		bitset.reset_range( 10, 16 );
+
+		REQUIRE( bitset.count_set_bits() == 14 );
+		REQUIRE( bitset.find_first_unset_bit().idx == 0 );
+		REQUIRE( bitset.find_first_unset_bit( 5 ).idx == 10 );
+		REQUIRE( bitset.find_first_unset_bit( 26 ).idx == 31 );
+
+		// 2. end, 3. begin
+		bitset.set_range( 4, 3 );
+
+		REQUIRE( bitset.count_set_bits() == 14 );
+		REQUIRE( bitset.find_first_unset_bit().idx == 0 );
+		REQUIRE( bitset.find_first_unset_bit( 5 ).idx == 10 );
+		REQUIRE( bitset.find_first_unset_bit( 26 ).idx == 31 );
+
+		// 3. end, 4. begin
+		bitset.reset_range( 1, 9 );
+		bitset.reset_range( 26, 5 );
+
+		REQUIRE( bitset.count_set_bits() == 0 );
+		REQUIRE( bitset.find_first_unset_bit().idx == 0 );
+		REQUIRE( bitset.find_first_unset_bit( 5 ).idx == 5 );
+		REQUIRE( bitset.find_first_unset_bit( 26 ).idx == 26 );
+
+		// 4. end
 	}
 
 	bitset.shutdown();
