@@ -18,6 +18,7 @@
 * use WinMain for release mode
     * and for debug too, but we don't have dev console yet.
 * **ADD** `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
+* fix glfw linker warnings 
 
 # **For later**
 * don't forget to **add licenses**!

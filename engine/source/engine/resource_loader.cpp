@@ -509,7 +509,9 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 		con_log_indented( 1, "Requested % textures, loaded %, active now: %.", r_textures.size(), idx_in_p_textures - default_textures_count, idx_in_p_textures );
 
-		p_textures.shrink( idx_in_p_textures );
+		if ( idx_in_p_textures < p_textures.size() ) {
+			p_textures.shrink( idx_in_p_textures );
+		}
 	}
 
 
@@ -587,7 +589,9 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 		con_log_indented( 1, "Requested % shaders, loaded %, active now: %.", r_shaders.size(), idx_in_p_shaders - default_shaders_count, idx_in_p_shaders );
 
-		p_shaders.shrink( idx_in_p_shaders );
+		if ( idx_in_p_shaders < p_shaders.size() ) {
+			p_shaders.shrink( idx_in_p_shaders );
+		}
 	}
 
 	return true;

@@ -41,6 +41,8 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 				used_bytes.set_range( idx, size );
 				return begin + idx;
 			}
+		} else {
+			idx = idx + size;
 		}
 	}
 

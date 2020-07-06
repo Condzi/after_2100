@@ -1,6 +1,6 @@
 # sandbox.scene_resources
-# :/textures
-# player 
-# 
+:/textures
+    planet_earth 
+
 # :/shaders
 # sprite_default
