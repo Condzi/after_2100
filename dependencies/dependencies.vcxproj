@@ -498,10 +498,6 @@
     <None Include="include\glm\gtx\vector_query.inl" />
     <None Include="include\glm\gtx\wrap.inl" />
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="lib\glfw3_debug.lib" />
-    <Library Include="lib\glfw3_release.lib" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
