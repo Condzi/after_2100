@@ -1,5 +1,4 @@
-#include <catch\catch.hpp>
-
+#include <testing_utilities.hpp>
 #include <engine/config_file.hpp>
 
 TEST_CASE( "config_file", "engine" )
@@ -7,12 +6,7 @@ TEST_CASE( "config_file", "engine" )
 	printf( "\n\nConfig file test, file: \"%s\".\n\n", CON_CONFIG_FILE );
 	using namespace con;
 
-	Default_Allocator da;
-	Temporary_Allocator ta;
-	Context.default_allocator = &da;
-	Context.temporary_allocator = &ta;
-	da.initialize();
-	ta.initialize();
+	Scoped_Test_Initializer sti{};
 
 	{
 		Config_File cfg;
@@ -31,7 +25,4 @@ TEST_CASE( "config_file", "engine" )
 
 		cfg.free();
 	}
-
-	da.shutdown();
-	Context.default_allocator = Context.temporary_allocator = nullptr;
 }

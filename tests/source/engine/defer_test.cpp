@@ -1,4 +1,4 @@
-#include <catch/catch.hpp>
+#include <testing_utilities.hpp>
 
 #include <engine/typedefs.hpp>
 

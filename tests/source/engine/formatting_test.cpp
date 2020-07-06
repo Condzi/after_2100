@@ -1,4 +1,4 @@
-#include <catch/catch.hpp>
+#include <testing_utilities.hpp>
 #include <engine/formatting.hpp>
 
 #include <sstream>
@@ -11,12 +11,7 @@ TEST_CASE( "sprint", "engine" )
 
 	SECTION( "f32" )
 	{
-		Temporary_Allocator ta;
-		Default_Allocator da;
-		Context.default_allocator = &da;
-		Context.temporary_allocator = &ta;
-		da.initialize();
-		ta.initialize();
+		Scoped_Test_Initializer sti{};
 
 		f32 const value_0     = 0.0f;
 		f32 const value_plus  = 123.321f;
@@ -47,22 +42,11 @@ TEST_CASE( "sprint", "engine" )
 		REQUIRE( value_minus_str.data[5] == '7' );
 		REQUIRE( value_minus_str.data[6] == '6' );
 		REQUIRE( value_minus_str.data[7] == '5' );
-
-
-		Context.default_allocator = nullptr;
-		Context.temporary_allocator = nullptr;
-		da.shutdown();
 	}
 
 	SECTION( "s32" )
 	{
-		Temporary_Allocator ta;
-		Default_Allocator da;
-		Context.default_allocator = &da;
-		Context.temporary_allocator = &ta;
-		da.initialize();
-		ta.initialize();
-
+		Scoped_Test_Initializer sti{};
 
 		s32 const value_0     = 0;
 		s32 const value_plus  = 123456789;
@@ -98,21 +82,11 @@ TEST_CASE( "sprint", "engine" )
 		REQUIRE( value_minus_str.data[7] == '3' );
 		REQUIRE( value_minus_str.data[8] == '2' );
 		REQUIRE( value_minus_str.data[9] == '1' );
-
-
-		Context.default_allocator = nullptr;
-		Context.temporary_allocator = nullptr;
-		da.shutdown();
 	}
 
 	SECTION( "sprint" )
 	{
-		Temporary_Allocator ta;
-		Default_Allocator da;
-		Context.default_allocator = &da;
-		Context.temporary_allocator = &ta;
-		da.initialize();
-		ta.initialize();
+		Scoped_Test_Initializer sti{};
 
 		constant str = sprint( "[START OF SPRINT TEST]\n\tvalue_s32 = %\n\tvalue_f32 = %\n\tvalue_str = %.\n"_cs, 1337, 21.37, "Oh, hi Mark!"_cs );
 
@@ -120,11 +94,7 @@ TEST_CASE( "sprint", "engine" )
 			putchar( str.data[i] );
 		}
 
-		printf( "\tMemory used: %i / %i bytes.\n[END OF SPRINT TEST]\n\n", ta.get_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
-
-		Context.default_allocator = nullptr;
-		Context.temporary_allocator = nullptr;
-		da.shutdown();
+		printf( "\tMemory used: %i / %i bytes.\n[END OF SPRINT TEST]\n\n", reinterpret_cast<Temporary_Allocator&>( Context.temporary_allocator ).get_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 	}
 }
 
@@ -148,12 +118,7 @@ TEST_CASE( "sscan", "engine" )
 {
 	using namespace con;
 
-	Temporary_Allocator ta;
-	Default_Allocator da;
-	Context.default_allocator = &da;
-	Context.temporary_allocator = &ta;
-	da.initialize();
-	ta.initialize();
+	Scoped_Test_Initializer sti{};
 
 	{
 		s32 const s32_value = 4202;
@@ -193,6 +158,4 @@ TEST_CASE( "sscan", "engine" )
 		REQUIRE( s32_value_1 == s32_1 );
 		REQUIRE( s32_value_2 == s32_2 );
 	}
-
-	da.shutdown();
 }

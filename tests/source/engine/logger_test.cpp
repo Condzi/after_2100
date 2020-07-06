@@ -1,4 +1,4 @@
-#include <catch/catch.hpp>
+#include <testing_utilities.hpp>
 
 #include <engine/logger.hpp>
 #include <engine/allocator.hpp>
@@ -7,12 +7,7 @@ TEST_CASE( "logger", "engine" )
 {
 	using namespace con;
 
-	Default_Allocator da;
-	Temporary_Allocator ta;
-	Context.default_allocator = &da;
-	Context.temporary_allocator = &ta;
-	da.initialize();
-	ta.initialize();
+	Scoped_Test_Initializer sti{};
 
 	Logger l;
 	l.initialize();
@@ -27,14 +22,9 @@ TEST_CASE( "logger", "engine" )
 
 	constant buffer = Context.logger->get_buffer();
 
-	// Hack: we know that buffer.data[buffer.size] is a valid memory so we put \0 there.
-	// This way we don't have to call putchar in a loop.
-	const_cast<char*>(buffer.data)[buffer.size] = '\0';
 	puts( buffer.data );
 
-	printf( "Memory used in temporary buffer by logger test: %i/%i.\n\n", ta.get_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
+	printf( "Memory used in temporary buffer by logger test: %i/%i.\n\n", reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator ).get_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
 
-	da.shutdown();
-	
-	Context.default_allocator = Context.temporary_allocator = nullptr;
+	l.shutdown();
 }

@@ -104,12 +104,19 @@
     <ClCompile Include="source\engine\defer_test.cpp" />
     <ClCompile Include="source\engine\time_test.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\testing_utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\engine\formatting_test.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\testing_utilities.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
