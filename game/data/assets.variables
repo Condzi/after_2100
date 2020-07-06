@@ -2,7 +2,7 @@
 :/textures
     player player.png 140 108
 
-    planet_earth planet_earth 480 480
+    planet_earth planet_earth.png 480 480
 
 # We're not using fonts right now.
 :/fonts

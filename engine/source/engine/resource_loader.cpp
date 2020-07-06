@@ -20,6 +20,9 @@ static void* con_realloc( void* ptr, int old_size, int new_size )
 {
 	con::byte* new_ptr_ = Context.temporary_allocator->allocate( new_size );
 	memcpy( new_ptr_, ptr, old_size );
+
+	con_log( "stbi image realloc, % => %, ta mark: %", old_size, new_size, reinterpret_cast<con::Temporary_Allocator&>( *Context.temporary_allocator ).get_mark() );
+
 	return new_ptr_;
 }
 
