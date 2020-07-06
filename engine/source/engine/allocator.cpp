@@ -8,11 +8,6 @@ void Default_Allocator::initialize()
 {
 	begin = Context.c_allocator->allocate( reserved_size );
 	used_bytes.initialize( reserved_size, Context.c_allocator );
-
-	// @nocheckin
-	memset( begin, 0xAA, reserved_size );
-	*begin = 0xDEADBEEF;
-	*( begin + reserved_size - 1 ) = 0xDEADBEEF;
 }
 
 void Default_Allocator::shutdown()
@@ -71,9 +66,6 @@ void Temporary_Allocator::initialize( s32 reserved )
 	memory = Context.default_allocator->allocate( reserved );
 	size = reserved;
 	mark = highest_mark = 0;
-
-	// @nocheckin
-	memset( memory, 2, size );
 }
 
 void Temporary_Allocator::free( byte* location, s32 size_ )
