@@ -167,15 +167,16 @@ struct GL_Resource
     # other stuff related to scene...
     :/Planets
     # meta-info of planet where player appears
-    Starting_Planet Planet_A
-    Planet_A pos_x pos_y
+    starting_planet planet_a
+    planet_a pos_x pos_y
     ```
-    * we have to define its mass to use the velocity formula (v = sqrt(GM/R))
-    * probably its texture?
+    * we're not using any real math for orbital velocity
+    * we have to specify it's texture, maybe animation or other effects
     ```
-    :/Planet_A
-    mass 100
+    :/planet_a
     texture planet_a
+    # debatable
+    particles particle_a 100
     ```
 ----
 **Bother with this later:**

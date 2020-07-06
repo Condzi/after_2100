@@ -22,8 +22,10 @@ public:
 	// @ToDo: rename to shutdown. Add initialize() ? _from_file, _from_source?
 	void free();
 
-	returning get_value( Hashed_CString section, Hashed_CString name ) -> CString;
-	returning get_section( Hashed_CString section ) -> Array<Hash_Value_Pair>;
+	returning get_value( Hashed_CString section, Hashed_CString name ) const -> CString;
+	// Arrays are allocated using temporary allocator.
+	returning get_section( Hashed_CString section ) const -> Array<Hash_Value_Pair>;
+	returning get_all_section_hashes() const -> Array<u32>;
 
 private:
 	struct Config_Value_Info final

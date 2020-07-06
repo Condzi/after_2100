@@ -448,7 +448,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 
 	if ( r_textures.size() <= 0 ) {
-		con_log_indented( 1, "No textures specified to load, onl default are now present." );
+		con_log_indented( 1, "No textures specified to load, only default are now present." );
 	} else {
 
 		constant mark = ta.get_mark();

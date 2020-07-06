@@ -173,7 +173,7 @@ void Config_File::free()
 	config_values.shutdown();
 }
 
-returning Config_File::get_value( Hashed_CString section, Hashed_CString name ) -> CString
+returning Config_File::get_value( Hashed_CString section, Hashed_CString name ) const -> CString
 {
 	for ( s32 i = 0; i < config_values.size(); ++i ) {
 		auto& info = config_values[i];
@@ -186,7 +186,7 @@ returning Config_File::get_value( Hashed_CString section, Hashed_CString name ) 
 	return {};
 }
 
-returning Config_File::get_section( Hashed_CString section ) -> Array<Hash_Value_Pair>
+returning Config_File::get_section( Hashed_CString section ) const -> Array<Hash_Value_Pair>
 {
 	// We're allocating on TS, but only once -- when we initialize the to_return
 	// array. Because of that, it's legal to call set_mark to free the storage memory.
@@ -213,7 +213,41 @@ returning Config_File::get_section( Hashed_CString section ) -> Array<Hash_Value
 
 	// We didin't find any matching entry, so we return the requested memory back to
 	// the TA.
-	if ( current_entry < 0 ) {
+	if ( current_entry <= 0 ) {
+		ta.set_mark( ta.get_mark() - to_return.size() );
+		return {};
+	}
+
+	// Shrink the array and "return" the unused memory by moving the mark.
+	to_return.shrink( current_entry );
+	ta.set_mark( ta.get_mark() - ( config_values.size() - current_entry ) );
+
+	return to_return;
+}
+returning Config_File::get_all_section_hashes() const -> Array<u32>
+{
+	// We can have at most config_values.size sections (1 section/1 value )
+	Array<u32> to_return;
+	to_return.initialize( config_values.size(), Context.temporary_allocator );
+
+	// At the end is equal to final size of to_return array.
+	s32 current_entry = 0;
+	// @Robustness: it's unlikely to even happen but we don't check for duplicates!
+	u32 current_hash_value = 0;
+	for ( s32 i = 0; i < config_values.size(); ++i ) {
+		constant& hash = config_values[i].section_hash;
+
+		if ( current_hash_value != hash ) {
+			current_hash_value = hash;
+			to_return[current_entry] = hash;
+			++current_entry;
+		}
+	}
+
+	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
+
+	// No entries or what? Why would there even be no entries?
+	if ( current_entry <= 0 ) {
 		ta.set_mark( ta.get_mark() - to_return.size() );
 		return {};
 	}
