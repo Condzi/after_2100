@@ -73,7 +73,7 @@ void Bitset_Base<TBaseType>::shutdown()
 	if ( data == nullptr ) {
 		return;
 	}
-	
+
 	allocator->free( reinterpret_cast<byte*>( data ), BASE_TYPE_SIZE_IN_BYTES * size_in_base_types );
 	data = nullptr;
 	size_in_bits = -1;
@@ -140,19 +140,11 @@ auto Bitset_Base<TBaseType>::test( s32 idx ) const -> bool
 template<typename TBaseType>
 returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> Find_Result
 {
-	constant begin_in_base_types = begin / BASE_TYPE_SIZE_IN_BITS;
-
-	for ( s32 i = begin_in_base_types; i < size_in_base_types; ++i ) {
-		// If all bits are set, continue.
-		if ( data[i] == std::numeric_limits<TBaseType>::max() ) {
-			continue;
-		}
+	for ( s32 i = begin; i < size_in_bits; ++i ) {
 
 		// @Performance: use intrincics (BitScanForward / backward?)
-		for ( s32 bit = i*BASE_TYPE_SIZE_IN_BITS; bit < ( i+1 )*BASE_TYPE_SIZE_IN_BITS; ++bit ) {
-			if ( test( bit ) == false ) {
-				return { .idx = bit };
-			}
+		if ( test( i ) == false ) {
+			return { .idx = i };
 		}
 	}
 
