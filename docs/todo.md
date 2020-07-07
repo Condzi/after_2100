@@ -4,7 +4,7 @@
         * lookup SFML (and other) implementation
 * add developer console (text printing and scrolling only for now)
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
-* figure out ttf fonts
+* Bitset could have u32 as base type, this would greatly simplify it's code and MSVC intrinsics usage.
 
 # **Quality of life**
 * add support for const char* const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`
@@ -18,7 +18,6 @@
 * use WinMain for release mode
     * and for debug too, but we don't have dev console yet.
 * **ADD** `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
-* fix glfw linker warnings 
 
 # **For later**
 * don't forget to **add licenses**!

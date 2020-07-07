@@ -9,7 +9,9 @@
 
 namespace con
 {
+// @ToDo: make them internal / file_scope?
 returning count_set_bits( u16 value ) -> s32;
+returning find_first_unset_bit( u16 value ) -> Find_Result;
 
 // @Idea: don't use template at all, just `byte`? Or maybe u16?
 // @Important: Use unsigned types as TBaseType!!!
@@ -140,11 +142,37 @@ auto Bitset_Base<TBaseType>::test( s32 idx ) const -> bool
 template<typename TBaseType>
 returning Bitset_Base<TBaseType>::find_first_unset_bit( s32 begin ) const -> Find_Result
 {
-	for ( s32 i = begin; i < size_in_bits; ++i ) {
+	// @Robustness: just change it to u16 and everything will be simpler. For real,
+	// we have no real reason to keep u8/u16 as default now.
+	static_assert( std::is_same_v<u16, TBaseType>, "find_first_unset_bit is working only for u16" );
 
-		// @Performance: use intrincics (BitScanForward / backward?)
-		if ( test( i ) == false ) {
-			return { .idx = i };
+	// We loop until we get to k * BASE_TYPE_SIZE_IN_BITS, then we can safelly
+	// use the find_first_unset_bit function.
+
+	s32 bit = begin;
+	for ( ; bit % BASE_TYPE_SIZE_IN_BITS != 0 && bit < size_in_bits; ++bit ) {
+		if ( test( bit ) == false ) {
+			return { .idx = bit };
+		}
+	}
+
+	if ( bit > size_in_bits-1 ) {
+		return { .idx = -1 };
+	}
+
+	s32 u16_idx = bit / BASE_TYPE_SIZE_IN_BITS;
+	for ( ; u16_idx < size_in_base_types; ++u16_idx ) {
+		constant result = con::find_first_unset_bit( data[u16_idx] );
+
+		if ( result.found() ) {
+			// We may have exceed declared size in bits (but we never do that with size_in_base_types)
+			// so we have to check for that.
+			constant bit_to_return = u16_idx * BASE_TYPE_SIZE_IN_BITS + result.idx;
+			if ( bit_to_return >= size_in_bits ) {
+				return { .idx = -1 };
+			} else {
+				return { .idx = bit_to_return };
+			}
 		}
 	}
 

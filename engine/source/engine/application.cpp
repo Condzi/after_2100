@@ -130,7 +130,6 @@ returning Application::initialize() -> bool
 	con_log( "Player spawned." );
 	flush_logger();
 
-
 	con_log( "Initialization completed." );
 
 	flush_logger();
