@@ -7,9 +7,31 @@
 
 namespace con
 {
-// We allow only one class deep inheritance.
-// Holds references to the elements of array in Entity_Manager.
-struct Entity
+struct Entity_Type final
+{
+	enum _ : s16
+	{
+		Player,
+		Planet_Earth
+	};
+};
+
+// Are we actually using it?
+/*
+template <typename T>
+returning entity_type_to_id() -> s16
+{
+	if constexpr ( std::is_same_v<Player, T> ) {
+		return Entity_Type::Player;
+	} else {
+		static_assert( false, R"(Invalid entity type! Have you forget about adding it to the "entity_type_to_id"?)" );
+	}
+}
+*/
+
+// Acts just like a container for entity related types
+// and values.
+struct Entity final
 {
 	compile_constant INVALID_ID    = std::numeric_limits<s16>::min();
 	compile_constant INVALID_TYPE  = std::numeric_limits<s16>::min();
@@ -25,15 +47,30 @@ struct Entity
 		s16 type  = INVALID_TYPE; // Player, Enemy, Background, Planet, Explosion etc...
 		s16 group = INVALID_GROUP;
 		Bitset flags;
-	} &hot;
+	};
 
 	struct Cold final
 	{
-		// @Incomplete: Add actual data here.
 		// Collision_Info collision_info; // hitbox etc
+		// @ToDo: just rename to render_info.
 		Render_Info basic_render_info;
-	} &cold;
+	};
 
-	virtual ~Entity() = default;
+	Entity() = delete;
 };
+}
+
+#define ENTITY_DEF( name__ ) \
+con::Entity::Hot&  _hot;									\
+con::Entity::Cold& _cold;									\
+															\
+name__( con::Entity::Hot& hot, con::Entity::Cold& cold ) :	\
+	_hot( hot ),											\
+	_cold( cold )											\
+{															\
+	_hot  = con::Entity::Hot{};								\
+	_cold = con::Entity::Cold{};							\
+															\
+	_hot.data = this;										\
+	_hot.type = con::Entity_Type::name__;					\
 }

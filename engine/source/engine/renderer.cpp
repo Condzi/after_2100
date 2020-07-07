@@ -193,4 +193,41 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 
 	return vertices;
 }
+
+returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
+{
+	Render_Info render_info;
+
+	render_info.elements_count = 6; // 6 elemets in ebo for a quad
+
+	auto quad = construct_2d_textured_quad( width, height );
+
+	glGenVertexArrays( 1, &render_info.vao );
+	glGenBuffers( 1, &render_info.vbo );
+
+	glBindVertexArray( render_info.vao );
+
+	glBindBuffer( GL_ARRAY_BUFFER, render_info.vbo );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( Textured_Vertex2D ) * 4, quad.data(), GL_STATIC_DRAW );
+
+	// position 
+	glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)0 );
+	glEnableVertexAttribArray( 0 );
+	// texture coord
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)( 2* sizeof( f32 ) ) );
+	glEnableVertexAttribArray( 1 );
+
+	// Initialize element buffer and use only one for every sprite.
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, Context.renderer->get_quad_ebo() );
+
+	glBindVertexArray( 0 );
+
+	return render_info;
+}
+
+void shutdown_textured_sprite( Render_Info const& render_info )
+{
+	glDeleteVertexArrays( 1, &render_info.vao );
+	glDeleteBuffers( 1, &render_info.vbo );
+}
 }

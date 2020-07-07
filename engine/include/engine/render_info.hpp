@@ -21,6 +21,11 @@ struct Render_Info final
 	s16 drawing_group = 0;
 
 	// Pass to glDrawElements
+	// @ToDo: Better rendering support.
+	// We may want to draw vertices, not elements (see: instanciated rendering, particles rendering
+	// or just text rendering). Therefore we may want to use an union to hold also `s16 vertices_count` and an `bool render_elements` (or maybe enum?). If true, render as
+	// sprites -- using glDrawElements, if false - draw "traditional" way, glDrawArrays or
+	// however was that thing called.
 	s8 elements_count = -1;
 
 	bool visible = true;

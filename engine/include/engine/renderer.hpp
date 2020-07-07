@@ -78,4 +78,10 @@ struct Texture_Rect final
 // Generates points for rectangle with middle in (0,0) and specified
 // size (in pixels, not the OpenGL coord space)
 returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_Vertex2D>;
+
+// Creates a render info set up for sprite rendering. You still have to set the correct texture
+// and shader.
+returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info;
+// Just deletes vertex array and vertex buffer.
+void shutdown_textured_sprite( Render_Info const& render_info );
 }

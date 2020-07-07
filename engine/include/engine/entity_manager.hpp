@@ -15,27 +15,6 @@ namespace con
 struct Enemy;
 struct Player;
 
-struct Entity_Type
-{
-	enum _ : s16
-	{
-		Enemy,
-		Player
-	};
-};
-
-template <typename T>
-returning entity_type_to_id() -> s16
-{
-	if        constexpr ( std::is_same_v<Enemy, T> ) {
-		return Entity_Type::Enemy;
-	} else if constexpr ( std::is_same_v<Player, T> ) {
-		return Entity_Type::Player;
-	} else {
-		static_assert( false, R"(Invalid entity type! Have you forget about adding it to the "entity_type_to_id"?)" );
-	}
-}
-
 struct Entity_Manager final
 {
 	compile_constant entities_limit = CON_ENTITIES_LIMIT;
