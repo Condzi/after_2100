@@ -451,7 +451,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	// create an OpenGL texture out of it.
 	//
 
-	p_textures.initialize( default_textures_count + r_textures.size() );
+	p_textures.initialize( default_textures_count + ( r_textures.size() < 0 ? 0 : r_textures.size() ) );
 	memcpy( p_textures.data(), defaults.textures.data(), default_textures_count * sizeof( Texture ) );
 
 
@@ -469,7 +469,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 				idx_in_r_textures < r_textures.size() ) {
 			defer{ ta.set_mark( mark ); };
 
-			auto current_texture = p_textures[idx_in_p_textures];
+			auto& current_texture = p_textures[idx_in_p_textures];
 			current_texture.name_hash = r_textures[idx_in_r_textures];
 
 			constant result = linear_find( name_hashes.textures, current_texture.name_hash );
@@ -542,7 +542,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	//	Copy the default shaders data and, if specified, load new ones.
 	//
 
-	p_shaders.initialize( default_shaders_count + r_shaders.size() );
+	p_shaders.initialize( default_shaders_count + ( r_shaders.size() < 0 ? 0 : r_shaders.size() ) );
 	memcpy( p_shaders.data(), defaults.shaders.data(), default_shaders_count * sizeof( Shader ) );
 
 	if ( r_shaders.size() <= 0 ) {

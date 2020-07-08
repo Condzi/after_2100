@@ -57,8 +57,18 @@ returning Config_File::parse_from_file( CString path ) -> bool
 		CString const name{ file_content.data() + name_idx_begin, name_idx_end - name_idx_begin };
 		constant name_hash = hash_cstring( name );
 		constant value_idx = ate_whitespace( file_content, name_idx_end );
+		// No value assigned.
 		if ( value_idx >= endline_idx ) {
-			con_log_indented( 1, R"(Warning: in file "%" field "%" has no value assigned!)", path, name );
+			// We don't need this warning since .scene_resources format allows, even requires, that.
+			// It's still forbidden in local.variables file, tho.
+			// con_log_indented( 1, R"(Warning: in file "%" field "%" has no value assigned!)", path, name );
+
+			config_values[current_config_value] ={
+				.section_hash = current_section_hash,
+				.name_hash = name_hash,
+				.value = {}
+			};
+
 			idx = endline_idx;
 			++current_config_value; // We're wasting space here but no value is a bug either way so it's not bad. 
 			continue;
@@ -219,8 +229,10 @@ returning Config_File::get_section( Hashed_CString section ) const -> Array<Hash
 	}
 
 	// Shrink the array and "return" the unused memory by moving the mark.
-	to_return.shrink( current_entry );
-	ta.set_mark( ta.get_mark() - ( config_values.size() - current_entry ) );
+	if ( to_return.size() > current_entry ) {
+		to_return.shrink( current_entry );
+		ta.set_mark( ta.get_mark() - ( config_values.size() - current_entry ) );
+	}
 
 	return to_return;
 }

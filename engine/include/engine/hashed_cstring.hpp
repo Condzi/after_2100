@@ -8,6 +8,10 @@ struct Hashed_CString final
 {
 	u32 hash = 0;
 
+	constexpr Hashed_CString( u32 hash_ ) :
+		hash( hash_ )
+	{}
+
 	constexpr Hashed_CString( CString str_to_hash ) :
 		hash( hash_cstring( str_to_hash ) )
 	{}
