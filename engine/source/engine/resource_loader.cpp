@@ -266,14 +266,18 @@ void Resource_Loader::initialize()
 	defaults.fonts.shutdown();
 	defaults.shaders.shutdown();
 
-	Array<u32> textures_hash, fonts_hash, shaders_hash;
+	constant[parsing_success, parsing_data] = parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE );
 
-	if ( !parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE, textures_hash, fonts_hash, shaders_hash ) ) {
+	if ( parsing_success ) {
+		con_log_indented( 1, "Parsing succeed." );
+	} else {
 		con_log_indented( 1, "Error: parsing failed!" );
 		return;
-	} else {
-		con_log_indented( 1, "Parsing succeed." );
 	}
+
+	constant& textures_hash = parsing_data.textures;
+	constant& fonts_hash    = parsing_data.fonts;
+	constant& shaders_hash  = parsing_data.shaders;
 
 	//
 	// Loading resources data and creating OpenGL stuff for them.
@@ -419,11 +423,18 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	//
 	constant scene_file_path = sprint( "%%%", CString{ CON_SCENES_FOLDER }, scene_name, CString{ CON_SCENE_RESOURCES_FILE_EXTENSION } );
 
-	Array<u32> r_textures, r_fonts, r_shaders; // r_ = requested
+	constant[parsing_success, parsing_data] = parse_scene_resources_file( scene_file_path );
 
-	if ( !parse_scene_resources_file( scene_file_path, r_textures, r_fonts, r_shaders ) ) {
+	if ( parsing_success ) {
+		con_log_indented( 1, "Parsing succeed." );
+	} else {
+		con_log_indented( 1, "Error: parsing failed!" );
 		return false;
 	}
+
+	constant& r_textures = parsing_data.textures;
+	constant& r_fonts    = parsing_data.fonts;
+	constant& r_shaders  = parsing_data.shaders;
 
 	auto& p_textures = Context.prepared_resources->textures; // p_ = prepared
 	constant default_textures_count = defaults.textures.size();
@@ -472,19 +483,10 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			auto& current_texture = p_textures[idx_in_p_textures];
 			current_texture.name_hash = r_textures[idx_in_r_textures];
 
-			constant result = linear_find( name_hashes.textures, current_texture.name_hash );
+			// Check if we have this name hash in our table.
+			constant is_present_search_result = linear_find( name_hashes.textures, current_texture.name_hash );
 
-			// In the name_hashses array, first ones are default, so if the idx is 
-			// less than default resources count, it means it's a default one and therefore we should skip.
-			if ( result.idx < defaults.textures.size() ) {
-				con_log_indented( 2, "Requested default texture, skipping... (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
-
-				++idx_in_r_textures;
-				continue;
-			}
-
-			byte* data = nullptr;
-			if ( !result.found() ) {
+			if ( !is_present_search_result.found() ) {
 				// @ToDo: if we request a texture that isn't loaded we should just return the fallback texture tbh.
 				/*
 				data = generate_sized_fallback_texture( CON_FALLBACK_TEXTURE_SIZE *		CON_FALLBACK_TEXTURE_SIZE );
@@ -498,7 +500,21 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 				continue;
 			}
 
-			constant idx = result.idx;
+			// Check if this name hash is present in the table of default resources.
+			constant is_default_search_result = linear_find_if( defaults.textures, [&]( Texture const& texture ) {
+				return texture.name_hash == current_texture.name_hash;
+			} );
+
+			if ( is_default_search_result.found() ) {
+				con_log_indented( 2, "Requested default texture, skipping... (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
+
+				++idx_in_r_textures;
+				continue;
+			}
+
+			byte* data = nullptr;
+
+			constant idx = is_present_search_result.idx;
 			constant& path = paths.textures[idx];
 			constant width = texture_data[idx].width;
 			constant height = texture_data[idx].height;
@@ -561,26 +577,28 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 			current_shader.name_hash = r_shaders[idx_in_r_shaders];
 
-			constant result = linear_find( name_hashes.shaders, current_shader.name_hash );
+			constant is_present_search_result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
-			// In the name_hashses array, first ones are default, so if the idx is 
-			// less than default resources count, it means it's a default one and therefore we should skip.
-			if ( result.idx < defaults.shaders.size() ) {
-				con_log_indented( 2, "Requested default shader, skipping... (hash = %, idx = %)", current_shader.name_hash, result.idx );
-
-				++idx_in_r_shaders;
-				continue;
-			}
-
-			if ( !result.found() ) {
+			if ( !is_present_search_result.found() ) {
 				con_log_indented( 2, "Error: can't find shader (hash %, idx_in_r_shaders = %).", current_shader.name_hash, idx_in_r_shaders );
 
 				++idx_in_r_shaders;
 				continue;
 			}
 
-			constant idx = result.idx;
+			constant is_default_search_result = linear_find_if( defaults.shaders, [&]( Shader const& shader ) {
+				return shader.name_hash == current_shader.name_hash;
+			} );
 
+			if ( is_default_search_result.found() ) {
+				con_log_indented( 2, "Requested default shader, skipping... (hash = %, idx_in_r_shaders = %)", current_shader.name_hash, idx_in_r_shaders );
+
+				++idx_in_r_shaders;
+				continue;
+			}
+
+
+			constant idx = is_present_search_result.idx;
 			constant source = load_shader_source( paths.shaders[idx] );
 
 			if ( source.size > 0 ) {
