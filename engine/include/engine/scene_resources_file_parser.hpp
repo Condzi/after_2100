@@ -11,6 +11,13 @@ struct Scene_Resources_File_Content final
 	Array<u32> fonts;
 	Array<u32> shaders;
 
+	//
+	// @Robustness: Reorganize Scene_Resources_File structure data.
+	// This stuff actually fits to some "scene" structure rather than resource loader.
+	// We're building our scene out of this information below, so maybe separate this 
+	// or just pass to other functions that generate scenes?
+	//
+
 	u32 starting_planet_hash = 0;
 	// planets and planets_positions share indexes.
 	Array<u32> planets;

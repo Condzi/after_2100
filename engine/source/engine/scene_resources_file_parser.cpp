@@ -41,8 +41,8 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 	// Print 0 or count value.
 	con_log_indented( 2, "Entries found: % textures, % fonts, % shaders.",
 					  textures_count < 0 ? 0 : textures_count,
-					  fonts_count < 0 ? 0 : fonts_count,
-					  shaders_count < 0 ? 0 : shaders_count );
+					  fonts_count    < 0 ? 0 : fonts_count,
+					  shaders_count  < 0 ? 0 : shaders_count );
 
 	if ( textures_count > 0 ) {
 		file_content.textures.initialize( textures_count, Context.default_allocator );

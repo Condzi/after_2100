@@ -221,7 +221,11 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="include\entities\planet.hpp">
+    <ClInclude Include="include\entities\planet_earth.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="include\entities\planet_info.hpp">
       <SubType>
       </SubType>
     </ClInclude>
