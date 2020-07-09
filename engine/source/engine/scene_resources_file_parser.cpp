@@ -8,7 +8,7 @@
 
 namespace con
 {
-returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<u32>& fonts, Array<u32>& shaders ) -> bool
+returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Parsing_Data
 {
 	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 	constant mark = temporary_allocator->get_mark();
@@ -16,8 +16,10 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 
 	Config_File cfg;
 	if ( !cfg.parse_from_file( path ) ) {
-		return false;
+		return { .success = false };
 	}
+
+	Scene_Resources_File_Content file_content;
 
 	//
 	// Get sections and initialize the arguments with correct sizes.
@@ -43,13 +45,13 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 					  shaders_count < 0 ? 0 : shaders_count );
 
 	if ( textures_count > 0 ) {
-		textures.initialize( textures_count, Context.default_allocator );
+		file_content.textures.initialize( textures_count, Context.default_allocator );
 	}
 	if ( fonts_count > 0 ) {
-		fonts.initialize( fonts_count, Context.default_allocator );
+		file_content.fonts.initialize( fonts_count, Context.default_allocator );
 	}
 	if ( shaders_count > 0 ) {
-		shaders.initialize( shaders_count, Context.default_allocator );
+		file_content.shaders.initialize( shaders_count, Context.default_allocator );
 	}
 
 	//
@@ -57,17 +59,17 @@ returning parse_scene_resources_file( CString path, Array<u32>& textures, Array<
 	//
 
 	for ( s32 i = 0; i < textures_count; ++i ) {
-		textures[i] = textures_hvp[i].hash;
+		file_content.textures[i] = textures_hvp[i].hash;
 	}
 
 	for ( s32 i = 0; i < fonts_count; ++i ) {
-		fonts[i] = fonts_hvp[i].hash;
+		file_content.fonts[i] = fonts_hvp[i].hash;
 	}
 
 	for ( s32 i = 0; i < shaders_count; ++i ) {
-		shaders[i] = shaders_hvp[i].hash;
+		file_content.shaders[i] = shaders_hvp[i].hash;
 	}
 
-	return true;
+	return { .success = true, .content = file_content };
 }
 }
