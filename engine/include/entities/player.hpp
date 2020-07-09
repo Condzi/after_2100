@@ -45,12 +45,12 @@ struct Player final
 	f32 accumulated_ups = 0;
 	f32 radius = 100.0f;
 	compile_constant radius_delta = 100.0f;
+	compile_constant origin_x = 1280/2.0f;
+	compile_constant origin_y = 720/2.0f;
+
 
 	void physic_update( f32 ups )
 	{
-		constant origin_x = 1280/2.0f;
-		constant origin_y = 720/2.0f;
-
 		accumulated_ups += ups;
 
 		auto& position = _hot.position;
@@ -61,9 +61,16 @@ struct Player final
 
 	void frame_update( f32 dt )
 	{
+		constant pos = _hot.position;
+		constant PI_correction = 3.1415 / 2;
+		constant angle = atan2f( pos.y - origin_y, pos.x - origin_x );
+		_hot.rotation_z = angle + PI_correction;
+
+
 		auto& model_mat = _cold.basic_render_info.model_mat;
 		model_mat = mat4{ 1.0f };
 		model_mat = glm::translate( model_mat, v3{ _hot.position.x, _hot.position.y,  0 } );
+		model_mat = glm::rotate( model_mat, _hot.rotation_z, v3{ 0.0f, 0.0f, 1.0f } );
 
 		if ( Context.input->is_key_held( "enlarge"_hcs ) ) {
 			if ( radius <= 400 ) {
@@ -80,6 +87,7 @@ struct Player final
 				radius = 100;
 			}
 		}
+
 	}
 };
 }
