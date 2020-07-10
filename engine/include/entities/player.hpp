@@ -62,7 +62,7 @@ struct Player final
 	void frame_update( f32 dt )
 	{
 		constant pos = _hot.position;
-		constant PI_correction = 3.1415 / 2;
+		constant PI_correction = 3.1415f / 2;
 		constant angle = atan2f( pos.y - origin_y, pos.x - origin_x );
 		_hot.rotation_z = angle + PI_correction;
 
