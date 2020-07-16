@@ -1,4 +1,4 @@
-:/earth
+:/planet_earth
 texture planet_earth
 # radius of a planet is half width of the texture, width=height
 # should be less or equal to 1/2width 

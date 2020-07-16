@@ -24,4 +24,12 @@ struct Texture_Data final
 	// Maybe a way to get the raw pixels data?
 };
 
+// Don't confuse with Planet_Info defined in entities/planet.hpp!!!
+struct Planet_Resource_Data final
+{
+	f32 radius = -1;
+	u32 texture_name_hash = 0;
+	u32 planet_name_hash = 0;
+};
+
 }

@@ -11,6 +11,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <entities/planet.hpp>
+
 namespace con
 {
 struct Player final
@@ -33,6 +35,20 @@ struct Player final
 
 		Context.input->add_binding( "enlarge"_hcs, con::Key::Keyboard_E );
 		Context.input->add_binding( "decrease"_hcs, con::Key::Keyboard_D );
+
+		constant starting_planet_hash = resources.get_starting_planet_hash();
+		auto& em = *Context.entity_manager;
+
+		constant starting_planet_entity_find_result = linear_find_if( em.by_type.planet, [&starting_planet_hash]( Planet const* planet_ptr ) {
+			return planet_ptr != nullptr && planet_ptr->name_hash == starting_planet_hash;
+		} );
+
+		// @ToDo: Better error handling here!!!
+		con_assert( starting_planet_entity_find_result.found() );
+
+		origin_planet = em.by_type.planet[starting_planet_entity_find_result.idx]->get_planet_info();
+
+		current_radius = origin_planet.radius * 1.2;
 	}
 
 
@@ -43,10 +59,9 @@ struct Player final
 
 
 	f32 accumulated_ups = 0;
-	f32 radius = 100.0f;
 	compile_constant radius_delta = 100.0f;
-	compile_constant origin_x = 1280/2.0f;
-	compile_constant origin_y = 720/2.0f;
+	f32 current_radius = 100.0f;
+	Planet_Info origin_planet;
 
 
 	void physic_update( f32 ups )
@@ -54,37 +69,43 @@ struct Player final
 		accumulated_ups += ups;
 
 		auto& position = _hot.position;
+		constant& origin_x = origin_planet.position.x;
+		constant& origin_y = origin_planet.position.y;
 
-		position.x = origin_x + cosf( accumulated_ups /* * velocity on orbit */ ) * radius;
-		position.y = origin_y + sinf( accumulated_ups ) * radius;
+		position.x = origin_x + cosf( accumulated_ups /* * velocity on orbit */ ) * current_radius;
+		position.y = origin_y + sinf( accumulated_ups ) * current_radius;
 	}
 
 	void frame_update( f32 dt )
 	{
 		constant pos = _hot.position;
 		constant PI_correction = 3.1415f / 2;
+		constant& origin_x = origin_planet.position.x;
+		constant& origin_y = origin_planet.position.y;
+		constant& planet_radius = origin_planet.radius;
 		constant angle = atan2f( pos.y - origin_y, pos.x - origin_x );
 		_hot.rotation_z = angle + PI_correction;
 
-
+		// @Performance / @Cleanup:
+		// Move matrix calculation to separate loop in entity_manager.update?
 		auto& model_mat = _cold.basic_render_info.model_mat;
 		model_mat = mat4{ 1.0f };
-		model_mat = glm::translate( model_mat, v3{ _hot.position.x, _hot.position.y,  0 } );
+		model_mat = glm::translate( model_mat, v3{ pos.x, pos.y,  0 } );
 		model_mat = glm::rotate( model_mat, _hot.rotation_z, v3{ 0.0f, 0.0f, 1.0f } );
 
 		if ( Context.input->is_key_held( "enlarge"_hcs ) ) {
-			if ( radius <= 400 ) {
-				radius += radius_delta * dt;
+			if ( current_radius <= planet_radius * 5 ) {
+				current_radius += radius_delta * dt;
 			} else {
-				radius = 400;
+				current_radius = 400;
 			}
 		}
 
 		if ( Context.input->is_key_held( "decrease"_hcs ) ) {
-			if ( radius >= 100 ) {
-				radius -= radius_delta * dt;
+			if ( current_radius >= planet_radius * 1.2 ) {
+				current_radius -= radius_delta * dt;
 			} else {
-				radius = 100;
+				current_radius = planet_radius * 1.2;
 			}
 		}
 

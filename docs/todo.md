@@ -7,6 +7,7 @@
 * Bitset could have u32 as base type, this would greatly simplify it's code and MSVC intrinsics usage.
 
 # **Quality of life**
+* add `Find_Result::not_found()` and use it instead `found()` because it's more commonly used.
 * add support for const char* const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`
     * well, actually if we don't do it like that we lose compile time knowledge of the size. We can only do this: `FOO ""_cs` 
 * do a debug console (without editing for now, just one color messages + scrolling)

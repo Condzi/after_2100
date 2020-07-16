@@ -12,8 +12,8 @@ namespace con
 // Entity Types forward declarations with type enum.
 //
 
-struct Enemy;
 struct Player;
+struct Planet;
 
 struct Entity_Manager final
 {
@@ -32,6 +32,8 @@ struct Entity_Manager final
 
 		// Only one in entire game, so we let ourself have it like that.
 		Player* player = nullptr;
+
+		Array<Planet*> planet;
 	} by_type;
 
 
@@ -41,11 +43,16 @@ struct Entity_Manager final
 	void physic_update( f32 ups );
 	void frame_update( f32 dt );
 
-	template <typename T>
-	returning spawn_entity() -> T*;
+	template <typename T, typename ...TArgs>
+	returning spawn_entity( TArgs&& ...args ) -> T*;
+
+	// @ToDo: add void clean() / reset() which destroys all entities
+	// (beside player??). We'll use this before spawning entities for the
+	// new scene.
 
 private:
 	returning create_player() -> Player*;
+	returning create_planet( Planet_Resource_Data const& planet_resource_data ) -> Planet*;
 };
 
 
@@ -53,11 +60,13 @@ private:
 // Definitions
 //
 
-template <typename T>
-returning Entity_Manager::spawn_entity() -> T*
+template <typename T, typename ...TArgs>
+returning Entity_Manager::spawn_entity( TArgs&& ...args ) -> T*
 {
-	if constexpr ( std::is_same_v<T, Player> ) {
+	if		  constexpr ( std::is_same_v<T, Player> ) {
 		return create_player();
+	} else if constexpr ( std::is_same_v<T, Planet> ) {
+		return create_planet( std::forward<TArgs>( args )... );
 	} else {
 		static_assert( false, "Unsupported entity type!" );
 	}

@@ -271,6 +271,8 @@ returning Application::check_necessary_paths() const -> bool
 	path_exists( CON_SHADERS_FOLDER );
 
 	path_exists( CON_ASSETS_CONFIG_FILE );
+	path_exists( CON_PLANETS_CONFIG_FILE );
+
 	path_exists( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE );
 
 	return success;

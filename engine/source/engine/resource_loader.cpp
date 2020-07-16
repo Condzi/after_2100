@@ -7,6 +7,10 @@
 #include <engine/prepared_resources.hpp>
 #include <engine/utility.hpp>
 
+// @ToDo: remove after refactor of planets spawning!
+#include <engine/entity_manager.hpp>
+#include <entities/planet.hpp>
+
 #include <glad/glad.h>
 
 #include <fstream>
@@ -173,7 +177,7 @@ void Resource_Loader::initialize()
 	Config_File assets_config;
 	defer{ assets_config.free(); };
 	if ( !assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE ) ) {
-		con_log_indented( 1, "Error: couldn't parse from file." );
+		con_log_indented( 2, "Error: couldn't parse from file." );
 		Context.exit_flags.requested_by_app = true;
 		return;
 	}
@@ -355,6 +359,67 @@ void Resource_Loader::initialize()
 		con_log_indented( 1, "No default shaders to load." );
 	}
 
+	//
+	// Loading planets.variables
+	//
+	{
+		constant ta_mark = ta.get_mark();
+		defer{ ta.set_mark( ta_mark ); };
+
+		con_log_indented( 1, "Loading planets metadata from \"%\"...", CString{ CON_PLANETS_CONFIG_FILE } );
+		Config_File planets_config;
+		defer{ planets_config.free(); };
+		if ( !planets_config.parse_from_file( CON_PLANETS_CONFIG_FILE ) ) {
+			con_log_indented( 2, "Error: couldn't parse from file." );
+			Context.exit_flags.requested_by_app = true;
+			return;
+		}
+
+		constant planets_names_hashes_array = planets_config.get_all_section_hashes();
+		constant planets_count = planets_names_hashes_array.size();
+
+		if ( planets_count == 0 ) {
+			con_log_indented( 1, "Error: no planet hashes were found in the file." );
+			return;
+		}
+
+		con_log_indented( 2, "Found % planets declarations.", planets_count );
+
+		planet_data.initialize( planets_count );
+		name_hashes.planets.initialize( planets_count );
+		memcpy( name_hashes.planets.data(), planets_names_hashes_array.data(), planets_count * sizeof( u32 ) );
+
+
+		// Hashes of the variables names in the config file.
+		compile_constant texture_hash_name_hash = hash_cstring( "texture" );
+		compile_constant radius_name_hash       = hash_cstring( "radius" );
+
+		for ( s32 i = 0; i < planets_count; ++i ) {
+			constant current_planet_hash = planets_names_hashes_array[i];
+
+			// Get and hash the name texture of the planet.
+			constant texture_name_as_cstring = planets_config.get_value( current_planet_hash, texture_hash_name_hash );
+
+			if ( texture_name_as_cstring.size <= 0 ) {
+				con_log_indented( 2, "Error: invalid texture name for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
+				continue;
+			}
+
+			constant texture_name_hash = hash_cstring( texture_name_as_cstring );
+
+			// Get and parse radius. 
+			constant radius_as_cstring = planets_config.get_value( current_planet_hash, radius_name_hash );
+
+			if ( radius_as_cstring.size <= 0 ) {
+				con_log_indented( 2, "Error: invalid radius for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
+				continue;
+			}
+
+			constant radius = cstring_to_f32( radius_as_cstring );
+
+			planet_data[i] ={ .radius = radius, .texture_name_hash = texture_name_hash, .planet_name_hash = current_planet_hash };
+		}
+	}
 }
 
 void Resource_Loader::shutdown()
@@ -390,8 +455,9 @@ void Resource_Loader::shutdown()
 
 
 	scene_folder_content.hashes.shutdown();
-
+	
 	texture_data.shutdown();
+	planet_data.shutdown();
 }
 
 void Resource_Loader::reload()
@@ -620,6 +686,38 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		}
 	}
 
+	//
+	// @ToDo: This doesn't really fit in the definition of "prepare_resources_for_scene"
+	// Maybe put it to "initialize_scene" or something, or just rename this function.
+	//
+	// Spawn planets.
+	//
+
+	constant& planets_to_spawn_names    = parsing_data.planets;
+	constant& planets_to_spawn_position = parsing_data.planets_positions;
+	constant planets_to_spawn_count     = planets_to_spawn_names.size();
+
+	con_log_indented( 1, "Found % planets to spawn.", planets_to_spawn_count );
+	con_log_indented( 2, "Starting planet hash is %.", parsing_data.starting_planet_hash );
+
+	Context.prepared_resources->starting_planet_hash = parsing_data.starting_planet_hash;
+
+	for ( s32 i = 0; i < planets_to_spawn_count; ++i ) {
+		constant planet_name_hash = planets_to_spawn_names[i];
+
+		constant planet_find_result = linear_find( name_hashes.planets, planet_name_hash );
+
+		if ( planet_find_result.found() == false ) {
+			con_log_indented( 2, "Error: planet not found. (i = %, planet_name_hash = %)", i, planet_name_hash );
+			continue;
+		}
+
+		constant& planet_to_spawn_metadata = planet_data[planet_find_result.idx];
+
+		Planet* planet = Context.entity_manager->spawn_entity<Planet>( planet_to_spawn_metadata );
+		planet->_hot.position = planets_to_spawn_position[i];
+	}
+	
 	return true;
 }
 

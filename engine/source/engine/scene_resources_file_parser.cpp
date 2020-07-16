@@ -90,7 +90,8 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 
 		if ( find_starting_planet_result.found() ) {
 			constant idx = find_starting_planet_result.idx;
-			file_content.starting_planet_hash = planets_hvp[idx].hash;
+			file_content.starting_planet_hash = hash_cstring( planets_hvp[idx].value );
+			con_log_indented( 2, "Starting planet is \"%\".", planets_hvp[idx].value );
 		} else {
 			con_log_indented( 2, "Error: no info about starting planet. Assigning first planet in the array... " );
 			if ( planets_count > 0 ) {

@@ -15,6 +15,7 @@ class Prepared_Resources final
 public:
 	returning get_texture( Hashed_CString name ) -> Texture;
 	returning get_shader( Hashed_CString name ) -> Shader;
+	returning get_starting_planet_hash() const -> u32;
 
 	returning textures_count() const -> s32;
 	returning shaders_count() const -> s32;
@@ -28,5 +29,10 @@ private:
 
 	Texture fallback_texture;
 	Shader  fallback_shader;
+
+	// @Robustness: is it really the place for starting_planet_hash?
+	// If you gonna refactor this, see the prepare_resources_for_scene, this is
+	// where we set it at the time of writing this note.
+	u32 starting_planet_hash = 0;
 };
 }

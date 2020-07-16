@@ -31,6 +31,12 @@ returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 		return fallback_shader;
 	}
 }
+
+returning Prepared_Resources::get_starting_planet_hash() const -> u32
+{
+	return starting_planet_hash;
+}
+
 returning Prepared_Resources::textures_count() const -> s32
 {
 	return textures.size();

@@ -12,6 +12,7 @@ class Resource_Loader final
 public:
 	// Works like reload but doesn't attempt to update entities.
 	// Just loads the metadata and default resources.
+	// Loads also planets.variables
 	void initialize();
 	void shutdown();
 
@@ -30,6 +31,8 @@ private:
 	{
 		Array<u32> textures;
 		Array<u32> shaders;
+
+		Array<u32> planets;
 	} name_hashes;
 
 	// Allocated using Default Allocator!
@@ -60,6 +63,8 @@ private:
 
 	// (idx associated with `name_hashes`)
 	Array<Texture_Data> texture_data;
+	Array<Planet_Resource_Data> planet_data;
+	
 	// @Robustness: Add Bitset that holds N values, one for each resource of each type,
 	// that indicates if given resource was correctly loaded. This way we could have
 	// better error messages (I can't do it now because I didn't fix the allocator

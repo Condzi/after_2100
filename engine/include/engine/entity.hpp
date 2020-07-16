@@ -12,7 +12,7 @@ struct Entity_Type final
 	enum _ : s16
 	{
 		Player,
-		Planet_Earth
+		Planet
 	};
 };
 
