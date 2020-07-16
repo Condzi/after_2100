@@ -196,7 +196,7 @@ void Window::initialize()
 			}
 		}( );
 
-		con_log( "OpenGL Message [%]: % | % | % | \"%\".", id, severity_str, source_str, type_str, cstring_from_cstr( message ) );
+		con_log( " OGL [% / % / % / %]: \"%\".", id, severity_str, source_str, type_str, cstring_from_cstr( message ) );
 	}, nullptr );
 
 	GLuint const* const disabled_messages{ nullptr }; // array of ids of messages to disable
