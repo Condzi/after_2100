@@ -27,7 +27,7 @@ void Entity_Manager::shutdown()
 	}
 
 	occupied_hot_cold_slots.shutdown();
-	
+
 	by_type._hot.shutdown();
 	by_type._cold.shutdown();
 	by_type.planet.shutdown();
@@ -40,13 +40,41 @@ void Entity_Manager::physic_update( f32 ups )
 
 void Entity_Manager::frame_update( f32 dt )
 {
-	by_type.player->frame_update( dt );
+	//
+	// Update matrices if necessary.
+	//
 
-	for ( s32 i = 0; i < by_type.planet.size(); ++i ) {
-		if ( by_type.planet[i] != nullptr ) {
-			by_type.planet[i]->frame_update( dt );
+	// We have to update at most this count of entities:
+	constant alive_entities = occupied_hot_cold_slots.count_set_bits();
+
+	auto& hot = by_type._hot;
+	for ( s32 i = 0, updated_entities = 0;
+		  i < hot.size() && updated_entities < alive_entities;
+		  ++i ) {
+
+		if ( occupied_hot_cold_slots.test( i ) ) {
+			auto& current_hot = hot[i];
+
+			if ( current_hot.update_model_matrix ) {
+				// We don't check if entity is visible.
+				auto& mat = by_type._cold[i].basic_render_info.model_mat;
+
+				mat = mat4{ 1.0f };
+				mat = glm::translate( mat, v3{ current_hot.position.x, current_hot.position.y,  0 } );
+				mat = glm::rotate( mat, current_hot.rotation_z, v3{ 0.0f, 0.0f, 1.0f } );
+
+				current_hot.update_model_matrix = false;
+			}
+
+			++updated_entities;
 		}
+
 	}
+
+	//
+	// Call frame update.
+	//
+	by_type.player->frame_update( dt );
 }
 
 returning Entity_Manager::create_player() -> Player*

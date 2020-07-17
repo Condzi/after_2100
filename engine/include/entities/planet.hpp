@@ -48,6 +48,8 @@ struct Planet final
 		render_info = construct_textured_sprite( 2*radius, 2*radius );
 		render_info.texture = texture;
 		render_info.shader  = shader;
+
+		_hot.update_model_matrix = true;
 	}
 
 
@@ -59,16 +61,6 @@ struct Planet final
 	returning get_planet_info() const -> Planet_Info
 	{
 		return { .position = _hot.position, .radius = radius };
-	}
-
-	void frame_update( f32 dt )
-	{
-		// @Performance / @Cleanup:
-		// Move matrix calculation to separate loop in entity_manager.update?
-		auto& model_mat = _cold.basic_render_info.model_mat;
-		model_mat = mat4{ 1.0f };
-		model_mat = glm::translate( model_mat, v3{ _hot.position.x, _hot.position.y,  0 } );
-		model_mat = glm::rotate( model_mat, _hot.rotation_z, v3{ 0.0f, 0.0f, 1.0f } );
 	}
 };
 }

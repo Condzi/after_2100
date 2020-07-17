@@ -86,13 +86,6 @@ struct Player final
 		constant angle = atan2f( pos.y - origin_y, pos.x - origin_x );
 		_hot.rotation_z = angle + PI_correction;
 
-		// @Performance / @Cleanup:
-		// Move matrix calculation to separate loop in entity_manager.update?
-		auto& model_mat = _cold.basic_render_info.model_mat;
-		model_mat = mat4{ 1.0f };
-		model_mat = glm::translate( model_mat, v3{ pos.x, pos.y,  0 } );
-		model_mat = glm::rotate( model_mat, _hot.rotation_z, v3{ 0.0f, 0.0f, 1.0f } );
-
 		if ( Context.input->is_key_held( "enlarge"_hcs ) ) {
 			if ( current_radius <= planet_radius * 5 ) {
 				current_radius += radius_delta * dt;
@@ -108,7 +101,8 @@ struct Player final
 				current_radius = planet_radius;
 			}
 		}
-
+		
+		_hot.update_model_matrix = true;
 	}
 };
 }

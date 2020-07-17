@@ -46,6 +46,8 @@ struct Entity final
 		s16 u_id  = INVALID_ID;
 		s16 type  = INVALID_TYPE; // Player, Enemy, Background, Planet, Explosion etc...
 		s16 group = INVALID_GROUP;
+		bool update_model_matrix = false;
+		// @ToDo: do we need it?
 		Bitset flags;
 	};
 
