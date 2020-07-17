@@ -72,30 +72,34 @@ struct Player final
 
 	void physic_update( f32 ups )
 	{
-
 		auto& position = _hot.position;
 		constant& origin_x = origin_planet.position.x;
 		constant& origin_y = origin_planet.position.y;
 
-		constant A = std::max( orbit_x, orbit_y );
-		constant B = std::min( orbit_x, orbit_y );
+		constant A = orbit_x;
+		constant B = orbit_y;
 
-		constant F = sqrtf( A*A - B*B );
-		constant SHIFT = v2( origin_x + F, origin_y );
+		constant F = sqrtf( fabs( A*A - B*B ) );
+		// We have to keep track of the correct major axis of the ellipse!
+		constant SHIFT = v2( A>B ? ( origin_x + F ) : origin_x, 
+							 B>A ? ( origin_y + F ) : origin_y );
 
 		constant distance_between_planet_and_player = glm::distance( position, origin_planet.position );
 
-		// G * Mz
+		// G * Mass of the planet
 		compile_constant magic_multiplier = 100;
-		// @ToDo: choose constants which doesnt require sqrtf
+		// We need this sqrtf. At least for now, without it the movement is meh, even with
+		// OK constants.
 		constant velocity = sqrtf( magic_multiplier / distance_between_planet_and_player );
-		con_log_indented( 3, "velocity = %", velocity );
 
 		theta += velocity * ups;
+		if ( theta > 2 * 3.1415f ) {
+			theta -= 2 * 3.1415f;
+		}
 
 
-		position.x = A * cosf( theta + velocity ) + SHIFT.x;
-		position.y = B * sinf( theta + velocity ) + SHIFT.y;
+		position.x = A * cosf( theta ) + SHIFT.x;
+		position.y = B * sinf( theta ) + SHIFT.y;
 	}
 
 	void frame_update( f32 dt )
@@ -126,10 +130,6 @@ struct Player final
 		if ( Context.input->is_key_held( "Y-"_hcs ) ) {
 			orbit_y -= change;
 		}
-
-		con_log_indented( 2, "orbit_x = %", orbit_x );
-		con_log_indented( 2, "orbit_y = %", orbit_y );
-		con_log_indented( 2, "=====================" );
 
 		_hot.update_model_matrix = true;
 	}
