@@ -164,6 +164,13 @@ void Application::run()
 		input.poll_events();
 
 		accumulated_dt += frame_dt;
+		// We cut off too much accumulated_dt to avoid
+		// huge jumps when laggy.
+		// @Idea: move 4* to macro_config?
+		if ( accumulated_dt > 4 * ups ) {
+			accumulated_dt = 4 * ups;
+		}
+
 		while ( accumulated_dt >= ups ) {
 			entity_manager.physic_update( ups );
 			accumulated_dt -= ups;
