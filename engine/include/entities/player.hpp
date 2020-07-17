@@ -61,8 +61,9 @@ struct Player final
 		shutdown_textured_sprite( _cold.basic_render_info );
 	}
 
-
-	f32 accumulated_ups = 0;
+	// It's a paremeter for ellipse. We change it depending
+	// on the speed.
+	f32 theta = 0;
 	Planet_Info origin_planet;
 
 	f32 orbit_x = 200;
@@ -71,7 +72,6 @@ struct Player final
 
 	void physic_update( f32 ups )
 	{
-		accumulated_ups += ups;
 
 		auto& position = _hot.position;
 		constant& origin_x = origin_planet.position.x;
@@ -83,8 +83,19 @@ struct Player final
 		constant F = sqrtf( A*A - B*B );
 		constant SHIFT = v2( origin_x + F, origin_y );
 
-		position.x = A * cosf( accumulated_ups ) + SHIFT.x;
-		position.y = B * sinf( accumulated_ups ) + SHIFT.y;
+		constant distance_between_planet_and_player = glm::distance( position, origin_planet.position );
+
+		// G * Mz
+		compile_constant magic_multiplier = 100;
+		// @ToDo: choose constants which doesnt require sqrtf
+		constant velocity = sqrtf( magic_multiplier / distance_between_planet_and_player );
+		con_log_indented( 3, "velocity = %", velocity );
+
+		theta += velocity * ups;
+
+
+		position.x = A * cosf( theta + velocity ) + SHIFT.x;
+		position.y = B * sinf( theta + velocity ) + SHIFT.y;
 	}
 
 	void frame_update( f32 dt )
