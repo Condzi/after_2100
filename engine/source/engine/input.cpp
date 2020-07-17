@@ -64,7 +64,7 @@ void Input::change_binding( Hashed_CString name, Key_ID key )
 	con_assert( changing_succeed );
 }
 
-returning Input::is_key_released( Hashed_CString name ) -> bool
+returning Input::is_key_released( Hashed_CString name ) const -> bool
 {
 	for ( s32 i = 0; i < bindings.size(); ++i ) {
 		auto& binding = bindings[i];
@@ -79,7 +79,7 @@ returning Input::is_key_released( Hashed_CString name ) -> bool
 	return false;
 }
 
-returning Input::is_key_pressed( Hashed_CString name ) -> bool
+returning Input::is_key_pressed( Hashed_CString name ) const -> bool
 {
 	for ( s32 i = 0; i < bindings.size(); ++i ) {
 		auto& binding = bindings[i];
@@ -94,7 +94,7 @@ returning Input::is_key_pressed( Hashed_CString name ) -> bool
 	return false;
 }
 
-returning Input::is_key_held( Hashed_CString name ) -> bool
+returning Input::is_key_held( Hashed_CString name ) const -> bool
 {
 	for ( s32 i = 0; i < bindings.size(); ++i ) {
 		auto& binding = bindings[i];
@@ -115,6 +115,14 @@ returning Input::is_key_held( Hashed_CString name ) -> bool
 	con_log_indented( 1, "Warning: Couldn't find binding for key of hash %. (is_key_held)", name.hash );
 
 	return false;
+}
+
+returning Input::get_mouse_position() const -> v2
+{
+	f64 x = -1, y = -1;
+	glfwGetCursorPos( window_handle, &x, &y );
+
+	return { static_cast<f32>( x ), static_cast<f32>( y ) };
 }
 
 void Input::poll_events()

@@ -79,11 +79,12 @@ struct Player final
 	void frame_update( f32 dt )
 	{
 		constant pos = _hot.position;
-		constant PI_correction = 3.1415f / 2;
-		constant& origin_x = origin_planet.position.x;
-		constant& origin_y = origin_planet.position.y;
+		constant PI_correction = 3.1415f * 3/2;
 		constant& planet_radius = origin_planet.radius;
-		constant angle = atan2f( pos.y - origin_y, pos.x - origin_x );
+
+		constant mouse_position = Context.input->get_mouse_position();
+
+		constant angle = atan2f( pos.y - mouse_position.y, pos.x - mouse_position.x );
 		_hot.rotation_z = angle + PI_correction;
 
 		if ( Context.input->is_key_held( "enlarge"_hcs ) ) {

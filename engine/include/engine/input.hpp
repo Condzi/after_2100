@@ -21,9 +21,11 @@ public:
 	// Asserts if binding 'name' is not found.
 	void change_binding( Hashed_CString name, Key_ID key );
 
-	returning is_key_released( Hashed_CString name ) -> bool;
-	returning is_key_pressed( Hashed_CString name )  -> bool;
-	returning is_key_held( Hashed_CString name )     -> bool;
+	returning is_key_released( Hashed_CString name ) const -> bool;
+	returning is_key_pressed( Hashed_CString name ) const  -> bool;
+	returning is_key_held( Hashed_CString name ) const     -> bool;
+
+	returning get_mouse_position() const -> v2;
 
 	void poll_events();
 
