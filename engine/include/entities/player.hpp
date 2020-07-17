@@ -72,8 +72,14 @@ struct Player final
 		constant& origin_x = origin_planet.position.x;
 		constant& origin_y = origin_planet.position.y;
 
-		position.x = 164 * cosf( accumulated_ups /* * velocity on orbit */ ) + origin_x;
-		position.y = 100 * sinf( accumulated_ups ) + origin_y;
+		constant A = 200.0f;
+		constant B = 164.0f;
+
+		constant F = sqrtf( A*A - B*B );
+		constant SHIFT = v2( origin_x + F, origin_y );
+
+		position.x = A * cosf( accumulated_ups ) + SHIFT.x;
+		position.y = B * sinf( accumulated_ups ) + SHIFT.y;
 	}
 
 	void frame_update( f32 dt )

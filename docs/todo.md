@@ -24,3 +24,11 @@
 * don't forget to **add licenses**!
 * Gamepad support
 * add random number generator (see comment in plan.md file. we may want to use a simple approach instead of using C++'s)
+
+# **BUGS**
+* When trying to record fullscreen with OBS (maybe it's because we're using dedicated gpu and obs is not?)
+```
+ OGL [1286 / HIGH / API / ERROR]: "GL_INVALID_FRAMEBUFFER_OPERATION error generated. Framebuffer bindings are not framebuffer complete.".
+ OGL [131218 / MEDIUM / API / PERFORMANCE]: "Program/shader state performance warning: Vertex shader in program 3 is being recompiled based on GL state.".
+ OGL [1286 / HIGH / API / ERROR]: "GL_INVALID_FRAMEBUFFER_OPERATION error generated. Framebuffer bindings are not framebuffer complete.".
+```
