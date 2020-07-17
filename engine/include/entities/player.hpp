@@ -27,7 +27,7 @@ struct Player final
 
 		auto& render_info = _cold.basic_render_info;
 
-		render_info = construct_textured_sprite( 140, 108 );
+		render_info = construct_textured_sprite( 48, 48 );
 		render_info.texture = texture;
 		render_info.shader = shader;
 
@@ -97,15 +97,15 @@ struct Player final
 			if ( current_radius <= planet_radius * 5 ) {
 				current_radius += radius_delta * dt;
 			} else {
-				current_radius = 400;
+				current_radius = planet_radius * 5;
 			}
 		}
 
 		if ( Context.input->is_key_held( "decrease"_hcs ) ) {
-			if ( current_radius >= planet_radius * 1.2 ) {
+			if ( current_radius >= planet_radius ) {
 				current_radius -= radius_delta * dt;
 			} else {
-				current_radius = planet_radius * 1.2;
+				current_radius = planet_radius;
 			}
 		}
 
