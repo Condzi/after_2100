@@ -251,8 +251,8 @@ returning construct_ellipse( f32 horizontal_axis, f32 vertical_axis ) -> Render_
 
 	// We calculate amount of points as follows: get the horizontal axis,
 	// divide by 10 to not have to deal with too much points.
-	constant points_per_quarter_count = static_cast<s32>( horizontal_axis / 10 );
-	constant points_count = points_per_quarter_count * 4 + 1; // We add 1 here for last point which connects the end with the beginning.
+	constant points_per_quarter_count = static_cast<s32>( ceil( horizontal_axis / 10 ) );
+	constant points_count = points_per_quarter_count * 4;
 	constant step = horizontal_axis / static_cast<f32>( points_per_quarter_count );
 
 	//
@@ -289,12 +289,11 @@ returning construct_ellipse( f32 horizontal_axis, f32 vertical_axis ) -> Render_
 
 	// Generate the first quarter.
 	s32 current_point_idx = 0;
-	for ( f32 x = - a; x < 0; x+= step ) {
+	for ( f32 x = -a; current_point_idx < points_per_quarter_count; x+= step ) {
 		constant y = f( x );
 		points[current_point_idx] = v2{ x,y };
 		++current_point_idx;
 	}
-	con_assert( current_point_idx == points_per_quarter_count );
 
 	// Generate the upper-right quarter by mirroring by the Y axis (negate the x's)
 	// We have to do this in reverse order.
@@ -313,10 +312,11 @@ returning construct_ellipse( f32 horizontal_axis, f32 vertical_axis ) -> Render_
 
 		++current_point_idx;
 	}
-	con_assert( current_point_idx == points_count - 1 );
+	con_assert( current_point_idx == points_count );
 
 	// And the last step: connect beginning with end.
-	points[points_count-1] = points[0];
+	//points[points_count-1] = points[0];
+
 	static bool dumped = false;
 	if ( !dumped ) {
 		con_log( "================" );
@@ -345,7 +345,7 @@ returning construct_ellipse( f32 horizontal_axis, f32 vertical_axis ) -> Render_
 	glEnableVertexAttribArray( 0 );
 
 	render_info.render_type = Render_Type::Draw_Arrays;
-	render_info.draw_arrays_info.mode = GL_LINE_STRIP;
+	render_info.draw_arrays_info.mode = GL_LINES;
 	render_info.draw_arrays_info.vertices_count = points_count;
 
 	glBindVertexArray( 0 );
