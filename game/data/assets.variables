@@ -11,3 +11,4 @@
 :/shaders
     sprite_default sprite_default.shaders
     sprite_tinted  sprite_tinted.shaders
+    ellipse        ellipse.shaders

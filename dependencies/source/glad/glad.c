@@ -294,6 +294,7 @@ PFNGLDELETEPROGRAMPROC glad_glDeleteProgram = NULL;
 PFNGLDELETESHADERPROC glad_glDeleteShader = NULL;
 PFNGLDELETETEXTURESPROC glad_glDeleteTextures = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glad_glDeleteVertexArrays = NULL;
+PFNGLDRAWARRAYSPROC glad_glDrawArrays = NULL;
 PFNGLDRAWELEMENTSPROC glad_glDrawElements = NULL;
 PFNGLENABLEPROC glad_glEnable = NULL;
 PFNGLENABLEVERTEXATTRIBARRAYPROC glad_glEnableVertexAttribArray = NULL;
@@ -350,6 +351,7 @@ static void load_GL_VERSION_1_0(GLADloadproc load) {
 }
 static void load_GL_VERSION_1_1(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_1) return;
+    glad_glDrawArrays = (PFNGLDRAWARRAYSPROC)load("glDrawArrays");
 	glad_glDrawElements = (PFNGLDRAWELEMENTSPROC)load("glDrawElements");
 	glad_glBindTexture = (PFNGLBINDTEXTUREPROC)load("glBindTexture");
 	glad_glGenTextures = (PFNGLGENTEXTURESPROC)load("glGenTextures");

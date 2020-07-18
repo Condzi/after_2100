@@ -1,6 +1,7 @@
 #include <engine/entity_manager.hpp>
 #include <engine/algorithms.hpp>
 
+#include <entities/debug_entity.hpp>
 #include <entities/player.hpp>
 #include <entities/planet.hpp>
 
@@ -15,6 +16,9 @@ void Entity_Manager::initialize()
 
 	by_type.planet.initialize( CON_PLANETS_LIMIT, Context.default_allocator );
 	memset( by_type.planet.data(), 0, sizeof( Planet ) * CON_PLANETS_LIMIT );
+
+	by_type.debug_entity.initialize( CON_DEBUG_ENTITIES_LIMIT, Context.default_allocator );
+	memset( by_type.debug_entity.data(), 0, sizeof( Debug_Entity ) * CON_PLANETS_LIMIT );
 }
 
 void Entity_Manager::shutdown()
@@ -30,7 +34,24 @@ void Entity_Manager::shutdown()
 
 	by_type._hot.shutdown();
 	by_type._cold.shutdown();
+
+	for ( s32 i = 0; i < by_type.planet.size(); ++i ) {
+		Planet* planet = by_type.planet[i];
+
+		if ( planet != nullptr ) {
+			Context.default_allocator->free( reinterpret_cast<byte*>( planet ), sizeof( Planet ) );
+		}
+	}
 	by_type.planet.shutdown();
+
+	for ( s32 i = 0; i < by_type.debug_entity.size(); ++i ) {
+		Debug_Entity* debug_entity = by_type.debug_entity[i];
+
+		if ( debug_entity != nullptr ) {
+			Context.default_allocator->free( reinterpret_cast<byte*>( debug_entity ), sizeof( Debug_Entity ) );
+		}
+	}
+	by_type.debug_entity.shutdown();
 }
 
 void Entity_Manager::physic_update( f32 ups )
@@ -74,7 +95,38 @@ void Entity_Manager::frame_update( f32 dt )
 	//
 	// Call frame update.
 	//
+
 	by_type.player->frame_update( dt );
+}
+
+returning Entity_Manager::create_debug_entity() -> Debug_Entity*
+{
+	// Find free slot in debug_entity array.
+	constant free_debug_entity_result = linear_find_if( by_type.debug_entity, []( Debug_Entity const* debug_entity_ptr ) {
+		return debug_entity_ptr == nullptr;
+	} );
+
+	// @ToDo: change to better log later.
+	con_assert( free_debug_entity_result.found() );
+
+	auto debug_entity = reinterpret_cast<Debug_Entity*>( Context.default_allocator->allocate( sizeof( Debug_Entity ) ) );
+
+	by_type.debug_entity[free_debug_entity_result.idx] = debug_entity;
+
+	// Find first free slot to use.
+	auto idx = occupied_hot_cold_slots.find_first_unset_bit().idx;
+	// @ToDo: Assert for now, change to con_log later (to fail with style!)
+	con_assert( idx != -1 );
+
+	// @Performance: there is an compiler intrinsic that works just like this (it finds
+	// first unset bit, changes it to true and returns it position).
+	occupied_hot_cold_slots.set( idx );
+	// @Incomplete: it seems weird. Should we call `new` like that?
+	new( debug_entity ) Debug_Entity( by_type._hot[idx], by_type._cold[idx] );
+
+	debug_entity->initialize();
+
+	return debug_entity;
 }
 
 returning Entity_Manager::create_player() -> Player*

@@ -6,6 +6,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// min, max
+#include <algorithm>
+
 namespace con
 {
 
@@ -128,10 +131,13 @@ void Renderer::render()
 		constant& render_info = render_infos[i];
 
 		if ( current_texture != render_info.texture.id ) {
-			current_texture = render_info.texture.id;
+			// We don't want to do this for ellipse.
+			if ( render_info.drawing_group == Drawing_Group::Default ) {
+				current_texture = render_info.texture.id;
 
-			glActiveTexture( GL_TEXTURE0 );
-			glBindTexture( GL_TEXTURE_2D, current_texture );
+				glActiveTexture( GL_TEXTURE0 );
+				glBindTexture( GL_TEXTURE_2D, current_texture );
+			}
 		}
 
 		if ( current_shader != render_info.shader.id ) {
@@ -152,7 +158,12 @@ void Renderer::render()
 		glUniformMatrix4fv( combined_mat_loc, 1, GL_FALSE, glm::value_ptr( mvp_mat ) );
 
 		glBindVertexArray( render_info.vao );
-		glDrawElements( GL_TRIANGLES, render_info.elements_count, GL_UNSIGNED_INT, 0 );
+
+		if ( render_info.render_type == Render_Type::Draw_Elements ) {
+			glDrawElements( GL_TRIANGLES, render_info.elements_count, GL_UNSIGNED_INT, 0 );
+		} else {
+			glDrawArrays( render_info.draw_arrays_info.mode, 0, render_info.draw_arrays_info.vertices_count );
+		}
 
 		glBindVertexArray( 0 );
 	}
@@ -226,6 +237,123 @@ returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
 }
 
 void shutdown_textured_sprite( Render_Info const& render_info )
+{
+	glDeleteVertexArrays( 1, &render_info.vao );
+	glDeleteBuffers( 1, &render_info.vbo );
+}
+
+returning construct_ellipse( f32 horizontal_axis, f32 vertical_axis ) -> Render_Info
+{
+	// Renaming for the formula (described below)
+	constant a = horizontal_axis;
+	constant b = vertical_axis;
+	constant aa = a * a;
+
+	// We calculate amount of points as follows: get the horizontal axis,
+	// divide by 10 to not have to deal with too much points.
+	constant points_per_quarter_count = static_cast<s32>( horizontal_axis / 10 );
+	constant points_count = points_per_quarter_count * 4 + 1; // We add 1 here for last point which connects the end with the beginning.
+	constant step = horizontal_axis / static_cast<f32>( points_per_quarter_count );
+
+	//
+	// Generate the points for the ellipse.
+	//
+
+	// We allocate the points using temporary allocator.
+	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
+	constant ta_mark = ta.get_mark();
+	defer{ ta.set_mark( ta_mark ); };
+
+	// v2 is the same size as the Position_Vertex2D!
+	Array<v2> points;
+	points.initialize( points_count, &ta );
+
+	// We use the following technique to generate the ellipse.
+	// 1. Generate the upper-left quarter.
+	// 2. Generate other quarters by taking advantage of the symmetry.
+	//
+	// Formula for the quarter for given a and b. 
+	// a,b > 0  and  y > offset_y  and  x < offset_x
+	// 
+	// y = b * sqrt(1 - [ (x*x)/(a*a) ] )
+	//
+	//
+
+	// formula for quarter of the ellipse.
+	constant f = [&]( f32 const x ) {
+		return b * sqrtf( 1.0f - ( ( x*x ) / aa ) );
+	};
+
+	con_assert( a > 0 );
+	con_assert( b > 0 );
+
+	// Generate the first quarter.
+	s32 current_point_idx = 0;
+	for ( f32 x = - a; x < 0; x+= step ) {
+		constant y = f( x );
+		points[current_point_idx] = v2{ x,y };
+		++current_point_idx;
+	}
+	con_assert( current_point_idx == points_per_quarter_count );
+
+	// Generate the upper-right quarter by mirroring by the Y axis (negate the x's)
+	// We have to do this in reverse order.
+	for ( s32 i = points_per_quarter_count-1; i >= 0; --i ) {
+		points[current_point_idx].x = -points[i].x;
+		points[current_point_idx].y = points[i].y;
+
+		++current_point_idx;
+	}
+	con_assert( current_point_idx == points_per_quarter_count * 2 );
+
+	// Generate the bottom half by mirroring by the X axis (negate the y's)
+	for ( s32 i = 0; i < points_per_quarter_count * 2; ++i ) {
+		points[current_point_idx].x = points[i].x;
+		points[current_point_idx].y = -points[i].y;
+
+		++current_point_idx;
+	}
+	con_assert( current_point_idx == points_count - 1 );
+
+	// And the last step: connect beginning with end.
+	points[points_count-1] = points[0];
+	static bool dumped = false;
+	if ( !dumped ) {
+		con_log( "================" );
+		for ( s32 i = 0; i < points_count; ++i ) {
+			con_log( "(%,%)", points[i].x, points[i].y );
+		}
+		con_log( "================" );
+		dumped = true;
+	}
+
+	//
+	// Set up GL stuff.
+	//
+	Render_Info render_info;
+
+	glGenVertexArrays( 1, &render_info.vao );
+	glGenBuffers( 1, &render_info.vbo );
+
+	glBindVertexArray( render_info.vao );
+
+	glBindBuffer( GL_ARRAY_BUFFER, render_info.vbo );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( Position_Vertex2D )* points_count, points.data(), GL_STATIC_DRAW );
+
+	// position 
+	glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+	glEnableVertexAttribArray( 0 );
+
+	render_info.render_type = Render_Type::Draw_Arrays;
+	render_info.draw_arrays_info.mode = GL_LINE_STRIP;
+	render_info.draw_arrays_info.vertices_count = points_count;
+
+	glBindVertexArray( 0 );
+
+	return render_info;
+}
+
+void shutdown_ellipse( Render_Info const& render_info )
 {
 	glDeleteVertexArrays( 1, &render_info.vao );
 	glDeleteBuffers( 1, &render_info.vbo );

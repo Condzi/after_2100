@@ -5,11 +5,26 @@
 
 namespace con
 {
+enum class Render_Type : s8
+{
+	Draw_Elements,
+	Draw_Arrays
+};
+
+struct Drawing_Group final
+{
+	enum _ :s16
+	{
+		Default = 0,
+		Ellipse = 1
+	};
+};
+
 struct Render_Info final
 {
 //	mat4 combined_matrix; // projection_mat * view_mat * model_mat
 	mat4 model_mat{ 1.0f };
-
+	
 	gl_id vao = 0;
 	gl_id vbo = 0;
 	gl_id ebo = 0;
@@ -20,13 +35,19 @@ struct Render_Info final
 	s16 drawing_layer = 0;
 	s16 drawing_group = 0;
 
-	// Pass to glDrawElements
-	// @ToDo: Better rendering support.
-	// We may want to draw vertices, not elements (see: instanciated rendering, particles rendering
-	// or just text rendering). Therefore we may want to use an union to hold also `s16 vertices_count` and an `bool render_elements` (or maybe enum?). If true, render as
-	// sprites -- using glDrawElements, if false - draw "traditional" way, glDrawArrays or
-	// however was that thing called.
-	s8 elements_count = -1;
+	Render_Type render_type = Render_Type::Draw_Elements;
+	union
+	{
+		// Maybe ebo should be stored here too?
+		// Pass to glDrawElements
+		s8 elements_count = -1;
+
+		struct
+		{
+			s16 vertices_count;
+			gl_id mode;
+		} draw_arrays_info;
+	};
 
 	bool visible = true;
 };

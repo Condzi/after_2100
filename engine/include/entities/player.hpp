@@ -12,6 +12,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <entities/planet.hpp>
+#include <entities/debug_entity.hpp>
 
 // min/max
 #include <algorithm>
@@ -32,7 +33,7 @@ struct Player final
 
 		render_info = construct_textured_sprite( 48, 48 );
 		render_info.texture = texture;
-		render_info.shader = shader;
+		render_info.shader  = shader;
 
 		//	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
@@ -53,8 +54,12 @@ struct Player final
 		con_assert( starting_planet_entity_find_result.found() );
 
 		origin_planet = em.by_type.planet[starting_planet_entity_find_result.idx]->get_planet_info();
+
+		debug_entity = Context.entity_manager->spawn_entity<Debug_Entity>();
 	}
 
+	// We use the debug entity for drawig the ellipse.
+	Debug_Entity* debug_entity = nullptr;
 
 	void shutdown()
 	{
@@ -85,6 +90,9 @@ struct Player final
 							 B>A ? ( origin_y + F ) : origin_y );
 
 		constant distance_between_planet_and_player = glm::distance( position, origin_planet.position );
+
+		// @ToDo: update with the SHIFT value only when orbit changes!
+		debug_entity->update_ellipse( orbit_x, orbit_y, SHIFT );
 
 		// G * Mass of the planet
 		compile_constant magic_multiplier = 100;

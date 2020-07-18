@@ -1,5 +1,6 @@
 #include <engine/prepared_resources.hpp>
 #include <engine/algorithms.hpp>
+#include <engine/logger.hpp>
 
 namespace con
 {
@@ -14,6 +15,8 @@ returning Prepared_Resources::get_texture( Hashed_CString name ) -> Texture
 	if ( result.found() ) {
 		return textures[result.idx];
 	} else {
+		con_log_indented( 1, "Error: texture of hash % not found!", name.hash );
+
 		return fallback_texture;
 	}
 }
@@ -28,6 +31,7 @@ returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 	if ( result.found() ) {
 		return shaders[result.idx];
 	} else {
+		con_log_indented( 1, "Error: shader of hash % not found!", name.hash );
 		return fallback_shader;
 	}
 }

@@ -12,6 +12,7 @@ namespace con
 // Entity Types forward declarations with type enum.
 //
 
+struct Debug_Entity;
 struct Player;
 struct Planet;
 
@@ -33,6 +34,7 @@ struct Entity_Manager final
 		// Only one in entire game, so we let ourself have it like that.
 		Player* player = nullptr;
 
+		Array<Debug_Entity*> debug_entity;
 		Array<Planet*> planet;
 	} by_type;
 
@@ -51,6 +53,7 @@ struct Entity_Manager final
 	// new scene.
 
 private:
+	returning create_debug_entity() -> Debug_Entity*;
 	returning create_player() -> Player*;
 	returning create_planet( Planet_Resource_Data const& planet_resource_data ) -> Planet*;
 };
@@ -67,7 +70,9 @@ returning Entity_Manager::spawn_entity( TArgs&& ...args ) -> T*
 		return create_player();
 	} else if constexpr ( std::is_same_v<T, Planet> ) {
 		return create_planet( std::forward<TArgs>( args )... );
-	} else {
+	} else if constexpr ( std::is_same_v<T, Debug_Entity> ) {
+		return create_debug_entity();
+	} else  {
 		static_assert( false, "Unsupported entity type!" );
 	}
 }

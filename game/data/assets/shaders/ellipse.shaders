@@ -1,0 +1,19 @@
+#ifdef VERTEX_SHADER
+layout (location=0) in vec2 l_position;
+
+uniform mat4 u_mvp_mat; // projection * view * model
+
+void main()
+{
+	gl_Position = u_mvp_mat * vec4( l_position, 0.1f, 1.0f );
+}
+#endif
+
+#ifdef FRAGMENT_SHADER
+out vec4 color;
+
+void main()
+{
+    color = vec4( 50.0 / 255, 168.0 / 255, 82.0 / 255, 1);
+}
+#endif

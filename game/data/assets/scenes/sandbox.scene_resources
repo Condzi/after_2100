@@ -2,8 +2,8 @@
 :/textures
     planet_earth 
 
-# :/shaders
-# sprite_default
+:/shaders
+    ellipse
 
 :/planets
     starting_planet planet_earth

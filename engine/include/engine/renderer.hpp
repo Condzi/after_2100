@@ -12,6 +12,12 @@ struct Textured_Vertex2D final
 	v2 texture_point;
 };
 
+// For debug geometry. Use with Render_Type::Draw_Arrays
+struct Position_Vertex2D final
+{
+	v2 position;
+};
+
 //
 // Quads have vertices in the following order:
 //
@@ -84,4 +90,9 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info;
 // Just deletes vertex array and vertex buffer.
 void shutdown_textured_sprite( Render_Info const& render_info );
+
+// Creates a render info set up for rendering a basic ellipse of given
+// dimensions. Don't forget to set the correct shader!
+returning construct_ellipse( f32 half_horizontal_axis, f32 half_vertical_axis ) -> Render_Info;
+void shutdown_ellipse( Render_Info const& render_info );
 }
