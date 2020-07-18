@@ -314,19 +314,6 @@ returning construct_ellipse( f32 horizontal_axis, f32 vertical_axis ) -> Render_
 	}
 	con_assert( current_point_idx == points_count );
 
-	// And the last step: connect beginning with end.
-	//points[points_count-1] = points[0];
-
-	static bool dumped = false;
-	if ( !dumped ) {
-		con_log( "================" );
-		for ( s32 i = 0; i < points_count; ++i ) {
-			con_log( "(%,%)", points[i].x, points[i].y );
-		}
-		con_log( "================" );
-		dumped = true;
-	}
-
 	//
 	// Set up GL stuff.
 	//

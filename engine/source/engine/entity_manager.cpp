@@ -62,6 +62,12 @@ void Entity_Manager::physic_update( f32 ups )
 void Entity_Manager::frame_update( f32 dt )
 {
 	//
+	// Call frame update.
+	//
+
+	by_type.player->frame_update( dt );
+
+	//
 	// Update matrices if necessary.
 	//
 
@@ -91,12 +97,6 @@ void Entity_Manager::frame_update( f32 dt )
 		}
 
 	}
-
-	//
-	// Call frame update.
-	//
-
-	by_type.player->frame_update( dt );
 }
 
 returning Entity_Manager::create_debug_entity() -> Debug_Entity*

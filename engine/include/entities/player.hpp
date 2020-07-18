@@ -56,6 +56,7 @@ struct Player final
 		origin_planet = em.by_type.planet[starting_planet_entity_find_result.idx]->get_planet_info();
 
 		debug_entity = Context.entity_manager->spawn_entity<Debug_Entity>();
+		update_orbit();
 	}
 
 	// We use the debug entity for drawig the ellipse.
@@ -75,9 +76,10 @@ struct Player final
 	f32 orbit_y = 164;
 	compile_constant orbit_change_delta = 50.0f;
 
-	void physic_update( f32 ups )
+	v2 shift ={ 0,0 };
+
+	void update_orbit()
 	{
-		auto& position = _hot.position;
 		constant& origin_x = origin_planet.position.x;
 		constant& origin_y = origin_planet.position.y;
 
@@ -86,13 +88,19 @@ struct Player final
 
 		constant F = sqrtf( fabs( A*A - B*B ) );
 		// We have to keep track of the correct major axis of the ellipse!
-		constant SHIFT = v2( A>B ? ( origin_x + F ) : origin_x, 
-							 B>A ? ( origin_y + F ) : origin_y );
-
-		constant distance_between_planet_and_player = glm::distance( position, origin_planet.position );
+		shift = v2( A>B ? ( origin_x + F ) : origin_x,
+					B>A ? ( origin_y + F ) : origin_y );
 
 		// @ToDo: update with the SHIFT value only when orbit changes!
-		debug_entity->update_ellipse( orbit_x, orbit_y, SHIFT );
+		debug_entity->update_ellipse( orbit_x, orbit_y, shift );
+	}
+
+	void physic_update( f32 ups )
+	{
+		auto& position = _hot.position;
+
+
+		constant distance_between_planet_and_player = glm::distance( position, origin_planet.position );
 
 		// G * Mass of the planet
 		compile_constant magic_multiplier = 100;
@@ -106,8 +114,11 @@ struct Player final
 		}
 
 
-		position.x = A * cosf( theta ) + SHIFT.x;
-		position.y = B * sinf( theta ) + SHIFT.y;
+		constant A = orbit_x;
+		constant B = orbit_y;
+
+		position.x = A * cosf( theta ) + shift.x;
+		position.y = B * sinf( theta ) + shift.y;
 	}
 
 	void frame_update( f32 dt )
@@ -122,21 +133,29 @@ struct Player final
 		_hot.rotation_z = angle + PI_correction;
 
 		constant change = orbit_change_delta * dt;
+		v2 orbit_delta{ 0,0 };
 
 		if ( Context.input->is_key_held( "X+"_hcs ) ) {
-			orbit_x += change;
+			orbit_delta.x += change;
 		}
 
 		if ( Context.input->is_key_held( "X-"_hcs ) ) {
-			orbit_x -= change;
+			orbit_delta.x -= change;
 		}
 
 		if ( Context.input->is_key_held( "Y+"_hcs ) ) {
-			orbit_y += change;
+			orbit_delta.y += change;
 		}
 
 		if ( Context.input->is_key_held( "Y-"_hcs ) ) {
-			orbit_y -= change;
+			orbit_delta.y -= change;
+		}
+
+		if ( orbit_delta.x != 0 || orbit_delta.y != 0 ) {
+			orbit_x += orbit_delta.x;
+			orbit_y += orbit_delta.y;
+
+			update_orbit();
 		}
 
 		_hot.update_model_matrix = true;

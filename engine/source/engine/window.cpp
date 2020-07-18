@@ -126,6 +126,11 @@ void Window::initialize()
 		unused( length );
 		unused( user_param );
 
+		// I just couldn't get glDebugMessage to work.
+		if ( id == 131185 ) {
+			return;
+		}
+
 		CString const source_str = [&source] {
 			switch ( source ) {
 			case GL_DEBUG_SOURCE_API:
@@ -199,8 +204,12 @@ void Window::initialize()
 		con_log( " OGL [% / % / % / %]: \"%\".", id, severity_str, source_str, type_str, cstring_from_cstr( message ) );
 	}, nullptr );
 
-	GLuint const* const disabled_messages{ nullptr }; // array of ids of messages to disable
-	glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, disabled_messages, true );
+	// DOESNT FREAKIN WORK!!!
+	// 131185 - something about using video card memory for a buffer
+	/*
+	GLuint const disabled_messages[] ={ 131185 }; // array of ids of messages to disable
+	glDebugMessageControl( GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 1, disabled_messages, GL_FALSE );
+	*/
 }
 
 void Window::shutdown()
