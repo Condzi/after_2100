@@ -50,13 +50,12 @@ void Window::initialize()
 	glfwWindowHint( GLFW_CENTER_CURSOR, GL_FALSE );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, gl_major );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, gl_minor );
+	glfwWindowHint( GLFW_DOUBLEBUFFER, GL_TRUE );
 
-	if ( vsync ) {
-		glfwWindowHint( GLFW_DOUBLEBUFFER, GL_TRUE );
-	} else {
-		glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
+	if ( !vsync ) {
+	//	glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
 		if ( frame_cap > 0 ) {
-			con_log_indented( 2, "Frame cap is not implemented yet!!" );
+			con_log_indented( 2, "Warning: frame cap is not implemented yet!!" );
 		}
 	}
 

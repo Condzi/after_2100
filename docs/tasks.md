@@ -1,6 +1,5 @@
 # **Current Tasks**
-* ellipse drawing (for trajectories)
-    * this will require some renderer work
+* Code cleanup / maintnance.
 * maneuvering / changing trajectory using WSAD
 
 * default allocator unit test
