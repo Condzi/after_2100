@@ -28,6 +28,8 @@ struct Player final
 	compile_constant planet_radius = 64.0f;
 	compile_constant G = 6.67e-11f;
 
+	compile_constant acceleration_force = 30.0f;
+
 	void initialize()
 	{
 		auto& resources  = *Context.prepared_resources;
@@ -42,11 +44,7 @@ struct Player final
 
 		//	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-		Context.input->add_binding( "X+"_hcs, con::Key::Keyboard_D );
-		Context.input->add_binding( "X-"_hcs, con::Key::Keyboard_A );
-
-		Context.input->add_binding( "Y+"_hcs, con::Key::Keyboard_S );
-		Context.input->add_binding( "Y-"_hcs, con::Key::Keyboard_W );
+		Context.input->add_binding( "acceleration"_hcs, Key::Keyboard_SPACE );
 
 		constant starting_planet_hash = resources.get_starting_planet_hash();
 		auto& em = *Context.entity_manager;
@@ -103,6 +101,16 @@ struct Player final
 
 		constant angle = atan2f( pos.y - mouse_position.y, pos.x - mouse_position.x );
 		_hot.rotation_z = angle + PI_correction;
+
+		// This shouldn't be calculated / added here, but in the fixed_update instead.
+		if ( Context.input->is_key_held( "acceleration"_hcs ) ) {
+			constant vector = mouse_position - pos;
+			constant direction = glm::normalize( vector );
+			constant force_v2 = direction * acceleration_force;
+			constant velocity = force_v2 / player_mass;
+
+			_hot.velocity += velocity * dt;
+		}
 
 		_hot.update_model_matrix = true;
 	}
