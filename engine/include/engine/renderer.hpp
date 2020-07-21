@@ -90,9 +90,4 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info;
 // Just deletes vertex array and vertex buffer.
 void shutdown_textured_sprite( Render_Info const& render_info );
-
-// Creates a render info set up for rendering a basic ellipse of given
-// dimensions. Don't forget to set the correct shader!
-returning construct_ellipse( f32 half_horizontal_axis, f32 half_vertical_axis ) -> Render_Info;
-void shutdown_ellipse( Render_Info const& render_info );
 }
