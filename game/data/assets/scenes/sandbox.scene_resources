@@ -3,8 +3,8 @@
     planet_earth 
 
 :/shaders
-    ellipse
+    primitive
 
 :/planets
     starting_planet planet_earth
-    planet_earth 720 360
+    planet_earth 680 380
