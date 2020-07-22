@@ -9,13 +9,14 @@
 #include <engine/assert.hpp>
 #include <engine/cstring.hpp>
 
+// We close window on failed assertion.
+#include <engine/window.hpp>
+#include <engine/context.hpp>
+
+#include <engine/logger.hpp>
+
 namespace con::priv
 {
-file_scope
-{
-static char assert_message_buffer[CON_ASSERT_MESSAGE_BUFFER_SIZE] = { 0 };
-}
-
 bool on_assert_fail( char const* const file, char const* const line, char const* const function_name, char const* const condition )
 {
 	// Cutting off the whole "D:/dev/after2100/" (or other, that may be different
@@ -24,45 +25,48 @@ bool on_assert_fail( char const* const file, char const* const line, char const*
 	// we don't change.
 	compile_constant skip_file_chars = CString{ __FILE__ }.size - CString{ "engine/source/engine/assert.cpp" }.size;
 
-	if ( IsDebuggerPresent() ) {
-		constant chars_written = std::snprintf( assert_message_buffer, CON_ASSERT_MESSAGE_BUFFER_SIZE, R"(
+	Context.window->close();
+	Context.exit_flags.requested_by_app = true;
+
+	compile_constant message_format = CString{ R"(
 === === === === === === === === === ===
 			Assertion failed!
 
-	"%s":%s, %s
-	"%s"
-=== === === === === === === === === === 
-)", file + skip_file_chars, line, function_name, condition );
+	Location:  "%", line %
+	Function:  %
+	Condition: "%"
+=== === === === === === === === === ===
+)"};
 
-		release_con_assert( chars_written < CON_ASSERT_MESSAGE_BUFFER_SIZE );
-		release_con_assert( chars_written > 0 );
+	constant message_to_print = sprint( message_format, cstring_from_cstr( file + skip_file_chars ), cstring_from_cstr( line ), cstring_from_cstr( function_name ), cstring_from_cstr( condition ) );
 
-		OutputDebugStringA( assert_message_buffer );
+	con_log( "\n%\n", message_to_print );
+
+	constant message_to_print_null_terminated = sprint( "%\0", message_to_print );
+
+	if ( IsDebuggerPresent() ) {
+		OutputDebugStringA( message_to_print_null_terminated.data );
 
 		__debugbreak();
 	} else {
-		constant chars_written = std::snprintf( assert_message_buffer, CON_ASSERT_MESSAGE_BUFFER_SIZE, R"(
+		compile_constant non_debugger_message_format = CString{ R"(
 Please, take a screenshot of this dialog box and send it to the devs. Also, please save the log file which you can find in:
-"<game directory>\%s" folder.
+"<game directory>\%" folder.
 Thank you!
 
 ===== Debug info =====
-"%s":%s, %s
-"%s"
-)", CON_LOGS_FOLDER, file + skip_file_chars, function_name, line, condition );
-
-		// Bad idea?
-		release_con_assert( chars_written < CON_ASSERT_MESSAGE_BUFFER_SIZE );
-		release_con_assert( chars_written > 0 );
+Location:  "%", line %
+Function:  %
+Condition: "%"
+)" "\0" };
+		constant non_debugger_message_to_print = sprint( non_debugger_message_format, CString{ CON_LOGS_FOLDER },  cstring_from_cstr( file + skip_file_chars ), cstring_from_cstr( line ), cstring_from_cstr( function_name ), cstring_from_cstr( condition ) );
 
 		MessageBoxA(
 			NULL,
-			assert_message_buffer,
+			non_debugger_message_to_print.data,
 			"Serious Game Error!",
 			MB_TOPMOST | MB_ICONERROR | MB_OK
 		);
-
-		std::exit( EXIT_FAILURE );
 	}
 
 	return true;
@@ -70,46 +74,46 @@ Thank you!
 
 void on_glfw_error( s32 error_code, char const* message )
 {
-	if ( IsDebuggerPresent() ) {
-		constant chars_written = std::snprintf( assert_message_buffer, CON_ASSERT_MESSAGE_BUFFER_SIZE, R"(
+	Context.window->close();
+	Context.exit_flags.requested_by_app = true;
+
+	compile_constant message_format = CString{ R"(
 === === === === === === === === === ===
 			GLFW Error!
 	
-	Error code: %i
-	"%s"
+	Error code: %
+	"%"
 === === === === === === === === === === 
-)", error_code, message );
+)" };
 
-		release_con_assert( chars_written < CON_ASSERT_MESSAGE_BUFFER_SIZE );
-		release_con_assert( chars_written > 0 );
+	constant message_to_print = sprint( message_format, error_code, cstring_from_cstr( message ) );
 
-		OutputDebugStringA( assert_message_buffer );
+	con_log( "\n%\n", message_to_print );
+	
+	if ( IsDebuggerPresent() ) {
+		constant message_to_print_null_terminated = sprint( "%\0", message_to_print );
+		OutputDebugStringA( message_to_print_null_terminated.data );
 
 		__debugbreak();
 	} else {
-		constant chars_written = std::snprintf( assert_message_buffer, CON_ASSERT_MESSAGE_BUFFER_SIZE, R"(
+		compile_constant non_debbuger_message_format = CString{ R"(
 Please, take a screenshot of this dialog box and send it to the devs. Also, please save the log file which you can find in: 
 "<game directory>\%s" folder.
 Thank you!
 
 ===== Debug info =====
 GLFW Error!
-Error code: %i
-"%s"
-)", CON_LOGS_FOLDER, error_code, message );
-
-		// Bad idea?
-		release_con_assert( chars_written < CON_ASSERT_MESSAGE_BUFFER_SIZE );
-		release_con_assert( chars_written > 0 );
+Error code: %
+"%"
+)" "\0" };
+		constant non_debbuger_message_to_print = sprint( non_debbuger_message_format, CString{ CON_LOGS_FOLDER }, error_code, cstring_from_cstr( message ) );
 
 		MessageBoxA(
 			NULL,
-			assert_message_buffer,
+			non_debbuger_message_to_print.data,
 			"Serious Game Error!",
 			MB_TOPMOST | MB_ICONERROR | MB_OK
 		);
-
-		std::exit( EXIT_FAILURE );
 	}
 }
 }

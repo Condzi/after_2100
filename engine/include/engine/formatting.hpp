@@ -77,7 +77,7 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 		{
 			s32 current_arg{ -1 };
 			( void( str_args[++current_arg] = T_to_cstring( args ) ), ... );
-			con_assert( current_arg == args_count - 1 );
+			assert( current_arg == args_count - 1 );
 		}
 
 		constant final_string_size = [&] {
@@ -103,7 +103,7 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 			}
 		}
 
-		con_assert( fs_it == final_string_size );
+		assert( fs_it == final_string_size );
 
 		return { final_string_buffer, final_string_size };
 	}
@@ -158,7 +158,7 @@ returning sscan( CString format, CString str, TArgs& ...args ) -> bool
 		}
 
 		// Fail if character that differenciate is not a %.
-		con_assert( format.data[i] == '%' );
+		assert( format.data[i] == '%' );
 		if ( format.data[i] != '%' ) {
 			return false;
 		}
@@ -175,7 +175,7 @@ returning sscan( CString format, CString str, TArgs& ...args ) -> bool
 	}
 
 	// We haven't found all of the arguments.
-	con_assert( current_arg == args_count );
+	assert( current_arg == args_count );
 
 	current_arg = -1; // -1 because folding expressions.
 

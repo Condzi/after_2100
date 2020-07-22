@@ -19,6 +19,7 @@ returning Application::initialize() -> bool
 	Context.input = &input;
 	Context.prepared_resources = &prepared_resources;
 	Context.renderer = &renderer;
+	Context.window = &window;
 
 	default_allocator.initialize();
 	temporary_allocator.initialize();

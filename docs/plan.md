@@ -120,8 +120,11 @@ struct GL_Resource
         * vertex size (we may use 3D positioning system for ships, but usually we just want 2D. We may also want to use texture without tint/coloring.)
         * drawing layer
         * drawing group? (GUI, Debug Console, Game, Menu...?) depending on that we order the draw calls
+            * Also, the GUI, Menu and Debug Console shouldn't use the camera matrix, so it's usefull to have it in the different group.
         * texture id (not the OpenGL one)
         * compiled shader id (not the OpenGL one, we may want to hotload it)
+        * drawing type -- is it element draw call, or array one?
+        * drawing arrays info (vertices count and type)
     * Camera stuff
         * following a certain path
         * shakes
@@ -156,11 +159,14 @@ struct GL_Resource
     * Add plotting to graph at runtime (like jblow's Sokoban)
         * render using `GL_LINES` and update every 1ms, with a scanline sortof thing
     * Just profile few important functions to not affect performance
+    * Dump data at the end of every frame, like the logger does. This way we don't do file output all the time.
 ----
 * **Collisions**
     * store collision info (about what collided with what) in global array which will be updated every frame. The collision detection should also happen somewhere at the end of the upated of the entities, so we won't be making weird situations. (*frame start **->** update entities **->** delete old collision info **->** check collisions **->** frame end **->** frame start **->** ...*)
 ----
 * **Planets**
+    * should have a sphere of influence (path conics theory)
+    * we should also define it's mass in not multiplied value. For example if we define it as `2.24`, in game it is `2.24e15` or something like that.
     * are described by a `planets.variables` kind of file
     * we can compose levels/scenes using them like this:
     ```
@@ -178,6 +184,15 @@ struct GL_Resource
     # debatable
     particles particle_a 100
     ```
+----
+* **Gameplay**
+    * One, giant map with several different sized planets (in opposite to the level based approach where we had 2-3 planets in each level)
+        * This approach also gives us more possibilities for complicated behavior.
+        * **However**, distances between planets in the solar system would've been smaller. The initial approach of condensed celestial bodies seems to be better?
+    * Enemies should have recorded movement? Since it'd be hard to program. The planet movement won't change, so if we just record me playing as the enemy and then playing it back in the game, it'd be nice! 
+        * Serialize initial position, starting time and velocity. Then we just have to save firing time and direction. This is all the data we really need to do AI behavior.
+        * **BUT** what about fighting? How should they approach the player? Maybe the puzzle of getting to the right place is sufficient enough, we don't have to fight with them? This seem to be a story problem which we need to solve.
+
 ----
 **Bother with this later:**
 * Art

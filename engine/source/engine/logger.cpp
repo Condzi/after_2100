@@ -1,5 +1,8 @@
 #include <engine/logger.hpp>
 
+// We don't use con_assert because con_assert uses logger too.
+#include <cassert>
+
 namespace con
 {
 void Logger::initialize()
@@ -16,7 +19,7 @@ void Logger::shutdown()
 
 void Logger::log( CString message, s32 indent )
 {
-	con_assert( next_free_slot + message.size + indent < end );
+	assert( next_free_slot + message.size + indent < end );
 
 	for ( s32 i = 0; i < indent; ++i ) {
 		*next_free_slot = '\t';
@@ -40,7 +43,7 @@ returning Logger::get_buffer() const -> CString
 	}
 
 	// We're adding \0 for C's puts at the end, so we need an extra space.
-	release_con_assert( messages_size + 1 < buffer_size );
+	assert( messages_size + 1 < buffer_size );
 	*next_free_slot = '\0';
 	return { begin, messages_size };
 }
