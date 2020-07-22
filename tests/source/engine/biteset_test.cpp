@@ -28,7 +28,7 @@ TEST_CASE( "bitset", "engine" )
 
 		REQUIRE( bitset.find_first_unset_bit().idx == 1 );
 		REQUIRE( bitset.find_first_unset_bit( 17 ).idx == 18 );
-		REQUIRE( bitset.find_first_unset_bit( bitset_count - 1 ).found() == false );
+		REQUIRE( bitset.find_first_unset_bit( bitset_count - 1 ).not_found() == true );
 	}
 
 	// Flip 1st, 17th and last bit (so we should have clear bitset now)

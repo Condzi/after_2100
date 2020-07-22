@@ -301,7 +301,7 @@ void Resource_Loader::initialize()
 
 			constant result = linear_find( name_hashes.textures, current_texture.name_hash );
 
-			if ( !result.found() ) {
+			if ( result.not_found() ) {
 				con_log_indented( 2, "Error: can't find texture (hash %, i = %).", current_texture.name_hash, i );
 				continue;
 			}
@@ -340,7 +340,7 @@ void Resource_Loader::initialize()
 
 			constant result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
-			if ( !result.found() ) {
+			if ( result.not_found() ) {
 				con_log_indented( 2, "Error: can't find shader (hash %, i = %).", current_shader.name_hash, i );
 				continue;
 			}
@@ -474,7 +474,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		constant scene_name_hash = hash_cstring( scene_name );
 
 		constant result = linear_find( scene_folder_content.hashes, scene_name_hash );
-		if ( !result.found() ) {
+		if ( result.not_found() ) {
 			con_log_indented( 1, R"(Error: can't find resource file for scene "%". Is name correct?)", scene_name );
 			return false;
 		}
@@ -552,7 +552,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			// Check if we have this name hash in our table.
 			constant is_present_search_result = linear_find( name_hashes.textures, current_texture.name_hash );
 
-			if ( !is_present_search_result.found() ) {
+			if ( is_present_search_result.not_found() ) {
 				// @ToDo: if we request a texture that isn't loaded we should just return the fallback texture tbh.
 				/*
 				data = generate_sized_fallback_texture( CON_FALLBACK_TEXTURE_SIZE *		CON_FALLBACK_TEXTURE_SIZE );
@@ -645,7 +645,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 			constant is_present_search_result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
-			if ( !is_present_search_result.found() ) {
+			if ( is_present_search_result.not_found() ) {
 				con_log_indented( 2, "Error: can't find shader (hash %, idx_in_r_shaders = %).", current_shader.name_hash, idx_in_r_shaders );
 
 				++idx_in_r_shaders;
@@ -707,7 +707,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 		constant planet_find_result = linear_find( name_hashes.planets, planet_name_hash );
 
-		if ( planet_find_result.found() == false ) {
+		if ( planet_find_result.not_found() ) {
 			con_log_indented( 2, "Error: planet not found. (i = %, planet_name_hash = %)", i, planet_name_hash );
 			continue;
 		}

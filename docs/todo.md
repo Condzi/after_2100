@@ -1,7 +1,4 @@
 # **Important**
-* add text rendering
-    * add ttf font
-        * lookup SFML (and other) implementation
 * add developer console (text printing and scrolling only for now)
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
 * Bitset could have u32 as base type, this would greatly simplify it's code and MSVC intrinsics usage.
@@ -9,6 +6,7 @@
 
 # **Quality of life**
 
+* log the hardware info (RAM, max texture size, this kind of stuff)
 * add support for const char* const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`
     * well, actually if we don't do it like that we lose compile time knowledge of the size. We can only do this: `FOO ""_cs` 
 * do a debug console (without editing for now, just one color messages + scrolling)

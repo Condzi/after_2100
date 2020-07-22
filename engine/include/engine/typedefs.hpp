@@ -90,6 +90,11 @@ struct Find_Result final
 	{
 		return idx >= 0;
 	}
+
+	returning not_found() const -> bool
+	{
+		return idx < 0;
+	}
 };
 
 }
