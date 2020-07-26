@@ -12,6 +12,7 @@ struct Entity_Type final
 	enum _ : s16
 	{
 		Debug_Entity,
+		Font_Test, // remove later
 		Player,
 		Planet
 	};

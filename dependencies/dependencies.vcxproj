@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="include\glm\detail\glm.cpp" />
     <ClCompile Include="source\glad\glad.c" />
+    <ClCompile Include="source\schrift\schrift.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\catch\catch.hpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="include\glm\vec4.hpp" />
     <ClInclude Include="include\glm\vector_relational.hpp" />
     <ClInclude Include="include\KHR\khrplatform.h" />
+    <ClInclude Include="include\schrift\schrift.h" />
     <ClInclude Include="include\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
