@@ -13,6 +13,7 @@ namespace con
 //
 
 struct Debug_Entity;
+struct Font_Test;
 struct Player;
 struct Planet;
 
@@ -33,6 +34,7 @@ struct Entity_Manager final
 
 		// Only one in entire game, so we let ourself have it like that.
 		Player* player = nullptr;
+		Font_Test* font_test = nullptr;
 
 		Array<Debug_Entity*> debug_entity;
 		Array<Planet*> planet;
@@ -54,6 +56,7 @@ struct Entity_Manager final
 
 private:
 	returning create_debug_entity() -> Debug_Entity*;
+	returning create_font_test() -> Font_Test*;
 	returning create_player() -> Player*;
 	returning create_planet( Planet_Resource_Data const& planet_resource_data ) -> Planet*;
 };
@@ -72,7 +75,9 @@ returning Entity_Manager::spawn_entity( TArgs&& ...args ) -> T*
 		return create_planet( std::forward<TArgs>( args )... );
 	} else if constexpr ( std::is_same_v<T, Debug_Entity> ) {
 		return create_debug_entity();
-	} else  {
+	} else if constexpr ( std::is_same_v<T, Font_Test> ) {
+		return create_font_test();
+	} else {
 		static_assert( false, "Unsupported entity type!" );
 	}
 }
