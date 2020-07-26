@@ -98,6 +98,10 @@ void Window::initialize()
 	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) != 0 );
 	con_log_indented( 2, "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
 
+	
+	glGetIntegerv( GL_MAX_TEXTURE_SIZE, &Context.machine_info.max_texture_size );
+	con_log_indented( 2, "Max texture size: %x%", Context.machine_info.max_texture_size, Context.machine_info.max_texture_size );
+
 	if ( vsync ) {
 		glfwSwapInterval( 1 );
 	} else {
@@ -122,85 +126,45 @@ void Window::initialize()
 	glEnable( GL_DEBUG_OUTPUT_SYNCHRONOUS );
 
 	glDebugMessageCallback( []( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param ) {
-		unused( length );
 		unused( user_param );
+		unused( severity );
+		unused( source );
 
 		// I just couldn't get glDebugMessage to work.
 		if ( id == 131185 ) {
 			return;
 		}
 
-		CString const source_str = [&source] {
-			switch ( source ) {
-			case GL_DEBUG_SOURCE_API:
-			return "API"_cs;
-
-			case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-			return "WINDOW SYSTEM"_cs;
-
-			case GL_DEBUG_SOURCE_SHADER_COMPILER:
-			return "SHADER COMPILER"_cs;
-
-			case GL_DEBUG_SOURCE_THIRD_PARTY:
-			return "THIRD PARTY"_cs;
-
-			case GL_DEBUG_SOURCE_APPLICATION:
-			return "APPLICATION"_cs;
-
-			case GL_DEBUG_SOURCE_OTHER:
-			default:
-			return "UNKNOWN"_cs;
-			}
-		}( );
-
+		
 		CString const type_str = [&type] {
 			switch ( type ) {
 			case GL_DEBUG_TYPE_PERFORMANCE:
 			return "PERFORMANCE"_cs;
 
 			case GL_DEBUG_TYPE_OTHER:
-			return "OTHER"_cs;
+			return "OTHER      "_cs;
 
 			case GL_DEBUG_TYPE_MARKER:
-			return "MARKER"_cs;
+			return "MARKER     "_cs;
 
 			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-			return "DEPRECATED BEHAVIOR"_cs;
+			return "DEPRECATED "_cs;
 
 			case GL_DEBUG_TYPE_PORTABILITY:
 			return "PORTABILITY"_cs;
 
 			case GL_DEBUG_TYPE_ERROR:
-			return "ERROR"_cs;
+			return "ERROR      "_cs;
 
 			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-			return "UDEFINED BEHAVIOR"_cs;
+			return "U.B.       "_cs;
 
 			default:
-			return "UNKNOWN"_cs;
+			return "UNKNOWN    "_cs;
 			}
 		} ( );
 
-		CString const severity_str = [severity] {
-			switch ( severity ) {
-			case GL_DEBUG_SEVERITY_HIGH:
-			return "HIGH"_cs;
-
-			case GL_DEBUG_SEVERITY_MEDIUM:
-			return "MEDIUM"_cs;
-
-			case GL_DEBUG_SEVERITY_LOW:
-			return "LOW"_cs;
-
-			case GL_DEBUG_SEVERITY_NOTIFICATION:
-			return "NOTIFICATION"_cs;
-
-			default:
-			return "UNKNOWN"_cs;
-			}
-		}( );
-
-		con_log( " OGL [% / % / % / %]: \"%\".", id, severity_str, source_str, type_str, cstring_from_cstr( message ) );
+		con_log( "[OpenGL : %][%]: \"%\".", id, type_str, CString{ message, length } );
 	}, nullptr );
 
 	// DOESNT FREAKIN WORK!!!

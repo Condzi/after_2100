@@ -46,7 +46,7 @@ static void* con_realloc( void* ptr, int old_size, int new_size )
 namespace con
 {
 // 
-// This fuctions allocate their data using temporary allocator!
+// This functions allocate their data using temporary allocator!
 //
 file_scope
 {

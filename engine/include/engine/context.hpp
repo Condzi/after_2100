@@ -37,6 +37,11 @@ struct Context_Data final
 		bool requested_by_user = false;
 		bool requested_by_app  = false;
 	} exit_flags;
+
+	struct
+	{
+		s32 max_texture_size = -1;
+	} machine_info;
 };
 
 struct Context_Helper final

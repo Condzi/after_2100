@@ -9,8 +9,8 @@
 //
 extern "C"
 {
-	__declspec( dllexport ) con::u32 AmdPowerXpressRequestHighPerformance = 1;
-	__declspec( dllexport ) con::u32 NvOptimusEnablement = 1;
+	__declspec( dllexport ) con::u32 AmdPowerXpressRequestHighPerformance = CON_REQUEST_DEDICATED_GPU ? 1 : 0;
+	__declspec( dllexport ) con::u32 NvOptimusEnablement = CON_REQUEST_DEDICATED_GPU ? 1 : 0;
 }
 
 //
