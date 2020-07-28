@@ -16,7 +16,8 @@ struct Drawing_Group final
 	enum _ :s16
 	{
 		Default = 0,
-		Ellipse = 1
+		Ellipse = 1, // Do we use it?
+		GUI     = 3
 	};
 };
 

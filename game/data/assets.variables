@@ -12,3 +12,4 @@
     sprite_default sprite_default.shaders
     sprite_tinted  sprite_tinted.shaders
     primitive      primitive.shaders
+    text           text.shaders

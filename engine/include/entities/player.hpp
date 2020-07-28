@@ -51,7 +51,7 @@ struct Player final
 		auto& em = *Context.entity_manager;
 
 		// @ToDo: remove me
-		em.spawn_entity<Font_Test>();
+	//	em.spawn_entity<Font_Test>();
 
 		constant starting_planet_entity_find_result = linear_find_if( em.by_type.planet, [&starting_planet_hash]( Planet const* planet_ptr ) {
 			return planet_ptr != nullptr && planet_ptr->name_hash == starting_planet_hash;
