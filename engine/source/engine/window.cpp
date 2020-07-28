@@ -53,7 +53,7 @@ void Window::initialize()
 	glfwWindowHint( GLFW_DOUBLEBUFFER, GL_TRUE );
 
 	if ( !vsync ) {
-	//	glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
+		//	glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
 		if ( frame_cap > 0 ) {
 			con_log_indented( 2, "Warning: frame cap is not implemented yet!!" );
 		}
@@ -98,7 +98,7 @@ void Window::initialize()
 	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) != 0 );
 	con_log_indented( 2, "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
 
-	
+
 	glGetIntegerv( GL_MAX_TEXTURE_SIZE, &Context.machine_info.max_texture_size );
 	con_log_indented( 2, "Max texture size: %x%", Context.machine_info.max_texture_size, Context.machine_info.max_texture_size );
 
@@ -135,36 +135,36 @@ void Window::initialize()
 			return;
 		}
 
-		
+
 		CString const type_str = [&type] {
 			switch ( type ) {
 			case GL_DEBUG_TYPE_PERFORMANCE:
 			return "PERFORMANCE"_cs;
 
 			case GL_DEBUG_TYPE_OTHER:
-			return "OTHER      "_cs;
+			return "OTHER"_cs;
 
 			case GL_DEBUG_TYPE_MARKER:
-			return "MARKER     "_cs;
+			return "MARKER"_cs;
 
 			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-			return "DEPRECATED "_cs;
+			return "DEPRECATED"_cs;
 
 			case GL_DEBUG_TYPE_PORTABILITY:
 			return "PORTABILITY"_cs;
 
 			case GL_DEBUG_TYPE_ERROR:
-			return "ERROR      "_cs;
+			return "ERROR"_cs;
 
 			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-			return "U.B.       "_cs;
+			return "U.B."_cs;
 
 			default:
-			return "UNKNOWN    "_cs;
+			return "UNKNOWN"_cs;
 			}
 		} ( );
 
-		con_log( "[OpenGL : %][%]: \"%\".", id, type_str, CString{ message, length } );
+		con_log( "[OpenGL][% %]: \"%\".", type_str, id, CString{ message, length } );
 	}, nullptr );
 
 	// DOESNT FREAKIN WORK!!!

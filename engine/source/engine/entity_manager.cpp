@@ -16,10 +16,11 @@ void Entity_Manager::initialize()
 	by_type._cold.initialize( entities_limit, Context.default_allocator );
 
 	by_type.planet.initialize( CON_PLANETS_LIMIT, Context.default_allocator );
-	memset( by_type.planet.data(), 0, sizeof( Planet ) * CON_PLANETS_LIMIT );
 
 	by_type.debug_entity.initialize( CON_DEBUG_ENTITIES_LIMIT, Context.default_allocator );
-	memset( by_type.debug_entity.data(), 0, sizeof( Debug_Entity ) * CON_PLANETS_LIMIT );
+	// Setting the POINTERS to null.
+	memset( by_type.planet.data(), 0, sizeof( Planet* ) * CON_PLANETS_LIMIT );
+	memset( by_type.debug_entity.data(), 0, sizeof( Debug_Entity* ) * CON_DEBUG_ENTITIES_LIMIT );
 }
 
 void Entity_Manager::shutdown()
