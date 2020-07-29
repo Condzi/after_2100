@@ -14,7 +14,7 @@ struct Font_Test final
 	ENTITY_DEF( Font_Test );
 
 	compile_constant string_to_display = L"Hello, world! œæŸ¿ó³ Æ¯Ó£ <3";
-	compile_constant font_file         = CON_FONTS_FOLDER "oxanium.ttf";
+	compile_constant font_file         = CON_FONTS_FOLDER "cascadia.ttf";
 	compile_constant text_size         = 32.0f;
 	compile_constant alphabet		   = L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
 		L"—!?()[]@#%*:;.,=<>" // It's a dash, not a minus!! (U+2014)
@@ -62,9 +62,16 @@ struct Font_Test final
 				continue;
 			}
 
-			memcpy( next_free_slot, character.image, character.width *
-					character.height );
-			next_free_slot += character.width * character.height;
+			auto stride = ( character.width + 3 ) & ~3;
+			byte* bitmap = Context.temporary_allocator->allocate( stride * character.height );
+			memset( bitmap, 0, stride * character.height );
+
+			for ( s32 j = 0; j < character.height; ++j ) {
+				memcpy( bitmap + j * stride, (char*)character.image + j * character.width, character.width );
+			}
+
+			memcpy( next_free_slot, bitmap, stride * character.height );
+			next_free_slot += stride * character.height;
 
 			if ( next_free_slot >= atlas_memory + atlas_size_in_bytes ) {
 				con_log_indented( 3, "Not enough memory for all characters! (% chars left to generate)", alphabet_length - i );
@@ -77,11 +84,21 @@ struct Font_Test final
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, atlas_memory );
 
 		_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
+		/*
+		_cold.basic_render_info = construct_textured_sprite( 32, 48 );
+		*/
+
 		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
+		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "sprite_default"_hcs );
+		_cold.basic_render_info.texture.id = texture_id;
+
+		/*
+		_cold.basic_render_info = construct_textured_sprite( 48, 48 );
+		_cold.basic_render_info.texture = Context.prepared_resources->get_texture( "player"_hcs );
+		*/
+
 		_hot.position = v2{ 100,100 };
 		_hot.update_model_matrix = true;
-		_cold.basic_render_info.drawing_layer = 100;
-		_cold.basic_render_info.texture.id = texture_id;
 		_cold.basic_render_info.render_type = Render_Type::Draw_Elements;
 		_cold.basic_render_info.drawing_layer = 5;
 	}
