@@ -1514,6 +1514,9 @@ typedef const GLubyte * (APIENTRYP PFNGLGETSTRINGPROC)(GLenum name);
 GLAPI PFNGLGETSTRINGPROC glad_glGetString;
 #define glGetString glad_glGetString
 
+typedef void (APIENTRYP PFNGLTEXSUBIMAGE2DPROC)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels);
+GLAPI PFNGLTEXSUBIMAGE2DPROC glad_glTexSubImage2D;
+#define glTexSubImage2D glad_glTexSubImage2D
 
 typedef void (APIENTRYP PFNGLACTIVETEXTUREPROC)(GLenum texture);
 GLAPI PFNGLACTIVETEXTUREPROC glad_glActiveTexture;

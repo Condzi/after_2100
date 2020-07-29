@@ -24,7 +24,7 @@ struct Font_Test final
 	// @ToDo: For every used size have corresponding "safe" values.
 	// Check them in Bitmap Font Generator program.
 	compile_constant atlas_width  = 1700;
-	compile_constant atlas_height = 30;
+	compile_constant atlas_height = 40;
 	compile_constant atlas_size_in_bytes = atlas_width * atlas_height;
 
 	SFT sft;
@@ -51,13 +51,18 @@ struct Font_Test final
 		sft.flags = SFT_DOWNWARD_Y | SFT_RENDER_IMAGE | SFT_CATCH_MISSING;
 		SFT_Char character;
 
-		auto atlas_memory = Context.temporary_allocator->allocate( atlas_size_in_bytes );
-		memset( atlas_memory, 0, atlas_size_in_bytes );
-
 		con_log_indented( 2, "Generating characters..." );
 
-		s32 start_x = 0;
-		constant start_y = 0;
+		glGenTextures( 1, &texture_id );
+		glBindTexture( GL_TEXTURE_2D, texture_id );
+		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+		s32 offset_x = 0;
 		for ( s32 i = 0; i < alphabet_length; ++i ) {
 			constant success = sft_char( &sft, alphabet[i], &character );
 
@@ -65,45 +70,23 @@ struct Font_Test final
 				con_log_indented( 3, "Failed to generate character of id %", i );
 				continue;
 			}
+			
+			con_assert( character.height < atlas_height );
 
-			constant img_ptr = reinterpret_cast<byte*>( character.image );
-			for ( s32 current_x = 0; current_x < character.width; ++current_x ) {
-				for ( s32 current_y = 0; current_y < character.height; ++current_y ) {
-					constant idx_atlas = current_y * atlas_width + ( start_x + current_x );
-					constant idx_image = current_y * character.width + current_x;
+			glTexSubImage2D( GL_TEXTURE_2D, 0, offset_x, 0, character.width, character.height, GL_RED, GL_UNSIGNED_BYTE, character.image );
 
-					atlas_memory[idx_atlas] = img_ptr[idx_image];
-					con_log( "idx_atlas = %; idx_image = %, value = %", idx_atlas, idx_image, static_cast<s32>( atlas_memory[idx_atlas] ) );
-				}
-			}
-
-			start_x += character.width;
-			con_log( "\n\n" );
-			// @ToDo: free character.image
+			offset_x += character.width;
+			free( character.image );
 		}
 
-		glGenTextures( 1, &texture_id );
-		glBindTexture( GL_TEXTURE_2D, texture_id );
-		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, atlas_memory );
 
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
 
 		_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
 
 
 		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
 		_cold.basic_render_info.texture.id = texture_id;
-
-		/*_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "sprite_default"_hcs );
-		*/
-		/*
-		_cold.basic_render_info = construct_textured_sprite( 48, 48 );
-		_cold.basic_render_info.texture = Context.prepared_resources->get_texture( "player"_hcs );
-		*/
 
 		_hot.position = v2{ 500,100 };
 		_hot.update_model_matrix = true;

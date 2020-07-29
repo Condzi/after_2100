@@ -274,6 +274,8 @@ int GLAD_GL_VERSION_4_3 = 0;
 int GLAD_GL_VERSION_4_4 = 0;
 int GLAD_GL_VERSION_4_5 = 0;
 int GLAD_GL_VERSION_4_6 = 0;
+
+PFNGLTEXSUBIMAGE2DPROC glad_glTexSubImage2D = NULL;
 PFNGLACTIVETEXTUREPROC glad_glActiveTexture = NULL;
 PFNGLATTACHSHADERPROC glad_glAttachShader = NULL;
 PFNGLBINDBUFFERPROC glad_glBindBuffer = NULL;
@@ -356,6 +358,8 @@ static void load_GL_VERSION_1_1(GLADloadproc load) {
 	glad_glBindTexture = (PFNGLBINDTEXTUREPROC)load("glBindTexture");
 	glad_glGenTextures = (PFNGLGENTEXTURESPROC)load("glGenTextures");
     glad_glDeleteTextures = (PFNGLDELETETEXTURESPROC)load("glDeleteTextures");
+    glad_glTexSubImage2D = (PFNGLTEXSUBIMAGE2DPROC)load("glTexSubImage2D");
+
 }
 static void load_GL_VERSION_1_2(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_2) return;
