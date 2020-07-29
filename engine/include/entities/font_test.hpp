@@ -55,9 +55,9 @@ struct Font_Test final
 		memset( atlas_memory, 0, atlas_size_in_bytes );
 
 		con_log_indented( 2, "Generating characters..." );
-		/*
-		byte* next_free_slot = atlas_memory;
 
+		s32 start_x = 0;
+		constant start_y = 0;
 		for ( s32 i = 0; i < alphabet_length; ++i ) {
 			constant success = sft_char( &sft, alphabet[i], &character );
 
@@ -66,43 +66,33 @@ struct Font_Test final
 				continue;
 			}
 
+			constant img_ptr = reinterpret_cast<byte*>( character.image );
+			for ( s32 current_x = 0; current_x < character.width; ++current_x ) {
+				for ( s32 current_y = 0; current_y < character.height; ++current_y ) {
+					constant idx_atlas = current_y * atlas_width + ( start_x + current_x );
+					constant idx_image = current_y * character.width + current_x;
 
-			memcpy( next_free_slot, character.image, character.width * character.height );
-			next_free_slot += character.width * character.height;
-
-			if ( next_free_slot >= atlas_memory + atlas_size_in_bytes ) {
-				con_log_indented( 3, "Not enough memory for all characters! (% chars left to generate)", alphabet_length - i );
-				break;
+					atlas_memory[idx_atlas] = img_ptr[idx_image];
+					con_log( "idx_atlas = %; idx_image = %, value = %", idx_atlas, idx_image, static_cast<s32>( atlas_memory[idx_atlas] ) );
+				}
 			}
+
+			start_x += character.width;
+			con_log( "\n\n" );
+			// @ToDo: free character.image
 		}
-		con_log_indented( 2, "Memory left in the atlas: %", static_cast<s32>( atlas_memory + atlas_size_in_bytes - next_free_slot ) );
-		*/
-
-	
-		// Check what happens for more than one character.
-		// Why we had garbage in the texture?
-		// Maybe add construct_text(wchar_t* str, font)?
-
-		// the font is just storage for textures of given face with
-		// various of sizes (maybe something like 16, 24, 32?)
-		// Or maybe we should calculate the 3 main sizes depending on
-		// the window resolution. Then we would update the fonts / texts
-		// on every window resolution change.
-		sft_char( &sft, L'œ', &character );
 
 		glGenTextures( 1, &texture_id );
 		glBindTexture( GL_TEXTURE_2D, texture_id );
 		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, character.width, character.height, 0, GL_RED, GL_UNSIGNED_BYTE, character.image );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, atlas_memory );
 
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-		//_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
-
-		_cold.basic_render_info = construct_textured_sprite( character.width, character.height );
+		_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
 
 
 		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
@@ -115,7 +105,7 @@ struct Font_Test final
 		_cold.basic_render_info.texture = Context.prepared_resources->get_texture( "player"_hcs );
 		*/
 
-		_hot.position = v2{ 100,100 };
+		_hot.position = v2{ 500,100 };
 		_hot.update_model_matrix = true;
 		_cold.basic_render_info.render_type = Render_Type::Draw_Elements;
 		_cold.basic_render_info.drawing_layer = 5;
