@@ -197,7 +197,7 @@ void Window::set_title( CString title )
 
 void Window::set_clear_color( u8 r, u8 g, u8 b )
 {
-	glClearColor( 1.0f / r, 1.0f / g, 1.0f / b, 1.0f );
+	glClearColor( r / 255.0f, g / 255.0f, b / 255.0f, 1.0f );
 }
 
 void Window::clear()

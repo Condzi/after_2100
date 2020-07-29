@@ -136,8 +136,29 @@ returning build_shader_program( CString source ) -> gl_id
 	glShaderSource( vertex_shader_id, 1, &vertex_shader_source.data, &vertex_shader_source.size );
 	glCompileShader( vertex_shader_id );
 
+	//
+	// bruh what the fuck??? i thought that glDebugMessageCallback will
+	// handle this shit???? FUCK
+	//
+
+	// @nocheckin
+	int success = 0;
+	char infolog[512];
+	glGetShaderiv( vertex_shader_id, GL_COMPILE_STATUS, &success );
+	if ( !success ) {
+		glGetShaderInfoLog( vertex_shader_id, 512, NULL, infolog );
+		con_assert( false );
+	};
+
 	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &fragment_shader_source.size );
 	glCompileShader( fragment_shader_id );
+
+
+	glGetShaderiv( fragment_shader_id, GL_COMPILE_STATUS, &success );
+	if ( !success ) {
+		glGetShaderInfoLog( fragment_shader_id, 512, NULL, infolog );
+		con_assert( false );
+	};
 
 	glAttachShader( program_id, vertex_shader_id );
 	glAttachShader( program_id, fragment_shader_id );
@@ -455,7 +476,7 @@ void Resource_Loader::shutdown()
 
 
 	scene_folder_content.hashes.shutdown();
-	
+
 	texture_data.shutdown();
 	planet_data.shutdown();
 }
@@ -717,7 +738,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		Planet* planet = Context.entity_manager->spawn_entity<Planet>( planet_to_spawn_metadata );
 		planet->_hot.position = planets_to_spawn_position[i];
 	}
-	
+
 	return true;
 }
 

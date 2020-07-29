@@ -71,15 +71,19 @@ struct Font_Test final
 				break;
 			}
 		}
-
 		glGenTextures( 1, &texture_id );
 		glBindTexture( GL_TEXTURE_2D, texture_id );
 		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, atlas_memory );
 
 		_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
-		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "sprite_default"_hcs );
+		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
+		_hot.position = v2{ 100,100 };
+		_hot.update_model_matrix = true;
+		_cold.basic_render_info.drawing_layer = 100;
 		_cold.basic_render_info.texture.id = texture_id;
+		_cold.basic_render_info.render_type = Render_Type::Draw_Elements;
+		_cold.basic_render_info.drawing_layer = 5;
 	}
 
 	void shutdown()

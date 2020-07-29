@@ -105,12 +105,18 @@ void Renderer::render()
 		render_infos.shrink( idx_in_render_infos );
 	}
 
+	if ( render_infos.size() <= 0 ) {
+		return;
+	}
+
+
 	//
 	// 2. sort by group and by layer.
 	//
 
 	if ( render_infos.size() > 1 ) {
 		// We don't have that many data to sort so it shouldn't matter which algorithm we'll use.
+		/*
 		insertion_sort( render_infos, []( Render_Info const& a, Render_Info const& b ) {
 			if ( a.drawing_group == b.drawing_group ) {
 				return a.drawing_layer > b.drawing_layer;
@@ -118,14 +124,26 @@ void Renderer::render()
 
 			return a.drawing_group > b.drawing_group;
 		} );
+		*/
+
+		std::sort(render_infos.data(), render_infos.data() + render_infos.size(), []( Render_Info const& a, Render_Info const& b ) {
+			if ( a.drawing_group == b.drawing_group ) {
+				return a.drawing_layer < b.drawing_layer;
+			}
+
+			return a.drawing_group < b.drawing_group;
+		} );
 	}
 
 	//
 	// 3. Draw.
 	//
 
-	gl_id current_texture = 0;
-	gl_id current_shader  = 0;
+	gl_id current_texture = render_infos[0].texture.id;
+	gl_id current_shader  = render_infos[0].shader.id;
+	glActiveTexture( GL_TEXTURE0 );
+	glBindTexture( GL_TEXTURE_2D, current_texture );
+	glUseProgram( current_shader );
 
 	for ( s32 i = 0; i < render_infos.size(); ++i ) {
 		constant& render_info = render_infos[i];

@@ -48,6 +48,7 @@ struct Planet final
 		render_info = construct_textured_sprite( 2*radius, 2*radius );
 		render_info.texture = texture;
 		render_info.shader  = shader;
+		render_info.drawing_layer = 1;
 
 		_hot.update_model_matrix = true;
 	}

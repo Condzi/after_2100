@@ -134,6 +134,9 @@ returning Application::initialize() -> bool
 	con_log( "Initialization completed." );
 
 	flush_logger();
+
+	// nocheckin
+	window.set_clear_color( 100, 100, 100 );
 	return true;
 }
 

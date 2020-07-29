@@ -42,6 +42,7 @@ struct Player final
 		render_info = construct_textured_sprite( 48, 48 );
 		render_info.texture = texture;
 		render_info.shader  = shader;
+		render_info.drawing_layer = 2;
 
 		//	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
@@ -51,7 +52,7 @@ struct Player final
 		auto& em = *Context.entity_manager;
 
 		// @ToDo: remove me
-	//	em.spawn_entity<Font_Test>();
+		em.spawn_entity<Font_Test>();
 
 		constant starting_planet_entity_find_result = linear_find_if( em.by_type.planet, [&starting_planet_hash]( Planet const* planet_ptr ) {
 			return planet_ptr != nullptr && planet_ptr->name_hash == starting_planet_hash;
@@ -206,6 +207,7 @@ struct Player final
 		//
 		auto& ri = orbit_path->_cold.basic_render_info;
 		ri.render_type = Render_Type::Draw_Arrays;
+		ri.visible = true;
 		ri.draw_arrays_info.mode = GL_LINE_LOOP;
 		ri.draw_arrays_info.vertices_count = points_count;
 
@@ -227,6 +229,7 @@ struct Player final
 		glEnableVertexAttribArray( 0 );
 
 		ri.shader = Context.prepared_resources->get_shader( "primitive"_hcs );
+		ri.drawing_layer = 4;
 	}
 };
 }
