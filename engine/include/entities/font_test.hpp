@@ -13,11 +13,11 @@ struct Font_Test final
 {
 	ENTITY_DEF( Font_Test );
 
-	compile_constant string_to_display = L"Hello, world! úÊüøÛ≥ è∆Øè”£ <3";
-	compile_constant font_file         = CON_FONTS_FOLDER "cascadia.ttf";
+	compile_constant string_to_display = L"Hello, world! úÊüøÛ≥ è∆Øè”£";
+	compile_constant font_file         = CON_FONTS_FOLDER "arial.ttf";
 	compile_constant text_size         = 32.0f;
 	compile_constant alphabet		   = L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
-		L"ó!?()[]@#%*:;.,=<>" // It's a dash, not a minus!! (U+2014)
+		L"ó!?()[]@#%*:;.,=<>" // '-' It's a dash, not a minus!! (U+2014)
 		L"•∆ £—”åèØπÊÍ≥ÒÛúüø"; // Polish characters
 	compile_constant alphabet_length   = 89;
 
@@ -33,7 +33,6 @@ struct Font_Test final
 
 	void initialize()
 	{
-		_cold.basic_render_info.visible = false;
 		con_log_indented( 2, "Loading font from %...", cstring_from_cstr( font_file ) );
 
 		sft.font = sft_loadfile( font_file );
@@ -45,7 +44,7 @@ struct Font_Test final
 
 		sft.xScale = text_size;
 		sft.yScale = text_size;
-		sft.flags = SFT_DOWNWARD_Y | SFT_RENDER_IMAGE /*maybe? SFT_CATCH_MISSING*/;
+		sft.flags = SFT_DOWNWARD_Y | SFT_RENDER_IMAGE | SFT_CATCH_MISSING;
 		SFT_Char character;
 
 		auto atlas_memory = Context.temporary_allocator->allocate( atlas_size_in_bytes );
@@ -54,6 +53,10 @@ struct Font_Test final
 		con_log_indented( 2, "Generating characters..." );
 
 		byte* next_free_slot = atlas_memory;
+		FILE* img_file;
+		img_file = fopen( "image.txt", "w" );
+		defer{ fclose( img_file ); };
+
 		for ( s32 i = 0; i < alphabet_length; ++i ) {
 			constant success = sft_char( &sft, alphabet[i], &character );
 
@@ -62,16 +65,16 @@ struct Font_Test final
 				continue;
 			}
 
-			auto stride = ( character.width + 3 ) & ~3;
-			byte* bitmap = Context.temporary_allocator->allocate( stride * character.height );
-			memset( bitmap, 0, stride * character.height );
-
-			for ( s32 j = 0; j < character.height; ++j ) {
-				memcpy( bitmap + j * stride, (char*)character.image + j * character.width, character.width );
+			
+			memcpy( next_free_slot, character.image, character.width * character.height );
+			// write to file here
+			fprintf( img_file, "%i x %i \n", character.width, character.height );
+			for ( s32 j = 0; j < character.width * character.height; ++j ) {
+				fprintf( img_file, "%i", next_free_slot[j] );
 			}
-
-			memcpy( next_free_slot, bitmap, stride * character.height );
-			next_free_slot += stride * character.height;
+			fprintf( img_file, "\n\n" );
+			//
+			next_free_slot += character.width * character.height;
 
 			if ( next_free_slot >= atlas_memory + atlas_size_in_bytes ) {
 				con_log_indented( 3, "Not enough memory for all characters! (% chars left to generate)", alphabet_length - i );
