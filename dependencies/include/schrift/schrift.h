@@ -17,16 +17,16 @@
 #ifndef SCHRIFT_H
 #define SCHRIFT_H 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SFT_DOWNWARD_Y    0x01
 #define SFT_RENDER_IMAGE  0x02
 #define SFT_CATCH_MISSING 0x04
 
 /* Deprecated. Use SFT_RENDER_IMAGE instead (Only the name has changed). */
 #define SFT_CHAR_IMAGE 0x02
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 struct SFT_Font;
 typedef struct SFT_Font SFT_Font;
@@ -47,8 +47,8 @@ struct SFT_Char
 	double advance;
 	int x;
 	int y;
-	int width;
-	int height;
+	unsigned int width;
+	unsigned int height;
 };
 
 /* libschrift uses semantic versioning. */
