@@ -116,23 +116,13 @@ void Renderer::render()
 
 	if ( render_infos.size() > 1 ) {
 		// We don't have that many data to sort so it shouldn't matter which algorithm we'll use.
-		/*
 		insertion_sort( render_infos, []( Render_Info const& a, Render_Info const& b ) {
 			if ( a.drawing_group == b.drawing_group ) {
 				return a.drawing_layer > b.drawing_layer;
 			}
 
 			return a.drawing_group > b.drawing_group;
-		} );
-		*/
-
-		std::sort(render_infos.data(), render_infos.data() + render_infos.size(), []( Render_Info const& a, Render_Info const& b ) {
-			if ( a.drawing_group == b.drawing_group ) {
-				return a.drawing_layer < b.drawing_layer;
-			}
-
-			return a.drawing_group < b.drawing_group;
-		} );
+		}  );
 	}
 
 	//

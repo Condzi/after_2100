@@ -84,16 +84,12 @@ returning binary_find_if( Array<TType> const& arr, TComparator comparator, TPred
 template<typename TType, typename TComparator>
 void insertion_sort( Array<TType>& arr, TComparator comparator )
 {
-	for ( s32 j = 1; j < arr.size(); ++j ) {
-		constant& key = arr[j];
-
-		s32 i = j - 1;
-		while ( i >= 0 && comparator( arr[i], key ) ) {
-			arr[i + 1] = arr[i];
-			--i;
+	for ( s32 i = 1; i < arr.size(); ++i ) {
+		for ( s32 j = i; 
+			  j > 0 && comparator( arr[j-1], arr[j] ); 
+			  --j ) {
+			std::swap( arr[j], arr[j-1] );
 		}
-
-		arr[i+1] = key;
 	}
 }
 }
