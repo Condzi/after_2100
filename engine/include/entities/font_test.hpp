@@ -54,7 +54,7 @@ struct Font_Test final
 
 		byte* next_free_slot = atlas_memory;
 		FILE* img_file;
-		img_file = fopen( "image.txt", "w" );
+		img_file = fopen( CON_LOGS_FOLDER "image.txt", "w" );
 		defer{ fclose( img_file ); };
 
 		for ( s32 i = 0; i < alphabet_length; ++i ) {

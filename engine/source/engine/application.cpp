@@ -213,7 +213,14 @@ void Application::shutdown()
 	window.shutdown();
 	resource_loader.shutdown();
 	input.shutdown();
-	con_log( "Highest TA mark: % / % (bytes).", temporary_allocator.get_highest_mark(), CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
+
+	// We have to introduce this as variables for some reason. If we don't do that
+	// we get strange division result. Why? I don't know!
+	constant highest_mark = temporary_allocator.get_highest_mark();
+	constant reserved_mem = CON_TEMPORARY_STORAGE_RESERVED_MEMORY;
+	constant percent_value = 100 * static_cast<f32>( highest_mark ) / reserved_mem;
+	con_log( "Highest TA mark: % / % (bytes), % percent.", highest_mark, reserved_mem, percent_value );
+
 	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
 	std::fclose( main_logger_file );

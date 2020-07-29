@@ -134,8 +134,13 @@ struct Player final
 		// entire flight here.
 		//
 		// Also, this shouldn't be here because when we will have additional planets we can't
-		// use the `origin_planet.position` anymore. Therefore, this should be an entire separete
+		// use the `origin_planet.position` anymore. Therefore, this should be an entire separate
 		// structure. Maybe called `Orbit_Simulator` or something.
+		//
+		// We should also simulate movement of other planets here (which we will add later).
+		// This makes this step kinda complex. We could make the planets static, but this would
+		// be very boring. It's a game about orbital mechanics after all! But some tutorial levels may
+		// have static planets for simplicity...
 		//
 
 		constant distance_squared = []( v2 const& a, v2 const& b ) {

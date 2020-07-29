@@ -141,7 +141,7 @@ returning build_shader_program( CString source ) -> gl_id
 	// handle this shit???? FUCK
 	//
 
-	// @nocheckin
+	// @ToDo: Do some better logging here.
 	int success = 0;
 	char infolog[512];
 	glGetShaderiv( vertex_shader_id, GL_COMPILE_STATUS, &success );
