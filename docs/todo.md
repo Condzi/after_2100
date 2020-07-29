@@ -1,4 +1,5 @@
 # **Important**
+* rework the logging of the shader compilation status!!!!!
 * add developer console (text printing and scrolling only for now)
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
 * Bitset could have u32 as base type, this would greatly simplify it's code and MSVC intrinsics usage.

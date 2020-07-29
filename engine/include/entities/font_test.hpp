@@ -57,9 +57,6 @@ struct Font_Test final
 		con_log_indented( 2, "Generating characters..." );
 		/*
 		byte* next_free_slot = atlas_memory;
-		FILE* img_file;
-		img_file = fopen( CON_LOGS_FOLDER "image.txt", "w" );
-		defer{ fclose( img_file ); };
 
 		for ( s32 i = 0; i < alphabet_length; ++i ) {
 			constant success = sft_char( &sft, alphabet[i], &character );
@@ -71,13 +68,6 @@ struct Font_Test final
 
 
 			memcpy( next_free_slot, character.image, character.width * character.height );
-			// write to file here
-			fprintf( img_file, "%i x %i \n", character.width, character.height );
-			for ( s32 j = 0; j < character.width * character.height; ++j ) {
-				fprintf( img_file, "%i ", next_free_slot[j] );
-			}
-			fprintf( img_file, "\n\n" );
-			//
 			next_free_slot += character.width * character.height;
 
 			if ( next_free_slot >= atlas_memory + atlas_size_in_bytes ) {
@@ -89,6 +79,15 @@ struct Font_Test final
 		*/
 
 	
+		// Check what happens for more than one character.
+		// Why we had garbage in the texture?
+		// Maybe add construct_text(wchar_t* str, font)?
+
+		// the font is just storage for textures of given face with
+		// various of sizes (maybe something like 16, 24, 32?)
+		// Or maybe we should calculate the 3 main sizes depending on
+		// the window resolution. Then we would update the fonts / texts
+		// on every window resolution change.
 		sft_char( &sft, L'œ', &character );
 
 		glGenTextures( 1, &texture_id );

@@ -135,8 +135,6 @@ returning Application::initialize() -> bool
 
 	flush_logger();
 
-	// nocheckin
-	window.set_clear_color( 100, 100, 100 );
 	return true;
 }
 
