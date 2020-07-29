@@ -14,7 +14,7 @@ struct Font_Test final
 	ENTITY_DEF( Font_Test );
 
 	compile_constant string_to_display = L"Hello, world! úÊüøÛ≥ è∆Øè”£";
-	compile_constant font_file         = CON_FONTS_FOLDER "arial.ttf";
+	compile_constant font_file         = CON_FONTS_FOLDER "oxanium.ttf";
 	compile_constant text_size         = 32.0f;
 	compile_constant alphabet		   = L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
 		L"ó!?()[]@#%*:;.,=<>" // '-' It's a dash, not a minus!! (U+2014)
@@ -24,7 +24,7 @@ struct Font_Test final
 	// @ToDo: For every used size have corresponding "safe" values.
 	// Check them in Bitmap Font Generator program.
 	compile_constant atlas_width  = 1700;
-	compile_constant atlas_height = 48;
+	compile_constant atlas_height = 30;
 	compile_constant atlas_size_in_bytes = atlas_width * atlas_height;
 
 	SFT sft;
@@ -44,6 +44,10 @@ struct Font_Test final
 
 		sft.xScale = text_size;
 		sft.yScale = text_size;
+		sft.x = 0;
+		sft.y = 0;
+
+
 		sft.flags = SFT_DOWNWARD_Y | SFT_RENDER_IMAGE | SFT_CATCH_MISSING;
 		SFT_Char character;
 
@@ -51,7 +55,7 @@ struct Font_Test final
 		memset( atlas_memory, 0, atlas_size_in_bytes );
 
 		con_log_indented( 2, "Generating characters..." );
-
+		/*
 		byte* next_free_slot = atlas_memory;
 		FILE* img_file;
 		img_file = fopen( CON_LOGS_FOLDER "image.txt", "w" );
@@ -65,12 +69,12 @@ struct Font_Test final
 				continue;
 			}
 
-			
+
 			memcpy( next_free_slot, character.image, character.width * character.height );
 			// write to file here
 			fprintf( img_file, "%i x %i \n", character.width, character.height );
 			for ( s32 j = 0; j < character.width * character.height; ++j ) {
-				fprintf( img_file, "%i", next_free_slot[j] );
+				fprintf( img_file, "%i ", next_free_slot[j] );
 			}
 			fprintf( img_file, "\n\n" );
 			//
@@ -81,20 +85,32 @@ struct Font_Test final
 				break;
 			}
 		}
+		con_log_indented( 2, "Memory left in the atlas: %", static_cast<s32>( atlas_memory + atlas_size_in_bytes - next_free_slot ) );
+		*/
+
+	
+		sft_char( &sft, L'ú', &character );
+
 		glGenTextures( 1, &texture_id );
 		glBindTexture( GL_TEXTURE_2D, texture_id );
 		glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, atlas_memory );
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, character.width, character.height, 0, GL_RED, GL_UNSIGNED_BYTE, character.image );
 
-		_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
-		/*
-		_cold.basic_render_info = construct_textured_sprite( 32, 48 );
-		*/
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+		//_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
+
+		_cold.basic_render_info = construct_textured_sprite( character.width, character.height );
+
 
 		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
-		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "sprite_default"_hcs );
 		_cold.basic_render_info.texture.id = texture_id;
 
+		/*_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "sprite_default"_hcs );
+		*/
 		/*
 		_cold.basic_render_info = construct_textured_sprite( 48, 48 );
 		_cold.basic_render_info.texture = Context.prepared_resources->get_texture( "player"_hcs );
