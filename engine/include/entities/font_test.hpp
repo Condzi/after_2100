@@ -79,9 +79,6 @@ struct Font_Test final
 			free( character.image );
 		}
 
-
-
-
 		_cold.basic_render_info = construct_textured_sprite( atlas_width, atlas_height );
 
 

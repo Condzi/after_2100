@@ -4,15 +4,13 @@
 **DONT FORGET THE KERNING PAIRS**
 
 Font class should be just a container for textures of various sized characters.
-Select the sizes depending on the current resolution. There should be at lest 3 main
-sizes: small, medium and large. Calculate them depending on the screen height.
+Select the sizes depending on the current resolution. The sizes should be dynamic and not explcit. I mean -- we should use some kind of `get_size_for(Text_Size::Developer_Console)` or `Text_Size::Menu_Button` etc. Don't forgeet to set a minium size too! (8, 16?)
 
-When constructing a text render info structure we shall pass the size enum, font and 
-utf-8 string. 
+When constructing a text render info structure we shall pass the size enum, font and utf-8 string. 
 
-UTF_8_String class should mimic the CSring class, but with wchar_t values (or u16 values?).
+UTF_8_String class should mimic the CString class, but with wchar_t values (or u16 values?).
 It should be part of the internationalization infrastructure. 
-We will also need some `returning ascii_to_utf(CString) -> UTF_8_String` function for
+We will also need some `returning cstring_to_utf(CString) -> UTF_8_String` function for
 creating text in the code, for example for developer console.
 
 Does every vertex should have own text color? Or maybe we should have one color per text object?
@@ -27,14 +25,9 @@ parameter `s32 chars_per_line = 128` which will add `\n` every 128 chars?
 Also, knowing the final width and height will be usefull for creating buttons or text boxes etc. 
 
 ```cpp
-returning construct_text("Chrząszcz!"_utf8, cascadia, Text_Size::Small) -> Render_Info;
+returning construct_text("Chrząszcz!"_utf8, menu_font, Text_Size::Menu_Button) -> Render_Info;
 ```
 
-
-* try libschrift. If not fiesable, do bitmap fonts.
-
-* parse bitmap fonts. that's all. format: https://www.angelcode.com/products/bmfont/doc/file_format.html#bin
-    * we probably can skip few blocks there
 * cascadia code mono is for dev console, oxanium or other will be for gameplay
 * set text drawing group correctly to GUI
 ----

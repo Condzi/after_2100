@@ -52,7 +52,7 @@ file_scope
 {
 returning load_texture_data( CString file, s16 const decl_width, s16 const decl_height ) -> byte*
 {
-	auto path = cstring_to_cstr( sprint( "%%\0", CString{ CON_TEXTURES_FOLDER }, file ) );
+	auto path = cstring_to_cstr( sprint( "%%", CString{ CON_TEXTURES_FOLDER }, file ) );
 
 	s32 loaded_width = -1, loaded_height = -1;
 	s32 channels = -1;

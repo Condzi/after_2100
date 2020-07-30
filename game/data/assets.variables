@@ -1,12 +1,12 @@
 # name_in_game file width height
 :/textures
-    player player.png 48 48
+    player player.png 112 75
 
     planet_earth planet_earth.png 128 128
 
-# We're not using fonts right now.
 :/fonts
-    todo 321
+    dev_console cascadia.ttf
+    default     oxanium.ttf
 
 :/shaders
     sprite_default sprite_default.shaders

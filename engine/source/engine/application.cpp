@@ -234,6 +234,13 @@ void Application::flush_logger()
 		return;
 	}
 
+// We have an accident with \0 once, so just in case...
+#ifdef CON_DEBUG
+	for ( s32 i = 0; i < data_to_log.size; ++i ) {
+		con_assert( data_to_log.data[i] != 0 );
+	}
+#endif
+
 	std::fputs( data_to_log.data, stdout );
 	if ( main_logger_file != nullptr ) {
 		std::fputs( data_to_log.data, main_logger_file );
