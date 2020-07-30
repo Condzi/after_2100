@@ -87,6 +87,7 @@ returning Application::initialize() -> bool
 	con_log( "Window initialized." );
 	flush_logger();
 
+	update_text_sizes();
 
 	con_log( "Initializing resource loader..." );
 	flush_logger();
@@ -234,7 +235,7 @@ void Application::flush_logger()
 		return;
 	}
 
-// We have an accident with \0 once, so just in case...
+// We had an accident with \0 once, so just in case...
 #ifdef CON_DEBUG
 	for ( s32 i = 0; i < data_to_log.size; ++i ) {
 		con_assert( data_to_log.data[i] != 0 );

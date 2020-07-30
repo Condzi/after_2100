@@ -47,7 +47,10 @@ struct Font_Test final
 		sft.x = 0;
 		sft.y = 0;
 
-
+		// Measure characters without SFT_RENDER_IMAGE flag. After that,
+		// just add it like that: sft.flags |= SFT_RENDER_IMAGE.
+		// I think this should work since flags aren't used anywhere except
+		// sft_char?
 		sft.flags = SFT_DOWNWARD_Y | SFT_RENDER_IMAGE | SFT_CATCH_MISSING;
 		SFT_Char character;
 

@@ -149,6 +149,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\font.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\hashed_cstring.hpp">
       <SubType>
       </SubType>
@@ -205,6 +209,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="include\engine\text_size.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\engine\time.hpp">
       <SubType>
       </SubType>
@@ -253,6 +261,7 @@
     <ClCompile Include="source\engine\renderer.cpp" />
     <ClCompile Include="source\engine\resource_loader.cpp" />
     <ClCompile Include="source\engine\scene_resources_file_parser.cpp" />
+    <ClCompile Include="source\engine\text_size.cpp" />
     <ClCompile Include="source\engine\time.cpp" />
     <ClCompile Include="source\engine\utility.cpp" />
     <ClCompile Include="source\engine\window.cpp" />

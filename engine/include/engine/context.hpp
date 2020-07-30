@@ -1,6 +1,7 @@
 #pragma once
 
 #include <engine/time.hpp>
+#include <engine/text_size.hpp>
 
 namespace con
 {
@@ -42,6 +43,10 @@ struct Context_Data final
 	{
 		s32 max_texture_size = -1;
 	} machine_info;
+
+	// Shouldn't be accessed directly. Used by construct_text function or
+	// something like that.
+	s8 text_sizes[Text_Size::elements_count] ={ 0 };
 };
 
 struct Context_Helper final
