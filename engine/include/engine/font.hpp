@@ -22,6 +22,9 @@ public:
 	void initialize( Hashed_CString name, s8 single_text_size );
 	void shutdown();
 
+	// we'll need a function like that in the future.
+	// void update_textures_to_new_sizes();
+
 	// text_size = -1 means that we have only one text size.
 	returning get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size = -1 ) -> v2;
 
@@ -42,12 +45,19 @@ private:
 	// Therefore, index here is index in every other array.
 	// If the Font has only one text size, this field is irrelevant and not
 	// initialized. 
+	// (we hold here Text_Size enum objects)
 	Array<s8> text_sizes;
+
+	// @Important: we still need to know what Text_Size we have, even
+	// if we only have one. We should probably use the union approach here,
+	// as we did below.
 
 	struct Character_Info final
 	{
 		s16 width  = -1;
 		s16 height = -1;
+		// Since texture atlas is just one long line, this is 
+		// and horiontal offset. Vertical doesn't exist.
 		s16 offset = -1;
 	};
 
