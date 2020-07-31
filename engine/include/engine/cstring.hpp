@@ -1,6 +1,7 @@
 #pragma once
 
 #include <engine/array.hpp>
+#include <engine/utf8_string.hpp>
 #include <string>
 
 namespace con
@@ -38,6 +39,8 @@ returning cstring_from_array( Array<char> const& arr ) -> CString;
 // Allocates in temporary storage. Just adds \0 to the end
 returning cstring_to_cstr( CString str ) -> CString;
 returning cstring_to_stdsv( CString str ) -> std::string_view;
+// Allocates in temporary storage.
+returning cstring_to_utf8_string( CString str ) -> UTF8_String;
 
 //
 // Definitions
@@ -51,7 +54,7 @@ constexpr CString::CString( char const( &cstr )[SIZE] ) :
 
 inline CString operator "" _cs( char const* const str, size_t size )
 {
-	return CString( str, static_cast<s32>( size ) );
+	return { str, static_cast<s32>( size ) };
 }
 
 returning constexpr hash_cstring( CString const cstring ) -> u32

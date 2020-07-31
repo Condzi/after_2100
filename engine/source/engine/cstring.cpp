@@ -17,7 +17,7 @@ returning CString::begins_with( CString str ) const -> bool
 
 CString& CString::operator=( CString const& other )
 {
-	std::memcpy( this, &other, sizeof( CString ) );
+	memcpy( this, &other, sizeof( CString ) );
 
 	return *this;
 }

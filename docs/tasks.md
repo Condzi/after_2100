@@ -20,6 +20,9 @@
     values with `auto` structured-bindings and unnamed struct or something. Like that:
     `auto[render_info, text_bounds] = construct_text(...)`.
 
+    However, the whole idea of font that has two "cases", as I would name it, is and example given by that guy avout cache efficiency.
+    We should *know* when we need singe-sized font, I think... Buut it's only font... Buut it may be more elegant to have `Mono_Sized_Font` 
+    and `Dynamic_Font`!
     
 * add `construct_text`
 * remove `Font_Test` entity code and all it's belongings (in `Entity_Manager` and `Player`)
