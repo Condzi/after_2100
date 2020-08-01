@@ -48,10 +48,10 @@ returning cstring_from_array( Array<char> const& arr ) -> CString
 
 returning cstring_to_cstr( CString str ) -> CString
 {
-	char* new_str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.size + 1) );
+	char* new_str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.size + 1 ) );
 	memcpy( new_str_data, str.data, str.size );
 	new_str_data[str.size] = '\0';
-	
+
 	return CString{ new_str_data, str.size+1 };
 
 }
@@ -59,5 +59,21 @@ returning cstring_to_cstr( CString str ) -> CString
 returning cstring_to_stdsv( CString str ) -> std::string_view
 {
 	return std::string_view{ str.data, static_cast<size_t>( str.size ) };
+}
+
+returning cstring_to_utf8_string( CString str ) -> UTF8_String
+{
+	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
+
+	wchar_t* utf8_data = ta.allocate<wchar_t>( str.size );
+
+	// Just copy chars values to utf8_data. We can't use memcpy
+	// because wchar_t is bigger than a char.
+
+	for ( s32 i = 0; i < str.size; ++i ) {
+		utf8_data[i] = str.data[i];
+	}
+
+	return { utf8_data, str.size };
 }
 }
