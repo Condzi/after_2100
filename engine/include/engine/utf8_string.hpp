@@ -4,6 +4,8 @@
 
 namespace con
 {
+// Works like a CString. Doesn't have it's functions, tho.
+// We use it only to represent text on the screen.
 struct UTF8_String final
 {
 	wchar_t const* const data = nullptr;

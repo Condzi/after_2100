@@ -258,6 +258,7 @@
     <ClCompile Include="source\engine\config_file.cpp" />
     <ClCompile Include="source\engine\cstring.cpp" />
     <ClCompile Include="source\engine\entity_manager.cpp" />
+    <ClCompile Include="source\engine\font.cpp" />
     <ClCompile Include="source\engine\input.cpp" />
     <ClCompile Include="source\engine\logger.cpp" />
     <ClCompile Include="source\engine\formatting.cpp" />

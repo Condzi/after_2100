@@ -6,7 +6,7 @@
 
 namespace con
 {
-returning load_entire_file_binary( CString path ) -> File_Loading_Result
+returning load_entire_file_binary( CString path, Allocator* allocator ) -> File_Loading_Result
 {
 	namespace fs = std::filesystem;
 
@@ -27,7 +27,7 @@ returning load_entire_file_binary( CString path ) -> File_Loading_Result
 	}
 
 	Array<char> file_content;
-	file_content.initialize( file_size, Context.temporary_allocator );
+	file_content.initialize( file_size, allocator );
 	input.read( file_content.data(), file_size );
 	input.close();
 

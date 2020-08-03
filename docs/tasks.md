@@ -1,6 +1,5 @@
 # **Current Tasks**
 
-* add `UTF8_String struct`
 * finish `Font` class
 * add font loading and add font stuff to `Prepared_Resources`.
     Maybe we should think about font class again. Should it be a resource which is hold
@@ -20,7 +19,7 @@
     values with `auto` structured-bindings and unnamed struct or something. Like that:
     `auto[render_info, text_bounds] = construct_text(...)`.
 
-    However, the whole idea of font that has two "cases", as I would name it, is and example given by that guy avout cache efficiency.
+    However, the whole idea of font that has two "cases", as I would name it, is and example given by Mike Acton about cache efficiency.
     We should *know* when we need singe-sized font, I think... Buut it's only font... Buut it may be more elegant to have `Mono_Sized_Font` 
     and `Dynamic_Font`!
     

@@ -3,6 +3,7 @@
 #include <engine/array.hpp>
 #include <engine/text_size.hpp>
 #include <engine/hashed_cstring.hpp>
+#include <engine/utf8_string.hpp>
 
 #include <schrift/schrift.h>
 
@@ -12,69 +13,56 @@ namespace con
 class Font final
 {
 public:
-	// Every font should know what sizes does it need.
+	struct Character_Info final
+	{
+		// Offset from the baseline.
+		v2 pen_offset{ -1, -1 };
+
+		s16 width  = -1;
+		s16 height = -1;
+		// Since texture atlas is just one long line, this is 
+		// and horizontal offset. Vertical doesn't exist.
+		s16 offset_in_texture = -1;
+	};
+
+	// Every font should know what sizes it needs.
 	// For example developer console font (Cascadia Code right now)
 	// has only one size, but other fonts may have to have more than 
 	// one size.
 	//
-	// text_sizes should be an array of Text_Size::X enum.
-	void initialize( Hashed_CString name, Array<s8> const& text_sizes );
-	void initialize( Hashed_CString name, s8 single_text_size );
+	// text_sizes should be an initializer list of Text_Size::X enum.
+	void initialize( CString path, std::initializer_list<s8> text_sizes );
 	void shutdown();
 
 	// we'll need a function like that in the future.
 	// void update_textures_to_new_sizes();
 
-	// text_size = -1 means that we have only one text size.
-	returning get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size = -1 ) -> v2;
+	// Text size should be Text_Size::X enum.
+	returning get_texture( s8 text_size )												   -> gl_id;
+	returning get_character_info( wchar_t character, s8 text_size )						   -> Character_Info;
+	returning get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> v2;
 
 private:
-	constexpr static wchar_t alphabet[] = L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
+	compile_constant alphabet = UTF8_String{ 
+		L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
 		L"ó!?()[]@#%*:;.,=<>" // '-' It's a dash, not a minus!! (U+2014)
-		L"•∆ £—”åèØπÊÍ≥ÒÛúüø"; // Polish characters
-	compile_constant alphabet_length = static_cast<s32>( sizeof( alphabet ) / sizeof( wchar_t ) );
+		L"•∆ £—”åèØπÊÍ≥ÒÛúüø" // Polish characters
+	}; 
 
+	// Font file data has to be accessible for entire font lifetime
+	// because we have to generate kerning info.
+	Array<char> font_file_data;
 
 	// Schrift library object.
 	SFT sft;
 
-	// One texture per one text size. Sometimes we just need one text/font size.
-	bool has_single_text_size = true;
-
 	// We have to know which index corresponds to what text size.
 	// Therefore, index here is index in every other array.
-	// If the Font has only one text size, this field is irrelevant and not
-	// initialized. 
 	// (we hold here Text_Size enum objects)
 	Array<s8> text_sizes;
 
-	// @Important: we still need to know what Text_Size we have, even
-	// if we only have one. We should probably use the union approach here,
-	// as we did below.
-
-	struct Character_Info final
-	{
-		s16 width  = -1;
-		s16 height = -1;
-		// Since texture atlas is just one long line, this is 
-		// and horiontal offset. Vertical doesn't exist.
-		s16 offset = -1;
-	};
-
 	// It's a long texture -- all characters are in single verse.
-	union
-	{
-		gl_id single_texture = 0;
-		Array<gl_id> textures;
-	};
-
-	union
-	{
-		// Index here corresponds to index in the alphabet array.
-		// (we have to lookup position in the alphabet first, then 
-		// this index is valid in this array)
-		Array<Character_Info> single_character_info;
-		Array<Array<Character_Info>> character_infos;
-	};
+	Array<gl_id> textures;
+	Array<Array<Character_Info>> character_infos;
 };
 }
