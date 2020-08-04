@@ -1,6 +1,5 @@
 # **Current Tasks**
 
-* finish `Font` class
 * add font loading and add font stuff to `Prepared_Resources`.
     Maybe we should think about font class again. Should it be a resource which is hold
     in the `Prepared_Resources`, or it's a static resource which is loaded once, at the app startup?
