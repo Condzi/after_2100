@@ -38,8 +38,8 @@ public:
 	// void update_textures_to_new_sizes();
 
 	// Text size should be Text_Size::X enum.
-	returning get_texture( s8 text_size )												   -> gl_id;
-	returning get_character_info( wchar_t character, s8 text_size )						   -> Character_Info;
+	returning get_texture( s8 text_size ) -> gl_id;
+	returning get_character_info( wchar_t character, s8 text_size ) -> Character_Info;
 	returning get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> v2;
 
 private:

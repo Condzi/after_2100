@@ -287,7 +287,6 @@ void Resource_Loader::initialize()
 
 	con_log_indented( 1, R"(Loading default resources info from "%".)", CString{ CON_DEFAULT_SCENE_RESOURCES_INFO_FILE } );
 	defaults.textures.shutdown();
-	defaults.fonts.shutdown();
 	defaults.shaders.shutdown();
 
 	constant[parsing_success, parsing_data] = parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE );
@@ -300,7 +299,6 @@ void Resource_Loader::initialize()
 	}
 
 	constant& textures_hash = parsing_data.textures;
-	constant& fonts_hash    = parsing_data.fonts;
 	constant& shaders_hash  = parsing_data.shaders;
 
 	//
@@ -341,8 +339,6 @@ void Resource_Loader::initialize()
 	} else {
 		con_log_indented( 1, "No default textures to load." );
 	}
-
-	con_log_indented( 1, "Loading default fonts... (@INCOMPLETE, dummy)" );
 
 	if ( shaders_hash.size() > 0 ) {
 		con_log_indented( 1, "Loading default shaders..." );
@@ -470,7 +466,6 @@ void Resource_Loader::shutdown()
 	//glDeleteProgram( fallback.shader.id );
 
 	defaults.textures.shutdown();
-	defaults.fonts.shutdown();
 	defaults.shaders.shutdown();
 
 
@@ -519,7 +514,6 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	}
 
 	constant& r_textures = parsing_data.textures;
-	constant& r_fonts    = parsing_data.fonts;
 	constant& r_shaders  = parsing_data.shaders;
 
 	auto& p_textures = Context.prepared_resources->textures; // p_ = prepared

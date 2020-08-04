@@ -8,7 +8,6 @@ namespace con
 struct Scene_Resources_File_Content final
 {
 	Array<u32> textures;
-	Array<u32> fonts;
 	Array<u32> shaders;
 
 	//

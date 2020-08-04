@@ -45,15 +45,16 @@ private:
 	struct
 	{
 		Array<Texture> textures;
-		Array<u32> fonts; // @Incomplete: no font support rn
 		Array<Shader> shaders;
 	} defaults; // don't unload these!
 
+	// @Robustness: right now the fallback resources are reduntant in prepared_resources.
+	// Decide where they should be stored -- in resource_loader or in prepared_resources?
 	struct
 	{
 		Texture texture;
 		Shader shader;
-	} fallback; 
+	} fallback;
 
 	struct
 	{
@@ -64,14 +65,14 @@ private:
 	// (idx associated with `name_hashes`)
 	Array<Texture_Data> texture_data;
 	Array<Planet_Resource_Data> planet_data;
-	
+
 	// @Robustness: Add Bitset that holds N values, one for each resource of each type,
 	// that indicates if given resource was correctly loaded. This way we could have
 	// better error messages (I can't do it now because I didn't fix the allocator
 	// handling in the Bitset class)
 
 	void check_scene_folder_content();
-	
+
 	returning init_texture( byte const* data, s16 width, s16 height ) -> gl_id;
 };
 }

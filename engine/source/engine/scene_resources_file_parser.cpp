@@ -26,52 +26,41 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 	//
 
 	compile_constant textures_section_hash = hash_cstring( "textures" );
-	compile_constant fonts_section_hash    = hash_cstring( "fonts" );
 	compile_constant shaders_section_hash  = hash_cstring( "shaders" );
 	compile_constant planets_section_hash  = hash_cstring( "planets" );
 
 	// hvp = hash_value_pair, we're getting array of that from cfg to copy 'hash' values
 	constant textures_hvp = cfg.get_section( textures_section_hash );
-	constant fonts_hvp    = cfg.get_section( fonts_section_hash );
 	constant shaders_hvp  = cfg.get_section( shaders_section_hash );
 	constant planets_hvp  = cfg.get_section( planets_section_hash );
 
 	constant textures_count = textures_hvp.size();
-	constant fonts_count    = fonts_hvp.size();
 	constant shaders_count  = shaders_hvp.size();
 	constant planets_count  = planets_hvp.size() - 1; // Don't count starting_planet field
 
 	// Print 0 or count value.
-	con_log_indented( 2, "Entries found: % textures, % fonts, % shaders, % planets.",
+	con_log_indented( 2, "Entries found: % textures, % shaders, % planets.",
 					  textures_count < 0 ? 0 : textures_count,
-					  fonts_count    < 0 ? 0 : fonts_count,
 					  shaders_count  < 0 ? 0 : shaders_count,
 					  planets_count  < 0 ? 0 : planets_count
 	);
 	//
-	// Handle textures, fonts and shaders.
+	// Handle textures and shaders.
 	//
 
 	if ( textures_count > 0 ) {
 		file_content.textures.initialize( textures_count, Context.default_allocator );
-	}
-	if ( fonts_count > 0 ) {
-		file_content.fonts.initialize( fonts_count, Context.default_allocator );
 	}
 	if ( shaders_count > 0 ) {
 		file_content.shaders.initialize( shaders_count, Context.default_allocator );
 	}
 
 	//
-	// For textures, fonts and shaders we only need to copy the name hashes.
+	// For textures and shaders we only need to copy the name hashes.
 	//
 
 	for ( s32 i = 0; i < textures_count; ++i ) {
 		file_content.textures[i] = textures_hvp[i].hash;
-	}
-
-	for ( s32 i = 0; i < fonts_count; ++i ) {
-		file_content.fonts[i] = fonts_hvp[i].hash;
 	}
 
 	for ( s32 i = 0; i < shaders_count; ++i ) {
