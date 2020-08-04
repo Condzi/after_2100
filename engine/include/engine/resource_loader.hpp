@@ -31,6 +31,7 @@ private:
 	{
 		Array<u32> textures;
 		Array<u32> shaders;
+		Array<u32> fonts;
 
 		Array<u32> planets;
 	} name_hashes;
@@ -40,6 +41,7 @@ private:
 	{
 		Array<CString> textures;
 		Array<CString> shaders;
+		Array<CString> fonts;
 	} paths;
 
 	struct

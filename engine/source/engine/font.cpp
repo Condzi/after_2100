@@ -10,6 +10,8 @@ namespace con
 {
 void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 {
+	*this = Font{};
+
 	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
 	constant mark = ta.get_mark();
 	defer{ ta.set_mark( mark ); };
@@ -40,7 +42,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 	// We have to convert initializer list to our array here.
 	// Maybe use stack_allocator here?
 	text_sizes.initialize( text_sizes_.size(), Context.default_allocator );
-	memcpy( text_sizes.data(), text_sizes_.begin(), text_sizes_.size() );
+	memcpy( text_sizes.data(), text_sizes_.begin(), text_sizes_.size() * sizeof( s8 ) );
 
 	// Get character info and calculate needed space for the texture.
 	// We're looking for biggest height. The width is just all widths accumulated.
@@ -54,6 +56,12 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 	SFT_Char sft_character;
 
 	character_infos.initialize( text_sizes.size() );
+	// We call constructors of the character_infos.
+	for ( s32 i = 0; i < character_infos.size(); ++i ) {
+		character_infos[i] ={};
+	}
+
+	textures.initialize( character_infos.size() );
 
 	//
 	// Find the atlas dimensions for each font size.

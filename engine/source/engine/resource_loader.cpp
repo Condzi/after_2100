@@ -181,8 +181,7 @@ void Resource_Loader::initialize()
 	fallback.texture.name_hash = 0xdeadbeef;
 	fallback.texture.id = init_texture( generate_sized_fallback_texture( CON_FALLBACK_TEXTURE_SIZE * CON_FALLBACK_TEXTURE_SIZE ), CON_FALLBACK_TEXTURE_SIZE, CON_FALLBACK_TEXTURE_SIZE );
 
-	// @Robustness: right now the fallback resources are reduntant in prepared_resources.
-	// Decide where they should be stored -- in resource_loader or in prepared_resources?
+
 	Context.prepared_resources->fallback_texture = fallback.texture;
 	// @Incomplete: no fallback shader right now.
 	Context.prepared_resources->fallback_shader  = fallback.shader;
@@ -277,6 +276,63 @@ void Resource_Loader::initialize()
 				++current_shader_idx;
 			}
 		}
+	}
+
+	// Handling fonts metadata.
+	{
+		auto ta_mark = ta.get_mark();
+		defer{ ta.set_mark( ta_mark ); };
+		constant fonts_section = assets_config.get_section( "fonts"_hcs );
+		constant fonts_count   = fonts_section.size();
+
+		auto& p_fonts = Context.prepared_resources->fonts;
+		auto& p_fonts_names_hashes = Context.prepared_resources->fonts_names_hashes;
+
+		p_fonts.initialize( fonts_count, Context.default_allocator );
+		p_fonts_names_hashes.initialize( fonts_count, Context.default_allocator );
+
+		name_hashes.fonts.shutdown();
+		paths.fonts.shutdown();
+
+		name_hashes.fonts.initialize( fonts_count );
+		paths.fonts.initialize( fonts_count );
+
+		s32 current_font_idx = 0;
+
+		CString path;
+		if ( fonts_section.size() < 0 ) {
+			con_log_indented( 1, R"(Error: Can't find "fonts" section! )" );
+		} else {
+			for ( s32 i = 0; i < fonts_section.size(); ++i ) {
+				constant& it = fonts_section[i];
+				name_hashes.fonts[current_font_idx] = it.hash;
+
+				if ( !sscan( "%", it.value, path ) ) {
+					con_log_indented( 1, R"(Error: can't format the font path "%"!)", it.value );
+				} else {
+					char* path_memory = da.allocate<char>( path.size );
+					memcpy( path_memory, path.data, path.size );
+					paths.fonts[current_font_idx] ={ path_memory, path.size };
+				}
+
+				// Because fonts live entire program lifespan, we also load them here.
+
+				constant global_path = sprint( "%%", CString{ CON_FONTS_FOLDER }, path );
+
+				if ( it.hash == "dev_console"_hcs.hash ) {
+					p_fonts[current_font_idx].initialize( global_path, { Text_Size::Developer_Console } );
+				} else if ( it.hash == "default"_hcs.hash ) {
+					p_fonts[current_font_idx].initialize( global_path, { Text_Size::Menu_Button } );
+				}
+
+				++current_font_idx;
+			}
+		}
+
+		// We copy the name hashes instead of assigning the array to avoid accidental double-freeying
+		// of the memory.
+		p_fonts_names_hashes.initialize( name_hashes.fonts.size(), Context.default_allocator );
+		memcpy( p_fonts_names_hashes.data(), name_hashes.fonts.data(), name_hashes.fonts.size() * sizeof( u32 ) );
 	}
 
 	con_log_indented( 1, "Metadata loaded." );
@@ -442,6 +498,7 @@ void Resource_Loader::shutdown()
 {
 	name_hashes.textures.shutdown();
 	name_hashes.shaders.shutdown();
+	name_hashes.fonts.shutdown();
 
 	for ( s32 i = 0; i < paths.textures.size(); ++i ) {
 		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.textures[i].data ) ), paths.textures[i].size );
@@ -451,8 +508,13 @@ void Resource_Loader::shutdown()
 		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.shaders[i].data ) ), paths.shaders[i].size );
 	}
 
+	for ( s32 i = 0; i < paths.fonts.size(); ++i ) {
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.fonts[i].data ) ), paths.fonts[i].size );
+	}
+
 	paths.textures.shutdown();
 	paths.shaders.shutdown();
+	paths.fonts.shutdown();
 
 	for ( s32 i = 0; i < defaults.textures.size(); ++i ) {
 		glDeleteTextures( 1, &defaults.textures[i].id );

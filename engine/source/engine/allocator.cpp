@@ -18,6 +18,16 @@ void Default_Allocator::shutdown()
 
 returning Default_Allocator::allocate( s32 size ) -> byte*
 {
+	con_assert( size > 0 );
+
+	if ( size == 1 ) {
+		constant result = used_bytes.find_first_unset_bit( 0 );
+		con_assert( result.found() );
+
+		used_bytes.set( result.idx );
+		return begin + result.idx;
+	}
+
 	s32 idx = 0;
 
 	for ( ; idx < reserved_size - size; ++idx ) {

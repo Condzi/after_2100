@@ -23,6 +23,11 @@ public:
 	returning shaders_count() const -> s32;
 
 private:
+	// @Important: We don't call shutdown for this arrays!!!
+	// We should do it either in the Resource_Loader or here.
+	// We're also not calling shutdown for Font.
+
+
 	// We're assuming that first N resources are the default ones (which don't change)
 	Array<Texture> textures;
 	Array<Shader>  shaders;
