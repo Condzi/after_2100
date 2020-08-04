@@ -289,6 +289,8 @@ void Resource_Loader::initialize()
 		auto& p_fonts_names_hashes = Context.prepared_resources->fonts_names_hashes;
 
 		p_fonts.initialize( fonts_count, Context.default_allocator );
+		// We copy the name hashes instead of assigning the array to avoid accidental double-freeing
+		// of the memory.
 		p_fonts_names_hashes.initialize( fonts_count, Context.default_allocator );
 
 		name_hashes.fonts.shutdown();
@@ -328,10 +330,6 @@ void Resource_Loader::initialize()
 				++current_font_idx;
 			}
 		}
-
-		// We copy the name hashes instead of assigning the array to avoid accidental double-freeying
-		// of the memory.
-		p_fonts_names_hashes.initialize( name_hashes.fonts.size(), Context.default_allocator );
 		memcpy( p_fonts_names_hashes.data(), name_hashes.fonts.data(), name_hashes.fonts.size() * sizeof( u32 ) );
 	}
 

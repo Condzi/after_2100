@@ -26,6 +26,9 @@ returning Application::initialize() -> bool
 	stack_allocator.initialize();
 	main_logger.initialize();
 
+	// @Robustness: well, it turns out we sometimes want to initialize memory.
+	prepared_resources = {};
+
 
 	con_log( "Initializing main logger..." );
 	if ( !set_up_log_folder() ) {
