@@ -36,6 +36,20 @@ returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 	}
 }
 
+returning Prepared_Resources::get_font( Hashed_CString name ) -> Font&
+{
+	con_assert( fonts.size() > 0 );
+
+	constant result = linear_find( fonts_names_hashes, name.hash );
+
+	if ( result.found() ) {
+		return fonts[result.idx];
+	} else {
+		con_log_indented( 1, "Error: font of hash % not found!", name.hash );
+		return fallback_font;
+	}
+}
+
 returning Prepared_Resources::get_starting_planet_hash() const -> u32
 {
 	return starting_planet_hash;
