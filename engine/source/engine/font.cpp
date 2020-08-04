@@ -91,6 +91,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 			offset_x += character_info.width;
 		}
 
+		con_log_indented( 3, "Generating texture for font: % x % px.", atlas_width, atlas_height );
 		// Generate gl texture. We'll fill it in the next loop.
 		glGenTextures( 1, &textures[i] );
 		glBindTexture( GL_TEXTURE_2D, textures[i] );
@@ -123,7 +124,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 
 			auto& character_info = character_infos[i][j];
 
-			glTexSubImage2D( GL_TEXTURE_2D, 0, offset_x, 0, character_info.width, character_info.height, GL_RED, GL_UNSIGNED_BYTE, character_info.image );
+			glTexSubImage2D( GL_TEXTURE_2D, 0, offset_x, 0, character_info.width, character_info.height, GL_RED, GL_UNSIGNED_BYTE, sft_character.image );
 
 			free( sft_character.image );
 
@@ -161,7 +162,7 @@ returning Font::get_texture( s8 text_size ) -> gl_id
 	return textures[result.idx];
 }
 
-returning con::Font::get_character_info( wchar_t character, s8 text_size ) -> Character_Info
+returning Font::get_character_info( wchar_t character, s8 text_size ) -> Character_Info
 {
 	constant size_find_result = linear_find( text_sizes, text_size );
 	con_assert( size_find_result.found() );
@@ -175,7 +176,7 @@ returning con::Font::get_character_info( wchar_t character, s8 text_size ) -> Ch
 	// We don't have code to make array from UTF8_String, soo...
 	s32 char_idx = -1;
 	for ( s32 i = 0; i < alphabet.size; ++i ) {
-		if ( alphabet[i] == character ) {
+		if ( alphabet.data[i] == character ) {
 			char_idx = i;
 			break;
 		}
@@ -191,12 +192,31 @@ returning con::Font::get_character_info( wchar_t character, s8 text_size ) -> Ch
 	return character_infos[size_find_result.idx][char_idx];
 }
 
-returning con::Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> v2
+returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> v2
 {
-	// check if we have text_size in our font
-	// find text size idx
-	// set the sft.xScale and yScale
-	// asfsafssafsfefwaef
-	return returning();
+	constant size_find_result = linear_find( text_sizes, text_size );
+	con_assert( size_find_result.found() );
+
+	if ( size_find_result.not_found() ) {
+		con_log_indented( 2, "Error: can't find size in font. size enum value = %.", text_size );
+
+		return {};
+	}
+
+	constant size = Context.text_sizes[text_size];
+
+	sft.xScale = sft.yScale = size;
+
+	double kern[2] ={ -1 };
+	constant success = sft_kerning( &sft, left_character, right_character, kern );
+
+	con_assert( success == 0 );
+	if ( success != 0 ) {
+		con_log_indented( 2, "Error: can't get kerning. size enum value = %; left char = %, right char = %.", text_size, static_cast<s32>( left_character ), static_cast<s32>( right_character ) );
+
+		return {};
+	}
+
+	return v2( kern[0], kern[1] );
 }
 }

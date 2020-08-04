@@ -58,8 +58,7 @@ returning load_texture_data( CString file, s16 const decl_width, s16 const decl_
 	s32 channels = -1;
 	byte* data = reinterpret_cast<byte*>( stbi_load( path.data, &loaded_width, &loaded_height, &channels, STBI_rgb_alpha ) );
 
-	// idk if we actually have to remove \0 so I do this just in case it messes
-	// up logger / fputs
+	// -1 because we have to remove '\0' -- it messes up fputs.
 	path = { path.data, path.size-1 };
 
 	if ( data == nullptr ) {
