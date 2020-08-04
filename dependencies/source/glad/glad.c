@@ -275,6 +275,7 @@ int GLAD_GL_VERSION_4_4 = 0;
 int GLAD_GL_VERSION_4_5 = 0;
 int GLAD_GL_VERSION_4_6 = 0;
 
+PFNGLTEXPARAMETERIVPROC glad_glTexParameteriv = NULL;
 PFNGLTEXSUBIMAGE2DPROC glad_glTexSubImage2D = NULL;
 PFNGLACTIVETEXTUREPROC glad_glActiveTexture = NULL;
 PFNGLATTACHSHADERPROC glad_glAttachShader = NULL;
@@ -337,6 +338,8 @@ PFNGLUNIFORMMATRIX4FVPROC glad_glUniformMatrix4fv = NULL;
 PFNGLUSEPROGRAMPROC glad_glUseProgram = NULL;
 PFNGLVERTEXATTRIBPOINTERPROC glad_glVertexAttribPointer = NULL;
 PFNGLVIEWPORTPROC glad_glViewport = NULL;
+PFNGLGETTEXLEVELPARAMETERIVPROC glad_glGetTexLevelParameteriv = NULL;
+
 
 static void load_GL_VERSION_1_0(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_0) return;
@@ -350,6 +353,8 @@ static void load_GL_VERSION_1_0(GLADloadproc load) {
 	glad_glPixelStorei = (PFNGLPIXELSTOREIPROC)load("glPixelStorei");
 	glad_glGetIntegerv = (PFNGLGETINTEGERVPROC)load("glGetIntegerv");
 	glad_glViewport = (PFNGLVIEWPORTPROC)load("glViewport");
+    glad_glTexParameteriv = (PFNGLTEXPARAMETERIVPROC)load( "glTexParameteriv" );
+    	glad_glGetTexLevelParameteriv = (PFNGLGETTEXLEVELPARAMETERIVPROC)load("glGetTexLevelParameteriv");
 }
 static void load_GL_VERSION_1_1(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_1) return;

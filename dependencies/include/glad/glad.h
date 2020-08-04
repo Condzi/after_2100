@@ -1510,6 +1510,14 @@ typedef void (APIENTRY *GLVULKANPROCNV)(void);
 //
 // MY FUNCTIONS
 
+typedef void (APIENTRYP PFNGLTEXPARAMETERIVPROC)(GLenum target, GLenum pname, const GLint *params);
+GLAPI PFNGLTEXPARAMETERIVPROC glad_glTexParameteriv;
+#define glTexParameteriv glad_glTexParameteriv
+
+typedef void (APIENTRYP PFNGLGETTEXLEVELPARAMETERIVPROC)(GLenum target, GLint level, GLenum pname, GLint *params);
+GLAPI PFNGLGETTEXLEVELPARAMETERIVPROC glad_glGetTexLevelParameteriv;
+#define glGetTexLevelParameteriv glad_glGetTexLevelParameteriv
+
 typedef const GLubyte * (APIENTRYP PFNGLGETSTRINGPROC)(GLenum name);
 GLAPI PFNGLGETSTRINGPROC glad_glGetString;
 #define glGetString glad_glGetString

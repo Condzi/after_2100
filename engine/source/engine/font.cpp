@@ -99,6 +99,12 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 			offset_x += character_info.width;
 		}
 
+		// Adding 2 because of weird out of bounds issues.
+		// We somehow calculate wrong size... but how? I don't know.
+		// Maybe schrift gives us incorrect values.
+		atlas_width += 2;
+		atlas_height += 2;
+
 		con_log_indented( 3, "Generating texture for font: % x % px.", atlas_width, atlas_height );
 		// Generate gl texture. We'll fill it in the next loop.
 		glGenTextures( 1, &textures[i] );
@@ -122,6 +128,12 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 
 		sft.xScale = sft.yScale = size;
 
+		glBindTexture( GL_TEXTURE_2D, textures[i] );
+		// nocheckin
+		s32 tex_w = -1, tex_h = -1;
+		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &tex_w );
+		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &tex_h );
+
 		for ( s32 j = 0; j < alphabet.size; ++j ) {
 			// 0 means success. -1 is failure, 1 is missing char.
 			constant char_success_info = sft_char( &sft, alphabet.data[j], &sft_character );
@@ -131,6 +143,9 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 			}
 
 			auto& character_info = character_infos[i][j];
+
+			con_assert( offset_x + character_info.width < tex_w );
+			con_assert( character_info.height < tex_h );
 
 			glTexSubImage2D( GL_TEXTURE_2D, 0, offset_x, 0, character_info.width, character_info.height, GL_RED, GL_UNSIGNED_BYTE, sft_character.image );
 
