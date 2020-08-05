@@ -4,8 +4,6 @@
 #include <engine/cstring.hpp>
 #include <engine/logger.hpp>
 
-#include <schrift/schrift.h>
-
 namespace con
 {
 // Test rendering of all characters.
