@@ -21,6 +21,8 @@ public:
 	void display();
 	
 	returning should_close() const -> bool;
+	returning width() const  -> s32;
+	returning height() const -> s32;
 
 	// @ToDo: we'll eventually need this stuff if we wanna have a serious game. Don't forget the glViewport calls! And update the renderer window size too!
 	// void change_resloution( s32 width, s32 height );

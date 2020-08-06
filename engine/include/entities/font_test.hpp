@@ -17,10 +17,9 @@ struct Font_Test final
 	{
 		auto& font = Context.prepared_resources->get_font( "dev_console"_hcs );
 		
-		auto [ri, size] = construct_text( L"tab =\t4 spaces"_utf8, font, Text_Size::Developer_Console, 40 );
+		auto [ri, size] = construct_text( L"tab =\t4 spaces\nnew line!\nanother one :)"_utf8, font, Text_Size::Developer_Console, 40 );
 		
 		_cold.basic_render_info = ri;
-		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
 
 		_hot.position.x += 200;
 		_hot.position.y += 200;

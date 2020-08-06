@@ -2,6 +2,7 @@
 #include <engine/logger.hpp>
 #include <engine/entity_manager.hpp>
 #include <engine/algorithms.hpp>
+#include <engine/prepared_resources.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -419,7 +420,10 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	render_info.render_type = Render_Type::Draw_Arrays;
 	render_info.draw_arrays_info.vertices_count = vertices_count;
 	render_info.draw_arrays_info.mode = GL_TRIANGLES;
+	
 	render_info.texture.id = text_texture_id;
+	render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
+
 
 	glGenVertexArrays( 1, &render_info.vao );
 	glGenBuffers( 1, &render_info.vbo );

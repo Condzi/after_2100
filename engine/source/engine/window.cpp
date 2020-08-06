@@ -215,6 +215,24 @@ returning Window::should_close() const -> bool
 	return glfwWindowShouldClose( handle );
 }
 
+returning Window::width() const -> s32
+{
+	s32 width  = -1;
+	s32 height = -1;
+
+	glfwGetWindowSize( handle, &width, &height );
+	return width;
+}
+
+returning Window::height() const -> s32
+{
+	s32 width  = -1;
+	s32 height = -1;
+
+	glfwGetWindowSize( handle, &width, &height );
+	return height;
+}
+
 returning Window::get_internal_handle() -> GLFWwindow*
 {
 	return handle;
