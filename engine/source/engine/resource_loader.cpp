@@ -136,28 +136,33 @@ returning build_shader_program( CString source ) -> gl_id
 	glCompileShader( vertex_shader_id );
 
 	//
-	// bruh what the fuck??? i thought that glDebugMessageCallback will
-	// handle this shit???? FUCK
+	// Well, it turns out that OpenGL debug callback, that we set up in the Window, doesn't
+	// catch shader compilation failures. WHY?!
 	//
 
-	// @ToDo: Do some better logging here.
-	int success = 0;
-	char infolog[512];
-	glGetShaderiv( vertex_shader_id, GL_COMPILE_STATUS, &success );
-	if ( !success ) {
-		glGetShaderInfoLog( vertex_shader_id, 512, NULL, infolog );
-		con_assert( false );
+	compile_constant INFOLOG_SIZE = 1024;
+	static char infolog[INFOLOG_SIZE] ={ 0 };
+	GLint compilation_success = 0;
+	GLint length = 0;
+
+	glGetShaderiv( vertex_shader_id, GL_COMPILE_STATUS, &compilation_success );
+	if ( !compilation_success ) {
+		glGetShaderInfoLog( vertex_shader_id, INFOLOG_SIZE, &length, infolog );
+		con_log_indented( 3, "Error: VERTEX shader failed to compile. Info:\n%\n===~===~===~===~===~===~===~===~===~===", CString{ infolog, length } );
 	};
+	release_con_assert( compilation_success != 0 );
 
 	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &fragment_shader_source.size );
 	glCompileShader( fragment_shader_id );
 
 
-	glGetShaderiv( fragment_shader_id, GL_COMPILE_STATUS, &success );
-	if ( !success ) {
-		glGetShaderInfoLog( fragment_shader_id, 512, NULL, infolog );
-		con_assert( false );
+	compilation_success = 0;
+	glGetShaderiv( fragment_shader_id, GL_COMPILE_STATUS, &compilation_success );
+	if ( !compilation_success ) {
+		glGetShaderInfoLog( fragment_shader_id, INFOLOG_SIZE, &length, infolog );
+		con_log_indented( 3, "Error: FRAGMENT shader failed to compile. Info:\n%\n===~===~===~===~===~===~===~===~===~===", CString{ infolog, length } );
 	};
+	release_con_assert( compilation_success != 0 );
 
 	glAttachShader( program_id, vertex_shader_id );
 	glAttachShader( program_id, fragment_shader_id );
