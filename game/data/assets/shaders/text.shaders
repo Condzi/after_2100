@@ -28,6 +28,6 @@ void main()
 {
     float alpha = texture(text_texture, texture_coords).r;
     color = color_base;
-    color.w *= alpha;
+  color.w *= alpha;
 }
 #endif

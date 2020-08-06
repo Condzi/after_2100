@@ -264,17 +264,12 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	constant ta_mark = ta.get_mark();
 	defer{ ta.set_mark( ta_mark ); };
 
-	// We're only allowing to have spaces in the strings!
-	// We don't render it so we don't have to allocate memory for their
-	// triangles.
-	s32 spaces_to_skip = 0;
-
 	if ( line_length_limit > 0 &&
 		 utf8_string.size > line_length_limit ) {
 		// We must copy the data to modify it.
 
 		wchar_t* str_copy = ta.allocate<wchar_t>( utf8_string.size );
-		memcpy( str_copy, utf8_string.data, utf8_string.size * sizeof(wchar_t) );
+		memcpy( str_copy, utf8_string.data, utf8_string.size * sizeof( wchar_t ) );
 
 		s32 last_space_position = -1;
 		// Amount of characters since last break.
@@ -288,7 +283,6 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 
 			if ( current_char == L' ' ) {
 				last_space_position = i;
-				++spaces_to_skip;
 			}
 
 			if ( char_count > line_length_limit
@@ -310,12 +304,12 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	}
 
 	Array<Textured_Vertex2D> vertices;
-	vertices.initialize( ( utf8_string.size - spaces_to_skip ) * 6 );
+	vertices.initialize( utf8_string.size * 6 );
 	s32 idx_in_vertices = 0;
 	// Is used to measure the size of the final text.
 	// Bottom right is the furthest point in the AABB in our
 	// coord space.
-	v2 bottom_right_point(0,0);
+	v2 bottom_right_point( 0, 0 );
 	v2 baseline_pos( 0, 0 );
 	constant line_spacing_info = font.get_line_spacing( text_size );
 	// @ToDo: Check if we need .descent too.
@@ -360,7 +354,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 		// Add to vertex array.
 		constant char_info = font.get_character_info( current_char, text_size );
 
-		constant left   = 0; /* char_info.pen_offset.x; */
+		constant left   = 0; /* char_info.pen_offset.x*/
 		constant top    = char_info.pen_offset.y;
 		constant right  = left + char_info.width;
 		constant bottom = top + char_info.height;
@@ -392,10 +386,6 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 		vert_5.texture_point = v2( tex_right, tex_top );
 		vert_6.texture_point = v2( tex_right, tex_bottom );
 
-		baseline_pos.x += char_info.advance;
-
-		previous_char = current_char;
-
 		if ( baseline_pos.x + right > bottom_right_point.x ) {
 			bottom_right_point.x = baseline_pos.x + right;
 		}
@@ -403,16 +393,25 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 		if ( baseline_pos.y + bottom > bottom_right_point.y ) {
 			bottom_right_point.y = baseline_pos.y + bottom;
 		}
+
+		baseline_pos.x += char_info.advance;
+
+		previous_char = current_char;
 	}
 
 	//
 	// Create the render info.
 	//
 
+	// We may allocate too many vertices because of spaces or other 
+	// non-printable characters.
+	constant vertices_count = idx_in_vertices;
+	con_assert( vertices_count < vertices.size() );
+
 	Render_Info render_info;
 
 	render_info.render_type = Render_Type::Draw_Arrays;
-	render_info.draw_arrays_info.vertices_count = vertices.size();
+	render_info.draw_arrays_info.vertices_count = vertices_count;
 	render_info.draw_arrays_info.mode = GL_TRIANGLES;
 	render_info.texture.id = text_texture_id;
 
@@ -422,7 +421,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	glBindVertexArray( render_info.vao );
 
 	glBindBuffer( GL_ARRAY_BUFFER, render_info.vbo );
-	glBufferData( GL_ARRAY_BUFFER, sizeof( Textured_Vertex2D ) * vertices.size(), vertices.data(), GL_STATIC_DRAW );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( Textured_Vertex2D )* vertices_count, vertices.data(), GL_STATIC_DRAW );
 
 	// position 
 	glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)0 );
@@ -433,7 +432,10 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 
 	glBindVertexArray( 0 );
 
-	return { .render_info = render_info, .size = bottom_right_point };
+	constant top_left_point = vertices[0].position;
+	constant size = bottom_right_point - top_left_point;
+
+	return { .render_info = render_info, .size = size };
 }
 
 void shutdown_text( Render_Info const& render_info )
