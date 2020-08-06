@@ -315,6 +315,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	// @ToDo: Check if we need .descent too.
 	constant line_spacing = line_spacing_info.ascent - line_spacing_info.descent;
 	constant space_width  = font.get_character_info( L' ', text_size ).advance;
+	constant tab_width    = space_width * 4;
 
 	wchar_t previous_char = 0;
 	wchar_t current_char  = 0;
@@ -343,6 +344,11 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 
 			previous_char = current_char = 0;
 			continue;
+		} else if ( current_char == L'\t' ) {
+			baseline_pos.x += tab_width;
+			previous_char = L' ';
+			continue;
+
 		} else if ( current_char == L' ' ) {
 			// Maybe we should do kerning here?
 			baseline_pos.x += space_width;
