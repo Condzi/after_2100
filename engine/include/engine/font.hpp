@@ -59,8 +59,9 @@ public:
 private:
 	compile_constant alphabet = UTF8_String{ 
 		L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
-		L"—!?()[]@#%*:;.,=<>+-\"'" // '-' It's a dash, not a minus!! (U+2014)
+		L"—!?()[]@#%:;.,\"'" // '-' It's a dash, not a minus!! (U+2014)
 		L" " // turns out we need space
+		L"1234567890+=-*><"
 		L"¥ÆÊ£ÑÓŒ¯¹æê³ñóœŸ¿" // Polish characters
 	}; 
 

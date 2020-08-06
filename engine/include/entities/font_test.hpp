@@ -17,7 +17,7 @@ struct Font_Test final
 	{
 		auto& font = Context.prepared_resources->get_font( "dev_console"_hcs );
 		
-		auto [ri, size] = construct_text( L"Hej Nikola.\nZrobi³em wyœwietlanie tekstu.\nChyba dzia³a :D"_utf8, font, Text_Size::Developer_Console, -1 );
+		auto [ri, size] = construct_text( L"Text rendering took me longer than it should have. At least I can write stuff now."_utf8, font, Text_Size::Developer_Console, 20 );
 		
 		_cold.basic_render_info = ri;
 		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );

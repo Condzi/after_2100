@@ -274,7 +274,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 		// We must copy the data to modify it.
 
 		wchar_t* str_copy = ta.allocate<wchar_t>( utf8_string.size );
-		memcpy( str_copy, utf8_string.data, utf8_string.size );
+		memcpy( str_copy, utf8_string.data, utf8_string.size * sizeof(wchar_t) );
 
 		s32 last_space_position = -1;
 		// Amount of characters since last break.
@@ -283,6 +283,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 		// Save the position of nearest space (' '). If you reach the limit,
 		// put there a newline.
 		for ( size_t i = 0; i < utf8_string.size; i++ ) {
+			++char_count;
 			constant& current_char = utf8_string.data[i];
 
 			if ( current_char == L' ' ) {
