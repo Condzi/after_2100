@@ -141,7 +141,8 @@ void Renderer::render()
 
 		if ( current_texture != render_info.texture.id ) {
 			// We don't want to do this for ellipse.
-			if ( render_info.drawing_group == Drawing_Group::Default ) {
+			if ( render_info.drawing_group == Drawing_Group::Default ||
+				 render_info.drawing_group == Drawing_Group::GUI ) {
 				current_texture = render_info.texture.id;
 
 				glActiveTexture( GL_TEXTURE0 );
@@ -317,6 +318,10 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	constant line_spacing = line_spacing_info.ascent - line_spacing_info.descent;
 	constant space_width  = font.get_character_info( L' ', text_size ).advance;
 	constant tab_width    = space_width * 4;
+
+	// We're moving the baseline down because otherwise
+	// our text ends up too high.
+	baseline_pos.y += line_spacing_info.ascent;
 
 	wchar_t previous_char = 0;
 	wchar_t current_char  = 0;

@@ -19,10 +19,11 @@ struct Font_Test final
 		
 		auto [ri, size] = construct_text( L"tab =\t4 spaces\nnew line!\nanother one :)"_utf8, font, Text_Size::Developer_Console, 40 );
 		
+		ri.drawing_group = Drawing_Group::GUI;
 		_cold.basic_render_info = ri;
 
-		_hot.position.x += 200;
-		_hot.position.y += 200;
+		//_hot.position.x += 200;
+		//_hot.position.y += 200;
 		_hot.update_model_matrix = true;
 		_cold.basic_render_info.tint.r = 120;
 
