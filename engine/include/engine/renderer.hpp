@@ -2,6 +2,7 @@
 
 #include <engine/array.hpp>
 #include <engine/render_info.hpp>
+#include <engine/font.hpp>
 
 namespace con
 {
@@ -90,4 +91,17 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info;
 // Just deletes vertex array and vertex buffer.
 void shutdown_textured_sprite( Render_Info const& render_info );
+
+// It's nice to know how big the text is.
+struct Text_Return_Value final
+{
+	Render_Info render_info;
+	v2 size;
+};
+
+// You can set line_length_limit to -1 to skip that feature.
+// text_size should be value of Text_Size::X enum. It should also be avaible in the font.
+returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16 line_length_limit = 128 ) -> Text_Return_Value;
+
+void shutdown_text( Render_Info const& render_info );
 }

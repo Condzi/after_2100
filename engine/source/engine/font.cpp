@@ -89,6 +89,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 			auto& character_info = character_infos[i][j];
 			character_info.width  = static_cast<s16>( sft_character.width );
 			character_info.height = static_cast<s16>( sft_character.height );
+			character_info.advance = static_cast<s16>( sft_character.advance );
 			character_info.pen_offset.x = sft_character.x;
 			character_info.pen_offset.y = sft_character.y;
 
@@ -215,7 +216,7 @@ returning Font::get_character_info( wchar_t character, s8 text_size ) -> Charact
 	return character_infos[size_find_result.idx][char_idx];
 }
 
-returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> v2
+returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> f32
 {
 	constant size_find_result = linear_find( text_sizes, text_size );
 	con_assert( size_find_result.found() );
@@ -240,6 +241,31 @@ returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8
 		return {};
 	}
 
-	return v2( kern[0], kern[1] );
+	return static_cast<f32>( kern[0] );
+}
+
+returning Font::get_line_spacing( s8 text_size ) -> Line_Spacing
+{
+	constant size_find_result = linear_find( text_sizes, text_size );
+	con_assert( size_find_result.found() );
+
+	if ( size_find_result.not_found() ) {
+		con_log_indented( 2, "Error: can't find size in font. size enum value = %.", text_size );
+
+		return {};
+	}
+
+	constant size = Context.text_sizes[text_size];
+
+	sft.xScale = sft.yScale = size;
+
+	double ascent  = -1;
+	double descent = -1;
+	double gap     = -1;
+	sft_linemetrics( &sft, &ascent, &descent, &gap );
+
+	return { .ascent = static_cast<f32>( ascent ),
+			.descent = static_cast<f32>( descent ),
+			.gap     = static_cast<f32>( gap ) };
 }
 }

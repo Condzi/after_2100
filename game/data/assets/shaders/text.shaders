@@ -1,30 +1,33 @@
-// TEXT
 #ifdef VERTEX_SHADER
 layout (location=0) in vec2 l_position;
-layout (location=1) in vec2 l_texture_coord;
+layout (location=1) in vec2 l_texture_coords;
 
-out vec2 f_texture_coord;
+out vec2 texture_coords;
+out vec4 color_base;
 
+uniform vec4 u_color_rgba;
 uniform mat4 u_mvp_mat; // projection * view * model
 
 void main()
 {
-	gl_Position = u_mvp_mat * vec4( l_position, 0.1f, 1.0f );
-
-	f_texture_coord = l_texture_coord;
+	gl_Position    = u_mvp_mat * vec4( l_position.xy, 0.1f, 1.0f );
+    texture_coords = l_texture_coords;
+    color_base     = u_color_rgba;
 }
 #endif
 
 #ifdef FRAGMENT_SHADER
+in vec2 texture_coords;
+in vec4 color_base;
+
 out vec4 color;
 
-in vec2 f_texture_coord;
-
-uniform sampler2D u_texture;
+uniform sampler2D text_texture;
 
 void main()
 {
-    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_texture, f_texture_coord).r);
-    color = vec4(0.9, 0.4, 0.1, 1.0) * sampled;
+    float alpha = texture(text_texture, texture_coords).r;
+    color = color_base;
+    color.w *= alpha;
 }
 #endif

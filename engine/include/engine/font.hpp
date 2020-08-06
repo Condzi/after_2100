@@ -18,11 +18,23 @@ public:
 		// Offset from the baseline.
 		v2 pen_offset{ -1, -1 };
 
+		s16 advance = -1;
 		s16 width  = -1;
 		s16 height = -1;
 		// Since texture atlas is just one long line, this is 
-		// and horizontal offset. Vertical doesn't exist.
+		// an horizontal offset. Vertical doesn't exist.
 		s16 offset_in_texture = -1;
+	};
+
+	struct Line_Spacing final
+	{
+		// Distance between baseline and highest point.
+		f32 ascent = -1;
+		// Distance between baseline and lowest point.
+		f32 descent = -1;
+		// @ToDo: investigate what "gap" is.
+		// Distance between ascent and descent or baselines? 
+		f32 gap = -1;
 	};
 
 	// Every font should know what sizes it needs.
@@ -40,12 +52,15 @@ public:
 	// Text size should be Text_Size::X enum.
 	returning get_texture( s8 text_size ) -> gl_id;
 	returning get_character_info( wchar_t character, s8 text_size ) -> Character_Info;
-	returning get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> v2;
+	// We don't care about vertical kerning, so we return only the horizontal (x) one.
+	returning get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> f32;
+	returning get_line_spacing( s8 text_size ) -> Line_Spacing;
 
 private:
 	compile_constant alphabet = UTF8_String{ 
 		L"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" // Latin chars
 		L"—!?()[]@#%*:;.,=<>+-\"'" // '-' It's a dash, not a minus!! (U+2014)
+		L" " // turns out we need space
 		L"¥ÆÊ£ÑÓŒ¯¹æê³ñóœŸ¿" // Polish characters
 	}; 
 

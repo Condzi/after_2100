@@ -122,7 +122,7 @@ void Renderer::render()
 			}
 
 			return a.drawing_group > b.drawing_group;
-		}  );
+		} );
 	}
 
 	//
@@ -159,11 +159,19 @@ void Renderer::render()
 		mat4 mvp_mat{ 1.0f };
 		mvp_mat = projection_view_multiplied_matrix * render_info.model_mat;
 
-		// @Robustness: different shaders may require different uniforms to set. Use
-		// some if statements to determine what shader is being used and then set the data
-		// accordingly.
 		constant combined_mat_loc = glGetUniformLocation( current_shader, "u_mvp_mat" );
 		glUniformMatrix4fv( combined_mat_loc, 1, GL_FALSE, glm::value_ptr( mvp_mat ) );
+
+		if ( render_info.shader.name_hash == "text"_hcs.hash ) {
+			f32 colors_normalized[4] ={ 0 };
+			colors_normalized[0] = render_info.tint.r / 255.0f;
+			colors_normalized[1] = render_info.tint.g / 255.0f;
+			colors_normalized[2] = render_info.tint.b / 255.0f;
+			colors_normalized[3] = render_info.tint.a / 255.0f;
+
+			constant color_loc = glGetUniformLocation( current_shader, "u_color_rgba" );
+			glUniform4fv( color_loc, 1, colors_normalized );
+		}
 
 		glBindVertexArray( render_info.vao );
 
@@ -245,6 +253,189 @@ returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
 }
 
 void shutdown_textured_sprite( Render_Info const& render_info )
+{
+	glDeleteVertexArrays( 1, &render_info.vao );
+	glDeleteBuffers( 1, &render_info.vbo );
+}
+
+returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16 line_length_limit ) -> Text_Return_Value
+{
+	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
+	constant ta_mark = ta.get_mark();
+	defer{ ta.set_mark( ta_mark ); };
+
+	// We're only allowing to have spaces in the strings!
+	// We don't render it so we don't have to allocate memory for their
+	// triangles.
+	s32 spaces_to_skip = 0;
+
+	if ( line_length_limit > 0 &&
+		 utf8_string.size > line_length_limit ) {
+		// We must copy the data to modify it.
+
+		wchar_t* str_copy = ta.allocate<wchar_t>( utf8_string.size );
+		memcpy( str_copy, utf8_string.data, utf8_string.size );
+
+		s32 last_space_position = -1;
+		// Amount of characters since last break.
+		s32 char_count = 0;
+
+		// Save the position of nearest space (' '). If you reach the limit,
+		// put there a newline.
+		for ( size_t i = 0; i < utf8_string.size; i++ ) {
+			constant& current_char = utf8_string.data[i];
+
+			if ( current_char == L' ' ) {
+				last_space_position = i;
+				++spaces_to_skip;
+			}
+
+			if ( char_count > line_length_limit
+				 && last_space_position != -1 ) {
+				str_copy[last_space_position] = L'\n';
+				i = last_space_position + 1;
+				last_space_position = -1;
+				char_count = 0;
+
+				// We can't put that condition in the loop because
+				// we may end too early without putting \n.
+				if ( i > utf8_string.size - line_length_limit ) {
+					break;
+				}
+			}
+		}
+
+		utf8_string = UTF8_String{ str_copy, utf8_string.size };
+	}
+
+	Array<Textured_Vertex2D> vertices;
+	vertices.initialize( ( utf8_string.size - spaces_to_skip ) * 6 );
+	s32 idx_in_vertices = 0;
+	// Is used to measure the size of the final text.
+	// Bottom right is the furthest point in the AABB in our
+	// coord space.
+	v2 bottom_right_point(0,0);
+	v2 baseline_pos( 0, 0 );
+	constant line_spacing_info = font.get_line_spacing( text_size );
+	// @ToDo: Check if we need .descent too.
+	constant line_spacing = line_spacing_info.ascent - line_spacing_info.descent;
+	constant space_width  = font.get_character_info( L' ', text_size ).advance;
+
+	wchar_t previous_char = 0;
+	wchar_t current_char  = 0;
+
+	constant text_texture_id = font.get_texture( text_size );
+	s32 text_texture_width_int  = -1;
+	s32 text_texture_height_int = -1;
+
+	// We have to normalize texture coordinates, therefore we have to
+	// get it's size.
+	glBindTexture( GL_TEXTURE_2D, text_texture_id );
+	glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &text_texture_width_int );
+	glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &text_texture_height_int );
+
+	// We cast it to float to not write static_cast later.
+	constant text_texture_width  = static_cast<f32>( text_texture_width_int );
+	constant text_texture_height = static_cast<f32>( text_texture_height_int );
+
+
+	for ( s32 i = 0; i < utf8_string.size; ++i ) {
+		current_char = utf8_string.data[i];
+
+		if ( current_char == L'\n' ) {
+			baseline_pos.x = 0;
+			baseline_pos.y += line_spacing;
+
+			previous_char = current_char = 0;
+			continue;
+		} else if ( current_char == L' ' ) {
+			// Maybe we should do kerning here?
+			baseline_pos.x += space_width;
+			continue;
+		}
+
+		baseline_pos.x += font.get_kerning( previous_char, current_char, text_size );
+
+		// Add to vertex array.
+		constant char_info = font.get_character_info( current_char, text_size );
+
+		constant left   = 0; /* char_info.pen_offset.x; */
+		constant top    = char_info.pen_offset.y;
+		constant right  = left + char_info.width;
+		constant bottom = top + char_info.height;
+
+		constant tex_left   = char_info.offset_in_texture / text_texture_width;
+		constant tex_top    = 0.0f;
+		constant tex_right  = ( char_info.offset_in_texture + char_info.width ) / text_texture_width;
+		constant tex_bottom = char_info.height / text_texture_height;
+
+		auto& vert_1 = vertices[idx_in_vertices];
+		auto& vert_2 = vertices[++idx_in_vertices];
+		auto& vert_3 = vertices[++idx_in_vertices];
+		auto& vert_4 = vertices[++idx_in_vertices];
+		auto& vert_5 = vertices[++idx_in_vertices];
+		auto& vert_6 = vertices[++idx_in_vertices];
+		++idx_in_vertices;
+
+		vert_1.position = v2( baseline_pos.x + left, baseline_pos.y + top );
+		vert_2.position = v2( baseline_pos.x + right, baseline_pos.y + top );
+		vert_3.position = v2( baseline_pos.x + left, baseline_pos.y + bottom );
+		vert_4.position = v2( baseline_pos.x + left, baseline_pos.y + bottom );
+		vert_5.position = v2( baseline_pos.x + right, baseline_pos.y + top );
+		vert_6.position = v2( baseline_pos.x + right, baseline_pos.y + bottom );
+
+		vert_1.texture_point = v2( tex_left, tex_top );
+		vert_2.texture_point = v2( tex_right, tex_top );
+		vert_3.texture_point = v2( tex_left, tex_bottom );
+		vert_4.texture_point = v2( tex_left, tex_bottom );
+		vert_5.texture_point = v2( tex_right, tex_top );
+		vert_6.texture_point = v2( tex_right, tex_bottom );
+
+		baseline_pos.x += char_info.advance;
+
+		previous_char = current_char;
+
+		if ( baseline_pos.x + right > bottom_right_point.x ) {
+			bottom_right_point.x = baseline_pos.x + right;
+		}
+
+		if ( baseline_pos.y + bottom > bottom_right_point.y ) {
+			bottom_right_point.y = baseline_pos.y + bottom;
+		}
+	}
+
+	//
+	// Create the render info.
+	//
+
+	Render_Info render_info;
+
+	render_info.render_type = Render_Type::Draw_Arrays;
+	render_info.draw_arrays_info.vertices_count = vertices.size();
+	render_info.draw_arrays_info.mode = GL_TRIANGLES;
+	render_info.texture.id = text_texture_id;
+
+	glGenVertexArrays( 1, &render_info.vao );
+	glGenBuffers( 1, &render_info.vbo );
+
+	glBindVertexArray( render_info.vao );
+
+	glBindBuffer( GL_ARRAY_BUFFER, render_info.vbo );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( Textured_Vertex2D ) * vertices.size(), vertices.data(), GL_STATIC_DRAW );
+
+	// position 
+	glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)0 );
+	glEnableVertexAttribArray( 0 );
+	// texture coord
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)( 2* sizeof( f32 ) ) );
+	glEnableVertexAttribArray( 1 );
+
+	glBindVertexArray( 0 );
+
+	return { .render_info = render_info, .size = bottom_right_point };
+}
+
+void shutdown_text( Render_Info const& render_info )
 {
 	glDeleteVertexArrays( 1, &render_info.vao );
 	glDeleteBuffers( 1, &render_info.vbo );

@@ -3,6 +3,7 @@
 #include <engine/entity.hpp>
 #include <engine/cstring.hpp>
 #include <engine/logger.hpp>
+#include <engine/utf8_string.hpp>
 
 namespace con
 {
@@ -15,22 +16,18 @@ struct Font_Test final
 	void initialize()
 	{
 		auto& font = Context.prepared_resources->get_font( "dev_console"_hcs );
-		constant texture_id = font.get_texture( Text_Size::Developer_Console );
-
-		s32 tex_w = -1, tex_h = -1;
-		glBindTexture( GL_TEXTURE_2D, texture_id );
-		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &tex_w );
-		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &tex_h );
-
-		_cold.basic_render_info = construct_textured_sprite( tex_w, tex_h );
-
+		
+		auto [ri, size] = construct_text( L"Hej Nikola.\nZrobi³em wyœwietlanie tekstu.\nChyba dzia³a :D"_utf8, font, Text_Size::Developer_Console, -1 );
+		
+		_cold.basic_render_info = ri;
 		_cold.basic_render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
-		_cold.basic_render_info.texture.id = texture_id;
 
-		_hot.position = v2{ 1366/2, 768 / 2 };
+		_hot.position.x += 200;
+		_hot.position.y += 200;
 		_hot.update_model_matrix = true;
-		_cold.basic_render_info.render_type = Render_Type::Draw_Elements;
-		_cold.basic_render_info.drawing_layer = 5;
+		_cold.basic_render_info.tint.r = 120;
+
+		con_log_indented( 3, "Created text, size: % x % px.", size.x, size.y );
 	}
 
 	void shutdown()

@@ -17,8 +17,16 @@ struct Drawing_Group final
 	{
 		Default = 0,
 		Ellipse = 1, // Do we use it?
-		GUI     = 3
+		GUI     = 2
 	};
+};
+
+struct Tint final
+{
+	u8 r = 255;
+	u8 g = 255;
+	u8 b = 255;
+	u8 a = 255;
 };
 
 struct Render_Info final
@@ -51,5 +59,8 @@ struct Render_Info final
 	};
 
 	bool visible = true;
+
+	// Right now we're using it only for text. Maybe think about a better way to do it?
+	Tint tint;
 };
 }
