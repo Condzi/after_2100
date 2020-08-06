@@ -96,8 +96,8 @@ void Renderer::render()
 
 		constant& cold = colds[i];
 
-		if ( cold.basic_render_info.visible ) {
-			render_infos[idx_in_render_infos] = cold.basic_render_info;
+		if ( cold.render_info.visible ) {
+			render_infos[idx_in_render_infos] = cold.render_info;
 			++idx_in_render_infos;
 		}
 	}

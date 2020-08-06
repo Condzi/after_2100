@@ -94,7 +94,7 @@ void Entity_Manager::frame_update( f32 dt )
 
 			if ( current_hot.update_model_matrix ) {
 				// We don't check if entity is visible.
-				auto& mat = by_type._cold[i].basic_render_info.model_mat;
+				auto& mat = by_type._cold[i].render_info.model_mat;
 
 				mat = mat4{ 1.0f };
 				mat = glm::translate( mat, v3{ current_hot.position.x, current_hot.position.y,  0 } );

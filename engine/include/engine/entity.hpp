@@ -56,8 +56,7 @@ struct Entity final
 	struct Cold final
 	{
 		// Collision_Info collision_info; // hitbox etc
-		// @ToDo: just rename to render_info.
-		Render_Info basic_render_info;
+		Render_Info render_info;
 	};
 
 	Entity() = delete;

@@ -7,7 +7,6 @@
 
 namespace con
 {
-// Test rendering of all characters.
 struct Font_Test final
 {
 	ENTITY_DEF( Font_Test );
@@ -20,19 +19,19 @@ struct Font_Test final
 		auto [ri, size] = construct_text( L"tab =\t4 spaces\nnew line!\nanother one :)"_utf8, font, Text_Size::Developer_Console, 40 );
 		
 		ri.drawing_group = Drawing_Group::GUI;
-		_cold.basic_render_info = ri;
+		_cold.render_info = ri;
 
 		//_hot.position.x += 200;
 		//_hot.position.y += 200;
 		_hot.update_model_matrix = true;
-		_cold.basic_render_info.tint.r = 120;
+		_cold.render_info.tint.r = 120;
 
 		con_log_indented( 3, "Created text, size: % x % px.", size.x, size.y );
 	}
 
 	void shutdown()
 	{
-		shutdown_textured_sprite( _cold.basic_render_info );
+		shutdown_textured_sprite( _cold.render_info );
 	}
 };
 }

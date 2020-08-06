@@ -39,7 +39,7 @@ struct Planet final
 		radius = planet_resource_data.radius;
 		name_hash = planet_resource_data.planet_name_hash;
 
-		auto& render_info = _cold.basic_render_info;
+		auto& render_info = _cold.render_info;
 
 		// @Robustness: right now we use 2*radius, but maybe in
 		// the future we may need some other sizes? That would
@@ -56,7 +56,7 @@ struct Planet final
 
 	void shutdown()
 	{
-		shutdown_textured_sprite( _cold.basic_render_info );
+		shutdown_textured_sprite( _cold.render_info );
 	}
 
 	returning get_planet_info() const -> Planet_Info

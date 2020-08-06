@@ -37,7 +37,7 @@ struct Player final
 		constant texture = resources.get_texture( "player"_hcs );
 		constant shader  = resources.get_shader( "sprite_default"_hcs );
 
-		auto& render_info = _cold.basic_render_info;
+		auto& render_info = _cold.render_info;
 
 		render_info = construct_textured_sprite( 48, 48 );
 		render_info.texture = texture;
@@ -76,7 +76,7 @@ struct Player final
 
 	void shutdown()
 	{
-		shutdown_textured_sprite( _cold.basic_render_info );
+		shutdown_textured_sprite( _cold.render_info );
 	}
 
 	Debug_Entity* orbit_path;
@@ -210,7 +210,7 @@ struct Player final
 		//
 		// Initialize Render_Info.
 		//
-		auto& ri = orbit_path->_cold.basic_render_info;
+		auto& ri = orbit_path->_cold.render_info;
 		ri.render_type = Render_Type::Draw_Arrays;
 		ri.visible = true;
 		ri.draw_arrays_info.mode = GL_LINE_LOOP;

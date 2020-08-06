@@ -1,6 +1,5 @@
 # **Important**
-* add ability to have more than one render_info per one entity. this would allow to have buttons, for example. The sprite would be one render info, and text other. there is no really need for more entities for that. unless... we create separate entity for text?
-* rework the logging of the shader compilation status!!!!!
+
 * add developer console (text printing and scrolling only for now)
 * move some unit tests from `con_engine` and write few new -- we probably want to check if we're correctly allocating using `Default_Allocator` 
 * Bitset could have u32 as base type, this would greatly simplify it's code and MSVC intrinsics usage.
@@ -21,11 +20,13 @@
 * **ADD** `.reload()` which reloads resources and then searches for entities that use them. Then assigning the new resource in place of the old one. (Just like in the example above)
 
 # **For later**
+* for localized text we'll need a special text class. Just don't do the `Localized_String` approach from the legacy version. When needed, just loop over `Text` (or something like that) entities and update them.
 * don't forget to **add licenses**!
 * Gamepad support
 * add random number generator (see comment in plan.md file. we may want to use a simple approach instead of using C++'s)
 
 # **BUGS**
+* sometimes we may need to call ctors. either use new and delete OR inplace new OR initialize everything to 0. If we do that, we can simply memset(0) everytime we allocate new memory.
 * if orbit is out of screen bounds the game crash (investigate when exactly and why)
 * we may introduce bugs because of copying the `Array` somewhere. investigate that.
 * Seems to be resolved? When trying to record fullscreen with OBS (maybe it's because we're using dedicated gpu and obs is not?)
