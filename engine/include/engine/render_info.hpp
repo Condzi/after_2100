@@ -21,6 +21,8 @@ struct Drawing_Group final
 	};
 };
 
+// @Robustness: simplify Tint to use 4 floats instad of 4 bytes.
+// This will simplify passing the Tint to the shaders.
 struct Tint final
 {
 	u8 r = 255;

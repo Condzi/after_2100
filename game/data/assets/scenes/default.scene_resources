@@ -9,3 +9,4 @@ player
 :/shaders
 sprite_default
 text
+geometry_tinted

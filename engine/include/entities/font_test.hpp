@@ -14,6 +14,7 @@ struct Font_Test final
 
 	void initialize()
 	{
+		
 		auto& font = Context.prepared_resources->get_font( "dev_console"_hcs );
 		
 		auto [ri, size] = construct_text( L"tab =\t4 spaces\nnew line!\nanother one :)"_utf8, font, Text_Size::Developer_Console, 40 );
@@ -25,13 +26,22 @@ struct Font_Test final
 		//_hot.position.y += 200;
 		_hot.update_model_matrix = true;
 		_cold.render_info.tint.r = 120;
+	 
 
-		con_log_indented( 3, "Created text, size: % x % px.", size.x, size.y );
+		/*
+		_cold.render_info = construct_rectangle( 200, 400 );
+		_cold.render_info.tint ={ 218, 245, 235, 100 };
+		_cold.render_info.shader = Context.prepared_resources->get_shader( "geometry_tinted"_hcs );
+
+		_hot.position = v2( 500, 400 );
+		_hot.update_model_matrix = true;
+		*/
+		
 	}
 
 	void shutdown()
 	{
-		shutdown_textured_sprite( _cold.render_info );
+		shutdown_rectangle( _cold.render_info );
 	}
 };
 }

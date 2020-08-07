@@ -164,14 +164,15 @@ void Renderer::render()
 		constant combined_mat_loc = glGetUniformLocation( current_shader, "u_mvp_mat" );
 		glUniformMatrix4fv( combined_mat_loc, 1, GL_FALSE, glm::value_ptr( mvp_mat ) );
 
-		if ( render_info.shader.name_hash == "text"_hcs.hash ) {
+		if ( render_info.shader.name_hash == "text"_hcs.hash ||
+			 render_info.shader.name_hash == "geometry_tinted"_hcs.hash ) {
 			f32 colors_normalized[4] ={ 0 };
 			colors_normalized[0] = render_info.tint.r / 255.0f;
 			colors_normalized[1] = render_info.tint.g / 255.0f;
 			colors_normalized[2] = render_info.tint.b / 255.0f;
 			colors_normalized[3] = render_info.tint.a / 255.0f;
 
-			constant color_loc = glGetUniformLocation( current_shader, "u_color_rgba" );
+			constant color_loc = glGetUniformLocation( current_shader, "u_tint" );
 			glUniform4fv( color_loc, 1, colors_normalized );
 		}
 
@@ -223,6 +224,37 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 	return vertices;
 }
 
+returning construct_2d_quad( s32 width, s32 height ) -> Array<Position_Vertex2D>
+{
+	if ( width <= 0 ) {
+		con_log_indented( 2, R"(Warning: invalid parameter for "construct_2d_quad": width = %, changing to 10.)", width );
+		width = 10;
+	}
+
+	if ( height <= 0 ) {
+		con_log_indented( 2, R"(Warning: invalid parameter for "construct_2d_quad": height = %, changing to 10.)", height );
+		height = 10;
+	}
+
+	Array<Position_Vertex2D> vertices;
+	vertices.initialize( 4, Context.temporary_allocator );
+
+	constant half_width  = static_cast<f32>( width / 2 );
+	constant half_height = static_cast<f32>( height / 2 );
+
+	auto& v0 = vertices[0];
+	auto& v1 = vertices[1];
+	auto& v2 = vertices[2];
+	auto& v3 = vertices[3];
+
+	v0.position ={ 0 - half_width, 0 - half_height };
+	v1.position ={ 0 - half_width, 0 + half_height };
+	v2.position ={ 0 + half_width, 0 + half_height };
+	v3.position ={ 0 + half_width, 0 - half_height };
+
+	return vertices;
+}
+
 returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
 {
 	Render_Info render_info;
@@ -265,6 +297,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
 	constant ta_mark = ta.get_mark();
 	defer{ ta.set_mark( ta_mark ); };
+
 
 	if ( line_length_limit > 0 &&
 		 utf8_string.size > line_length_limit ) {
@@ -425,7 +458,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	render_info.render_type = Render_Type::Draw_Arrays;
 	render_info.draw_arrays_info.vertices_count = vertices_count;
 	render_info.draw_arrays_info.mode = GL_TRIANGLES;
-	
+
 	render_info.texture.id = text_texture_id;
 	render_info.shader = Context.prepared_resources->get_shader( "text"_hcs );
 
@@ -459,4 +492,37 @@ void shutdown_text( Render_Info const& render_info )
 	glDeleteBuffers( 1, &render_info.vbo );
 }
 
+returning construct_rectangle( s32 width, s32 height ) -> Render_Info
+{
+	Render_Info render_info;
+
+	render_info.elements_count = 6; // 6 elemets in ebo for a quad
+
+	auto quad = construct_2d_quad( width, height );
+
+	glGenVertexArrays( 1, &render_info.vao );
+	glGenBuffers( 1, &render_info.vbo );
+
+	glBindVertexArray( render_info.vao );
+
+	glBindBuffer( GL_ARRAY_BUFFER, render_info.vbo );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( Position_Vertex2D ) * 4, quad.data(), GL_STATIC_DRAW );
+
+	// position 
+	glEnableVertexAttribArray( 0 );
+	glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, sizeof( Position_Vertex2D ), (void*)0 );
+
+	// We use the same quad ebo as the sprites.
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, Context.renderer->get_quad_ebo() );
+
+	glBindVertexArray( 0 );
+
+	return render_info;
+}
+
+void shutdown_rectangle( Render_Info const& render_info )
+{
+	glDeleteVertexArrays( 1, &render_info.vao );
+	glDeleteBuffers( 1, &render_info.vbo );
+}
 }

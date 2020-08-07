@@ -86,6 +86,10 @@ struct Texture_Rect final
 // size (in pixels, not the OpenGL coord space)
 returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_Vertex2D>;
 
+// Works similar to `construct_2d_textured_quad`, but uses different 
+// vertex type.
+returning construct_2d_quad( s32 width, s32 height ) -> Array<Position_Vertex2D>;
+
 // Creates a render info set up for sprite rendering. You still have to set the correct texture
 // and shader.
 returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info;
@@ -104,4 +108,8 @@ struct Text_Return_Value final
 returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16 line_length_limit = 128 ) -> Text_Return_Value;
 
 void shutdown_text( Render_Info const& render_info );
+
+returning construct_rectangle( s32 width, s32 height ) -> Render_Info;
+
+void shutdown_rectangle( Render_Info const& render_info );
 }

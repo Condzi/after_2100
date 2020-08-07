@@ -3,22 +3,22 @@ layout (location=0) in vec2 l_position;
 layout (location=1) in vec2 l_texture_coords;
 
 out vec2 texture_coords;
-out vec4 color_base;
+out vec4 f_tint;
 
-uniform vec4 u_color_rgba;
 uniform mat4 u_mvp_mat; // projection * view * model
+uniform vec4 u_tint;
 
 void main()
 {
     gl_Position    = u_mvp_mat * vec4( l_position.xy, 0.1f, 1.0f );
     texture_coords = l_texture_coords;
-    color_base     = u_color_rgba;
+    f_tint     = u_tint;
 }
 #endif
 
 #ifdef FRAGMENT_SHADER
 in vec2 texture_coords;
-in vec4 color_base;
+in vec4 f_tint;
 
 out vec4 color;
 
@@ -27,7 +27,7 @@ uniform sampler2D text_texture;
 void main()
 {
     float alpha = texture(text_texture, texture_coords).r;
-    color = color_base;
+    color = f_tint;
     color.w *= alpha;
 }
 #endif
