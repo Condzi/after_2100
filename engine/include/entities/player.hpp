@@ -185,7 +185,7 @@ struct Player final
 		}
 
 
-		constant points_count = ceil( steps_accumulated / step );
+		constant points_count = static_cast<s32>( ceil( steps_accumulated / step ) );
 		Array<v2> points;
 		points.initialize( points_count, Context.temporary_allocator );
 

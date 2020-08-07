@@ -41,7 +41,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 
 	// We have to convert initializer list to our array here.
 	// Maybe use stack_allocator here?
-	text_sizes.initialize( text_sizes_.size(), Context.default_allocator );
+	text_sizes.initialize( static_cast<s32>( text_sizes_.size() ), Context.default_allocator );
 	memcpy( text_sizes.data(), text_sizes_.begin(), text_sizes_.size() * sizeof( s8 ) );
 
 	// Get character info and calculate needed space for the texture.

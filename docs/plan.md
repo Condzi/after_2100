@@ -202,6 +202,7 @@ struct GL_Resource
 * Signals? To notify others about stuff like collision
         * Internationalization
 * Editor
+* Lightning? Planets shadows would be a nice touch.
 
 # **Game**
 Use it only as entry point. All code is in the `engine` project.

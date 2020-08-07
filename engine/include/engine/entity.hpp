@@ -41,10 +41,10 @@ struct Entity final
 
 	struct Hot final
 	{
-		v2 position;
-		v2 velocity;
+		v2 position = v2(0,0);
+		v2 velocity = v2(0,0);
 		void* data = nullptr; // Pointer to the actual implementation / child?
-		f32 rotation_z;
+		f32 rotation_z = 0;
 		s16 u_id  = INVALID_ID;
 		s16 type  = INVALID_TYPE; // Player, Enemy, Background, Planet, Explosion etc...
 		s16 group = INVALID_GROUP;

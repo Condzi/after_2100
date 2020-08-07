@@ -279,7 +279,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 
 		// Save the position of nearest space (' '). If you reach the limit,
 		// put there a newline.
-		for ( size_t i = 0; i < utf8_string.size; i++ ) {
+		for ( s32 i = 0; i < utf8_string.size; i++ ) {
 			++char_count;
 			constant& current_char = utf8_string.data[i];
 
