@@ -35,6 +35,7 @@
 #define CON_STACK_RESERVED_MEMORY               CON_KILOBYTES( 128 )
 #define CON_LOGGER_BUFFER_RESERVED_MEMORY       CON_MEGABYTES( 1 )
 #define CON_DEV_CONSOLE_BUFFER_RESERVED_MEMORY  CON_LOGGER_BUFFER_RESERVED_MEMORY
+#define CON_DEV_CONSOLE_OCCUPIED_HEIGHT         ( 0.35f ) // <0, 1>, percent of the screen height
 
 #define CON_REQUEST_DEDICATED_GPU  true
 
@@ -46,7 +47,7 @@
 #define CON_INPUT_MOUSE_KEYS_OFFSET   ( con::Key::Keyboard_MENU + 1 )
 #define CON_INPUT_GAMEPAD_KEYS_OFFSET ( con::Key::Mouse_8 + 1 )
 
-#define CON_MAX_INPUT_BINDINGS  8
+#define CON_MAX_INPUT_BINDINGS  ( 8 )
 
 //
 // Data files extensions
@@ -78,11 +79,11 @@
 //
 // Entities stuff
 //
-#define CON_ENTITIES_LIMIT   128
-#define CON_MAX_ENTITY_FLAGS 8
+#define CON_ENTITIES_LIMIT   ( 128 )
+#define CON_MAX_ENTITY_FLAGS ( 8 )
 
-#define CON_DEBUG_ENTITIES_LIMIT  4
-#define CON_PLANETS_LIMIT         8
+#define CON_DEBUG_ENTITIES_LIMIT  ( 4 )
+#define CON_PLANETS_LIMIT         ( 8 )
 
 //
 // Config file stuff
@@ -95,14 +96,14 @@
 // only once and then "shrink" the array (by freeing the memory).
 // 
 
-#define CON_MAX_SCENES_IN_FOLDER  32
-#define CON_MAX_CONFIG_ENTRIES    64
+#define CON_MAX_SCENES_IN_FOLDER  ( 32 )
+#define CON_MAX_CONFIG_ENTRIES    ( 64 )
 
 // Fallback texture color in range <0, 255>
-#define CON_FALLBACK_TEXTURE_COLOR_R  255
-#define CON_FALLBACK_TEXTURE_COLOR_G  28
-#define CON_FALLBACK_TEXTURE_COLOR_B  221
-#define CON_FALLBACK_TEXTURE_COLOR_A  255
+#define CON_FALLBACK_TEXTURE_COLOR_R  ( 255 )
+#define CON_FALLBACK_TEXTURE_COLOR_G  ( 28 )
+#define CON_FALLBACK_TEXTURE_COLOR_B  ( 221 )
+#define CON_FALLBACK_TEXTURE_COLOR_A  ( 255 )
 
-#define CON_FALLBACK_TEXTURE_SIZE 64
+#define CON_FALLBACK_TEXTURE_SIZE  ( 64 )
 
