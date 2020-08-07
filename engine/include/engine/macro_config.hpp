@@ -5,10 +5,10 @@
 //
 
 #define CON_STR_( x )  #x
-#define CON_STR( x )  CON_STR_( x )
+#define CON_STR( x )   CON_STR_( x )
 
 #define CON_CONCAT_INTERNAL( x, y )  x##y
-#define CON_CONCAT( x, y )  CON_CONCAT_INTERNAL( x, y )
+#define CON_CONCAT( x, y )           CON_CONCAT_INTERNAL( x, y )
 
 #define CON_BYTES( x )       ( x )
 #define CON_KILOBYTES( x )   ( x << 10 )
@@ -59,17 +59,17 @@
 //
 // Paths relative to run tree.
 //
-#define CON_LOGS_FOLDER         "logs\\"
-#define CON_DATA_FOLDER         "data\\"
+#define CON_LOGS_FOLDER          "logs\\"
+#define CON_DATA_FOLDER          "data\\"
 
-#define CON_ASSETS_FOLDER       CON_DATA_FOLDER   "assets\\"
-#define CON_SCENES_FOLDER       CON_ASSETS_FOLDER "scenes\\"
-#define CON_TEXTURES_FOLDER     CON_ASSETS_FOLDER "textures\\"
-#define CON_FONTS_FOLDER        CON_ASSETS_FOLDER "fonts\\"
-#define CON_SHADERS_FOLDER      CON_ASSETS_FOLDER "shaders\\"
+#define CON_ASSETS_FOLDER        CON_DATA_FOLDER   "assets\\"
+#define CON_SCENES_FOLDER        CON_ASSETS_FOLDER "scenes\\"
+#define CON_TEXTURES_FOLDER      CON_ASSETS_FOLDER "textures\\"
+#define CON_FONTS_FOLDER         CON_ASSETS_FOLDER "fonts\\"
+#define CON_SHADERS_FOLDER       CON_ASSETS_FOLDER "shaders\\"
 
-#define CON_CONFIG_FILE         CON_DATA_FOLDER "local" CON_CONFIG_FILE_EXTENSION
-#define CON_DEFAULT_LOG_FILE    CON_LOGS_FOLDER "log" CON_LOG_FILE_EXTENSION
+#define CON_CONFIG_FILE          CON_DATA_FOLDER "local" CON_CONFIG_FILE_EXTENSION
+#define CON_DEFAULT_LOG_FILE     CON_LOGS_FOLDER "log" CON_LOG_FILE_EXTENSION
 #define CON_DEFAULT_SCENE_RESOURCES_INFO_FILE   CON_SCENES_FOLDER "default" CON_SCENE_RESOURCES_FILE_EXTENSION
 #define CON_ASSETS_CONFIG_FILE   CON_DATA_FOLDER "assets" CON_CONFIG_FILE_EXTENSION
 #define CON_PLANETS_CONFIG_FILE  CON_DATA_FOLDER "planets" CON_CONFIG_FILE_EXTENSION
