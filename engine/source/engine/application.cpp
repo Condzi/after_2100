@@ -27,25 +27,34 @@ returning Application::initialize() -> bool
 	main_logger.initialize();
 
 	// @Robustness: well, it turns out we sometimes want to initialize memory.
-	prepared_resources ={};
+	prepared_resources = {};
 
 
 	con_log( "Initializing main logger..." );
 	if ( !set_up_log_folder() ) {
 		con_log_indented( 1, R"(Fatal error: couldn't initialize log folder at "%".)", CString{ CON_DEFAULT_LOG_FILE } );
 		return false;
-	} else {
-		con_log( "Main logger initialized." );
 	}
+	main_logger_file = fopen( CON_DEFAULT_LOG_FILE, "wb" );
+	if ( main_logger_file == nullptr ) {
+		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
+	} else {
+		con_log_indented( 1, "Logger file successfully created." );
+	}
+	con_log( "Main logger initialized." );
 
+
+	flush_logger();
 	con_log( "Checking necessary paths..." );
 	if ( !check_necessary_paths() ) {
 		return false;
 	}
 	con_log( "Paths are correct." );
+	flush_logger();
 
 
 	con_log( "Loading config file..." );
+	flush_logger();
 	std::error_code fs_error_code;
 	constant config_file_exists = std::filesystem::exists( CON_CONFIG_FILE, fs_error_code );
 
@@ -69,44 +78,62 @@ returning Application::initialize() -> bool
 			con_log( "Error: loading of the config file has failed." );
 		}
 	}
+	flush_logger();
 
 
 	// @ToDo: Splash screen stuff?? in separate thread?
 
 
 	con_log( "Initializing window..." );
+	flush_logger();
 	window.initialize();
 	con_log( "Window initialized." );
+	flush_logger();
 
 	update_text_sizes();
 
 	con_log( "Initializing resource loader..." );
+	flush_logger();
 	resource_loader.initialize();
 	con_log( "Resource loader initialized." );
+	flush_logger();
 
 
 	con_log( "Initializing input..." );
+	flush_logger();
 	input.initialize( window );
 	con_log( "Input initialized." );
+	flush_logger();
 
 
 	con_log( "Initializing entity manager..." );
+	flush_logger();
 	entity_manager.initialize();
 	con_log( "Entity manager initialized." );
+	flush_logger();
 
 
 	con_log( "Initializing renderer..." );
+	flush_logger();
 	renderer.initialize();
+
 	renderer.set_window_size( window.width(), window.height() );
+
 	con_log( "Renderer initialized." );
+	flush_logger();
 
 
 	con_log( "Debug spawn player..." );
+	flush_logger();
 	resource_loader.prepare_resources_for_scene( "sandbox" );
+	flush_logger();
 	entity_manager.spawn_entity<Player>();
 	con_log( "Player spawned." );
+	flush_logger();
 
 	con_log( "Initialization completed." );
+
+	flush_logger();
 
 	return true;
 }
@@ -123,8 +150,10 @@ void Application::run()
 	f32 accumulated_dt = 0;
 	ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay"_hcs, "ups"_hcs ) );
 
+	flush_logger();
+
 	while ( !( Context.exit_flags.requested_by_app ||
-			Context.exit_flags.requested_by_user ) ) {
+			   Context.exit_flags.requested_by_user ) ) {
 
 		if ( window.should_close() ) {
 			Context.exit_flags.requested_by_user = true;
@@ -158,6 +187,7 @@ void Application::run()
 		renderer.render();
 		window.display();
 
+		flush_logger();
 		temporary_allocator.set_mark( 0 );
 
 		frame_end = Time::now();
@@ -169,10 +199,11 @@ void Application::run()
 void Application::shutdown()
 {
 	con_log( "Application shutdown..." );
+	flush_logger();
 
 	con_log( "Exit flags: " );
 	con_log_indented( 1, "requested_by_user = %", Context.exit_flags.requested_by_user );
-	con_log_indented( 1, "requested_by_app  = %", Context.exit_flags.requested_by_app );
+	con_log_indented( 1, "requested_by_app  = %", Context.exit_flags.requested_by_app  );
 
 	entity_manager.shutdown();
 	renderer.shutdown();
@@ -186,35 +217,35 @@ void Application::shutdown()
 	constant highest_mark = temporary_allocator.get_highest_mark();
 	constant reserved_mem = CON_TEMPORARY_STORAGE_RESERVED_MEMORY;
 	constant percent_value = 100 * static_cast<f32>( highest_mark ) / reserved_mem;
-	con_log( "Highest TA mark: % / % KB (% percent used).", highest_mark / CON_KILOBYTES( 1 ), reserved_mem / CON_KILOBYTES( 1 ), percent_value );
+	con_log( "Highest TA mark: % / % (bytes), % percent.", highest_mark, reserved_mem, percent_value );
 
-	dump_logs_to_file(); // flushing last messages here...
+	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
+	std::fclose( main_logger_file );
 	default_allocator.shutdown();
 	stack_allocator.shutdown();
 }
 
-void Application::dump_logs_to_file()
+void Application::flush_logger()
 {
 	// @ToDo: Check if we're in release mode. If yes, don't try to log to console.
 	constant data_to_log = main_logger.get_buffer();
+	if ( data_to_log.size == 0 ) {
+		return;
+	}
 
-	// We had an accident with \0 once, so just in case...
+// We had an accident with \0 once, so just in case...
 #ifdef CON_DEBUG
 	for ( s32 i = 0; i < data_to_log.size; ++i ) {
 		con_assert( data_to_log.data[i] != 0 );
 	}
 #endif
 
-	FILE* const main_logger_file = fopen( CON_DEFAULT_LOG_FILE, "wb" );
-	defer{ fclose( main_logger_file ); };
-
-	if ( main_logger_file == nullptr ) {
-		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
-	} else {
-		con_log_indented( 1, "Logger file successfully created." );
-		fputs( data_to_log.data, main_logger_file );
+	std::fputs( data_to_log.data, stdout );
+	if ( main_logger_file != nullptr ) {
+		std::fputs( data_to_log.data, main_logger_file );
 	}
+	main_logger.reset_buffer();
 }
 
 returning Application::set_up_log_folder() -> bool
