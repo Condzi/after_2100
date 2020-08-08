@@ -14,9 +14,8 @@ public:
 	void shutdown();
 
 	void log( CString message, s32 indent = 0 );
-	void reset_buffer();
 
-	// Returns \0 terminated CString.
+	// Since logger buffer is filled with 0, can be treated as null-terminated.
 	returning get_buffer() const -> CString;
 
 private:

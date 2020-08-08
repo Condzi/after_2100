@@ -10,6 +10,8 @@ void Logger::initialize()
 	begin = reinterpret_cast<char*>( Context.default_allocator->allocate( buffer_size ) );
 	end = begin + buffer_size;
 	next_free_slot = begin;
+
+	memset( begin, 0, buffer_size );
 }
 
 void Logger::shutdown()
@@ -21,18 +23,13 @@ void Logger::log( CString message, s32 indent )
 {
 	assert( next_free_slot + message.size + indent < end );
 
-	for ( s32 i = 0; i < indent; ++i ) {
-		*next_free_slot = '\t';
-		++next_free_slot;
-	}
+	memset( next_free_slot, '\t', indent );
+	memcpy( next_free_slot + indent, message.data, message.size );
 
-	memcpy( next_free_slot, message.data, message.size );
-	next_free_slot += message.size;
-}
+	// We can do this because logger buffer is initialized with zeros.
+	printf( "%s", next_free_slot );
 
-void Logger::reset_buffer()
-{
-	next_free_slot = begin;
+	next_free_slot += message.size + indent;
 }
 
 returning Logger::get_buffer() const -> CString
@@ -42,9 +39,8 @@ returning Logger::get_buffer() const -> CString
 		return { nullptr, 0 };
 	}
 
-	// We're adding \0 for C's puts at the end, so we need an extra space.
-	assert( messages_size + 1 < buffer_size );
-	*next_free_slot = '\0';
+	// We don't have to add \0 because buffer is initialized with zeros.
+
 	return { begin, messages_size };
 }
 }
