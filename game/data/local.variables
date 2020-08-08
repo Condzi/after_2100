@@ -8,7 +8,7 @@
     # doesn't work
     frame_cap 120 
     fullscreen false
-    window_size 1366 768
+    window_size 1600 900
     # uncomment when you choose fullscreen
     # fullscreen true
     # window_size 1920 1080

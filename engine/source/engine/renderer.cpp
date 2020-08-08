@@ -35,7 +35,7 @@ returning Renderer::get_quad_ebo() const -> gl_id const
 	return quad_ebo;
 }
 
-void Renderer::set_window_size( s16 width, s16 height )
+void Renderer::set_window_size( s32 width, s32 height )
 {
 	con_assert( width > 0 );
 	con_assert( height > 0 );
@@ -298,7 +298,8 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	constant ta_mark = ta.get_mark();
 	defer{ ta.set_mark( ta_mark ); };
 
-
+	// @ToDo: move the breaking line code away from `construct_text`. Maybe just
+	// make a proper function for that -- it doesn't belong here.
 	if ( line_length_limit > 0 &&
 		 utf8_string.size > line_length_limit ) {
 		// We must copy the data to modify it.
@@ -310,6 +311,11 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 		// Amount of characters since last break.
 		s32 char_count = 0;
 
+		// @Performance: we can save time in the loop below if we do steps of size of
+		// line_length_limit, and then going backwards. This way we can save up on loop
+		// iterations. However, we have to handle the case where we couldn't add \n.
+
+
 		// Save the position of nearest space (' '). If you reach the limit,
 		// put there a newline.
 		for ( s32 i = 0; i < utf8_string.size; i++ ) {
@@ -318,6 +324,10 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 
 			if ( current_char == L' ' ) {
 				last_space_position = i;
+			}
+			// We don't want to break near the break point.
+			if ( current_char == L'\n' ) {
+				char_count = 0;
 			}
 
 			if ( char_count > line_length_limit

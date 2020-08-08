@@ -1,4 +1,5 @@
 # **Current Tasks**
+* rethink logger.
 * add developer console (text printing and scrolling only for now)
     * just simply display text using the new `construct_text` function.
     * adapt solutions from the legacy code. it worked quite nicely. 

@@ -28,16 +28,23 @@
 #define CON_VERSION_STRING  "1.0"
 #define CON_WINDOW_TITLE    "after_2100 / v" CON_VERSION_STRING " / Compiled on " __DATE__ " at " __TIME__ " CET"
 
+#define CON_REQUEST_DEDICATED_GPU  true
 #define CON_ASSERT_MESSAGE_BUFFER_SIZE 512
 
+//
+// Reserved memory for particular buffers.
+//
 #define CON_RESERVED_MEMORY                     CON_MEGABYTES( 64 )
 #define CON_TEMPORARY_STORAGE_RESERVED_MEMORY   CON_MEGABYTES( 4 )
 #define CON_STACK_RESERVED_MEMORY               CON_KILOBYTES( 128 )
 #define CON_LOGGER_BUFFER_RESERVED_MEMORY       CON_MEGABYTES( 1 )
-#define CON_DEV_CONSOLE_BUFFER_RESERVED_MEMORY  CON_LOGGER_BUFFER_RESERVED_MEMORY
-#define CON_DEV_CONSOLE_OCCUPIED_HEIGHT         ( 0.35f ) // <0, 1>, percent of the screen height
 
-#define CON_REQUEST_DEDICATED_GPU  true
+//
+// Developer Console
+//
+#define CON_DEV_CONSOLE_BUFFER_SIZE       ( 128 )
+#define CON_DEV_CONSOLE_INIT_BUFFER_SIZE  CON_KILOBYTES( 5 )
+#define CON_DEV_CONSOLE_OCCUPIED_HEIGHT   ( 0.35f ) // <0, 1>, percent of the screen height
 
 //
 // Input

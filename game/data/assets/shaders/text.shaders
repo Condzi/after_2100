@@ -12,7 +12,7 @@ void main()
 {
     gl_Position    = u_mvp_mat * vec4( l_position.xy, 0.1f, 1.0f );
     texture_coords = l_texture_coords;
-    f_tint     = u_tint;
+    f_tint         = u_tint;
 }
 #endif
 
@@ -26,8 +26,8 @@ uniform sampler2D text_texture;
 
 void main()
 {
+    color       = f_tint;
     float alpha = texture(text_texture, texture_coords).r;
-    color = f_tint;
-    color.w *= alpha;
+    color.w    *= alpha;
 }
 #endif

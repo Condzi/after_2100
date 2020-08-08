@@ -21,9 +21,9 @@ public:
 
 private:
 	compile_constant buffer_size = CON_LOGGER_BUFFER_RESERVED_MEMORY;
-	char* begin = nullptr;
-	char const* end = nullptr;
-	char* next_free_slot = nullptr;
+	char* begin                  = nullptr;
+	char const* end              = nullptr;
+	char* next_free_slot         = nullptr;
 };
 }
 

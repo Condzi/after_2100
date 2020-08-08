@@ -261,6 +261,7 @@
     <ClCompile Include="source\engine\bitset.cpp" />
     <ClCompile Include="source\engine\config_file.cpp" />
     <ClCompile Include="source\engine\cstring.cpp" />
+    <ClCompile Include="source\engine\dev_console.cpp" />
     <ClCompile Include="source\engine\entity_manager.cpp" />
     <ClCompile Include="source\engine\font.cpp" />
     <ClCompile Include="source\engine\input.cpp" />
