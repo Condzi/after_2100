@@ -47,7 +47,7 @@ public:
 
 	// Should be called only by the window to update our internal
 	// projection matrix. (called by application during initialization stage)
-	void set_window_size( s16 width, s16 height );
+	void set_window_size( s32 width, s32 height );
 
 	void render();
 
