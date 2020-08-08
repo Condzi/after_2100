@@ -27,20 +27,20 @@ public:
 
 private:
 	// Context structure stuff.
-	Default_Allocator default_allocator;
+	Default_Allocator   default_allocator;
 	Temporary_Allocator temporary_allocator;
-	C_Allocator c_allocator;
-	Stack_Allocator stack_allocator;
-	Entity_Manager entity_manager;
-	Logger main_logger;
-	FILE* main_logger_file = nullptr;
-	Config_File config_file;
-	Window window;
-	Input input;
-	Prepared_Resources prepared_resources;
+	C_Allocator         c_allocator;
+	Stack_Allocator     stack_allocator;
+	Entity_Manager      entity_manager;
+	Logger              main_logger;
+	FILE*               main_logger_file = nullptr;
+	Config_File         config_file;
+	Window              window;
+	Input               input;
+	Prepared_Resources  prepared_resources;
 
-	Resource_Loader resource_loader;
-	Renderer renderer;
+	Resource_Loader     resource_loader;
+	Renderer            renderer;
 
 	f32 ups = -1;
 

@@ -27,7 +27,7 @@ returning Application::initialize() -> bool
 	main_logger.initialize();
 
 	// @Robustness: well, it turns out we sometimes want to initialize memory.
-	prepared_resources = {};
+	prepared_resources ={};
 
 
 	con_log( "Initializing main logger..." );
@@ -153,7 +153,7 @@ void Application::run()
 	flush_logger();
 
 	while ( !( Context.exit_flags.requested_by_app ||
-			   Context.exit_flags.requested_by_user ) ) {
+			Context.exit_flags.requested_by_user ) ) {
 
 		if ( window.should_close() ) {
 			Context.exit_flags.requested_by_user = true;
@@ -203,7 +203,7 @@ void Application::shutdown()
 
 	con_log( "Exit flags: " );
 	con_log_indented( 1, "requested_by_user = %", Context.exit_flags.requested_by_user );
-	con_log_indented( 1, "requested_by_app  = %", Context.exit_flags.requested_by_app  );
+	con_log_indented( 1, "requested_by_app  = %", Context.exit_flags.requested_by_app );
 
 	entity_manager.shutdown();
 	renderer.shutdown();
@@ -216,8 +216,9 @@ void Application::shutdown()
 	// we get strange division result. Why? I don't know!
 	constant highest_mark = temporary_allocator.get_highest_mark();
 	constant reserved_mem = CON_TEMPORARY_STORAGE_RESERVED_MEMORY;
-	constant percent_value = 100 * static_cast<f32>( highest_mark ) / reserved_mem;
-	con_log( "Highest TA mark: % / % (bytes), % percent.", highest_mark, reserved_mem, percent_value );
+	constant percent_value = static_cast<s32>( 100 * static_cast<f32>( highest_mark ) / reserved_mem );
+
+	con_log( "Highest TA mark: % / % KB (~% percent).", highest_mark / CON_KILOBYTES( 1 ), reserved_mem / CON_KILOBYTES( 1 ), percent_value );
 
 	flush_logger(); // flushing last messages here...
 	main_logger.shutdown();
@@ -234,7 +235,7 @@ void Application::flush_logger()
 		return;
 	}
 
-// We had an accident with \0 once, so just in case...
+	// We had an accident with \0 once, so just in case...
 #ifdef CON_DEBUG
 	for ( s32 i = 0; i < data_to_log.size; ++i ) {
 		con_assert( data_to_log.data[i] != 0 );

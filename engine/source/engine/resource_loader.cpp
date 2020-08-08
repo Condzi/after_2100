@@ -431,7 +431,7 @@ void Resource_Loader::initialize()
 			}
 		}
 	} else {
-		con_log_indented( 1, "No default shaders to load." );
+		con_log_indented( 1, "No default shaders  to load." );
 	}
 
 	//
@@ -758,7 +758,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			++idx_in_r_shaders;
 		}
 
-		con_log_indented( 1, "Requested % shaders, loaded %, active now: %.", r_shaders.size(), idx_in_p_shaders - default_shaders_count, idx_in_p_shaders );
+		con_log_indented( 1, "Requested % shaders,  loaded %, active now: %.", r_shaders.size(), idx_in_p_shaders - default_shaders_count, idx_in_p_shaders );
 
 		if ( idx_in_p_shaders < p_shaders.size() ) {
 			p_shaders.shrink( idx_in_p_shaders );
