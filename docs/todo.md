@@ -5,7 +5,7 @@
 * check where we have to call constructors and see if we can remove ctors.
 
 # **Quality of life**
-
+* rename `Font` to `Dynamic_Font`
 * log the hardware info (RAM, max texture size, this kind of stuff)
 * add support for const char* const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`
     * well, actually if we don't do it like that we lose compile time knowledge of the size. We can only do this: `FOO ""_cs` 

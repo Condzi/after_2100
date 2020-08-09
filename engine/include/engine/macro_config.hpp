@@ -42,9 +42,9 @@
 //
 // Developer Console
 //
-#define CON_DEV_CONSOLE_BUFFER_SIZE       ( 128 )
-#define CON_DEV_CONSOLE_INIT_BUFFER_SIZE  CON_KILOBYTES( 5 )
-#define CON_DEV_CONSOLE_OCCUPIED_HEIGHT   ( 0.35f ) // <0, 1>, percent of the screen height
+#define CON_DEV_CONSOLE_MESSAGES_BUFFER_SIZE  ( 128 )
+#define CON_DEV_CONSOLE_LINES_BUFFER_SIZE     ( 256 )
+#define CON_DEV_CONSOLE_OCCUPIED_HEIGHT       ( 0.35f ) // <0, 1>, percent of the screen height
 
 //
 // Input

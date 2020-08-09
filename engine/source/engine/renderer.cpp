@@ -363,7 +363,6 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	v2 bottom_right_point( 0, 0 );
 	v2 baseline_pos( 0, 0 );
 	constant line_spacing_info = font.get_line_spacing( text_size );
-	// @ToDo: Check if we need .descent too.
 	constant line_spacing = line_spacing_info.ascent - line_spacing_info.descent;
 	constant space_width  = font.get_character_info( L' ', text_size ).advance;
 	constant tab_width    = space_width * 4;
