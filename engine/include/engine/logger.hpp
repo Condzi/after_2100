@@ -38,5 +38,5 @@ private:
 
 #define con_push_indent()             Context.logger->push_indent()
 #define con_pop_indent()              Context.logger->pop_indent()
-#define con_log( msg, ... )           Context.logger->log( con::sprint( msg "\n", __VA_ARGS__ ) )
-#define con_log_no_indent( msg, ... ) Context.logger->log_no_indent( con::sprint( msg "\n", __VA_ARGS__ ) )
+#define con_log( msg, ... )           Context.logger->log( con::sprint( msg, __VA_ARGS__ ) )
+#define con_log_no_indent( msg, ... ) Context.logger->log_no_indent( con::sprint( msg, __VA_ARGS__ ) )

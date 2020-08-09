@@ -134,7 +134,7 @@ returning Application::initialize() -> bool
 	flush_logger();
 
 	//
-	// We have to have window initiailized to know the text size.
+	// We have to have window initialized to know the text size.
 	//
 
 	update_text_sizes();

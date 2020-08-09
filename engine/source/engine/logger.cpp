@@ -36,7 +36,14 @@ void Logger::log( CString message )
 	next_free_slot += current_indent;
 
 	memcpy( next_free_slot, message.data, message.size );
+
+	// Context.dev_console->print( CString{next_free_slot - current_indent, message.length } );
+
 	next_free_slot += message.size;
+
+	// We add newline here because the Dev_Console doesn't want \n.
+	*next_free_slot = '\n';
+	++next_free_slot;
 }
 
 void Logger::log_no_indent( CString message )
@@ -44,7 +51,12 @@ void Logger::log_no_indent( CString message )
 	assert( next_free_slot + message.size < end );
 
 	memcpy( next_free_slot, message.data, message.size );
+	// Context.dev_console->print( CString{next_free_slot, message.length } );
+
 	next_free_slot += message.size;
+	// We add newline here because the Dev_Console doesn't want \n.
+	*next_free_slot = '\n';
+	++next_free_slot;
 }
 
 void Logger::reset_buffer()
