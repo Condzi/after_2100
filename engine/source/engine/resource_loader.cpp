@@ -522,6 +522,18 @@ void Resource_Loader::initialize()
 			planet_data[i] ={ .radius = radius, .texture_name_hash = texture_name_hash, .planet_name_hash = current_planet_hash };
 		}
 	}
+
+	//
+	// We copy the default / loaded stuff to the prepared ones.
+	//
+
+	auto& p_res = *Context.prepared_resources;
+	
+	p_res.textures.initialize( defaults.textures.size() );
+	memcpy( p_res.textures.data(), defaults.textures.data(), sizeof( Texture ) * defaults.textures.size() );
+
+	p_res.shaders.initialize( defaults.shaders.size() );
+	memcpy( p_res.shaders.data(), defaults.shaders.data(), sizeof( Shader ) * defaults.shaders.size() );
 }
 
 void Resource_Loader::shutdown()

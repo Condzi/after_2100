@@ -14,6 +14,7 @@
 #include <engine/prepared_resources.hpp>
 #include <engine/resource_loader.hpp>
 #include <engine/renderer.hpp>
+#include <engine/dev_console.hpp>
 
 namespace con
 {
@@ -38,6 +39,7 @@ private:
 	Window              window;
 	Input               input;
 	Prepared_Resources  prepared_resources;
+	Dev_Console         dev_console;
 
 	Resource_Loader     resource_loader;
 	Renderer            renderer;

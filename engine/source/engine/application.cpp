@@ -13,17 +13,18 @@ returning Application::initialize() -> bool
 	// Assiging the Context pointers.
 	//
 
-	Context.default_allocator = &default_allocator;
+	Context.default_allocator   = &default_allocator;
 	Context.temporary_allocator = &temporary_allocator;
-	Context.c_allocator = &c_allocator;
-	Context.stack_allocator = &stack_allocator;
-	Context.entity_manager = &entity_manager;
-	Context.logger = &main_logger;
-	Context.config_file = &config_file;
-	Context.input = &input;
-	Context.prepared_resources = &prepared_resources;
-	Context.renderer = &renderer;
-	Context.window = &window;
+	Context.c_allocator         = &c_allocator;
+	Context.stack_allocator     = &stack_allocator;
+	Context.entity_manager      = &entity_manager;
+	Context.logger              = &main_logger;
+	Context.config_file         = &config_file;
+	Context.input               = &input;
+	Context.prepared_resources  = &prepared_resources;
+	Context.renderer            = &renderer;
+	Context.window              = &window;
+	Context.dev_console         = &dev_console;
 
 	//
 	// Initialize basic systems.
@@ -33,6 +34,7 @@ returning Application::initialize() -> bool
 	temporary_allocator.initialize();
 	stack_allocator.initialize();
 	main_logger.initialize();
+	dev_console.initialize_buffers();
 
 	// @Robustness: well, it turns out we sometimes want to initialize memory.
 	prepared_resources ={};
@@ -154,6 +156,26 @@ returning Application::initialize() -> bool
 	flush_logger();
 
 	//
+	// Dev_Console init.
+	//
+
+	bool do_dev_console = false;
+	constant dev_console_str = config_file.get_value( "debug"_hcs, "dev_console"_hcs );
+	sscan( "%", dev_console_str, do_dev_console );
+
+	if ( do_dev_console ){
+		con_log( "Initializing developer console... ");
+		flush_logger();
+		con_push_indent();
+
+		dev_console.initialize_graphics();
+
+		con_pop_indent();
+		con_log( "Developer console initialized." );
+		flush_logger();
+	}
+
+	//
 	// Input init.
 	//
 
@@ -196,6 +218,9 @@ returning Application::initialize() -> bool
 	con_log( "Renderer initialized." );
 	flush_logger();
 
+	// !!!! IMPORTANT !!!!
+	// 
+	// Dev_Console
 	//
 	// Debug / Test stuff.
 	//
@@ -228,6 +253,7 @@ void Application::run()
 	con_log( "Application runs..." );
 
 	input.add_binding( "exit_button"_hcs, Key::Keyboard_ESCAPE );
+	input.add_binding( "dev_console"_hcs, Key::Keyboard_F1 );
 
 	Time_Period frame_start = Time::now();
 	Time_Period frame_end;
@@ -246,6 +272,10 @@ void Application::run()
 
 		if ( input.is_key_pressed( "exit_button"_hcs ) ) {
 			Context.exit_flags.requested_by_user = true;
+		}
+
+		if ( input.is_key_pressed( "dev_console"_hcs ) ){
+			dev_console.toggle();
 		}
 
 		input.poll_events();
@@ -267,6 +297,7 @@ void Application::run()
 
 
 		entity_manager.frame_update( frame_dt );
+		dev_console.update( frame_dt );
 
 		window.clear();
 		renderer.render();

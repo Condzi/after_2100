@@ -7,12 +7,13 @@ namespace con
 {
 struct Allocator;
 struct Entity_Manager;
-class Logger;
-class Config_File;
-class Input;
-class Prepared_Resources;
-class Renderer;
+class  Logger;
+class  Config_File;
+class  Input;
+class  Prepared_Resources;
+class  Renderer;
 struct Window;
+class  Dev_Console;
 }
 
 namespace con::priv
@@ -32,6 +33,7 @@ struct Context_Data final
 	Prepared_Resources* prepared_resources = nullptr;
 	Renderer* renderer			   = nullptr;
 	Window* window                 = nullptr;
+	Dev_Console* dev_console       = nullptr;
 
 	struct
 	{

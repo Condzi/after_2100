@@ -3,6 +3,7 @@
 #include <engine/entity_manager.hpp>
 #include <engine/algorithms.hpp>
 #include <engine/prepared_resources.hpp>
+#include <engine/dev_console.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -100,6 +101,14 @@ void Renderer::render()
 			render_infos[idx_in_render_infos] = cold.render_info;
 			++idx_in_render_infos;
 		}
+	}
+
+	if ( Context.dev_console->is_open() ){
+		constant& graphic_elements = Context.dev_console->graphic_elements;
+
+		render_infos[idx_in_render_infos]   = graphic_elements.background.render_info;
+		render_infos[++idx_in_render_infos] = graphic_elements.text      .render_info;
+		++idx_in_render_infos;
 	}
 
 	if ( idx_in_render_infos < render_infos_max_count ) {
@@ -466,7 +475,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	// We may allocate too many vertices because of spaces or other 
 	// non-printable characters.
 	constant vertices_count = idx_in_vertices;
-	con_assert( vertices_count < vertices.size() );
+	con_assert( vertices_count <= vertices.size() );
 
 	Render_Info render_info;
 

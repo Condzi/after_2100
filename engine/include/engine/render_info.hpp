@@ -15,13 +15,14 @@ struct Drawing_Group final
 {
 	enum _ :s16
 	{
-		Default = 0,
-		Ellipse = 1, // Do we use it?
-		GUI     = 2
+		Default     = 0,
+		Ellipse     = 1, // Remove.
+		GUI         = 2,
+		Dev_Console = 3
 	};
 };
 
-// @Robustness: simplify Tint to use 4 floats instad of 4 bytes.
+// @Robustness: simplify Tint to use 4 floats instead of 4 bytes.
 // This will simplify passing the Tint to the shaders.
 struct Tint final
 {

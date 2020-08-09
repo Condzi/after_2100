@@ -22,5 +22,5 @@
 
 # Probably should be cut off from public game builds?
 :/debug
-    dev_console false
+    dev_console true
     gl_debug    true
