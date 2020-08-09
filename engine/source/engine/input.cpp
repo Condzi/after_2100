@@ -74,7 +74,9 @@ returning Input::is_key_released( Hashed_CString name ) const -> bool
 		}
 	}
 
-	con_log_indented( 1, "Warning: Couldn't find binding for key of hash %. (is_key_released)", name.hash );
+	con_push_indent();
+	con_log( "Warning: couldn't find binding for key of hash %. (is_key_released)", name.hash );
+	con_pop_indent();
 
 	return false;
 }
@@ -89,13 +91,18 @@ returning Input::is_key_pressed( Hashed_CString name ) const -> bool
 		}
 	}
 
-	con_log_indented( 1, "Warning: Couldn't find binding for key of hash %. (is_key_pressed)", name.hash );
+	con_push_indent();
+	con_log( "Warning: couldn't find binding for key of hash %. (is_key_pressed)", name.hash );
+	con_pop_indent();
 
 	return false;
 }
 
 returning Input::is_key_held( Hashed_CString name ) const -> bool
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	for ( s32 i = 0; i < bindings.size(); ++i ) {
 		auto& binding = bindings[i];
 
@@ -103,7 +110,7 @@ returning Input::is_key_held( Hashed_CString name ) const -> bool
 
 			constant glfw_key_id = con_key_to_glfw_key( binding.key_id );
 			if ( binding.key_id > CON_INPUT_GAMEPAD_KEYS_OFFSET ) {
-				con_log_indented( 1, "Gamepad keys are not supported!" );
+				con_log( "Warning: gamepad keys are not supported!" );
 			} else if ( binding.key_id > CON_INPUT_MOUSE_KEYS_OFFSET ) {
 				return glfwGetMouseButton( window_handle, glfw_key_id );
 			} else {
@@ -112,7 +119,7 @@ returning Input::is_key_held( Hashed_CString name ) const -> bool
 		}
 	}
 
-	con_log_indented( 1, "Warning: Couldn't find binding for key of hash %. (is_key_held)", name.hash );
+	con_log( "Warning: couldn't find binding for key of hash %. (is_key_held)", name.hash );
 
 	return false;
 }
@@ -141,9 +148,12 @@ void Input::glfw_keyboard_key_callback( GLFWwindow* window, int key, int scancod
 	unused( mods );
 	unused( window );
 
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	Key_ID our_key = -1;
 	if ( key == GLFW_KEY_UNKNOWN ) {
-		con_log_indented( 1, "Error: Unknown keyboard key (GLFW code: % / scancode: %).", key, scancode );
+		con_log( "Error: unknown keyboard key (GLFW code: % / scancode: %).", key, scancode );
 		return;
 	}
 
@@ -166,9 +176,12 @@ void Input::glfw_mouse_key_callback( GLFWwindow* window, int button, int action,
 	unused( mods );
 	unused( window );
 
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	Key_ID our_key = -1;
 	if ( button == GLFW_KEY_UNKNOWN ) {
-		con_log_indented( 1, " Error: unknown mouse button (GLFW code: %i).", button );
+		con_log( " Error: unknown mouse button (GLFW code: %i).", button );
 		return;
 	}
 

@@ -14,7 +14,7 @@ void Window::initialize()
 	//
 	// Getting the display values.
 	//
-	con_log_indented( 1, "Gathering the window config values..." );
+	con_log( "Gathering the window config values..." );
 	auto& cfg = *Context.config_file;
 
 	constant gl_debug   = cstring_to_bool( cfg.get_value( "debug"_hcs, "gl_debug"_hcs ) );
@@ -38,7 +38,7 @@ void Window::initialize()
 	//
 	// Initializing GLFW and setting up the window
 	//
-	con_log_indented( 1, "Initializing GLFW and setting up the window..." );
+	con_log( "Initializing GLFW and setting up the window..." );
 	glfwSetErrorCallback( con::priv::on_glfw_error );
 
 	release_con_assert( glfwInit() == GLFW_TRUE );
@@ -55,7 +55,9 @@ void Window::initialize()
 	if ( !vsync ) {
 		//	glfwWindowHint( GLFW_DOUBLEBUFFER, GL_FALSE );
 		if ( frame_cap > 0 ) {
-			con_log_indented( 2, "Warning: frame cap is not implemented yet!!" );
+			con_push_indent();
+			con_log( "Warning: frame cap is not implemented yet!!" );
+			con_pop_indent();
 		}
 	}
 
@@ -74,7 +76,7 @@ void Window::initialize()
 		GLFWvidmode const* const monitor_video_mode = glfwGetVideoMode( monitor );
 		con_assert( monitor_video_mode != nullptr );
 		// Does char = utf-8? ughhh I hope so
-		con_log_indented( 1, "Creating fullscreen window on monitor \"%\" (% x %, %Hz), window size is % x %.", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate, win_width, win_height );
+		con_log( R"(Creating fullscreen window on monitor "%" (% x %, %Hz), window size is % x %.)", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate, win_width, win_height );
 
 		// @ToDo: irl use monitor_video_mode to find the best resoulution. Maybe use the gatherded
 		// resolution if resoulution in cfg file is really tiny? Like "if width < monitor_width/4 or height < monitor_height < 4" or something like that? 
@@ -84,7 +86,7 @@ void Window::initialize()
 		release_con_assert( handle != nullptr );
 		glfwMakeContextCurrent( handle );
 	} else {
-		con_log_indented( 1, "Creating windowed window, size % x %.", win_width, win_height );
+		con_log( "Creating windowed window, size % x %.", win_width, win_height );
 		// pass monitor if you want fullscreen
 		handle = glfwCreateWindow( win_width, win_height, CON_WINDOW_TITLE, nullptr, nullptr );
 		release_con_assert( handle != nullptr );
@@ -94,13 +96,15 @@ void Window::initialize()
 	//
 	// Initializing OpenGL
 	//
-	con_log_indented( 1, "Initializing OpenGL..." );
+	con_log( "Initializing OpenGL..." );
 	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) != 0 );
-	con_log_indented( 2, "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
+
+	con_push_indent();
+	con_log( "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
 
 
 	glGetIntegerv( GL_MAX_TEXTURE_SIZE, &Context.machine_info.max_texture_size );
-	con_log_indented( 2, "Max texture size: %x%", Context.machine_info.max_texture_size, Context.machine_info.max_texture_size );
+	con_log( "Max texture size: %x%", Context.machine_info.max_texture_size, Context.machine_info.max_texture_size );
 
 	if ( vsync ) {
 		glfwSwapInterval( 1 );
@@ -113,60 +117,59 @@ void Window::initialize()
 	glViewport( 0, 0, win_width, win_height );
 
 	if ( !gl_debug ) {
-		con_log_indented( 2, "gl debug hasn't been requested." );
+		con_log( "OpenGL debug mode hasn't been requested." );
+	} else {
+		con_log( "Setting up OpenGL debug mode..." );
 
-		return;
+		release_con_assert( glDebugMessageCallback != nullptr );
+
+		glEnable( GL_DEBUG_OUTPUT );
+		glEnable( GL_DEBUG_OUTPUT_SYNCHRONOUS );
+
+		glDebugMessageCallback( []( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param ) {
+			unused( user_param );
+			unused( severity );
+			unused( source );
+
+			// I just couldn't get glDebugMessage to work.
+			if ( id == 131185 ) {
+				return;
+			}
+
+
+			CString const type_str = [&type] {
+				switch ( type ) {
+				case GL_DEBUG_TYPE_PERFORMANCE:
+				return "PERFORMANCE"_cs;
+
+				case GL_DEBUG_TYPE_OTHER:
+				return "OTHER"_cs;
+
+				case GL_DEBUG_TYPE_MARKER:
+				return "MARKER"_cs;
+
+				case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+				return "DEPRECATED"_cs;
+
+				case GL_DEBUG_TYPE_PORTABILITY:
+				return "PORTABILITY"_cs;
+
+				case GL_DEBUG_TYPE_ERROR:
+				return "ERROR"_cs;
+
+				case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+				return "U.B."_cs;
+
+				default:
+				return "UNKNOWN"_cs;
+				}
+			} ( );
+
+			con_log_no_indent( "[OpenGL][% %]: \"%\".", type_str, id, CString{ message, length } );
+		}, nullptr );
 	}
 
-	con_log_indented( 2, "Setting up gl debug stuff..." );
-
-	release_con_assert( glDebugMessageCallback != nullptr );
-
-	glEnable( GL_DEBUG_OUTPUT );
-	glEnable( GL_DEBUG_OUTPUT_SYNCHRONOUS );
-
-	glDebugMessageCallback( []( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param ) {
-		unused( user_param );
-		unused( severity );
-		unused( source );
-
-		// I just couldn't get glDebugMessage to work.
-		if ( id == 131185 ) {
-			return;
-		}
-
-
-		CString const type_str = [&type] {
-			switch ( type ) {
-			case GL_DEBUG_TYPE_PERFORMANCE:
-			return "PERFORMANCE"_cs;
-
-			case GL_DEBUG_TYPE_OTHER:
-			return "OTHER"_cs;
-
-			case GL_DEBUG_TYPE_MARKER:
-			return "MARKER"_cs;
-
-			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-			return "DEPRECATED"_cs;
-
-			case GL_DEBUG_TYPE_PORTABILITY:
-			return "PORTABILITY"_cs;
-
-			case GL_DEBUG_TYPE_ERROR:
-			return "ERROR"_cs;
-
-			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-			return "U.B."_cs;
-
-			default:
-			return "UNKNOWN"_cs;
-			}
-		} ( );
-
-		con_log( "[OpenGL][% %]: \"%\".", type_str, id, CString{ message, length } );
-	}, nullptr );
-
+	con_pop_indent();
 	// DOESNT FREAKIN WORK!!!
 	// 131185 - something about using video card memory for a buffer
 	/*

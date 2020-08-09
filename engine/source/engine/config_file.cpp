@@ -89,7 +89,9 @@ returning Config_File::parse_from_file( CString path ) -> bool
 
 		++current_config_value;
 		if ( current_config_value >= config_values.size() ) {
-			con_log_indented( 1, R"(Error: our limit for config values, %, has been exceeded! File: "%".)", CON_MAX_CONFIG_ENTRIES, path );
+			con_push_indent();
+			con_log( R"(Error: our limit for config values, %, has been exceeded! File: "%".)", CON_MAX_CONFIG_ENTRIES, path );
+			con_pop_indent();
 			return false;
 		}
 	}
@@ -143,7 +145,7 @@ returning Config_File::parse_from_source( CString source ) -> bool
 		constant name_hash = hash_cstring( name );
 		constant value_idx = ate_whitespace( source_content, name_idx_end );
 		if ( value_idx >= endline_idx ) {
-			con_log_indented( 1, R"(Warning: in DEFAULT CONFIG field "%" has no value assigned!)", name );
+			con_log( R"(Warning: in DEFAULT CONFIG field "%" has no value assigned!)", name );
 			idx = endline_idx;
 			++current_config_value; // We're wasting space here but no value is a bug either way so it's not bad. 
 			continue;
@@ -164,7 +166,7 @@ returning Config_File::parse_from_source( CString source ) -> bool
 
 		++current_config_value;
 		if ( current_config_value >= config_values.size() ) {
-			con_log_indented( 1, "(Error: our limit for config values, %, has been exceeded! (in DEFAULT CONFIG)", CON_MAX_CONFIG_ENTRIES );
+			con_log( "(Error: our limit for config values, %, has been exceeded! (in DEFAULT CONFIG)", CON_MAX_CONFIG_ENTRIES );
 			return false;
 		}
 	}

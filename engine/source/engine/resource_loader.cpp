@@ -52,6 +52,9 @@ file_scope
 {
 returning load_texture_data( CString file, s16 const decl_width, s16 const decl_height ) -> byte*
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	auto path = cstring_to_cstr( sprint( "%%", CString{ CON_TEXTURES_FOLDER }, file ) );
 
 	s32 loaded_width = -1, loaded_height = -1;
@@ -63,17 +66,17 @@ returning load_texture_data( CString file, s16 const decl_width, s16 const decl_
 
 	if ( data == nullptr ) {
 		constant failure_reason = cstring_from_cstr( stbi_failure_reason() );
-		con_log_indented( 3, R"(Error: can't load texture from "%". Reason: "%".)", path, failure_reason );
+		con_log( R"(Error: can't load texture from "%". Reason: "%".)", path, failure_reason );
 		return nullptr;
 	}
 
 	if ( decl_width != static_cast<s16>( loaded_width ) ) {
-		con_log_indented( 3, R"(Error: I refuse to load a texture from "%" because declared width was %px but loaded is %px.)", path, decl_width, loaded_width );
+		con_log( R"(Error: I refuse to load a texture from "%" because declared width was %px but loaded is %px.)", path, decl_width, loaded_width );
 		return nullptr;
 	}
 
 	if ( decl_height != static_cast<s16>( loaded_height ) ) {
-		con_log_indented( 3, R"(Error: I refuse to load a texture from "%" because declared height was %px but loaded is %px.)", path, decl_height, loaded_height );
+		con_log( R"(Error: I refuse to load a texture from "%" because declared height was %px but loaded is %px.)", path, decl_height, loaded_height );
 		return nullptr;
 	}
 
@@ -118,6 +121,9 @@ returning load_shader_source( CString file ) -> CString
 
 returning build_shader_program( CString source ) -> gl_id
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	auto& ta = *reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 	constant mark = ta.get_mark();
 	defer{ ta.set_mark( mark ); };
@@ -148,7 +154,7 @@ returning build_shader_program( CString source ) -> gl_id
 	glGetShaderiv( vertex_shader_id, GL_COMPILE_STATUS, &compilation_success );
 	if ( !compilation_success ) {
 		glGetShaderInfoLog( vertex_shader_id, INFOLOG_SIZE, &length, infolog );
-		con_log_indented( 3, "Error: VERTEX shader failed to compile. Info:\n%\n===~===~===~===~===~===~===~===~===~===", CString{ infolog, length } );
+		con_log( "Error: VERTEX shader failed to compile. Info:\n%\n===~===~===~===~===~===~===~===~===~===", CString{ infolog, length } );
 	};
 	release_con_assert( compilation_success != 0 );
 
@@ -160,7 +166,7 @@ returning build_shader_program( CString source ) -> gl_id
 	glGetShaderiv( fragment_shader_id, GL_COMPILE_STATUS, &compilation_success );
 	if ( !compilation_success ) {
 		glGetShaderInfoLog( fragment_shader_id, INFOLOG_SIZE, &length, infolog );
-		con_log_indented( 3, "Error: FRAGMENT shader failed to compile. Info:\n%\n===~===~===~===~===~===~===~===~===~===", CString{ infolog, length } );
+		con_log( "Error: FRAGMENT shader failed to compile. Info:\n%\n===~===~===~===~===~===~===~===~===~===", CString{ infolog, length } );
 	};
 	release_con_assert( compilation_success != 0 );
 
@@ -197,14 +203,17 @@ void Resource_Loader::initialize()
 	//
 	// Getting assets metadata 
 	//
-	con_log_indented( 1, "Loading resource metadata from \"%\"...", CString{ CON_ASSETS_CONFIG_FILE } );
+	con_log( "Loading resource metadata from \"%\"...", CString{ CON_ASSETS_CONFIG_FILE } );
 	Config_File assets_config;
 	defer{ assets_config.free(); };
+	con_push_indent();
 	if ( !assets_config.parse_from_file( CON_ASSETS_CONFIG_FILE ) ) {
-		con_log_indented( 2, "Error: couldn't parse from file." );
+		con_log( "Error: couldn't parse from file." );
 		Context.exit_flags.requested_by_app = true;
+		con_pop_indent();
 		return;
 	}
+	con_pop_indent();
 	// Config_File::get_section returns temporary storage memory, so we can reset it after we
 	// use the array.
 	auto& da = *reinterpret_cast<Default_Allocator*>( Context.default_allocator );
@@ -216,6 +225,8 @@ void Resource_Loader::initialize()
 		defer{ ta.set_mark( ta_mark ); };
 		constant textures_section = assets_config.get_section( "textures"_hcs );
 		constant textures_count = textures_section.size();
+		con_push_indent();
+		defer{ con_pop_indent(); };
 
 		name_hashes.textures.shutdown();
 		paths.textures.shutdown();
@@ -229,14 +240,14 @@ void Resource_Loader::initialize()
 		CString path;
 		s32 width = -1, height = -1;
 		if ( textures_section.size() < 0 ) {
-			con_log_indented( 1, R"(Error: Can't find "textures" section! )" );
+			con_log( R"(Error: Can't find "textures" section! )" );
 		} else {
 			for ( s32 i = 0; i < textures_section.size(); ++i ) {
 				constant& it = textures_section[i];
 				name_hashes.textures[current_texture_idx] = it.hash;
 
 				if ( !sscan( "% % %", it.value, path, width, height ) ) {
-					con_log_indented( 1, R"(Error: can't format the texture value "%"!)", it.value );
+					con_log( R"(Error: can't format the texture value "%"!)", it.value );
 				} else {
 					char* path_memory = da.allocate<char>( path.size );
 					memcpy( path_memory, path.data, path.size );
@@ -255,6 +266,8 @@ void Resource_Loader::initialize()
 		defer{ ta.set_mark( ta_mark ); };
 		constant shaders_section = assets_config.get_section( "shaders"_hcs );
 		constant shaders_count = shaders_section.size();
+		con_push_indent();
+		defer{ con_pop_indent(); };
 
 		name_hashes.shaders.shutdown();
 		paths.shaders.shutdown();
@@ -265,14 +278,14 @@ void Resource_Loader::initialize()
 
 		CString path;
 		if ( shaders_section.size() < 0 ) {
-			con_log_indented( 1, R"(Error: Can't find "shaders" section! )" );
+			con_log( R"(Error: Can't find "shaders" section! )" );
 		} else {
 			for ( s32 i = 0; i < shaders_section.size(); ++i ) {
 				constant& it = shaders_section[i];
 				name_hashes.shaders[current_shader_idx] = it.hash;
 
 				if ( !sscan( "%", it.value, path ) ) {
-					con_log_indented( 1, R"(Error: can't format the shader path "%"!)", it.value );
+					con_log( R"(Error: can't format the shader path "%"!)", it.value );
 				} else {
 					char* path_memory = da.allocate<char>( path.size );
 					memcpy( path_memory, path.data, path.size );
@@ -289,6 +302,9 @@ void Resource_Loader::initialize()
 		defer{ ta.set_mark( ta_mark ); };
 		constant fonts_section = assets_config.get_section( "fonts"_hcs );
 		constant fonts_count   = fonts_section.size();
+
+		con_push_indent();
+		defer{ con_pop_indent(); };
 
 		auto& p_fonts = Context.prepared_resources->fonts;
 		auto& p_fonts_names_hashes = Context.prepared_resources->fonts_names_hashes;
@@ -308,14 +324,14 @@ void Resource_Loader::initialize()
 
 		CString path;
 		if ( fonts_section.size() < 0 ) {
-			con_log_indented( 1, R"(Error: Can't find "fonts" section! )" );
+			con_log( R"(Error: Can't find "fonts" section! )" );
 		} else {
 			for ( s32 i = 0; i < fonts_section.size(); ++i ) {
 				constant& it = fonts_section[i];
 				name_hashes.fonts[current_font_idx] = it.hash;
 
 				if ( !sscan( "%", it.value, path ) ) {
-					con_log_indented( 1, R"(Error: can't format the font path "%"!)", it.value );
+					con_log( R"(Error: can't format the font path "%"!)", it.value );
 				} else {
 					char* path_memory = da.allocate<char>( path.size );
 					memcpy( path_memory, path.data, path.size );
@@ -338,22 +354,22 @@ void Resource_Loader::initialize()
 		memcpy( p_fonts_names_hashes.data(), name_hashes.fonts.data(), name_hashes.fonts.size() * sizeof( u32 ) );
 	}
 
-	con_log_indented( 1, "Metadata loaded." );
+	con_log( "Metadata loaded." );
 
 	//
 	// Loading default resources info specified in default.scene_resources
 	//
 
-	con_log_indented( 1, R"(Loading default resources info from "%".)", CString{ CON_DEFAULT_SCENE_RESOURCES_INFO_FILE } );
+	con_log( R"(Loading default resources info from "%".)", CString{ CON_DEFAULT_SCENE_RESOURCES_INFO_FILE } );
 	defaults.textures.shutdown();
 	defaults.shaders.shutdown();
 
 	constant[parsing_success, parsing_data] = parse_scene_resources_file( CON_DEFAULT_SCENE_RESOURCES_INFO_FILE );
 
 	if ( parsing_success ) {
-		con_log_indented( 1, "Parsing succeed." );
+		con_log( "Parsing succeed." );
 	} else {
-		con_log_indented( 1, "Error: parsing failed!" );
+		con_log( "Error: parsing failed!" );
 		return;
 	}
 
@@ -365,7 +381,10 @@ void Resource_Loader::initialize()
 	//
 
 	if ( textures_hash.size() > 0 ) {
-		con_log_indented( 1, "Loading default textures..." );
+		con_log( "Loading default textures..." );
+
+		con_push_indent();
+		defer{ con_pop_indent(); };
 
 		auto& default_textures = defaults.textures;
 		default_textures.initialize( textures_hash.size() );
@@ -379,7 +398,7 @@ void Resource_Loader::initialize()
 			constant result = linear_find( name_hashes.textures, current_texture.name_hash );
 
 			if ( result.not_found() ) {
-				con_log_indented( 2, "Error: can't find texture (hash %, i = %).", current_texture.name_hash, i );
+				con_log( "Error: can't find texture (hash %, i = %).", current_texture.name_hash, i );
 				continue;
 			}
 
@@ -396,11 +415,14 @@ void Resource_Loader::initialize()
 			current_texture.id = init_texture( data, texture_width, texture_height );
 		}
 	} else {
-		con_log_indented( 1, "No default textures to load." );
+		con_log( "No default textures to load." );
 	}
 
 	if ( shaders_hash.size() > 0 ) {
-		con_log_indented( 1, "Loading default shaders..." );
+		con_log( "Loading default shaders..." );
+
+		con_push_indent();
+		defer{ con_pop_indent(); };
 
 		auto& default_shaders = defaults.shaders;
 		default_shaders.initialize( shaders_hash.size() );
@@ -416,7 +438,7 @@ void Resource_Loader::initialize()
 			constant result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
 			if ( result.not_found() ) {
-				con_log_indented( 2, "Error: can't find shader (hash %, i = %).", current_shader.name_hash, i );
+				con_log( "Error: can't find shader (hash %, i = %).", current_shader.name_hash, i );
 				continue;
 			}
 
@@ -427,11 +449,11 @@ void Resource_Loader::initialize()
 			if ( source.size > 0 ) {
 				current_shader.id = build_shader_program( source );
 			} else {
-				con_log_indented( 2, "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
+				con_log( "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
 			}
 		}
 	} else {
-		con_log_indented( 1, "No default shaders  to load." );
+		con_log( "No default shaders  to load." );
 	}
 
 	//
@@ -441,11 +463,15 @@ void Resource_Loader::initialize()
 		constant ta_mark = ta.get_mark();
 		defer{ ta.set_mark( ta_mark ); };
 
-		con_log_indented( 1, "Loading planets metadata from \"%\"...", CString{ CON_PLANETS_CONFIG_FILE } );
+		con_log( R"(Loading planets metadata from "%"...)", CString{ CON_PLANETS_CONFIG_FILE } );
+
+		con_push_indent();
+		defer{ con_pop_indent(); };
+
 		Config_File planets_config;
 		defer{ planets_config.free(); };
 		if ( !planets_config.parse_from_file( CON_PLANETS_CONFIG_FILE ) ) {
-			con_log_indented( 2, "Error: couldn't parse from file." );
+			con_log( "Error: couldn't parse from file." );
 			Context.exit_flags.requested_by_app = true;
 			return;
 		}
@@ -454,11 +480,12 @@ void Resource_Loader::initialize()
 		constant planets_count = planets_names_hashes_array.size();
 
 		if ( planets_count == 0 ) {
-			con_log_indented( 1, "Error: no planet hashes were found in the file." );
+			con_log( "Error: no planet hashes were found in the file." );
 			return;
 		}
 
-		con_log_indented( 2, "Found % planets declarations.", planets_count );
+		con_log( "Found % planets declarations.", planets_count );
+
 
 		planet_data.initialize( planets_count );
 		name_hashes.planets.initialize( planets_count );
@@ -476,7 +503,7 @@ void Resource_Loader::initialize()
 			constant texture_name_as_cstring = planets_config.get_value( current_planet_hash, texture_hash_name_hash );
 
 			if ( texture_name_as_cstring.size <= 0 ) {
-				con_log_indented( 2, "Error: invalid texture name for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
+				con_log( "Error: invalid texture name for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
 				continue;
 			}
 
@@ -486,7 +513,7 @@ void Resource_Loader::initialize()
 			constant radius_as_cstring = planets_config.get_value( current_planet_hash, radius_name_hash );
 
 			if ( radius_as_cstring.size <= 0 ) {
-				con_log_indented( 2, "Error: invalid radius for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
+				con_log( "Error: invalid radius for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
 				continue;
 			}
 
@@ -555,7 +582,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 		constant result = linear_find( scene_folder_content.hashes, scene_name_hash );
 		if ( result.not_found() ) {
-			con_log_indented( 1, R"(Error: can't find resource file for scene "%". Is name correct?)", scene_name );
+			con_log( R"(Error: can't find resource file for scene "%". Is the name correct?)", scene_name );
 			return false;
 		}
 	}
@@ -572,9 +599,9 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	constant[parsing_success, parsing_data] = parse_scene_resources_file( scene_file_path );
 
 	if ( parsing_success ) {
-		con_log_indented( 1, "Parsing succeed." );
+		con_log( "Parsing succeed." );
 	} else {
-		con_log_indented( 1, "Error: parsing failed!" );
+		con_log( "Error: parsing failed!" );
 		return false;
 	}
 
@@ -587,7 +614,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	// If it's first scene that we're loading, skip this step.
 	if ( p_textures.size() > 0 ) {
 
-		con_log_indented( 1, "Deleting % textures (leaving % defaults).", p_textures.size() - default_textures_count, default_textures_count );
+		con_log( "Deleting % textures (leaving % defaults).", p_textures.size() - default_textures_count, default_textures_count );
 		//
 		// Delete all textures besides the default. (Default ones are at the beginning)
 		//
@@ -612,8 +639,10 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 
 	if ( r_textures.size() <= 0 ) {
-		con_log_indented( 1, "No textures specified to load, only default are now present." );
+		con_log( "No textures specified to load, only default are now present." );
 	} else {
+		con_push_indent();
+		defer{ con_pop_indent(); };
 
 		constant mark = ta.get_mark();
 
@@ -640,7 +669,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 				*/
 
 
-				con_log_indented( 2, "Error: can't find texture (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
+				con_log( "Error: can't find texture (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
 				++idx_in_r_textures;
 				continue;
 			}
@@ -651,7 +680,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			} );
 
 			if ( is_default_search_result.found() ) {
-				con_log_indented( 2, "Requested default texture, skipping... (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
+				con_log( "Requested default texture, skipping... (hash %, idx_in_r_textures = %).", current_texture.name_hash, idx_in_r_textures );
 
 				++idx_in_r_textures;
 				continue;
@@ -676,7 +705,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			++idx_in_r_textures;
 		}
 
-		con_log_indented( 1, "Requested % textures, loaded %, active now: %.", r_textures.size(), idx_in_p_textures - default_textures_count, idx_in_p_textures );
+		con_log( "Requested % textures, loaded %, active now: %.", r_textures.size(), idx_in_p_textures - default_textures_count, idx_in_p_textures );
 
 		if ( idx_in_p_textures < p_textures.size() ) {
 			p_textures.shrink( idx_in_p_textures );
@@ -689,7 +718,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 
 	// If it's first scene that we're loading, again, skip this step.
 	if ( p_shaders.size() > 0 ) {
-		con_log_indented( 1, "Deleting % shaders (leaving % defaults)", p_shaders.size() - default_shaders_count, default_shaders_count );
+		con_log( "Deleting % shaders (leaving % defaults)", p_shaders.size() - default_shaders_count, default_shaders_count );
 
 		// Delete shaders beside the default ones which are at the beginning.
 		for ( s32 i = default_shaders_count; i < p_shaders.size(); ++i ) {
@@ -707,8 +736,11 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	memcpy( p_shaders.data(), defaults.shaders.data(), default_shaders_count * sizeof( Shader ) );
 
 	if ( r_shaders.size() <= 0 ) {
-		con_log_indented( 1, "No shaders specified to load, only default are now present." );
+		con_log( "No shaders specified to load, only default are now present." );
 	} else {
+		con_push_indent();
+		defer{ con_pop_indent(); };
+
 		constant ta_mark = ta.get_mark();
 
 		// idx_in_p_shaders is also size of the final aray.
@@ -725,7 +757,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			constant is_present_search_result = linear_find( name_hashes.shaders, current_shader.name_hash );
 
 			if ( is_present_search_result.not_found() ) {
-				con_log_indented( 2, "Error: can't find shader (hash %, idx_in_r_shaders = %).", current_shader.name_hash, idx_in_r_shaders );
+				con_log( "Error: can't find shader (hash %, idx_in_r_shaders = %).", current_shader.name_hash, idx_in_r_shaders );
 
 				++idx_in_r_shaders;
 				continue;
@@ -736,7 +768,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			} );
 
 			if ( is_default_search_result.found() ) {
-				con_log_indented( 2, "Requested default shader, skipping... (hash = %, idx_in_r_shaders = %)", current_shader.name_hash, idx_in_r_shaders );
+				con_log( "Requested default shader, skipping... (hash = %, idx_in_r_shaders = %)", current_shader.name_hash, idx_in_r_shaders );
 
 				++idx_in_r_shaders;
 				continue;
@@ -749,7 +781,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			if ( source.size > 0 ) {
 				current_shader.id = build_shader_program( source );
 			} else {
-				con_log_indented( 2, "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
+				con_log( "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
 				++idx_in_r_shaders;
 				continue;
 			}
@@ -758,7 +790,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			++idx_in_r_shaders;
 		}
 
-		con_log_indented( 1, "Requested % shaders,  loaded %, active now: %.", r_shaders.size(), idx_in_p_shaders - default_shaders_count, idx_in_p_shaders );
+		con_log( "Requested % shaders,  loaded %, active now: %.", r_shaders.size(), idx_in_p_shaders - default_shaders_count, idx_in_p_shaders );
 
 		if ( idx_in_p_shaders < p_shaders.size() ) {
 			p_shaders.shrink( idx_in_p_shaders );
@@ -776,18 +808,19 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	constant& planets_to_spawn_position = parsing_data.planets_positions;
 	constant planets_to_spawn_count     = planets_to_spawn_names.size();
 
-	con_log_indented( 1, "Found % planets to spawn.", planets_to_spawn_count );
-	con_log_indented( 2, "Starting planet hash is %.", parsing_data.starting_planet_hash );
+	// @Reduntant? with log in the scene_resources_file_parser.
+	con_log( "Found % planets to spawn. Starting planet hash is %.", planets_to_spawn_count, parsing_data.starting_planet_hash );
 
 	Context.prepared_resources->starting_planet_hash = parsing_data.starting_planet_hash;
 
+	con_push_indent();
 	for ( s32 i = 0; i < planets_to_spawn_count; ++i ) {
 		constant planet_name_hash = planets_to_spawn_names[i];
 
 		constant planet_find_result = linear_find( name_hashes.planets, planet_name_hash );
 
 		if ( planet_find_result.not_found() ) {
-			con_log_indented( 2, "Error: planet not found. (i = %, planet_name_hash = %)", i, planet_name_hash );
+			con_log( "Error: planet not found. (i = %, planet_name_hash = %)", i, planet_name_hash );
 			continue;
 		}
 
@@ -796,6 +829,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 		Planet* planet = Context.entity_manager->spawn_entity<Planet>( planet_to_spawn_metadata );
 		planet->_hot.position = planets_to_spawn_position[i];
 	}
+	con_pop_indent();
 
 	return true;
 }
@@ -803,6 +837,8 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 void Resource_Loader::check_scene_folder_content()
 {
 	namespace fs = std::filesystem;
+	con_push_indent();
+	defer{ con_pop_indent(); };
 
 	scene_folder_content.hashes.shutdown();
 
@@ -813,7 +849,7 @@ void Resource_Loader::check_scene_folder_content()
 	std::error_code ec;
 	auto directory_iterator = fs::directory_iterator( CON_SCENES_FOLDER, ec );
 	if ( ec ) {
-		con_log_indented( 2, R"(Error: can't iterate over scenes folder ("%"). Reason: "%".)", CString{ CON_SCENES_FOLDER }, cstring_from_stdstring( ec.message() ) );
+		con_log( R"(Error: can't iterate over scenes folder ("%"). Reason: "%".)", CString{ CON_SCENES_FOLDER }, cstring_from_stdstring( ec.message() ) );
 		return;
 	}
 
@@ -840,9 +876,9 @@ void Resource_Loader::check_scene_folder_content()
 	scene_folder_content.hashes.shrink( current_file );
 
 	if ( current_file == 0 ) {
-		con_log_indented( 2, "Warning: no scene files found." );
+		con_log( "Warning: no scene files found." );
 	} else {
-		con_log_indented( 2, R"(Found % "%" files.)", current_file, CString{ CON_SCENE_RESOURCES_FILE_EXTENSION } );
+		con_log( R"(Found % "%" files.)", current_file, CString{ CON_SCENE_RESOURCES_FILE_EXTENSION } );
 	}
 }
 

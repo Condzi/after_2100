@@ -190,13 +190,16 @@ void Renderer::render()
 
 returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_Vertex2D>
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	if ( width <= 0 ) {
-		con_log_indented( 2, R"(Warning: invalid parameter for "construct_2d_textured_quad": width = %, changing to 10.)", width );
+		con_log( R"(Warning: invalid parameter for "construct_2d_textured_quad": width = %, changing to 10.)", width );
 		width = 10;
 	}
 
 	if ( height <= 0 ) {
-		con_log_indented( 2, R"(Warning: invalid parameter for "construct_2d_textured_quad": height = %, changing to 10.)", height );
+		con_log( R"(Warning: invalid parameter for "construct_2d_textured_quad": height = %, changing to 10.)", height );
 		height = 10;
 	}
 
@@ -226,13 +229,16 @@ returning construct_2d_textured_quad( s32 width, s32 height ) -> Array<Textured_
 
 returning construct_2d_quad( s32 width, s32 height ) -> Array<Position_Vertex2D>
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	if ( width <= 0 ) {
-		con_log_indented( 2, R"(Warning: invalid parameter for "construct_2d_quad": width = %, changing to 10.)", width );
+		con_log( R"(Warning: invalid parameter for "construct_2d_quad": width = %, changing to 10.)", width );
 		width = 10;
 	}
 
 	if ( height <= 0 ) {
-		con_log_indented( 2, R"(Warning: invalid parameter for "construct_2d_quad": height = %, changing to 10.)", height );
+		con_log( R"(Warning: invalid parameter for "construct_2d_quad": height = %, changing to 10.)", height );
 		height = 10;
 	}
 

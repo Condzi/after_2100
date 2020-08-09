@@ -15,7 +15,9 @@ returning Prepared_Resources::get_texture( Hashed_CString name ) -> Texture
 	if ( result.found() ) {
 		return textures[result.idx];
 	} else {
-		con_log_indented( 1, "Error: texture of hash % not found!", name.hash );
+		con_push_indent();
+		con_log( "Error: texture of hash % not found!", name.hash );
+		con_pop_indent();
 
 		return fallback_texture;
 	}
@@ -31,7 +33,9 @@ returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 	if ( result.found() ) {
 		return shaders[result.idx];
 	} else {
-		con_log_indented( 1, "Error: shader  of hash % not found!", name.hash );
+		con_push_indent();
+		con_log( "Error: shader  of hash % not found!", name.hash );
+		con_pop_indent();
 		return fallback_shader;
 	}
 }
@@ -45,7 +49,9 @@ returning Prepared_Resources::get_font( Hashed_CString name ) -> Font&
 	if ( result.found() ) {
 		return fonts[result.idx];
 	} else {
-		con_log_indented( 1, "Error: font    of hash % not found!", name.hash );
+		con_push_indent();
+		con_log( "Error: font    of hash % not found!", name.hash );
+		con_pop_indent();
 		return fallback_font;
 	}
 }

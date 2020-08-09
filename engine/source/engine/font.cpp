@@ -10,6 +10,9 @@ namespace con
 {
 void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	*this = Font{};
 
 	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
@@ -27,7 +30,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 	sft.font = sft_loadmem( font_file_data.data(), font_file_data.size() );
 
 	if ( sft.font == nullptr ) {
-		con_log_indented( 2, "Error: SFT can't load font from file \"%\".", path );
+		con_log( "Error: SFT can't load font from file \"%\".", path );
 		return;
 	}
 
@@ -63,10 +66,13 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 
 	textures.initialize( character_infos.size() );
 
+
 	//
 	// Find the atlas dimensions for each font size.
 	//
 	for ( s32 i = 0; i < text_sizes.size(); ++i ) {
+		con_push_indent();
+
 		character_infos[i].initialize( alphabet.size );
 
 		offset_x = 0;
@@ -80,10 +86,10 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 			constant char_success_info = sft_char( &sft, alphabet.data[j], &sft_character );
 
 			if ( char_success_info == -1 ) {
-				con_log_indented( 3, "Error: can't load character for font \"%\". Alphabet idx = %, size = %.", path, j, size );
+				con_log( R"(Error: can't load character for font "%". Alphabet idx = %, size = %.)", path, j, size );
 				continue;
 			} else if ( char_success_info == 1 ) {
-				con_log_indented( 3, "Warning: can't load character for font \"%\". Alphabet idx = %, size = %. Missing character will be used.", path, j, size );
+				con_log( R"(Warning: can't load character for font "%". Alphabet idx = %, size = %. Missing character will be used.)", path, j, size );
 			}
 
 			auto& character_info = character_infos[i][j];
@@ -106,7 +112,8 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 		atlas_width += 2;
 		atlas_height += 2;
 
-		con_log_indented( 3, "Generating texture for font: % x % px.", atlas_width, atlas_height );
+		con_pop_indent();
+		con_log( "Generating texture for font: % x % px.", atlas_width, atlas_height );
 		// Generate gl texture. We'll fill it in the next loop.
 		glGenTextures( 1, &textures[i] );
 		glBindTexture( GL_TEXTURE_2D, textures[i] );
@@ -188,11 +195,14 @@ returning Font::get_texture( s8 text_size ) -> gl_id
 
 returning Font::get_character_info( wchar_t character, s8 text_size ) -> Character_Info
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	constant size_find_result = linear_find( text_sizes, text_size );
 	con_assert( size_find_result.found() );
 
 	if ( size_find_result.not_found() ) {
-		con_log_indented( 2, "Error: can't find size in font. Char = %, size enum value = %.", static_cast<s32>( character ), text_size );
+		con_log( "Error: can't find size in font. Char = %, size enum value = %.", static_cast<s32>( character ), text_size );
 
 		return {};
 	}
@@ -208,7 +218,7 @@ returning Font::get_character_info( wchar_t character, s8 text_size ) -> Charact
 
 	con_assert( char_idx != -1 );
 	if ( char_idx == -1 ) {
-		con_log_indented( 2, "Error: can't find character in font. Char = %, size enum value = %.", static_cast<s32>( character ), text_size );
+		con_log( "Error: can't find character in font. Char = %, size enum value = %.", static_cast<s32>( character ), text_size );
 
 		return {};
 	}
@@ -218,11 +228,14 @@ returning Font::get_character_info( wchar_t character, s8 text_size ) -> Charact
 
 returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> f32
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	constant size_find_result = linear_find( text_sizes, text_size );
 	con_assert( size_find_result.found() );
 
 	if ( size_find_result.not_found() ) {
-		con_log_indented( 2, "Error: can't find size in font. size enum value = %.", text_size );
+		con_log( "Error: can't find size in font. size enum value = %.", text_size );
 
 		return {};
 	}
@@ -236,7 +249,7 @@ returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8
 
 	con_assert( success == 0 );
 	if ( success != 0 ) {
-		con_log_indented( 2, "Error: can't get kerning. size enum value = %; left char = %, right char = %.", text_size, static_cast<s32>( left_character ), static_cast<s32>( right_character ) );
+		con_log( "Error: can't get kerning. size enum value = %; left char = %, right char = %.", text_size, static_cast<s32>( left_character ), static_cast<s32>( right_character ) );
 
 		return {};
 	}
@@ -246,11 +259,14 @@ returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8
 
 returning Font::get_line_spacing( s8 text_size ) -> Line_Spacing
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	constant size_find_result = linear_find( text_sizes, text_size );
 	con_assert( size_find_result.found() );
 
 	if ( size_find_result.not_found() ) {
-		con_log_indented( 2, "Error: can't find size in font. size enum value = %.", text_size );
+		con_log( "Error: can't find size in font. size enum value = %.", text_size );
 
 		return {};
 	}

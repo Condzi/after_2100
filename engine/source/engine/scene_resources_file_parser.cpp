@@ -10,6 +10,9 @@ namespace con
 {
 returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Parsing_Data
 {
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	auto temporary_allocator = reinterpret_cast<Temporary_Allocator*>( Context.temporary_allocator );
 	constant mark = temporary_allocator->get_mark();
 	defer{ temporary_allocator->set_mark( mark ); };
@@ -39,10 +42,10 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 	constant planets_count  = planets_hvp.size() - 1; // Don't count starting_planet field
 
 	// Print 0 or count value.
-	con_log_indented( 2, "Entries found: % textures, % shaders, % planets.",
-					  textures_count < 0 ? 0 : textures_count,
-					  shaders_count  < 0 ? 0 : shaders_count,
-					  planets_count  < 0 ? 0 : planets_count
+	con_log( "Entries found: % textures, % shaders, % planets.",
+			 textures_count < 0 ? 0 : textures_count,
+			 shaders_count  < 0 ? 0 : shaders_count,
+			 planets_count  < 0 ? 0 : planets_count
 	);
 	//
 	// Handle textures and shaders.
@@ -71,6 +74,9 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 	// Handling planets info. One of which is starting_planet, so we don't count it in the array.
 	//
 
+	con_push_indent();
+	defer{ con_pop_indent(); };
+
 	// We have to have at least one planet. (planets_count doesn't include starting_planet field)
 	if ( planets_count > 0 ) {
 		constant find_starting_planet_result = linear_find_if( planets_hvp, []( Config_File::Hash_Value_Pair const& hvp ) {
@@ -80,15 +86,18 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 		if ( find_starting_planet_result.found() ) {
 			constant idx = find_starting_planet_result.idx;
 			file_content.starting_planet_hash = hash_cstring( planets_hvp[idx].value );
-			con_log_indented( 2, "Starting planet is \"%\".", planets_hvp[idx].value );
+			con_log( R"(Starting planet is "%".)", planets_hvp[idx].value );
 		} else {
-			con_log_indented( 2, "Error: no info about starting planet. Assigning first planet in the array... " );
+			con_log( "Error: no info about starting planet. Assigning first planet in the array... " );
+
+			con_push_indent();
+			defer{ con_pop_indent(); };
 			if ( planets_count > 0 ) {
-				con_log_indented( 3, "Setting starting_planet_hash to %.", planets_hvp[0].hash );
+				con_log( "Setting starting_planet_hash to %.", planets_hvp[0].hash );
 
 				file_content.starting_planet_hash = planets_hvp[0].hash;
 			} else {
-				con_log_indented( 3, "Error: no planets! Setting starting_planet_hash to 0." );
+				con_log( "Error: no planets! Setting starting_planet_hash to 0." );
 				file_content.starting_planet_hash = 0;
 			}
 		}
@@ -109,7 +118,7 @@ returning parse_scene_resources_file( CString path ) -> Scene_Resources_File_Par
 			v2 position;
 			constant parsing_result = sscan( "% %", planets_hvp[i].value, position.x, position.y );
 			if ( !parsing_result ) {
-				con_log_indented( 2, "Error: failed to parse planet position! (hash: %, value: %", planets_hvp[i].hash, planets_hvp[i].value );
+				con_log( "Error: failed to parse planet position! (hash: %, value: %", planets_hvp[i].hash, planets_hvp[i].value );
 
 				file_content.planets_positions[planets_idx] = v2{ 0,0 };
 			} else {

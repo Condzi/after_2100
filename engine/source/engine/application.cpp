@@ -9,6 +9,10 @@ namespace con
 {
 returning Application::initialize() -> bool
 {
+	//
+	// Assiging the Context pointers.
+	//
+
 	Context.default_allocator = &default_allocator;
 	Context.temporary_allocator = &temporary_allocator;
 	Context.c_allocator = &c_allocator;
@@ -21,6 +25,10 @@ returning Application::initialize() -> bool
 	Context.renderer = &renderer;
 	Context.window = &window;
 
+	//
+	// Initialize basic systems.
+	//
+
 	default_allocator.initialize();
 	temporary_allocator.initialize();
 	stack_allocator.initialize();
@@ -30,49 +38,77 @@ returning Application::initialize() -> bool
 	prepared_resources ={};
 
 
+	con_log( "Initialization started..." );
+	con_push_indent();
+
+	//
+	// Initialize the logger and open it's log file.
+	//
+
 	con_log( "Initializing main logger..." );
+	con_push_indent();
+
 	if ( !set_up_log_folder() ) {
-		con_log_indented( 1, R"(Fatal error: couldn't initialize log folder at "%".)", CString{ CON_DEFAULT_LOG_FILE } );
+		con_log( R"(Fatal error: couldn't initialize log folder at "%".)", CString{ CON_DEFAULT_LOG_FILE } );
 		return false;
 	}
 	main_logger_file = fopen( CON_DEFAULT_LOG_FILE, "wb" );
 	if ( main_logger_file == nullptr ) {
-		con_log_indented( 1, "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
+		con_log( "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
 	} else {
-		con_log_indented( 1, "Logger file successfully created." );
+		con_log( "Logger file successfully created." );
 	}
+	
+	con_pop_indent();
 	con_log( "Main logger initialized." );
 
+	//
+	// Check necessary paths (data/...) etc.
+	//
 
 	flush_logger();
 	con_log( "Checking necessary paths..." );
+	con_push_indent();
+
 	if ( !check_necessary_paths() ) {
 		return false;
 	}
+
+	con_pop_indent();
 	con_log( "Paths are correct." );
 	flush_logger();
 
+	//
+	// Load config file, local.variables.
+	//
 
 	con_log( "Loading config file..." );
+	con_push_indent();
+
 	flush_logger();
 	std::error_code fs_error_code;
 	constant config_file_exists = std::filesystem::exists( CON_CONFIG_FILE, fs_error_code );
 
 	if ( fs_error_code || !config_file_exists ) {
 		if ( fs_error_code ) {
-			con_log_indented( 1, R"(Warning: couldn't check if config file exists at "%", loading config from memory.)", CString{ CON_CONFIG_FILE } );
+			con_log( R"(Warning: couldn't check if config file exists at "%", loading config from memory.)", CString{ CON_CONFIG_FILE } );
 		} else {
-			con_log_indented( 1, R"(Warning: config file couldn't be found at "%", loading config from memory.)", CString{ CON_CONFIG_FILE } );
+			con_log( R"(Warning: config file couldn't be found at "%", loading config from memory.)", CString{ CON_CONFIG_FILE } );
 		}
 
+		con_push_indent();
+		defer{ con_pop_indent(); };
 		if ( config_file.parse_from_source( DEFAULT_CONFIG_CSTRING ) ) {
-			con_log_indented( 2, "Default config has been loaded correctly." );
+			con_log( "Default config has been loaded correctly." );
 		} else {
-			con_log_indented( 2, "Fatal error: can't load even the default config! WTF happened??" );
+			con_log( "Fatal error: can't load even the default config! WTF happened??" );
 			return false;
 		}
 	} else {
-		if ( config_file.parse_from_file( CON_CONFIG_FILE ) ) {
+		constant parse_success = config_file.parse_from_file( CON_CONFIG_FILE );
+		con_pop_indent();
+
+		if ( parse_success ) {
 			con_log( "Config file loaded and parsed." );
 		} else {
 			con_log( "Error: loading of the config file has failed." );
@@ -83,56 +119,105 @@ returning Application::initialize() -> bool
 
 	// @ToDo: Splash screen stuff?? in separate thread?
 
+	//
+	// Window init.
+	//
 
 	con_log( "Initializing window..." );
 	flush_logger();
+	con_push_indent();
+
 	window.initialize();
+
+	con_pop_indent();
 	con_log( "Window initialized." );
 	flush_logger();
 
+	//
+	// We have to have window initiailized to know the text size.
+	//
+
 	update_text_sizes();
+
+	//
+	// Resource Loader init.
+	//
 
 	con_log( "Initializing resource loader..." );
 	flush_logger();
+	con_push_indent();
+
 	resource_loader.initialize();
+
+	con_pop_indent();
 	con_log( "Resource loader initialized." );
 	flush_logger();
 
+	//
+	// Input init.
+	//
 
 	con_log( "Initializing input..." );
 	flush_logger();
+	con_push_indent();
+
 	input.initialize( window );
+	
+	con_pop_indent();
 	con_log( "Input initialized." );
 	flush_logger();
 
+	//
+	// Entity Manager init.
+	//
 
 	con_log( "Initializing entity manager..." );
 	flush_logger();
+	con_push_indent();
+
 	entity_manager.initialize();
+
+	con_pop_indent();
 	con_log( "Entity manager initialized." );
 	flush_logger();
 
+	//
+	// Renderer init.
+	//
 
 	con_log( "Initializing renderer..." );
 	flush_logger();
-	renderer.initialize();
+	con_push_indent();
 
+	renderer.initialize();
 	renderer.set_window_size( window.width(), window.height() );
 
+	con_pop_indent();
 	con_log( "Renderer initialized." );
 	flush_logger();
 
+	//
+	// Debug / Test stuff.
+	//
 
 	con_log( "Debug spawn player..." );
 	flush_logger();
+	con_push_indent();
+
 	resource_loader.prepare_resources_for_scene( "sandbox" );
 	flush_logger();
 	entity_manager.spawn_entity<Player>();
+
+	con_pop_indent();
 	con_log( "Player spawned." );
 	flush_logger();
 
-	con_log( "Initialization completed." );
+	//
+	// End of initializations.
+	//
 
+	con_pop_indent();
+	con_log( "Initialization completed." );
 	flush_logger();
 
 	return true;
@@ -201,9 +286,11 @@ void Application::shutdown()
 	con_log( "Application shutdown..." );
 	flush_logger();
 
+	con_push_indent();
+
 	con_log( "Exit flags: " );
-	con_log_indented( 1, "requested_by_user = %", Context.exit_flags.requested_by_user );
-	con_log_indented( 1, "requested_by_app  = %", Context.exit_flags.requested_by_app );
+	con_log( "  requested_by_app  = %", Context.exit_flags.requested_by_app );
+	con_log( "  requested_by_user = %", Context.exit_flags.requested_by_user );
 
 	entity_manager.shutdown();
 	renderer.shutdown();
@@ -220,7 +307,10 @@ void Application::shutdown()
 
 	con_log( "Highest TA mark: % / % KB (~% percent).", highest_mark / CON_KILOBYTES( 1 ), reserved_mem / CON_KILOBYTES( 1 ), percent_value );
 
+	con_pop_indent();
+	con_log( "See ya later, aligater!" );
 	flush_logger(); // flushing last messages here...
+
 	main_logger.shutdown();
 	std::fclose( main_logger_file );
 	default_allocator.shutdown();
@@ -257,19 +347,20 @@ returning Application::set_up_log_folder() -> bool
 	constant folder_exists = fs::exists( CON_LOGS_FOLDER, fs_error_code );
 
 	if ( fs_error_code ) {
-		con_log_indented( 1, R"(Error: couldn't check if logs folder at "%" exists. Info: "%".)", CString{ CON_LOGS_FOLDER }, cstring_from_stdstring( fs_error_code.message() ) );
+		con_log( R"(Error: couldn't check if logs folder at "%" exists. Info: "%".)", CString{ CON_LOGS_FOLDER }, cstring_from_stdstring( fs_error_code.message() ) );
 		return false;
 	}
 
 	if ( !folder_exists ) {
-		con_log_indented( 1, R"(Logs folder is missing, creating new one at "%".)", CString{ CON_LOGS_FOLDER } );
+		con_log( R"(Logs folder is missing, creating new one at "%".)", CString{ CON_LOGS_FOLDER } );
 
 		fs_error_code ={};
 		fs::create_directory( CON_LOGS_FOLDER, fs_error_code );
 
 		if ( fs_error_code ) {
-			con_log_indented( 2, R"(Error: couldn't create! Info: "%")", cstring_from_stdstring( fs_error_code.message() ) );
-
+			con_push_indent();
+			con_log( R"(Error: couldn't create! Info: "%".)", cstring_from_stdstring( fs_error_code.message() ) );
+			con_pop_indent();
 			return false;
 		}
 	}
@@ -283,7 +374,7 @@ returning Application::check_necessary_paths() const -> bool
 	bool success = true;
 	constant path_exists = [&success]( CString path ) {
 		if ( fs::exists( { path.data, path.data + path.size } ) == false ) {
-			con_log_indented( 1, "Error! Missing path \"%\".", path );
+			con_log( R"(Error: missing path "%".)", path );
 			success = false;
 		}
 	};

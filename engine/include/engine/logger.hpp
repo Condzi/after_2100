@@ -13,7 +13,11 @@ public:
 	void initialize();
 	void shutdown();
 
-	void log( CString message, s32 indent = 0 );
+	void push_indent();
+	void pop_indent();
+
+	void log( CString message );
+	void log_no_indent( CString message );
 	void reset_buffer();
 
 	// Returns \0 terminated CString.
@@ -24,10 +28,15 @@ private:
 	char* begin                  = nullptr;
 	char const* end              = nullptr;
 	char* next_free_slot         = nullptr;
+	s32 current_indent           = 0;
 };
 }
 
-// Logs 'msg' with '...' args to Context.logger with 'indent' indentation
-#define con_log_indented( indent, msg, ... )  Context.logger->log( con::sprint( msg "\n", __VA_ARGS__ ), indent )
-// Logs 'msg' with '...' args to Context.logger with no indentation
-#define con_log( msg, ... ) con_log_indented( 0, msg, __VA_ARGS__ )
+//
+// Logging macros. Use con_push/pop_indent to control indentation.
+//
+
+#define con_push_indent()             Context.logger->push_indent()
+#define con_pop_indent()              Context.logger->pop_indent()
+#define con_log( msg, ... )           Context.logger->log( con::sprint( msg "\n", __VA_ARGS__ ) )
+#define con_log_no_indent( msg, ... ) Context.logger->log_no_indent( con::sprint( msg "\n", __VA_ARGS__ ) )

@@ -17,14 +17,31 @@ void Logger::shutdown()
 	Context.default_allocator->free( reinterpret_cast<byte*>( begin ), buffer_size );
 }
 
-void Logger::log( CString message, s32 indent )
+void Logger::push_indent()
 {
-	assert( next_free_slot + message.size + indent < end );
+	++current_indent;
+}
 
-	for ( s32 i = 0; i < indent; ++i ) {
-		*next_free_slot = '\t';
-		++next_free_slot;
-	}
+void Logger::pop_indent()
+{
+	--current_indent;
+	con_assert( current_indent >= 0 );
+}
+
+void Logger::log( CString message )
+{
+	assert( next_free_slot + message.size + current_indent < end );
+
+	memset( next_free_slot, '\t', current_indent );
+	next_free_slot += current_indent;
+
+	memcpy( next_free_slot, message.data, message.size );
+	next_free_slot += message.size;
+}
+
+void Logger::log_no_indent( CString message )
+{
+	assert( next_free_slot + message.size < end );
 
 	memcpy( next_free_slot, message.data, message.size );
 	next_free_slot += message.size;

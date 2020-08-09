@@ -1,5 +1,6 @@
 # **Current Tasks**
 * rethink logger.
+    * add `add_tab` and `remove_tab` to add/remove indentation. this way we can have more consistent indent and easier to maintain. remove `con_log_indented`.
 * add developer console (text printing and scrolling only for now)
     * just simply display text using the new `construct_text` function.
     * adapt solutions from the legacy code. it worked quite nicely. 

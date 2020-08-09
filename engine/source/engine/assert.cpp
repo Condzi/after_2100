@@ -40,7 +40,7 @@ bool on_assert_fail( char const* const file, char const* const line, char const*
 
 	constant message_to_print = sprint( message_format, cstring_from_cstr( file + skip_file_chars ), cstring_from_cstr( line ), cstring_from_cstr( function_name ), cstring_from_cstr( condition ) );
 
-	con_log( "\n%\n", message_to_print );
+	con_log_no_indent( "\n%\n", message_to_print );
 
 	constant message_to_print_null_terminated = sprint( "%\0", message_to_print );
 
@@ -88,7 +88,7 @@ void on_glfw_error( s32 error_code, char const* message )
 
 	constant message_to_print = sprint( message_format, error_code, cstring_from_cstr( message ) );
 
-	con_log( "\n%\n", message_to_print );
+	con_log_no_indent( "\n%\n", message_to_print );
 	
 	if ( IsDebuggerPresent() ) {
 		constant message_to_print_null_terminated = sprint( "%\0", message_to_print );
