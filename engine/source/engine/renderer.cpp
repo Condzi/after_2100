@@ -359,7 +359,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 	}
 
 	Array<Textured_Vertex2D> vertices;
-	vertices.initialize( utf8_string.size * 6 );
+	vertices.initialize( utf8_string.size * 6, Context.temporary_allocator );
 	s32 idx_in_vertices = 0;
 	// Is used to measure the size of the final text.
 	// Bottom right is the furthest point in the AABB in our
