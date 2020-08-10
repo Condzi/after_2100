@@ -74,7 +74,13 @@ void Renderer::render()
 	constant& entities = *Context.entity_manager;
 
 	// We can shrink it later if needed. Right now it's rough approximation.
-	constant render_infos_max_count = entities.occupied_hot_cold_slots.count_set_bits();
+	constant render_infos_max_count = [&]{
+		if ( Context.dev_console->is_open() ){
+			return entities.occupied_hot_cold_slots.count_set_bits() + 2;
+		} else{
+			return entities.occupied_hot_cold_slots.count_set_bits();
+		}
+	}();
 
 	// No stuff to render. Will this be actually possible in normal game?
 	// @Robustness: remove in release builds?
@@ -106,7 +112,7 @@ void Renderer::render()
 	if ( Context.dev_console->is_open() ){
 		constant& graphic_elements = Context.dev_console->graphic_elements;
 
-		render_infos[idx_in_render_infos]   = graphic_elements.background.render_info;
+//		render_infos[idx_in_render_infos]   = graphic_elements.background.render_info;
 		render_infos[++idx_in_render_infos] = graphic_elements.text      .render_info;
 		++idx_in_render_infos;
 	}
@@ -150,8 +156,10 @@ void Renderer::render()
 
 		if ( current_texture != render_info.texture.id ) {
 			// We don't want to do this for ellipse.
-			if ( render_info.drawing_group == Drawing_Group::Default ||
-				 render_info.drawing_group == Drawing_Group::GUI ) {
+			if ( render_info.drawing_group  == Drawing_Group::Default ||
+				 render_info.drawing_group  == Drawing_Group::GUI     ||
+				( render_info.drawing_group == Drawing_Group::Dev_Console && 
+				 render_info.drawing_layer != 0 ) ) {
 				current_texture = render_info.texture.id;
 
 				glActiveTexture( GL_TEXTURE0 );

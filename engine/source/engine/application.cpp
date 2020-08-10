@@ -54,12 +54,6 @@ returning Application::initialize() -> bool
 		con_log( R"(Fatal error: couldn't initialize log folder at "%".)", CString{ CON_DEFAULT_LOG_FILE } );
 		return false;
 	}
-	main_logger_file = fopen( CON_DEFAULT_LOG_FILE, "wb" );
-	if ( main_logger_file == nullptr ) {
-		con_log( "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
-	} else {
-		con_log( "Logger file successfully created." );
-	}
 	
 	con_pop_indent();
 	con_log( "Main logger initialized." );
@@ -68,7 +62,6 @@ returning Application::initialize() -> bool
 	// Check necessary paths (data/...) etc.
 	//
 
-	flush_logger();
 	con_log( "Checking necessary paths..." );
 	con_push_indent();
 
@@ -78,7 +71,6 @@ returning Application::initialize() -> bool
 
 	con_pop_indent();
 	con_log( "Paths are correct." );
-	flush_logger();
 
 	//
 	// Load config file, local.variables.
@@ -87,7 +79,6 @@ returning Application::initialize() -> bool
 	con_log( "Loading config file..." );
 	con_push_indent();
 
-	flush_logger();
 	std::error_code fs_error_code;
 	constant config_file_exists = std::filesystem::exists( CON_CONFIG_FILE, fs_error_code );
 
@@ -116,7 +107,6 @@ returning Application::initialize() -> bool
 			con_log( "Error: loading of the config file has failed." );
 		}
 	}
-	flush_logger();
 
 
 	// @ToDo: Splash screen stuff?? in separate thread?
@@ -126,14 +116,12 @@ returning Application::initialize() -> bool
 	//
 
 	con_log( "Initializing window..." );
-	flush_logger();
 	con_push_indent();
 
 	window.initialize();
 
 	con_pop_indent();
 	con_log( "Window initialized." );
-	flush_logger();
 
 	//
 	// We have to have window initialized to know the text size.
@@ -146,14 +134,12 @@ returning Application::initialize() -> bool
 	//
 
 	con_log( "Initializing resource loader..." );
-	flush_logger();
 	con_push_indent();
 
 	resource_loader.initialize();
 
 	con_pop_indent();
 	con_log( "Resource loader initialized." );
-	flush_logger();
 
 	//
 	// Dev_Console init.
@@ -165,14 +151,12 @@ returning Application::initialize() -> bool
 
 	if ( do_dev_console ){
 		con_log( "Initializing developer console... ");
-		flush_logger();
 		con_push_indent();
 
 		dev_console.initialize_graphics();
 
 		con_pop_indent();
 		con_log( "Developer console initialized." );
-		flush_logger();
 	}
 
 	//
@@ -180,35 +164,30 @@ returning Application::initialize() -> bool
 	//
 
 	con_log( "Initializing input..." );
-	flush_logger();
 	con_push_indent();
 
 	input.initialize( window );
 	
 	con_pop_indent();
 	con_log( "Input initialized." );
-	flush_logger();
 
 	//
 	// Entity Manager init.
 	//
 
 	con_log( "Initializing entity manager..." );
-	flush_logger();
 	con_push_indent();
 
 	entity_manager.initialize();
 
 	con_pop_indent();
 	con_log( "Entity manager initialized." );
-	flush_logger();
 
 	//
 	// Renderer init.
 	//
 
 	con_log( "Initializing renderer..." );
-	flush_logger();
 	con_push_indent();
 
 	renderer.initialize();
@@ -216,7 +195,6 @@ returning Application::initialize() -> bool
 
 	con_pop_indent();
 	con_log( "Renderer initialized." );
-	flush_logger();
 
 	// !!!! IMPORTANT !!!!
 	// 
@@ -226,16 +204,13 @@ returning Application::initialize() -> bool
 	//
 
 	con_log( "Debug spawn player..." );
-	flush_logger();
 	con_push_indent();
 
 	resource_loader.prepare_resources_for_scene( "sandbox" );
-	flush_logger();
 	entity_manager.spawn_entity<Player>();
 
 	con_pop_indent();
 	con_log( "Player spawned." );
-	flush_logger();
 
 	//
 	// End of initializations.
@@ -243,7 +218,6 @@ returning Application::initialize() -> bool
 
 	con_pop_indent();
 	con_log( "Initialization completed." );
-	flush_logger();
 
 	return true;
 }
@@ -260,8 +234,6 @@ void Application::run()
 	f32 frame_dt = 0;
 	f32 accumulated_dt = 0;
 	ups = 1.0f / cstring_to_s32( config_file.get_value( "gameplay"_hcs, "ups"_hcs ) );
-
-	flush_logger();
 
 	while ( !( Context.exit_flags.requested_by_app ||
 			Context.exit_flags.requested_by_user ) ) {
@@ -303,7 +275,6 @@ void Application::run()
 		renderer.render();
 		window.display();
 
-		flush_logger();
 		temporary_allocator.set_mark( 0 );
 
 		frame_end = Time::now();
@@ -315,7 +286,6 @@ void Application::run()
 void Application::shutdown()
 {
 	con_log( "Application shutdown..." );
-	flush_logger();
 
 	con_push_indent();
 
@@ -343,13 +313,22 @@ void Application::shutdown()
 	flush_logger(); // flushing last messages here...
 
 	main_logger.shutdown();
-	std::fclose( main_logger_file );
 	default_allocator.shutdown();
 	stack_allocator.shutdown();
 }
 
 void Application::flush_logger()
 {
+	FILE* main_logger_file = nullptr;
+	main_logger_file = fopen( CON_DEFAULT_LOG_FILE, "wb" );
+
+	if ( main_logger_file == nullptr ) {
+		con_log( "Couldn't open log file \"%\"!", CString{ CON_DEFAULT_LOG_FILE } );
+		main_logger_file = fopen( "fallback_log.txt", "wb" );
+	} else {
+		con_log( "Logger file successfully created." );
+	}
+
 	// @ToDo: Check if we're in release mode. If yes, don't try to log to console.
 	constant data_to_log = main_logger.get_buffer();
 	if ( data_to_log.size == 0 ) {
@@ -363,11 +342,12 @@ void Application::flush_logger()
 	}
 #endif
 
-	std::fputs( data_to_log.data, stdout );
+	fputs( data_to_log.data, stdout );
 	if ( main_logger_file != nullptr ) {
 		std::fputs( data_to_log.data, main_logger_file );
 	}
-	main_logger.reset_buffer();
+
+	fclose( main_logger_file );
 }
 
 returning Application::set_up_log_folder() -> bool

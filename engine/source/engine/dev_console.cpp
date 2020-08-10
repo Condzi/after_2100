@@ -131,7 +131,7 @@ void Dev_Console::update( f32 dt )
 
 	con_push_indent();
 	defer{ con_pop_indent(); };
-	/*
+	
 	if ( flags.update_text_content ) {
 		constant ta_mark = ta.get_mark();
 		defer{ ta.set_mark( ta_mark ); };
@@ -194,7 +194,7 @@ void Dev_Console::update( f32 dt )
 			}
 
 			constant utf8_str = cstring_to_utf8_string( lines_buffer[i] );
-			memcpy( buffer + buffer_idx, utf8_str.data, utf8_str.size );
+			memcpy( buffer + buffer_idx, utf8_str.data, utf8_str.size * sizeof( wchar_t ) );
 
 			buffer_idx += utf8_str.size;
 			buffer[buffer_idx] = '\n';
@@ -214,7 +214,7 @@ void Dev_Console::update( f32 dt )
 		constant[new_ri, size] = construct_text( final_string_to_display, *font, Text_Size::Developer_Console, -1 );
 
 		con_assert( size.x < Context.window->width() );
-		con_assert( size.y <= height );
+	//	con_assert( size.y <= height );
 
 		text_ri               = new_ri;
 		text_ri.model_mat     = old_mat;
@@ -225,7 +225,7 @@ void Dev_Console::update( f32 dt )
 
 		flags.update_text_content = false;
 	}
-	*/
+	
 
 	if ( flags.update_matrices ){
 		constant& text_pos = graphic_elements.text.position;

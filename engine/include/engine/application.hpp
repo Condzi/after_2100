@@ -34,7 +34,6 @@ private:
 	Stack_Allocator     stack_allocator;
 	Entity_Manager      entity_manager;
 	Logger              main_logger;
-	FILE*               main_logger_file = nullptr;
 	Config_File         config_file;
 	Window              window;
 	Input               input;

@@ -61,11 +61,6 @@ void Logger::log_no_indent( CString message )
 	++next_free_slot;
 }
 
-void Logger::reset_buffer()
-{
-	next_free_slot = begin;
-}
-
 returning Logger::get_buffer() const -> CString
 {
 	constant messages_size = static_cast<s32>( next_free_slot - begin );

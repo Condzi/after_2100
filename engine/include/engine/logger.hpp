@@ -18,7 +18,6 @@ public:
 
 	void log( CString message );
 	void log_no_indent( CString message );
-	void reset_buffer();
 
 	// Returns \0 terminated CString.
 	returning get_buffer() const -> CString;
