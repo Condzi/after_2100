@@ -241,10 +241,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="include\entities\font_test.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="include\entities\planet.hpp">
       <SubType>
       </SubType>

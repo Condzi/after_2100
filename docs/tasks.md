@@ -1,6 +1,5 @@
 # **Current Tasks**
 * all objects should have own element buffers which are bound in the drawing loop in the renderer
-* add scrolling to dev_console
 
 # **Dev Console**
 We initialize it in two steps. 

@@ -4,7 +4,6 @@
 #include <entities/debug_entity.hpp>
 #include <entities/player.hpp>
 #include <entities/planet.hpp>
-#include <entities/font_test.hpp>
 
 namespace con
 {
@@ -30,12 +29,6 @@ void Entity_Manager::shutdown()
 	if ( by_type.player ) {
 		by_type.player->shutdown();
 		Context.default_allocator->free( reinterpret_cast<byte*>( by_type.player ), sizeof( Player ) );
-	}
-
-	if ( by_type.font_test ) {
-		by_type.font_test->shutdown();
-		
-		Context.default_allocator->free( reinterpret_cast<byte*>( by_type.font_test ), sizeof( Font_Test ) );
 	}
 
 	occupied_hot_cold_slots.shutdown();
@@ -137,30 +130,6 @@ returning Entity_Manager::create_debug_entity() -> Debug_Entity*
 	debug_entity->initialize();
 
 	return debug_entity;
-}
-
-returning Entity_Manager::create_font_test() -> Font_Test*
-{
-	con_assert( by_type.font_test == nullptr );
-
-	auto font_test = reinterpret_cast<Font_Test*>( Context.default_allocator->allocate( sizeof( Font_Test ) ) );
-
-	// Find first free slot to use.
-	auto idx = occupied_hot_cold_slots.find_first_unset_bit().idx;
-	// @ToDo: Assert for now, change to con_log later (to fail with style!)
-	con_assert( idx != -1 );
-
-	// @Performance: there is an compiler intrinsic that works just like this (it finds
-	// first unset bit, changes it to true and returns it position).
-	occupied_hot_cold_slots.set( idx );
-	// @Incomplete: it seems weird. Should we call `new` like that?
-	new( font_test ) Font_Test( by_type._hot[idx], by_type._cold[idx] );
-
-	font_test->initialize();
-
-	by_type.font_test = font_test;
-
-	return font_test;
 }
 
 returning Entity_Manager::create_player() -> Player*
