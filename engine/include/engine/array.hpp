@@ -14,7 +14,7 @@ class Array final
 public:
 	Array() = default;
 
-	void initialize( s32 the_size_, Allocator* allocator_ = Context.default_allocator );
+	void initialize( s32 the_size_, Allocator* allocator_ );
 	void shutdown();
 
 	void shrink( s32 new_size );

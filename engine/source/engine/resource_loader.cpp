@@ -231,9 +231,9 @@ void Resource_Loader::initialize()
 		name_hashes.textures.shutdown();
 		paths.textures.shutdown();
 		texture_data.shutdown();
-		name_hashes.textures.initialize( textures_count );
-		paths.textures.initialize( textures_count );
-		texture_data.initialize( textures_count );
+		name_hashes.textures.initialize( textures_count, Context.default_allocator );
+		paths.textures.initialize(       textures_count, Context.default_allocator );
+		texture_data.initialize(         textures_count, Context.default_allocator );
 
 		s32 current_texture_idx = 0;
 
@@ -271,8 +271,8 @@ void Resource_Loader::initialize()
 
 		name_hashes.shaders.shutdown();
 		paths.shaders.shutdown();
-		name_hashes.shaders.initialize( shaders_count );
-		paths.shaders.initialize( shaders_count );
+		name_hashes.shaders.initialize( shaders_count, Context.default_allocator );
+		paths.shaders.initialize(       shaders_count, Context.default_allocator );
 
 		s32 current_shader_idx = 0;
 
@@ -317,8 +317,8 @@ void Resource_Loader::initialize()
 		name_hashes.fonts.shutdown();
 		paths.fonts.shutdown();
 
-		name_hashes.fonts.initialize( fonts_count );
-		paths.fonts.initialize( fonts_count );
+		name_hashes.fonts.initialize( fonts_count, Context.default_allocator );
+		paths.fonts.initialize(       fonts_count, Context.default_allocator );
 
 		s32 current_font_idx = 0;
 
@@ -387,7 +387,7 @@ void Resource_Loader::initialize()
 		defer{ con_pop_indent(); };
 
 		auto& default_textures = defaults.textures;
-		default_textures.initialize( textures_hash.size() );
+		default_textures.initialize( textures_hash.size(), Context.default_allocator );
 
 		constant ta_mark = ta.get_mark();
 		for ( s32 i = 0; i < defaults.textures.size(); ++i ) {
@@ -425,7 +425,7 @@ void Resource_Loader::initialize()
 		defer{ con_pop_indent(); };
 
 		auto& default_shaders = defaults.shaders;
-		default_shaders.initialize( shaders_hash.size() );
+		default_shaders.initialize( shaders_hash.size(), Context.default_allocator );
 
 		constant ta_mark = ta.get_mark();
 
@@ -487,8 +487,8 @@ void Resource_Loader::initialize()
 		con_log( "Found % planets declarations.", planets_count );
 
 
-		planet_data.initialize( planets_count );
-		name_hashes.planets.initialize( planets_count );
+		planet_data.initialize(         planets_count, Context.default_allocator );
+		name_hashes.planets.initialize( planets_count, Context.default_allocator );
 		memcpy( name_hashes.planets.data(), planets_names_hashes_array.data(), planets_count * sizeof( u32 ) );
 
 
@@ -529,10 +529,10 @@ void Resource_Loader::initialize()
 
 	auto& p_res = *Context.prepared_resources;
 	
-	p_res.textures.initialize( defaults.textures.size() );
+	p_res.textures.initialize( defaults.textures.size(), Context.default_allocator );
 	memcpy( p_res.textures.data(), defaults.textures.data(), sizeof( Texture ) * defaults.textures.size() );
 
-	p_res.shaders.initialize( defaults.shaders.size() );
+	p_res.shaders.initialize( defaults.shaders.size(), Context.default_allocator );
 	memcpy( p_res.shaders.data(), defaults.shaders.data(), sizeof( Shader ) * defaults.shaders.size() );
 }
 
@@ -646,7 +646,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	// create an OpenGL texture out of it.
 	//
 
-	p_textures.initialize( default_textures_count + ( r_textures.size() < 0 ? 0 : r_textures.size() ) );
+	p_textures.initialize( default_textures_count + ( r_textures.size() < 0 ? 0 : r_textures.size() ), Context.default_allocator );
 	memcpy( p_textures.data(), defaults.textures.data(), default_textures_count * sizeof( Texture ) );
 
 
@@ -744,7 +744,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 	//	Copy the default shaders data and, if specified, load new ones.
 	//
 
-	p_shaders.initialize( default_shaders_count + ( r_shaders.size() < 0 ? 0 : r_shaders.size() ) );
+	p_shaders.initialize( default_shaders_count + ( r_shaders.size() < 0 ? 0 : r_shaders.size() ), Context.default_allocator );
 	memcpy( p_shaders.data(), defaults.shaders.data(), default_shaders_count * sizeof( Shader ) );
 
 	if ( r_shaders.size() <= 0 ) {
@@ -854,7 +854,7 @@ void Resource_Loader::check_scene_folder_content()
 
 	scene_folder_content.hashes.shutdown();
 
-	scene_folder_content.hashes.initialize( CON_MAX_SCENES_IN_FOLDER );
+	scene_folder_content.hashes.initialize( CON_MAX_SCENES_IN_FOLDER, Context.default_allocator );
 	//
 	// Gathering the files count
 	//

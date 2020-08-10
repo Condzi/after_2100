@@ -58,13 +58,13 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 
 	SFT_Char sft_character;
 
-	character_infos.initialize( text_sizes.size() );
+	character_infos.initialize( text_sizes.size(), Context.default_allocator );
 	// We call constructors of the character_infos.
 	for ( s32 i = 0; i < character_infos.size(); ++i ) {
 		character_infos[i] ={};
 	}
 
-	textures.initialize( character_infos.size() );
+	textures.initialize( character_infos.size(), Context.default_allocator );
 
 
 	//
@@ -73,7 +73,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 	for ( s32 i = 0; i < text_sizes.size(); ++i ) {
 		con_push_indent();
 
-		character_infos[i].initialize( alphabet.size );
+		character_infos[i].initialize( alphabet.size, Context.default_allocator );
 
 		offset_x = 0;
 		atlas_width = atlas_height = -1;

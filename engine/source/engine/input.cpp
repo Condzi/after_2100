@@ -9,7 +9,7 @@ namespace con
 {
 void Input::initialize( Window& window )
 {
-	bindings.initialize( CON_MAX_INPUT_BINDINGS );
+	bindings.initialize( CON_MAX_INPUT_BINDINGS, Context.default_allocator );
 	// Array doesn't construct objects for us, so we're doing it here.
 	for ( s32 i = 0; i < bindings.size(); ++i ) {
 		bindings[i] = Key_Binding{};
