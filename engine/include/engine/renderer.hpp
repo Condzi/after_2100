@@ -39,11 +39,9 @@ struct Position_Vertex2D final
 class Renderer final
 {
 public:
+	// @Robustness: remove, because Renderer no longer uses it. 
 	void initialize();
 	void shutdown();
-
-	// Use this ebo if you're constructing a quad.
-	returning get_quad_ebo() const -> gl_id const;
 
 	// Should be called only by the window to update our internal
 	// projection matrix. (called by application during initialization stage)
@@ -57,8 +55,6 @@ private:
 	mat4 projection_view_multiplied_matrix;
 
 	bool update_projection_view_multiplied_matrix = true;
-
-	gl_id quad_ebo = 0;
 };
 
 

@@ -11,29 +11,36 @@
 // min, max
 #include <algorithm>
 
+
 namespace con
 {
 
-void Renderer::initialize()
+file_scope
+{
+returning generate_quad_ebo() -> gl_id
 {
 	static constexpr u32 quad_ebo_indecies[] ={
 		0, 1, 3,
 		1, 3, 2
 	};
 
-	glGenBuffers( 1, &quad_ebo );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, quad_ebo );
+	gl_id ebo = 0;
+	glGenBuffers( 1, &ebo );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof( u32 ), quad_ebo_indecies, GL_STATIC_DRAW );
+
+	return ebo;
+}
+}
+
+void Renderer::initialize()
+{
+	// dummy
 }
 
 void Renderer::shutdown()
 {
-	glDeleteBuffers( 1, &quad_ebo );
-}
-
-returning Renderer::get_quad_ebo() const -> gl_id const
-{
-	return quad_ebo;
+	// dummy
 }
 
 void Renderer::set_window_size( s32 width, s32 height )
@@ -182,7 +189,7 @@ void Renderer::render()
 
 
 		if ( render_info.render_type == Render_Type::Draw_Elements ) {
-			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER,  quad_ebo );
+			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, render_info.ebo );
 			glDrawElements( GL_TRIANGLES, render_info.elements_count, GL_UNSIGNED_INT, 0 );
 		} else {
 			glDrawArrays( render_info.draw_arrays_info.mode, 0, render_info.draw_arrays_info.vertices_count );
@@ -274,7 +281,7 @@ returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
 	auto quad = construct_2d_textured_quad( width, height );
 
 	glGenVertexArrays( 1, &render_info.vao );
-	glGenBuffers( 1, &render_info.vbo );
+	glGenBuffers( 1,      &render_info.vbo );
 
 	glBindVertexArray( render_info.vao );
 
@@ -288,8 +295,7 @@ returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
 	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( Textured_Vertex2D ), (void*)( 2* sizeof( f32 ) ) );
 	glEnableVertexAttribArray( 1 );
 
-	// Initialize element buffer and use only one for every sprite.
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, Context.renderer->get_quad_ebo() );
+	render_info.ebo = generate_quad_ebo();
 
 	glBindVertexArray( 0 );
 
@@ -299,7 +305,8 @@ returning construct_textured_sprite( s32 width, s32 height ) -> Render_Info
 void shutdown_textured_sprite( Render_Info const& render_info )
 {
 	glDeleteVertexArrays( 1, &render_info.vao );
-	glDeleteBuffers( 1, &render_info.vbo );
+	glDeleteBuffers( 1,      &render_info.vbo );
+	glDeleteBuffers( 1,      &render_info.ebo );
 }
 
 returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16 line_length_limit ) -> Text_Return_Value
@@ -483,7 +490,7 @@ returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16
 
 
 	glGenVertexArrays( 1, &render_info.vao );
-	glGenBuffers( 1, &render_info.vbo );
+	glGenBuffers( 1,      &render_info.vbo );
 
 	glBindVertexArray( render_info.vao );
 
@@ -521,7 +528,8 @@ returning construct_rectangle( s32 width, s32 height ) -> Render_Info
 	auto quad = construct_2d_quad( width, height );
 
 	glGenVertexArrays( 1, &render_info.vao );
-	glGenBuffers( 1, &render_info.vbo );
+	glGenBuffers( 1,      &render_info.vbo );
+	glGenBuffers( 1,      &render_info.ebo );
 
 	glBindVertexArray( render_info.vao );
 
@@ -532,8 +540,7 @@ returning construct_rectangle( s32 width, s32 height ) -> Render_Info
 	glEnableVertexAttribArray( 0 );
 	glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, sizeof( Position_Vertex2D ), (void*)0 );
 
-	// We use the same quad ebo as the sprites.
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, Context.renderer->get_quad_ebo() );
+	render_info.ebo = generate_quad_ebo();
 
 	glBindVertexArray( 0 );
 
@@ -544,5 +551,6 @@ void shutdown_rectangle( Render_Info const& render_info )
 {
 	glDeleteVertexArrays( 1, &render_info.vao );
 	glDeleteBuffers( 1, &render_info.vbo );
+	glDeleteBuffers( 1, &render_info.ebo );
 }
 }
