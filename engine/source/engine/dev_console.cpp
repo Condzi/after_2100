@@ -77,7 +77,7 @@ void Dev_Console::initialize_graphics()
 	bg_ri.drawing_layer   = 0;
 
 	text_ri.tint = Tint{ 255, 255, 255, 255 };
-	bg_ri  .tint = Tint{ 16, 120, 149,  255 };
+	bg_ri  .tint = Tint{ 16, 120, 149,  220 };
 
 	flags.graphics_initialized = true;
 

@@ -1,4 +1,4 @@
-#include <engine/application.hpp>
+﻿#include <engine/application.hpp>
 
 #include <engine/default_config_values.hpp>
 #include <engine/scene_resources_file_parser.hpp>
@@ -196,9 +196,7 @@ returning Application::initialize() -> bool
 	con_pop_indent();
 	con_log( "Renderer initialized." );
 
-	// !!!! IMPORTANT !!!!
-	// 
-	// Dev_Console
+
 	//
 	// Debug / Test stuff.
 	//
@@ -306,7 +304,6 @@ void Application::shutdown()
 	con_log( "Highest TA mark: % / % KB (~% percent).", highest_mark / CON_KILOBYTES( 1 ), reserved_mem / CON_KILOBYTES( 1 ), percent_value );
 
 	con_pop_indent();
-	con_log( "See ya later, aligater!" );
 	flush_logger(); // flushing last messages here...
 
 	main_logger.shutdown();
@@ -324,6 +321,7 @@ void Application::flush_logger()
 		main_logger_file = fopen( "fallback_log.txt", "wb" );
 	} else {
 		con_log( "Logger file successfully created." );
+		con_log( "See ya later, aligater! :-)" );
 	}
 
 	// @ToDo: Check if we're in release mode. If yes, don't try to log to console.
