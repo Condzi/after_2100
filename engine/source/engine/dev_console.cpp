@@ -76,7 +76,7 @@ void Dev_Console::initialize_graphics()
 	bg_ri.drawing_layer   = 0;
 
 	// @ToDo: Set the proper colors.
-	text_ri.tint = Tint{ 120, 120, 120, 255 };
+	text_ri.tint = Tint{ 255, 120, 120, 255 };
 	bg_ri  .tint = Tint{ 255, 255, 255, 120 };
 
 	flags.graphics_initialized = true;
@@ -142,49 +142,6 @@ void Dev_Console::update( f32 dt )
 		wchar_t* const buffer = ta.allocate<wchar_t>( buffer_size );
 		// It's also the real size of the buffer
 		s32 buffer_idx = 0;
-
-		//
-		// xxxxxxxxxxxxxxxxxx
-		//
-
-
-		FILE* dump = fopen( "logs/lines.txt", "wb" );
-		fprintf( dump, "DUMP START\n");
-
-		for ( s32 i = 0; i < lines_buffer_size; ++i ){
-			if ( lines_buffer[i].size <= 0 ){
-				fprintf( dump, "%d <empty>\n", i );
-			} else{
-				fprintf( dump, "%d %s \n", i, cstring_to_cstr( lines_buffer[i] ).data );
-			}
-		}
-
-		fprintf( dump, "DUMP END");
-
-		fclose( dump );
-
-
-		dump = fopen( "logs/messages.txt", "wb" );
-		fprintf( dump, "DUMP START\n");
-
-		for ( s32 i = 0; i < messages_buffer_size; ++i ){
-			if ( messages_buffer[i].size <= 0 ){
-				fprintf( dump, "%d <empty>\n", i );
-			} else{
-				fprintf( dump, "%d %s \n", i, cstring_to_cstr( messages_buffer[i] ).data );
-			}
-		}
-
-		fprintf( dump, "DUMP END");
-
-		fclose( dump );
-
-
-
-		//
-		// xxxxxxxxxxxxxxxxxx
-		//
-
 
 		for ( s32 i = current_top_line; i < current_top_line + lines_count; ++i ){
 			constant& current_line = lines_buffer[i];

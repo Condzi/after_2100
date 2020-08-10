@@ -26,6 +26,8 @@ struct Font_Test final
 		//_hot.position.y += 200;
 		_hot.update_model_matrix = true;
 		_cold.render_info.tint.r = 120;
+		
+		
 	 
 
 		/*
@@ -36,6 +38,7 @@ struct Font_Test final
 		_hot.position = v2( 500, 400 );
 		_hot.update_model_matrix = true;
 		*/
+		
 		
 	}
 

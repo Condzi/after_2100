@@ -112,7 +112,7 @@ void Renderer::render()
 	if ( Context.dev_console->is_open() ){
 		constant& graphic_elements = Context.dev_console->graphic_elements;
 
-//		render_infos[idx_in_render_infos]   = graphic_elements.background.render_info;
+		render_infos[idx_in_render_infos]   = graphic_elements.background.render_info;
 		render_infos[++idx_in_render_infos] = graphic_elements.text      .render_info;
 		++idx_in_render_infos;
 	}
@@ -145,40 +145,27 @@ void Renderer::render()
 	// 3. Draw.
 	//
 
-	gl_id current_texture = render_infos[0].texture.id;
-	gl_id current_shader  = render_infos[0].shader.id;
-	glActiveTexture( GL_TEXTURE0 );
-	glBindTexture( GL_TEXTURE_2D, current_texture );
-	glUseProgram( current_shader );
-
 	for ( s32 i = 0; i < render_infos.size(); ++i ) {
 		constant& render_info = render_infos[i];
 
-		if ( current_texture != render_info.texture.id ) {
-			// We don't want to do this for ellipse.
-			if ( render_info.drawing_group  == Drawing_Group::Default ||
-				 render_info.drawing_group  == Drawing_Group::GUI     ||
-				( render_info.drawing_group == Drawing_Group::Dev_Console && 
-				 render_info.drawing_layer != 0 ) ) {
-				current_texture = render_info.texture.id;
+		glBindVertexArray( render_info.vao );
 
-				glActiveTexture( GL_TEXTURE0 );
-				glBindTexture( GL_TEXTURE_2D, current_texture );
-			}
+		// We don't want to do this for ellipse.
+		if ( render_info.drawing_group  == Drawing_Group::Default ||
+			 render_info.drawing_group  == Drawing_Group::GUI     ||
+			( render_info.drawing_group == Drawing_Group::Dev_Console && 
+			 render_info.drawing_layer != 0 ) ) {
+			glActiveTexture( GL_TEXTURE0 );
+			glBindTexture( GL_TEXTURE_2D, render_info.texture.id );
 		}
 
-		if ( current_shader != render_info.shader.id ) {
-			current_shader = render_info.shader.id;
-
-			glUseProgram( current_shader );
-		}
-
+		glUseProgram( render_info.shader.id );
 
 		// @Performance: don't recompute this matrix every time!
 		mat4 mvp_mat{ 1.0f };
 		mvp_mat = projection_view_multiplied_matrix * render_info.model_mat;
 
-		constant combined_mat_loc = glGetUniformLocation( current_shader, "u_mvp_mat" );
+		constant combined_mat_loc = glGetUniformLocation( render_info.shader.id, "u_mvp_mat" );
 		glUniformMatrix4fv( combined_mat_loc, 1, GL_FALSE, glm::value_ptr( mvp_mat ) );
 
 		if ( render_info.shader.name_hash == "text"_hcs.hash ||
@@ -189,13 +176,13 @@ void Renderer::render()
 			colors_normalized[2] = render_info.tint.b / 255.0f;
 			colors_normalized[3] = render_info.tint.a / 255.0f;
 
-			constant color_loc = glGetUniformLocation( current_shader, "u_tint" );
+			constant color_loc = glGetUniformLocation( render_info.shader.id, "u_tint" );
 			glUniform4fv( color_loc, 1, colors_normalized );
 		}
 
-		glBindVertexArray( render_info.vao );
 
 		if ( render_info.render_type == Render_Type::Draw_Elements ) {
+			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER,  quad_ebo );
 			glDrawElements( GL_TRIANGLES, render_info.elements_count, GL_UNSIGNED_INT, 0 );
 		} else {
 			glDrawArrays( render_info.draw_arrays_info.mode, 0, render_info.draw_arrays_info.vertices_count );
@@ -528,6 +515,7 @@ returning construct_rectangle( s32 width, s32 height ) -> Render_Info
 {
 	Render_Info render_info;
 
+	// nocheckin
 	render_info.elements_count = 6; // 6 elemets in ebo for a quad
 
 	auto quad = construct_2d_quad( width, height );
