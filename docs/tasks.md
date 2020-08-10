@@ -1,5 +1,6 @@
 # **Current Tasks**
-* incorrect lines values may be the result of wrong usage of memmove function. investigate
+* all objects should have own element buffers which are bound in the drawing loop in the renderer
+* add scrolling to dev_console
 
 # **Dev Console**
 We initialize it in two steps. 

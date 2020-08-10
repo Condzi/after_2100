@@ -40,7 +40,7 @@ void Dev_Console::initialize_graphics()
 	// Make height to be multiples of line_height.
 	height = line_height * ( height / line_height ) + 1;
 
-	lines_count  = height / line_height;
+	lines_count  = height / line_height - 1;
 	// We might have veeeeery tall screens in the future.
 	if ( lines_count >= lines_buffer_size ){
 		lines_count = lines_buffer_size - 1;
@@ -75,9 +75,8 @@ void Dev_Console::initialize_graphics()
 	text_ri.drawing_layer = 1;
 	bg_ri.drawing_layer   = 0;
 
-	// @ToDo: Set the proper colors.
-	text_ri.tint = Tint{ 255, 120, 120, 255 };
-	bg_ri  .tint = Tint{ 255, 255, 255, 120 };
+	text_ri.tint = Tint{ 255, 255, 255, 255 };
+	bg_ri  .tint = Tint{ 16, 120, 149,  255 };
 
 	flags.graphics_initialized = true;
 
@@ -167,11 +166,12 @@ void Dev_Console::update( f32 dt )
 		constant old_shader  = text_ri.shader;
 		constant old_tint    = text_ri.tint;
 		constant old_group   = text_ri.drawing_group;
+		constant old_layer   = text_ri.drawing_layer;
 
 		constant[new_ri, size] = construct_text( final_string_to_display, *font, Text_Size::Developer_Console, -1 );
 
 		con_assert( size.x < Context.window->width() );
-	//	con_assert( size.y <= height );
+		con_assert( size.y <= height );
 
 		text_ri               = new_ri;
 		text_ri.model_mat     = old_mat;
@@ -179,6 +179,7 @@ void Dev_Console::update( f32 dt )
 		text_ri.shader        = old_shader;
 		text_ri.tint          = old_tint;
 		text_ri.drawing_group = old_group;
+		text_ri.drawing_layer = old_layer;
 
 		flags.update_text_content = false;
 	}
