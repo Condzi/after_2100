@@ -39,6 +39,9 @@ public:
 	// deleted! We aren't copying it.
 	void print( CString message );
 
+	void scroll_up();
+	void scroll_down();
+
 	returning is_open() const -> bool;
 
 private:

@@ -4,6 +4,7 @@
 #include <engine/prepared_resources.hpp>
 #include <engine/logger.hpp>
 #include <engine/renderer.hpp>	
+#include <engine/input.hpp>
 
 #include <glm/gtx/transform.hpp>
 
@@ -122,6 +123,10 @@ void Dev_Console::update( f32 dt )
 	// Use the dt for the animation, later.
 	unused( dt );
 
+	if ( Context.input->is_key_pressed( "dev_console"_hcs ) ){
+		toggle();
+	}
+
 	if ( !flags.is_open ){
 		return;
 	}
@@ -228,6 +233,26 @@ void Dev_Console::print( CString message )
 
 	// @Incomplete: do message braking into multiple lines.
 	con_assert( false );
+}
+
+void Dev_Console::scroll_up()
+{
+	if( flags.is_open &&
+		current_top_line - 1 >= 0 ) {
+		current_top_line--;
+
+		flags.update_text_content = true;
+	}
+}
+
+void Dev_Console::scroll_down()
+{
+	if( flags.is_open &&
+		current_top_line + 1 <= lines_buffer_size - lines_count ) {
+		current_top_line++;
+
+		flags.update_text_content = true;
+	}
 }
 
 returning Dev_Console::is_open() const -> bool

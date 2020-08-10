@@ -226,6 +226,7 @@ void Application::run()
 {
 	con_log( "Application runs..." );
 
+	// @Robustness: move the add_binding calls to other place?
 	input.add_binding( "exit_button"_hcs, Key::Keyboard_ESCAPE );
 	input.add_binding( "dev_console"_hcs, Key::Keyboard_F1 );
 
@@ -244,10 +245,6 @@ void Application::run()
 
 		if ( input.is_key_pressed( "exit_button"_hcs ) ) {
 			Context.exit_flags.requested_by_user = true;
-		}
-
-		if ( input.is_key_pressed( "dev_console"_hcs ) ){
-			dev_console.toggle();
 		}
 
 		input.poll_events();

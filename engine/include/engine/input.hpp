@@ -46,6 +46,6 @@ private:
 
 	static void glfw_keyboard_key_callback( GLFWwindow* window, int key, int scancode, int action, int mods );
 	static void glfw_mouse_key_callback( GLFWwindow* window, int button, int action, int mods );
-
+	static void glfw_mouse_scroll_callback( GLFWwindow* window, double x_offset, double y_offset );
 };
 }
