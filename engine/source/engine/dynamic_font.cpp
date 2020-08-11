@@ -1,4 +1,4 @@
-#include <engine/font.hpp>
+#include <engine/dynamic_font.hpp>
 
 #include <engine/utility.hpp>
 #include <engine/logger.hpp>
@@ -8,12 +8,12 @@
 
 namespace con
 {
-void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
+void Dynamic_Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 {
 	con_push_indent();
 	defer{ con_pop_indent(); };
 
-	*this = Font{};
+	*this = Dynamic_Font{};
 
 	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
 	constant mark = ta.get_mark();
@@ -164,7 +164,7 @@ void Font::initialize( CString path, std::initializer_list<s8> text_sizes_ )
 	}
 }
 
-void Font::shutdown()
+void Dynamic_Font::shutdown()
 {
 	sft_freefont( sft.font );
 	font_file_data.shutdown();
@@ -179,7 +179,7 @@ void Font::shutdown()
 	character_infos.shutdown();
 }
 
-returning Font::get_texture( s8 text_size ) -> gl_id
+returning Dynamic_Font::get_texture( s8 text_size ) -> gl_id
 {
 	constant result = linear_find( text_sizes, text_size );
 
@@ -193,7 +193,7 @@ returning Font::get_texture( s8 text_size ) -> gl_id
 	return textures[result.idx];
 }
 
-returning Font::get_character_info( wchar_t character, s8 text_size ) -> Character_Info
+returning Dynamic_Font::get_character_info( wchar_t character, s8 text_size ) -> Character_Info
 {
 	con_push_indent();
 	defer{ con_pop_indent(); };
@@ -226,7 +226,7 @@ returning Font::get_character_info( wchar_t character, s8 text_size ) -> Charact
 	return character_infos[size_find_result.idx][char_idx];
 }
 
-returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> f32
+returning Dynamic_Font::get_kerning( wchar_t left_character, wchar_t right_character, s8 text_size ) -> f32
 {
 	con_push_indent();
 	defer{ con_pop_indent(); };
@@ -257,7 +257,7 @@ returning Font::get_kerning( wchar_t left_character, wchar_t right_character, s8
 	return static_cast<f32>( kern[0] );
 }
 
-returning Font::get_line_spacing( s8 text_size ) -> Line_Spacing
+returning Dynamic_Font::get_line_spacing( s8 text_size ) -> Line_Spacing
 {
 	con_push_indent();
 	defer{ con_pop_indent(); };

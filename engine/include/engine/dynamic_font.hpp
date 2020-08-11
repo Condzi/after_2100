@@ -10,7 +10,7 @@
 namespace con
 {
 // Basically just a container for character texture atlas.
-class Font final
+class Dynamic_Font final
 {
 public:
 	struct Character_Info final

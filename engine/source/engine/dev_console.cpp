@@ -50,7 +50,7 @@ void Dev_Console::initialize_graphics()
 
 	current_top_line = lines_buffer_size - lines_count;
 
-	con_log( "Dev_Console. lines_count = %, lines_length = %, height = %, current_top_line = %,", lines_count, lines_length, height, current_top_line );
+	con_log( "Dev_Console. lines_count = %, lines_length = %, height = %, current_top_line = %.", lines_count, lines_length, height, current_top_line );
 
 	//
 	// Initialize the graphics

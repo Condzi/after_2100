@@ -1,7 +1,7 @@
 #include <engine/render_info.hpp>
 #include <engine/array.hpp>
 #include <engine/cstring.hpp>
-#include <engine/font.hpp>
+#include <engine/dynamic_font.hpp>
 
 namespace con
 {
@@ -70,7 +70,7 @@ private:
 	// In pixels. Height of the background. 
 	s32 height = -1;
 
-	Font* font = nullptr;
+	Dynamic_Font* font = nullptr;
 
 	struct
 	{

@@ -309,7 +309,7 @@ void shutdown_textured_sprite( Render_Info const& render_info )
 	glDeleteBuffers( 1,      &render_info.ebo );
 }
 
-returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16 line_length_limit ) -> Text_Return_Value
+returning construct_text( UTF8_String utf8_string, Dynamic_Font& font, s8 text_size, s16 line_length_limit ) -> Text_Return_Value
 {
 	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
 	constant ta_mark = ta.get_mark();

@@ -24,21 +24,21 @@ struct Context_Data final
 
 	Allocator* default_allocator   = nullptr;
 	Allocator* temporary_allocator = nullptr;
-	Allocator* c_allocator		   = nullptr;
-	Allocator* stack_allocator	   = nullptr;
+	Allocator* c_allocator         = nullptr;
+	Allocator* stack_allocator     = nullptr;
 	Entity_Manager* entity_manager = nullptr;
-	Logger* logger				   = nullptr;
-	Config_File* config_file	   = nullptr;
-	Input* input				   = nullptr;
+	Logger* logger                 = nullptr;
+	Config_File* config_file       = nullptr;
+	Input* input                   = nullptr;
 	Prepared_Resources* prepared_resources = nullptr;
-	Renderer* renderer			   = nullptr;
+	Renderer* renderer             = nullptr;
 	Window* window                 = nullptr;
 	Dev_Console* dev_console       = nullptr;
 
 	struct
 	{
-		bool requested_by_user = false;
-		bool requested_by_app  = false;
+		bool requested_by_user : 1 = false;
+		bool requested_by_app  : 1 = false;
 	} exit_flags;
 
 	struct

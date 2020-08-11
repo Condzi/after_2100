@@ -2,7 +2,7 @@
 
 #include <engine/array.hpp>
 #include <engine/render_info.hpp>
-#include <engine/font.hpp>
+#include <engine/dynamic_font.hpp>
 
 namespace con
 {
@@ -101,7 +101,7 @@ struct Text_Return_Value final
 
 // You can set line_length_limit to -1 to skip that feature.
 // text_size should be value of Text_Size::X enum. It should also be avaible in the font.
-returning construct_text( UTF8_String utf8_string, Font& font, s8 text_size, s16 line_length_limit = 128 ) -> Text_Return_Value;
+returning construct_text( UTF8_String utf8_string, Dynamic_Font& font, s8 text_size, s16 line_length_limit = 128 ) -> Text_Return_Value;
 
 void shutdown_text( Render_Info const& render_info );
 

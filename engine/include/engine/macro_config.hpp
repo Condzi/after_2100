@@ -25,11 +25,14 @@
 #define CON_DEBUG true
 #endif
 
+//
+// Miscalenous stuff.
+//
+
 #define CON_VERSION_STRING  "1.0"
 #define CON_WINDOW_TITLE    "after_2100 / v" CON_VERSION_STRING " / Compiled on " __DATE__ " at " __TIME__ " CET"
 
 #define CON_REQUEST_DEDICATED_GPU  true
-#define CON_ASSERT_MESSAGE_BUFFER_SIZE 512
 
 //
 // Reserved memory for particular buffers.
@@ -38,6 +41,7 @@
 #define CON_TEMPORARY_STORAGE_RESERVED_MEMORY   CON_MEGABYTES( 4 )
 #define CON_STACK_RESERVED_MEMORY               CON_KILOBYTES( 128 )
 #define CON_LOGGER_BUFFER_RESERVED_MEMORY       CON_MEGABYTES( 1 )
+#define CON_ASSERT_MESSAGE_BUFFER_SIZE          CON_BYTES( 512 )
 
 //
 // Developer Console

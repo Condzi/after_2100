@@ -153,7 +153,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="include\engine\font.hpp">
+    <ClInclude Include="include\engine\dynamic_font.hpp">
       <SubType>
       </SubType>
     </ClInclude>
@@ -259,7 +259,7 @@
     <ClCompile Include="source\engine\cstring.cpp" />
     <ClCompile Include="source\engine\dev_console.cpp" />
     <ClCompile Include="source\engine\entity_manager.cpp" />
-    <ClCompile Include="source\engine\font.cpp" />
+    <ClCompile Include="source\engine\dynamic_font.cpp" />
     <ClCompile Include="source\engine\input.cpp" />
     <ClCompile Include="source\engine\logger.cpp" />
     <ClCompile Include="source\engine\formatting.cpp" />

@@ -3,7 +3,7 @@
 #include <engine/array.hpp>
 #include <engine/hashed_cstring.hpp>
 #include <engine/resource_types.hpp>
-#include <engine/font.hpp>
+#include <engine/dynamic_font.hpp>
 
 #include <glad/glad.h>
 
@@ -16,7 +16,7 @@ class Prepared_Resources final
 public:
 	returning get_texture( Hashed_CString name ) -> Texture;
 	returning get_shader( Hashed_CString name ) -> Shader;
-	returning get_font( Hashed_CString name ) -> Font&;
+	returning get_font( Hashed_CString name ) -> Dynamic_Font&;
 	returning get_starting_planet_hash() const -> u32;
 
 	returning textures_count() const -> s32;
@@ -36,12 +36,12 @@ private:
 	// Because of that, I decided to split the name hash and actual font to two arrays
 	// for quicker lookup.
 	Array<u32>  fonts_names_hashes;
-	Array<Font> fonts;
+	Array<Dynamic_Font> fonts;
 
 	Texture fallback_texture;
 	Shader  fallback_shader;
 	// @ToDo: add fallback font!
-	Font    fallback_font; // this font should be located in program memory. Find some nice, small font.
+	Dynamic_Font    fallback_font; // this font should be located in program memory. Find some nice, small font.
 
 	// @Robustness: is it really the place for starting_planet_hash?
 	// If you gonna refactor this, see the prepare_resources_for_scene, this is

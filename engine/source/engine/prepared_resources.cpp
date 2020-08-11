@@ -40,7 +40,7 @@ returning Prepared_Resources::get_shader( Hashed_CString name ) -> Shader
 	}
 }
 
-returning Prepared_Resources::get_font( Hashed_CString name ) -> Font&
+returning Prepared_Resources::get_font( Hashed_CString name ) -> Dynamic_Font&
 {
 	con_assert( fonts.size() > 0 );
 

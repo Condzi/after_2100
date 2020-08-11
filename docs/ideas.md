@@ -1,3 +1,6 @@
+# time warp
+Coś w stylu KSP. Może także cofanie w czasie?
+
 # Cyrkler marsjański
 
 Trajektoria cykliczna to taka trasa przez kosmos, że poruszający się nią obiekt zbliża się do dwóch tych samych ciał niebieskich w regularnych odstępach czasu.
