@@ -1,17 +1,13 @@
 # **Current Tasks**
-* all objects should have own element buffers which are bound in the drawing loop in the renderer
+* copy the Bitset implementaiton from `gol`
+* change the `temporary allocator` initialize function
+* spend time on refactor and bugfixing!!!
+* improve path rendering. fix the bug.
 
-# **Dev Console**
-We initialize it in two steps. 
-* First, set up the buffer to save the messages. Do this as early as possible to not miss the initialization logs. (probably still miss some?)
-* Second, initialize the visuals. Text rendering, backgrounds because we need OpenGL context for that.
-
-We could skip that by flushing after initialization of the `Window`, but that would be not so robust. We would have higher chance of missing logs if a sudden crash occurs. That's why we're flushing as frequent as possible.
-
-We need a simple rectangle shapes to create console background.
-* Just add a colored vertex structure. Then `create_rectangle_shape`. Just remember that we're dealing with origin point in the center of the rectangle. Remember to resize the size accordingly to the window's.
-
-The `Dev_Console` won't use entities at all. The `Renderer` will render its `Render_Info`s at the end of the frame. It's just a special case. There is no need for creating entities in the `Entity_Manager` for that. We need one `Render_Info` for the text, one for the background, for now. We'll need at least two more for the input field.
+* add `con_fatal_assert` when `con_assert` is not suitable and causes recursion. Just prompt "fatal crash! see "log-*time*.txt""
+    * current `con_assert` is bad because it continues execution after failing. This is bad since we might not be able to get to the `shutdown` stage of the engine. It's double bad because of way we're logging stuff. When we crash, we're losing all the log data! At least we're storing it in the `Logger` so we can dump it upon crashing, I guess?
+* rename `CString::size` to `length` 
+* remove `Stack_Allocator`?
 
 ----
 ## **other**
