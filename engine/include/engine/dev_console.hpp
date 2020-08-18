@@ -56,6 +56,8 @@ private:
 	// 
 	// Newest lines / messages are at the end.
 	Array<CString> lines_buffer;
+	// We use this value to check if we can scroll up. Can't be less than 0.
+	s32 free_lines_in_the_buffer_count = lines_buffer_size;
 
 	// Both are depending on the screen width and height.
 	s32 lines_count  = -1;

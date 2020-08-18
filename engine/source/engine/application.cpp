@@ -40,7 +40,7 @@ returning Application::initialize() -> bool
 	prepared_resources ={};
 
 
-	con_log( "Version " CON_VERSION_STRING " compiled on " __DATE__ " at " __TIME__ " CET" );
+	con_log( "Version " CON_VERSION_STRING " compiled on " __DATE__ " at " __TIME__ " CET." );
 	con_log( "Initialization started..." );
 	con_push_indent();
 
@@ -218,8 +218,6 @@ returning Application::initialize() -> bool
 	con_pop_indent();
 	con_log( "Initialization completed." );
 
-	con_check( false );
-
 	return true;
 }
 
@@ -305,6 +303,13 @@ void Application::shutdown()
 	constant percent_value = static_cast<s32>( 100 * static_cast<f32>( highest_mark ) / reserved_mem );
 
 	con_log( "Highest TA mark: % / % KB (~% percent).", highest_mark / CON_KILOBYTES( 1 ), reserved_mem / CON_KILOBYTES( 1 ), percent_value );
+
+	constant current_time = Time::now();
+	constant start_time   = Context.startup_time_point;
+	constant difference   = Time::difference( start_time, current_time );
+	constant playtime_in_minutes = Time::to_seconds( difference ) / 60;
+
+	con_log( "Play time was % minutes.", playtime_in_minutes );
 
 	con_pop_indent();
 	flush_logger(); // flushing last messages here...

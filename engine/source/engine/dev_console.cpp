@@ -226,10 +226,16 @@ void Dev_Console::print( CString message )
 	// Break into multiple lines if needed.
 	//
 
+	free_lines_in_the_buffer_count -= lines;
+	if ( free_lines_in_the_buffer_count < 0 ){
+		free_lines_in_the_buffer_count = 0;
+	}
+
 	if ( lines == 1 ){
 		lines_buffer[lines_buffer_size-1] = message;
 		return;
 	}
+
 
 	// @Incomplete: do message braking into multiple lines.
 	con_assert( false );
@@ -238,7 +244,8 @@ void Dev_Console::print( CString message )
 void Dev_Console::scroll_up()
 {
 	if( flags.is_open &&
-		current_top_line - 1 >= 0 ) {
+		current_top_line - 1 >= free_lines_in_the_buffer_count
+		) {
 		current_top_line--;
 
 		flags.update_text_content = true;
