@@ -9,6 +9,9 @@
 * rename `CString::size` to `length` 
 * remove `Stack_Allocator`?
 
+# **Assertions rework**
+Assertions should exit as fast as possible and save the log to `crash.txt`. Current `con_assert` should be named `con_check` instead. A check is checking a condintion from which we should recover from and exit nominally, but give info about failure in the log (at least).
+
 ----
 ## **other**
 * default allocator unit test

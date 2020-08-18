@@ -40,6 +40,7 @@ returning Application::initialize() -> bool
 	prepared_resources ={};
 
 
+	con_log( "Version " CON_VERSION_STRING " compiled on " __DATE__ " at " __TIME__ " CET" );
 	con_log( "Initialization started..." );
 	con_push_indent();
 

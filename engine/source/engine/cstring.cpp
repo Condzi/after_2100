@@ -1,6 +1,8 @@
 #include <engine/cstring.hpp>
 #include <engine/allocator.hpp>
 
+#include <engine/array.hpp>
+
 #include <cstring>
 
 namespace con

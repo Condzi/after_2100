@@ -1,11 +1,15 @@
 #pragma once
 
-#include <engine/array.hpp>
+#include <engine/typedefs.hpp>
 #include <engine/utf8_string.hpp>
+
 #include <string>
 
 namespace con
 {
+template <typename T>
+class Array;
+
 struct CString final
 {
 	// Holds 'size' characters + \0 (but we don't include NULL in our size variable)

@@ -4,10 +4,7 @@
 * check where we have to call constructors and see if we can remove ctors.
 
 # **Quality of life**
-* add `con_fatal_assert` when `con_assert` is not suitable and causes recursion. Just prompt "fatal crash! see "log-*time*.txt""
-    * current `con_assert` is bad because it continues execution after failing. This is bad since we might not be able to get to the `shutdown` stage of the engine. It's double bad because of way we're logging stuff. When we crash, we're losing all the log data! At least we're storing it in the `Logger` so we can dump it upon crashing, I guess?
-* rename `CString::size` to `length` 
-* remove `Stack_Allocator`?
+
 * don't use default parameters in functions like `initialize` (see: `Bitset::initialize` and `Temporary_Allocator`)
 * log the hardware info (RAM, max texture size, this kind of stuff)
 * add support for `const char*` const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`
