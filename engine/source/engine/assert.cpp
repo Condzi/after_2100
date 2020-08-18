@@ -106,9 +106,6 @@ void on_check_fail( CString file, CString line, CString function_name, CString c
 {
 	file = CString{ file.data + skip_file_chars, file.size - skip_file_chars };
 
-	Context.window->shutdown();
-	Context.exit_flags.requested_by_app = true;
-
 	compile_constant message_format = CString{ R"(
 === === === === === === === === === ===
 			Check failed!
@@ -121,7 +118,8 @@ void on_check_fail( CString file, CString line, CString function_name, CString c
 
 	constant message_to_print = sprint( message_format, file, line, function_name, condition );
 
-	con_log_no_indent( "\n%\n", message_to_print );
+	// @Imporatant: remove comment when Dev_Console supports multiline logs.
+//	con_log_no_indent( "\n%\n", message_to_print );
 
 	if ( IsDebuggerPresent() ){
 		constant message_to_print_null_terminated = sprint( "%\0", message_to_print );
@@ -133,7 +131,6 @@ void on_check_fail( CString file, CString line, CString function_name, CString c
 
 void on_glfw_error( s32 error_code, char const* message )
 {
-	Context.window->close();
 	Context.exit_flags.requested_by_app = true;
 
 	compile_constant message_format = CString{ R"(

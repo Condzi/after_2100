@@ -19,6 +19,8 @@
 // Engine and game stuff
 //
 
+#define CON_DO_CHECKS  true
+
 #ifdef NDEBUG
 #define CON_DEBUG false
 #else
