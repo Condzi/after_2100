@@ -68,6 +68,16 @@ void Default_Allocator::free( byte* location, s32 size )
 	constant idx = static_cast<s32>( location - begin );
 	con_assert( idx + size < reserved_size );
 
+	// Check if we're clearing the correct range. If yes, then all bits in the
+	// bitset should be set to true.
+	//
+	// @Robustness: maybe add CON_MEMORY_FREE_CHECK or something?
+#if CON_DEBUG == true
+	for ( s32 i = idx; i < size; ++i ){
+		con_assert( used_bytes.test( i ) == true );
+	}
+#endif
+
 	used_bytes.reset_range( idx, size );
 }
 
@@ -179,6 +189,13 @@ void Stack_Allocator::free( byte* location, s32 size )
 
 	constant idx = static_cast<s32>( location - buffer );
 	con_assert( idx + size < reserved_size );
+
+	// @Robustness: CON_MEMORY_FREE_CHECK
+#if CON_DEBUG == true
+	for ( s32 i = idx; i < size; ++i ){
+		con_assert( used_bytes.test( i ) == true );
+	}
+#endif
 
 	used_bytes.reset_range( idx, size );
 }
