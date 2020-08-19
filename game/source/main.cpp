@@ -31,4 +31,6 @@ int main()
 		con_log( "Initialization failed!" );
 	}
 	app.shutdown();
+
+	return EXIT_SUCCESS;
 }

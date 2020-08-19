@@ -17,6 +17,16 @@
 
 namespace con::priv
 {
+//
+// When assertion fails and we are in debug mode, we want to open the crash file.
+// We do that using Windows commands.
+//
+void open_crash_log_in_text_editor()
+{
+	// This way the file opens in the default editor.
+	std::system( CON_LOGS_FOLDER "\\crash.txt" );
+}
+
 // Cutting off the whole "D:/dev/after2100/" part (or other, that may be different
 // in different enviroments) by using __FILE__ and subtracting
 // length of the "engine/source/engine/assert.cpp" string, which we know that
@@ -92,6 +102,8 @@ Condition: "%s"
 		MB_TOPMOST | MB_ICONERROR | MB_OK
 	);
 #else
+	open_crash_log_in_text_editor();
+
 	if ( IsDebuggerPresent() ){
 		OutputDebugStringA( message_buffer );
 
