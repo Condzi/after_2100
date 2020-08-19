@@ -217,6 +217,7 @@ returning Application::initialize() -> bool
 
 	con_pop_indent();
 	con_log( "Initialization completed." );
+	con_check( false );
 
 	return true;
 }

@@ -130,8 +130,7 @@ void on_check_fail( CString file, CString line, CString function_name, CString c
 
 	constant message_to_print = sprint( message_format, file, line, function_name, condition );
 
-	// @Imporatant: remove comment when Dev_Console supports multiline logs.
-//	con_log_no_indent( "\n%\n", message_to_print );
+	con_log_no_indent( "\n%\n", message_to_print );
 
 	if ( IsDebuggerPresent() ){
 		constant message_to_print_null_terminated = sprint( "%\0", message_to_print );

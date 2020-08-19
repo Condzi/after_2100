@@ -219,12 +219,15 @@ void Dev_Console::print( CString message )
 		return;
 	}
 
+	// @ToDo: one message may have more lines than this formula shows simply by having
+	// more '\n'. We can handle this by creating a temporary buffer of lines with arbi-trary 
+	// size, let's say 32. Then we keep track of how many lines we're saving. 
+	// After splitting do the memmove operation and decrement the `free_lines_in_the_buffer_count`.
+	//
+	//
 	constant lines = message.size / lines_length + 1;
 	memmove( lines_buffer.data(), lines_buffer.data() + lines, ( lines_buffer_size - lines ) * sizeof( CString ) );
 
-	//
-	// Break into multiple lines if needed.
-	//
 
 	free_lines_in_the_buffer_count -= lines;
 	if ( free_lines_in_the_buffer_count < 0 ){
@@ -236,9 +239,53 @@ void Dev_Console::print( CString message )
 		return;
 	}
 
+	//
+	// Break into multiple lines if needed.
+	//
+	s32 current_line_begin      = 0;
+	s32 last_space_position     = -1;
+	s32 current_character_count = 0;
+	s32 current_line_idx        = lines;
 
-	// @Incomplete: do message braking into multiple lines.
-	con_assert( false );
+	// Helper lambda for adding lines.
+	constant add_line = [&]( s32 const start, s32 const length ){
+		lines_buffer[lines_buffer_size - current_line_idx - 1] = CString{ message.data + start, length };
+
+		--current_line_idx;
+	};
+
+	for ( s32 i = 0; i < message.size; ++i ){
+		++current_character_count;
+
+		if ( message.data[i] == ' ' ){
+			last_space_position = i;
+		} else if ( message.data[i] == '\n' ||
+					( current_character_count > lines_length ) ){
+			// In case there is no space character, break the word.
+			if ( last_space_position == -1 ){
+				last_space_position = i;
+			}
+
+			constant current_line_length = last_space_position - current_line_begin;
+
+			add_line( current_line_begin, current_line_length );
+
+			current_character_count = i - last_space_position - 1;
+			current_line_begin      = last_space_position + 1;
+			last_space_position     = -1;
+
+			// This means that there is only one line remaining.
+			if ( i > message.size - lines_length ){
+				// Adding the last line.
+				con_assert( current_line_idx == 0 );
+				add_line( current_line_begin, message.size - i );
+				break;
+			}
+		}
+	}
+
+	// It means that we added all the lines.
+	con_assert( current_line_idx == -1 );
 }
 
 void Dev_Console::scroll_up()
