@@ -336,13 +336,13 @@ void Application::flush_logger()
 
 	// @ToDo: Check if we're in release mode. If yes, don't try to log to console.
 	constant data_to_log = main_logger.get_buffer();
-	if ( data_to_log.size == 0 ) {
+	if ( data_to_log.length == 0 ) {
 		return;
 	}
 
 	// We had an accident with \0 once, so just in case...
 #ifdef CON_DEBUG
-	for ( s32 i = 0; i < data_to_log.size; ++i ) {
+	for ( s32 i = 0; i < data_to_log.length; ++i ) {
 		con_assert( data_to_log.data[i] != 0 );
 	}
 #endif
@@ -389,7 +389,7 @@ returning Application::check_necessary_paths() const -> bool
 
 	bool success = true;
 	constant path_exists = [&success]( CString path ) {
-		if ( fs::exists( { path.data, path.data + path.size } ) == false ) {
+		if ( fs::exists( { path.data, path.data + path.length } ) == false ) {
 			con_log( R"(Error: missing path "%".)", path );
 			success = false;
 		}

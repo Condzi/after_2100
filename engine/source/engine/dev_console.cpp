@@ -95,7 +95,7 @@ void Dev_Console::initialize_graphics()
 
 	for ( s32 i = 0; i < messages_buffer_size; ++i ){
 		// We probably copied a few empty messages, too.
-		if ( temp_messages[i].size <= 0 ){
+		if ( temp_messages[i].length <= 0 ){
 			continue;
 		}
 
@@ -150,14 +150,14 @@ void Dev_Console::update( f32 dt )
 		for ( s32 i = current_top_line; i < current_top_line + lines_count; ++i ){
 			constant& current_line = lines_buffer[i];
 
-			if ( current_line.size <= 0 ){
+			if ( current_line.length <= 0 ){
 				continue;
 			}
 
 			constant utf8_str = cstring_to_utf8_string( lines_buffer[i] );
-			memcpy( buffer + buffer_idx, utf8_str.data, utf8_str.size * sizeof( wchar_t ) );
+			memcpy( buffer + buffer_idx, utf8_str.data, utf8_str.length * sizeof( wchar_t ) );
 
-			buffer_idx += utf8_str.size;
+			buffer_idx += utf8_str.length;
 			// If we have multiline message we're having newline sometimes.
 			// Therefore, add newline only if we haven't already.
 			if ( buffer[buffer_idx-1] != L'\n' ){
@@ -244,7 +244,7 @@ void Dev_Console::print( CString message )
 		con_assert( current_line_idx < 32 );
 	};
 
-	for ( s32 i = 0; i < message.size; ++i ){
+	for ( s32 i = 0; i < message.length; ++i ){
 		++current_character_count;
 
 		if ( message.data[i] == ' ' ){
@@ -266,7 +266,7 @@ void Dev_Console::print( CString message )
 			last_space_position     = -1;
 
 			// This means that there is only one line remaining.
-			if ( i == message.size - 1 ){
+			if ( i == message.length - 1 ){
 				// Adding the last line.
 				add_line( current_line_begin, current_character_count );
 				break;
@@ -279,8 +279,8 @@ void Dev_Console::print( CString message )
 
 		// It means that we're at the end and there was no \n.
 		// (so it's just one line message)
-		if ( current_character_count == message.size - 1 ){
-			add_line( 0, message.size );
+		if ( current_character_count == message.length - 1 ){
+			add_line( 0, message.length );
 		}
 	}
 

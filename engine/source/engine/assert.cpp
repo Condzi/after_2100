@@ -31,11 +31,11 @@ void open_crash_log_in_text_editor()
 // in different enviroments) by using __FILE__ and subtracting
 // length of the "engine/source/engine/assert.cpp" string, which we know that
 // we won't change.
-compile_constant skip_file_chars = CString{ __FILE__ }.size - CString{ "engine/source/engine/assert.cpp" }.size;
+compile_constant skip_file_chars = CString{ __FILE__ }.length - CString{ "engine/source/engine/assert.cpp" }.length;
 
 void on_assert_fail( CString file, CString line, CString function_name, CString condition )
 {
-	file = CString{ file.data + skip_file_chars, file.size - skip_file_chars };
+	file = CString{ file.data + skip_file_chars, file.length - skip_file_chars };
 
 	// If we wouldn't close the window we would stuck in the fullscreen mode.
 	Context.window->shutdown();
@@ -116,7 +116,7 @@ Condition: "%s"
 
 void on_check_fail( CString file, CString line, CString function_name, CString condition )
 {
-	file = CString{ file.data + skip_file_chars, file.size - skip_file_chars };
+	file = CString{ file.data + skip_file_chars, file.length - skip_file_chars };
 
 	compile_constant message_format = CString{ R"(
 === === === === === === === === === ===

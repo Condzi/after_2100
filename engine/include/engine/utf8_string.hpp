@@ -9,13 +9,12 @@ namespace con
 struct UTF8_String final
 {
 	wchar_t const* const data = nullptr;
-
-	s32 const size = 0;
+	s32 const            length = 0;
 
 	UTF8_String() = default;
-	UTF8_String( wchar_t const* const runtime_str, s32 size_ );
-	template <s32 SIZE>
-	constexpr UTF8_String( wchar_t const ( &cstr )[SIZE] );
+	UTF8_String( wchar_t const* const runtime_str, s32 length_ );
+	template <s32 TLength>
+	constexpr UTF8_String( wchar_t const ( &cstr )[TLength] );
 
 	UTF8_String& operator=( UTF8_String const& other );
 };
@@ -24,10 +23,10 @@ struct UTF8_String final
 // Definitions
 //
 
-template <s32 SIZE>
-constexpr UTF8_String::UTF8_String( wchar_t const( &cstr )[SIZE] ) :
+template <s32 TLength>
+constexpr UTF8_String::UTF8_String( wchar_t const( &cstr )[TLength] ) :
 	data( cstr ),
-	size( SIZE-1 )
+	length( TLength-1 )
 {}
 
 inline UTF8_String operator "" _utf8( wchar_t const* const str, size_t size )

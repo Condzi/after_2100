@@ -31,17 +31,17 @@ void Logger::pop_indent()
 
 void Logger::log( CString message )
 {
-	assert( next_free_slot + message.size + current_indent < end );
+	con_assert( next_free_slot + message.length + current_indent < end );
 
 	// We use spaces instad of tabs for easier handling.
 	memset( next_free_slot, ' ', current_indent );
 	next_free_slot += current_indent;
 
-	memcpy( next_free_slot, message.data, message.size );
+	memcpy( next_free_slot, message.data, message.length );
 
-	Context.dev_console->print( CString{ next_free_slot - current_indent, message.size + current_indent } );
+	Context.dev_console->print( CString{ next_free_slot - current_indent, message.length + current_indent } );
 
-	next_free_slot += message.size;
+	next_free_slot += message.length;
 
 	// We add newline here because the Dev_Console doesn't want \n.
 	*next_free_slot = '\n';
@@ -50,12 +50,12 @@ void Logger::log( CString message )
 
 void Logger::log_no_indent( CString message )
 {
-	assert( next_free_slot + message.size < end );
+	con_assert( next_free_slot + message.length < end );
 
-	memcpy( next_free_slot, message.data, message.size );
-	Context.dev_console->print( CString{next_free_slot, message.size } );
+	memcpy( next_free_slot, message.data, message.length );
+	Context.dev_console->print( CString{next_free_slot, message.length } );
 
-	next_free_slot += message.size;
+	next_free_slot += message.length;
 	// We add newline here because the Dev_Console doesn't want \n.
 	*next_free_slot = '\n';
 	++next_free_slot;
@@ -69,7 +69,7 @@ returning Logger::get_buffer() const -> CString
 	}
 
 	// We're adding \0 for C's puts at the end, so we need an extra space.
-	assert( messages_size + 1 < buffer_size );
+	con_assert( messages_size + 1 < buffer_size );
 	*next_free_slot = '\0';
 	return { begin, messages_size };
 }

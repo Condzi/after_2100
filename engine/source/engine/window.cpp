@@ -20,8 +20,9 @@ void Window::initialize()
 	constant gl_debug   = cstring_to_bool( cfg.get_value( "debug"_hcs, "gl_debug"_hcs ) );
 	constant vsync      = cstring_to_bool( cfg.get_value( "display"_hcs, "vsync"_hcs ) );
 	constant fullscreen = cstring_to_bool( cfg.get_value( "display"_hcs, "fullscreen"_hcs ) );
-	constant frame_cap  = cstring_to_s32( cfg.get_value( "display"_hcs, "frame_cap"_hcs ) );;
-	s32 gl_major = -1, gl_minor = -1;
+	constant frame_cap  = cstring_to_s32( cfg.get_value( "display"_hcs, "frame_cap"_hcs ) );
+
+	s32 gl_major  = -1, gl_minor   = -1;
 	s32 win_width = -1, win_height = -1;
 
 	CString gl_context_version_cstring;
@@ -76,7 +77,7 @@ void Window::initialize()
 		GLFWvidmode const* const monitor_video_mode = glfwGetVideoMode( monitor );
 		con_assert( monitor_video_mode != nullptr );
 		// Does char = utf-8? ughhh I hope so
-		con_log( R"(Creating fullscreen window on monitor "%" (% x %, %Hz), window size is % x %.)", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate, win_width, win_height );
+		con_log( R"(Creating fullscreen window on monitor "%" (% x %, %Hz), window length is % x %.)", cstring_from_cstr( glfwGetMonitorName( monitor ) ), monitor_video_mode->width, monitor_video_mode->height, monitor_video_mode->refreshRate, win_width, win_height );
 
 		// @ToDo: irl use monitor_video_mode to find the best resoulution. Maybe use the gatherded
 		// resolution if resoulution in cfg file is really tiny? Like "if width < monitor_width/4 or height < monitor_height < 4" or something like that? 
@@ -86,7 +87,7 @@ void Window::initialize()
 		release_con_assert( handle != nullptr );
 		glfwMakeContextCurrent( handle );
 	} else {
-		con_log( "Creating windowed window, size % x %.", win_width, win_height );
+		con_log( "Creating windowed window, length % x %.", win_width, win_height );
 		// pass monitor if you want fullscreen
 		handle = glfwCreateWindow( win_width, win_height, CON_WINDOW_TITLE, nullptr, nullptr );
 		release_con_assert( handle != nullptr );
@@ -104,7 +105,7 @@ void Window::initialize()
 
 
 	glGetIntegerv( GL_MAX_TEXTURE_SIZE, &Context.machine_info.max_texture_size );
-	con_log( "Max texture size: %x%", Context.machine_info.max_texture_size, Context.machine_info.max_texture_size );
+	con_log( "Max texture length: %x%", Context.machine_info.max_texture_size, Context.machine_info.max_texture_size );
 
 	if ( vsync ) {
 		glfwSwapInterval( 1 );

@@ -62,7 +62,7 @@ returning load_texture_data( CString file, s16 const decl_width, s16 const decl_
 	byte* data = reinterpret_cast<byte*>( stbi_load( path.data, &loaded_width, &loaded_height, &channels, STBI_rgb_alpha ) );
 
 	// -1 because we have to remove '\0' -- it messes up fputs.
-	path = { path.data, path.size-1 };
+	path = { path.data, path.length-1 };
 
 	if ( data == nullptr ) {
 		constant failure_reason = cstring_from_cstr( stbi_failure_reason() );
@@ -138,7 +138,7 @@ returning build_shader_program( CString source ) -> gl_id
 	constant fragment_shader_id = glCreateShader( GL_FRAGMENT_SHADER );
 	constant program_id         = glCreateProgram();
 
-	glShaderSource( vertex_shader_id, 1, &vertex_shader_source.data, &vertex_shader_source.size );
+	glShaderSource( vertex_shader_id, 1, &vertex_shader_source.data, &vertex_shader_source.length );
 	glCompileShader( vertex_shader_id );
 
 	//
@@ -158,7 +158,7 @@ returning build_shader_program( CString source ) -> gl_id
 	};
 	release_con_assert( compilation_success != 0 );
 
-	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &fragment_shader_source.size );
+	glShaderSource( fragment_shader_id, 1, &fragment_shader_source.data, &fragment_shader_source.length );
 	glCompileShader( fragment_shader_id );
 
 
@@ -249,9 +249,9 @@ void Resource_Loader::initialize()
 				if ( !sscan( "% % %", it.value, path, width, height ) ) {
 					con_log( R"(Error: can't format the texture value "%"!)", it.value );
 				} else {
-					char* path_memory = da.allocate<char>( path.size );
-					memcpy( path_memory, path.data, path.size );
-					paths.textures[current_texture_idx] ={ path_memory, path.size };
+					char* path_memory = da.allocate<char>( path.length );
+					memcpy( path_memory, path.data, path.length );
+					paths.textures[current_texture_idx] ={ path_memory, path.length };
 					texture_data[current_texture_idx] ={ static_cast<s16>( width ), static_cast<s16>( height ) };
 					// (if you need to you can print texture info here)
 				}
@@ -287,9 +287,9 @@ void Resource_Loader::initialize()
 				if ( !sscan( "%", it.value, path ) ) {
 					con_log( R"(Error: can't format the shader path "%"!)", it.value );
 				} else {
-					char* path_memory = da.allocate<char>( path.size );
-					memcpy( path_memory, path.data, path.size );
-					paths.shaders[current_shader_idx] ={ path_memory, path.size };
+					char* path_memory = da.allocate<char>( path.length );
+					memcpy( path_memory, path.data, path.length );
+					paths.shaders[current_shader_idx] ={ path_memory, path.length };
 				}
 				++current_shader_idx;
 			}
@@ -333,9 +333,9 @@ void Resource_Loader::initialize()
 				if ( !sscan( "%", it.value, path ) ) {
 					con_log( R"(Error: can't format the font path "%"!)", it.value );
 				} else {
-					char* path_memory = da.allocate<char>( path.size );
-					memcpy( path_memory, path.data, path.size );
-					paths.fonts[current_font_idx] ={ path_memory, path.size };
+					char* path_memory = da.allocate<char>( path.length );
+					memcpy( path_memory, path.data, path.length );
+					paths.fonts[current_font_idx] ={ path_memory, path.length };
 				}
 
 				// Because fonts live entire program lifespan, we also load them here.
@@ -446,7 +446,7 @@ void Resource_Loader::initialize()
 
 			constant source = load_shader_source( paths.shaders[idx] );
 
-			if ( source.size > 0 ) {
+			if ( source.length > 0 ) {
 				current_shader.id = build_shader_program( source );
 			} else {
 				con_log( "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
@@ -502,7 +502,7 @@ void Resource_Loader::initialize()
 			// Get and hash the name texture of the planet.
 			constant texture_name_as_cstring = planets_config.get_value( current_planet_hash, texture_hash_name_hash );
 
-			if ( texture_name_as_cstring.size <= 0 ) {
+			if ( texture_name_as_cstring.length <= 0 ) {
 				con_log( "Error: invalid texture name for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
 				continue;
 			}
@@ -512,7 +512,7 @@ void Resource_Loader::initialize()
 			// Get and parse radius. 
 			constant radius_as_cstring = planets_config.get_value( current_planet_hash, radius_name_hash );
 
-			if ( radius_as_cstring.size <= 0 ) {
+			if ( radius_as_cstring.length <= 0 ) {
 				con_log( "Error: invalid radius for planet! (i = %, current_planet_hash = %)", i, current_planet_hash );
 				continue;
 			}
@@ -543,15 +543,15 @@ void Resource_Loader::shutdown()
 	name_hashes.fonts.shutdown();
 
 	for ( s32 i = 0; i < paths.textures.size(); ++i ) {
-		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.textures[i].data ) ), paths.textures[i].size );
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.textures[i].data ) ), paths.textures[i].length );
 	}
 
 	for ( s32 i = 0; i < paths.shaders.size(); ++i ) {
-		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.shaders[i].data ) ), paths.shaders[i].size );
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.shaders[i].data ) ), paths.shaders[i].length );
 	}
 
 	for ( s32 i = 0; i < paths.fonts.size(); ++i ) {
-		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.fonts[i].data ) ), paths.fonts[i].size );
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( paths.fonts[i].data ) ), paths.fonts[i].length );
 	}
 
 	paths.textures.shutdown();
@@ -790,7 +790,7 @@ returning Resource_Loader::prepare_resources_for_scene( CString scene_name ) -> 
 			constant idx = is_present_search_result.idx;
 			constant source = load_shader_source( paths.shaders[idx] );
 
-			if ( source.size > 0 ) {
+			if ( source.length > 0 ) {
 				current_shader.id = build_shader_program( source );
 			} else {
 				con_log( "Error: no shader source (hash %, idx = %)", current_shader.name_hash, idx );
@@ -877,7 +877,7 @@ void Resource_Loader::check_scene_folder_content()
 
 			constant full_filename = cstring_from_stdstring( path.filename().generic_string() );
 
-			constant without_exension = CString{ full_filename.data, full_filename.size - CString{CON_SCENE_RESOURCES_FILE_EXTENSION}.size };
+			constant without_exension = CString{ full_filename.data, full_filename.length - CString{CON_SCENE_RESOURCES_FILE_EXTENSION}.length };
 
 			scene_folder_content.hashes[current_file] = hash_cstring( without_exension );
 

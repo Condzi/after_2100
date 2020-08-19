@@ -318,11 +318,11 @@ returning construct_text( UTF8_String utf8_string, Dynamic_Font& font, s8 text_s
 	// @ToDo: move the breaking line code away from `construct_text`. Maybe just
 	// make a proper function for that -- it doesn't belong here.
 	if ( line_length_limit > 0 &&
-		 utf8_string.size > line_length_limit ) {
+		 utf8_string.length > line_length_limit ) {
 		// We must copy the data to modify it.
 
-		wchar_t* str_copy = ta.allocate<wchar_t>( utf8_string.size );
-		memcpy( str_copy, utf8_string.data, utf8_string.size * sizeof( wchar_t ) );
+		wchar_t* str_copy = ta.allocate<wchar_t>( utf8_string.length );
+		memcpy( str_copy, utf8_string.data, utf8_string.length * sizeof( wchar_t ) );
 
 		s32 last_space_position = -1;
 		// Amount of characters since last break.
@@ -335,7 +335,7 @@ returning construct_text( UTF8_String utf8_string, Dynamic_Font& font, s8 text_s
 
 		// Save the position of nearest space (' '). If you reach the limit,
 		// put there a newline.
-		for ( s32 i = 0; i < utf8_string.size; i++ ) {
+		for ( s32 i = 0; i < utf8_string.length; i++ ) {
 			++char_count;
 			constant& current_char = utf8_string.data[i];
 
@@ -356,17 +356,17 @@ returning construct_text( UTF8_String utf8_string, Dynamic_Font& font, s8 text_s
 
 				// We can't put that condition in the loop because
 				// we may end too early without putting \n.
-				if ( i > utf8_string.size - line_length_limit ) {
+				if ( i > utf8_string.length - line_length_limit ) {
 					break;
 				}
 			}
 		}
 
-		utf8_string = UTF8_String{ str_copy, utf8_string.size };
+		utf8_string = UTF8_String{ str_copy, utf8_string.length };
 	}
 
 	Array<Textured_Vertex2D> vertices;
-	vertices.initialize( utf8_string.size * 6, Context.temporary_allocator );
+	vertices.initialize( utf8_string.length * 6, Context.temporary_allocator );
 	s32 idx_in_vertices = 0;
 	// Is used to measure the size of the final text.
 	// Bottom right is the furthest point in the AABB in our
@@ -400,7 +400,7 @@ returning construct_text( UTF8_String utf8_string, Dynamic_Font& font, s8 text_s
 	constant text_texture_height = static_cast<f32>( text_texture_height_int );
 
 
-	for ( s32 i = 0; i < utf8_string.size; ++i ) {
+	for ( s32 i = 0; i < utf8_string.length; ++i ) {
 		current_char = utf8_string.data[i];
 
 		if ( current_char == L'\n' ) {

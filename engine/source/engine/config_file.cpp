@@ -45,7 +45,7 @@ returning Config_File::parse_from_file( CString path ) -> bool
 			idx = endline_idx;
 			continue;
 		} else if ( temp.begins_with( section_mark ) ) {
-			constant section_name_begin = idx + section_mark.size;
+			constant section_name_begin = idx + section_mark.length;
 			constant section_name_end = ate_chars_until_whitespace( file_content, section_name_begin );
 			current_section_hash = hash_cstring( { file_content.data() + section_name_begin, section_name_end - section_name_begin } );
 			idx = endline_idx;
@@ -110,8 +110,8 @@ returning Config_File::parse_from_source( CString source ) -> bool
 	// @Performance: We can avoid this by having methods that accept CString instead of Array<char>.
 	// This will do it for now tho.
 	Array<char> source_content;
-	source_content.initialize( source.size, temporary_allocator );
-	memcpy( source_content.data(), source.data, source.size );
+	source_content.initialize( source.length, temporary_allocator );
+	memcpy( source_content.data(), source.data, source.length );
 
 	config_values.initialize( CON_MAX_CONFIG_ENTRIES, Context.default_allocator );
 
@@ -132,7 +132,7 @@ returning Config_File::parse_from_source( CString source ) -> bool
 			idx = endline_idx;
 			continue;
 		} else if ( temp.begins_with( section_mark ) ) {
-			constant section_name_begin = idx + section_mark.size;
+			constant section_name_begin = idx + section_mark.length;
 			constant section_name_end = ate_chars_until_whitespace( source_content, section_name_begin );
 			current_section_hash = hash_cstring( { source_content.data() + section_name_begin, section_name_end - section_name_begin } );
 			idx = endline_idx;
@@ -179,7 +179,7 @@ returning Config_File::parse_from_source( CString source ) -> bool
 void Config_File::free()
 {
 	for ( s32 i = 0; i < config_values.size(); ++i ) {
-		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( config_values[i].value.data ) ), config_values[i].value.size );
+		Context.default_allocator->free( reinterpret_cast<byte*>( const_cast<char*>( config_values[i].value.data ) ), config_values[i].value.length );
 	}
 
 	config_values.shutdown();

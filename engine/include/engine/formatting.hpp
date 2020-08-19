@@ -77,25 +77,25 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 		{
 			s32 current_arg{ -1 };
 			( void( str_args[++current_arg] = T_to_cstring( args ) ), ... );
-			assert( current_arg == args_count - 1 );
+			con_assert( current_arg == args_count - 1 );
 		}
 
-		constant final_string_size = [&] {
-			s32 size = fmt.size - args_count; // - args_count because we don't want to count '%'
+		constant final_string_length = [&] {
+			s32 length = fmt.length - args_count; // - args_count because we don't want to count '%'
 			for ( constant str : str_args ) {
-				size += str.size;
+				length += str.length;
 			}
-			return size;
+			return length;
 		}( );
 
-		char* final_string_buffer = temporary_allocator.allocate<char>( final_string_size );
+		char* final_string_buffer = temporary_allocator.allocate<char>( final_string_length );
 
 		s32 fmt_it, fs_it, arg_it;
 		fmt_it = fs_it = arg_it = 0;
-		for ( ; fmt_it < fmt.size; ++fmt_it ) {
+		for ( ; fmt_it < fmt.length; ++fmt_it ) {
 			if ( fmt.data[fmt_it] == '%' && arg_it < args_count ) {
-				std::memcpy( final_string_buffer + fs_it, str_args[arg_it].data, str_args[arg_it].size );
-				fs_it += str_args[arg_it].size;
+				memcpy( final_string_buffer + fs_it, str_args[arg_it].data, str_args[arg_it].length );
+				fs_it += str_args[arg_it].length;
 				++arg_it;
 			} else {
 				final_string_buffer[fs_it] = fmt.data[fmt_it];
@@ -103,9 +103,9 @@ returning sprint( CString fmt, TArgs ...args ) -> CString
 			}
 		}
 
-		assert( fs_it == final_string_size );
+		con_assert( fs_it == final_string_length );
 
-		return { final_string_buffer, final_string_size };
+		return { final_string_buffer, final_string_length };
 	}
 }
 
@@ -150,7 +150,7 @@ returning sscan( CString format, CString str, TArgs& ...args ) -> bool
 
 	// i = idx in format; j = idx in str
 	s32 current_arg = 0;
-	for ( s32 i = 0, j = 0; i < format.size && j < str.size && current_arg < args_count; ) {
+	for ( s32 i = 0, j = 0; i < format.length && j < str.length && current_arg < args_count; ) {
 		// Skip matching characters
 		while ( format.data[i] == str.data[j] ) {
 			++i;
@@ -158,7 +158,7 @@ returning sscan( CString format, CString str, TArgs& ...args ) -> bool
 		}
 
 		// Fail if character that differenciate is not a %.
-		assert( format.data[i] == '%' );
+		con_assert( format.data[i] == '%' );
 		if ( format.data[i] != '%' ) {
 			return false;
 		}
@@ -168,14 +168,14 @@ returning sscan( CString format, CString str, TArgs& ...args ) -> bool
 		constant start = j;
 		// Skip characters that make the number until you find the next format character or 
 		// end of the string.
-		while ( str.data[++j] != format.data[i] && j < str.size );
-		constant size = j - start;
-		strings_to_parse[current_arg] = CString{ str.data +start, size };
+		while ( str.data[++j] != format.data[i] && j < str.length );
+		constant length = j - start;
+		strings_to_parse[current_arg] = CString{ str.data + start, length };
 		++current_arg;
 	}
 
 	// We haven't found all of the arguments.
-	assert( current_arg == args_count );
+	con_assert( current_arg == args_count );
 
 	current_arg = -1; // -1 because folding expressions.
 

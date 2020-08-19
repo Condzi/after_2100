@@ -7,14 +7,14 @@
 
 namespace con
 {
-CString::CString( char const* const runtime_str, s32 size_ ) :
+CString::CString( char const* const runtime_str, s32 length_ ) :
 	data( runtime_str ),
-	size( size_ )
+	length( length_ )
 {}
 
 returning CString::begins_with( CString str ) const -> bool
 {
-	return size >= str.size && memcmp( data, str.data, str.size ) == 0;
+	return length >= str.length && memcmp( data, str.data, str.length ) == 0;
 }
 
 CString& CString::operator=( CString const& other )
@@ -26,7 +26,7 @@ CString& CString::operator=( CString const& other )
 
 returning operator==( CString const& lhs, CString const rhs ) -> bool
 {
-	return ( lhs.size == rhs.size ) && ( lhs.data == rhs.data || memcmp( lhs.data, rhs.data, lhs.size ) == 0 );
+	return ( lhs.length == rhs.length ) && ( lhs.data == rhs.data || memcmp( lhs.data, rhs.data, lhs.length ) == 0 );
 }
 
 returning cstring_from_cstr( char const* cstr ) -> CString
@@ -50,32 +50,32 @@ returning cstring_from_array( Array<char> const& arr ) -> CString
 
 returning cstring_to_cstr( CString str ) -> CString
 {
-	char* new_str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.size + 1 ) );
-	memcpy( new_str_data, str.data, str.size );
-	new_str_data[str.size] = '\0';
+	char* new_str_data = reinterpret_cast<char*>( Context.temporary_allocator->allocate( str.length + 1 ) );
+	memcpy( new_str_data, str.data, str.length );
+	new_str_data[str.length] = '\0';
 
-	return CString{ new_str_data, str.size+1 };
+	return CString{ new_str_data, str.length+1 };
 
 }
 
 returning cstring_to_stdsv( CString str ) -> std::string_view
 {
-	return std::string_view{ str.data, static_cast<size_t>( str.size ) };
+	return std::string_view{ str.data, static_cast<size_t>( str.length ) };
 }
 
 returning cstring_to_utf8_string( CString str ) -> UTF8_String
 {
 	auto& ta = reinterpret_cast<Temporary_Allocator&>( *Context.temporary_allocator );
 
-	wchar_t* utf8_data = ta.allocate<wchar_t>( str.size );
+	wchar_t* utf8_data = ta.allocate<wchar_t>( str.length );
 
 	// Just copy chars values to utf8_data. We can't use memcpy
 	// because wchar_t is bigger than a char.
 
-	for ( s32 i = 0; i < str.size; ++i ) {
+	for ( s32 i = 0; i < str.length; ++i ) {
 		utf8_data[i] = str.data[i];
 	}
 
-	return { utf8_data, str.size };
+	return { utf8_data, str.length };
 }
 }

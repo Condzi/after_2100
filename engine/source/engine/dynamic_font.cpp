@@ -73,7 +73,7 @@ void Dynamic_Font::initialize( CString path, std::initializer_list<s8> text_size
 	for ( s32 i = 0; i < text_sizes.size(); ++i ) {
 		con_push_indent();
 
-		character_infos[i].initialize( alphabet.size, Context.default_allocator );
+		character_infos[i].initialize( alphabet.length, Context.default_allocator );
 
 		offset_x = 0;
 		atlas_width = atlas_height = -1;
@@ -81,15 +81,15 @@ void Dynamic_Font::initialize( CString path, std::initializer_list<s8> text_size
 
 		sft.xScale = sft.yScale = size;
 
-		for ( s32 j = 0; j < alphabet.size; ++j ) {
+		for ( s32 j = 0; j < alphabet.length; ++j ) {
 			// 0 means success.
 			constant char_success_info = sft_char( &sft, alphabet.data[j], &sft_character );
 
 			if ( char_success_info == -1 ) {
-				con_log( R"(Error: can't load character for font "%". Alphabet idx = %, size = %.)", path, j, size );
+				con_log( R"(Error: can't load character for font "%". Alphabet idx = %, length = %.)", path, j, size );
 				continue;
 			} else if ( char_success_info == 1 ) {
-				con_log( R"(Warning: can't load character for font "%". Alphabet idx = %, size = %. Missing character will be used.)", path, j, size );
+				con_log( R"(Warning: can't load character for font "%". Alphabet idx = %, length = %. Missing character will be used.)", path, j, size );
 			}
 
 			auto& character_info = character_infos[i][j];
@@ -142,7 +142,7 @@ void Dynamic_Font::initialize( CString path, std::initializer_list<s8> text_size
 		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &tex_w );
 		glGetTexLevelParameteriv( GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &tex_h );
 
-		for ( s32 j = 0; j < alphabet.size; ++j ) {
+		for ( s32 j = 0; j < alphabet.length; ++j ) {
 			// 0 means success. -1 is failure, 1 is missing char.
 			constant char_success_info = sft_char( &sft, alphabet.data[j], &sft_character );
 
@@ -202,14 +202,14 @@ returning Dynamic_Font::get_character_info( wchar_t character, s8 text_size ) ->
 	con_assert( size_find_result.found() );
 
 	if ( size_find_result.not_found() ) {
-		con_log( "Error: can't find size in font. Char = %, size enum value = %.", static_cast<s32>( character ), text_size );
+		con_log( "Error: can't find length in font. Char = %, length enum value = %.", static_cast<s32>( character ), text_size );
 
 		return {};
 	}
 
 	// We don't have code to make array from UTF8_String, soo...
 	s32 char_idx = -1;
-	for ( s32 i = 0; i < alphabet.size; ++i ) {
+	for ( s32 i = 0; i < alphabet.length; ++i ) {
 		if ( alphabet.data[i] == character ) {
 			char_idx = i;
 			break;
@@ -218,7 +218,7 @@ returning Dynamic_Font::get_character_info( wchar_t character, s8 text_size ) ->
 
 	con_assert( char_idx != -1 );
 	if ( char_idx == -1 ) {
-		con_log( "Error: can't find character in font. Char = %, size enum value = %.", static_cast<s32>( character ), text_size );
+		con_log( "Error: can't find character in font. Char = %, length enum value = %.", static_cast<s32>( character ), text_size );
 
 		return {};
 	}
@@ -235,7 +235,7 @@ returning Dynamic_Font::get_kerning( wchar_t left_character, wchar_t right_chara
 	con_assert( size_find_result.found() );
 
 	if ( size_find_result.not_found() ) {
-		con_log( "Error: can't find size in font. size enum value = %.", text_size );
+		con_log( "Error: can't find length in font. length enum value = %.", text_size );
 
 		return {};
 	}
@@ -249,7 +249,7 @@ returning Dynamic_Font::get_kerning( wchar_t left_character, wchar_t right_chara
 
 	con_assert( success == 0 );
 	if ( success != 0 ) {
-		con_log( "Error: can't get kerning. size enum value = %; left char = %, right char = %.", text_size, static_cast<s32>( left_character ), static_cast<s32>( right_character ) );
+		con_log( "Error: can't get kerning. length enum value = %; left char = %, right char = %.", text_size, static_cast<s32>( left_character ), static_cast<s32>( right_character ) );
 
 		return {};
 	}
@@ -266,7 +266,7 @@ returning Dynamic_Font::get_line_spacing( s8 text_size ) -> Line_Spacing
 	con_assert( size_find_result.found() );
 
 	if ( size_find_result.not_found() ) {
-		con_log( "Error: can't find size in font. size enum value = %.", text_size );
+		con_log( "Error: can't find length in font. length enum value = %.", text_size );
 
 		return {};
 	}
