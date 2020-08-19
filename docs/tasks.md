@@ -1,5 +1,4 @@
 # **Current Tasks**
-* add multiline log messages to `Dev_Console`.
 * adapt the code to use `con_check` with handing of failures if `con_assert` is too harsh.
     * all "core" utilities (`sprint`, allocators) should use `con_assert`, because we're using them in the `con_check`.
 * copy the Bitset implementaiton from `gol`

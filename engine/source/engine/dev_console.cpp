@@ -158,8 +158,12 @@ void Dev_Console::update( f32 dt )
 			memcpy( buffer + buffer_idx, utf8_str.data, utf8_str.size * sizeof( wchar_t ) );
 
 			buffer_idx += utf8_str.size;
-			buffer[buffer_idx] = '\n';
-			++buffer_idx;
+			// If we have multiline message we're having newline sometimes.
+			// Therefore, add newline only if we haven't already.
+			if ( buffer[buffer_idx-1] != L'\n' ){
+				buffer[buffer_idx] = L'\n';
+				++buffer_idx;
+			}
 		}
 
 		UTF8_String const final_string_to_display{ buffer, buffer_idx };
@@ -219,25 +223,9 @@ void Dev_Console::print( CString message )
 		return;
 	}
 
-	// @ToDo: one message may have more lines than this formula shows simply by having
-	// more '\n'. We can handle this by creating a temporary buffer of lines with arbi-trary 
-	// size, let's say 32. Then we keep track of how many lines we're saving. 
-	// After splitting do the memmove operation and decrement the `free_lines_in_the_buffer_count`.
-	//
-	//
-	constant lines = message.size / lines_length + 1;
-	memmove( lines_buffer.data(), lines_buffer.data() + lines, ( lines_buffer_size - lines ) * sizeof( CString ) );
-
-
-	free_lines_in_the_buffer_count -= lines;
-	if ( free_lines_in_the_buffer_count < 0 ){
-		free_lines_in_the_buffer_count = 0;
-	}
-
-	if ( lines == 1 ){
-		lines_buffer[lines_buffer_size-1] = message;
-		return;
-	}
+	Array<CString> temp_lines_buffer;
+	// @ToDo: move the magic number of temp lines to a macro.
+	temp_lines_buffer.initialize( 32, Context.temporary_allocator );
 
 	//
 	// Break into multiple lines if needed.
@@ -245,13 +233,15 @@ void Dev_Console::print( CString message )
 	s32 current_line_begin      = 0;
 	s32 last_space_position     = -1;
 	s32 current_character_count = 0;
-	s32 current_line_idx        = lines;
+	// It's also the amount of lines we've added.
+	s32 current_line_idx        = 0;
 
 	// Helper lambda for adding lines.
 	constant add_line = [&]( s32 const start, s32 const length ){
-		lines_buffer[lines_buffer_size - current_line_idx - 1] = CString{ message.data + start, length };
+		temp_lines_buffer[current_line_idx] = CString{ message.data + start, length };
 
-		--current_line_idx;
+		++current_line_idx;
+		con_assert( current_line_idx < 32 );
 	};
 
 	for ( s32 i = 0; i < message.size; ++i ){
@@ -262,11 +252,12 @@ void Dev_Console::print( CString message )
 		} else if ( message.data[i] == '\n' ||
 					( current_character_count > lines_length ) ){
 			// In case there is no space character, break the word.
-			if ( last_space_position == -1 ){
+			// If there is '\n', break there.
+			if ( last_space_position == -1 || message.data[i] == '\n' ){
 				last_space_position = i;
 			}
 
-			constant current_line_length = last_space_position - current_line_begin;
+			constant current_line_length = last_space_position - current_line_begin + 1;
 
 			add_line( current_line_begin, current_line_length );
 
@@ -275,17 +266,33 @@ void Dev_Console::print( CString message )
 			last_space_position     = -1;
 
 			// This means that there is only one line remaining.
-			if ( i > message.size - lines_length ){
+			if ( i == message.size - 1 ){
 				// Adding the last line.
-				con_assert( current_line_idx == 0 );
-				add_line( current_line_begin, message.size - i );
+				add_line( current_line_begin, current_character_count );
 				break;
 			}
 		}
+
+		// @Performance: multiline messages are rather seldom. We use them to print
+		// check failures. Maybe check if given message has any \n or is longer than
+		// line_length, then call print_multiline?
+
+		// It means that we're at the end and there was no \n.
+		// (so it's just one line message)
+		if ( current_character_count == message.size - 1 ){
+			add_line( 0, message.size );
+		}
 	}
 
-	// It means that we added all the lines.
-	con_assert( current_line_idx == -1 );
+	free_lines_in_the_buffer_count -= current_line_idx;
+	if ( free_lines_in_the_buffer_count < 0 ){
+		free_lines_in_the_buffer_count = 0;
+	}
+
+	// Move the current lines "up" (we're getting rid of some lines too)
+	memmove( lines_buffer.data(), lines_buffer.data() + current_line_idx, ( lines_buffer_size - current_line_idx ) * sizeof( CString ) );
+	// Copy the new lines.
+	memcpy( lines_buffer.data() + lines_buffer_size - current_line_idx, temp_lines_buffer.data(), current_line_idx * sizeof( CString ) );
 }
 
 void Dev_Console::scroll_up()
