@@ -5,6 +5,8 @@
 
 # **Quality of life**
 
+* add fps counter and frame time in the corner
+* add performance profiler with diagrams and such
 * don't use default parameters in functions like `initialize` (see: `Bitset::initialize` and `Temporary_Allocator`)
 * log the hardware info (RAM, max texture size, this kind of stuff)
 * add support for `const char*` const in sprint because right now we have to do `CString{ CON_SOME_CSTRING_MACRO }`

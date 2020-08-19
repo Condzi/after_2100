@@ -13,6 +13,13 @@ public:
 	void initialize();
 	void shutdown();
 
+	// aka minimize. We use it when we hit a breakpoint.
+	// If we don't do it, we'll get stuck with fullscreen window.
+	void iconify();
+	// If minimized / maximized, window get restored to previous resolution.
+	// Also works for fullscreen for recorvering from iconifying.
+	void restore();
+
 	void close();
 
 	void set_title( CString title );

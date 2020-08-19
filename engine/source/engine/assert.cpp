@@ -133,10 +133,14 @@ void on_check_fail( CString file, CString line, CString function_name, CString c
 	con_log_no_indent( "\n%\n", message_to_print );
 
 	if ( IsDebuggerPresent() ){
+		Context.window->iconify();
+
 		constant message_to_print_null_terminated = sprint( "%\0", message_to_print );
 		OutputDebugStringA( message_to_print_null_terminated.data );
 
 		__debugbreak();
+
+		Context.window->restore();
 	}
 }
 

@@ -184,6 +184,16 @@ void Window::shutdown()
 	glfwTerminate();
 }
 
+void Window::iconify()
+{
+	glfwIconifyWindow( handle );
+}
+
+void Window::restore()
+{
+	glfwRestoreWindow( handle );
+}
+
 void Window::close()
 {
 	glfwWindowShouldClose( handle );
