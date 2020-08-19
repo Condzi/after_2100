@@ -81,11 +81,10 @@ void Default_Allocator::free( byte* location, s32 size )
 	used_bytes.reset_range( idx, size );
 }
 
-void Temporary_Allocator::initialize( s32 reserved )
+void Temporary_Allocator::initialize()
 {
-	memory = Context.default_allocator->allocate( reserved );
-	size = reserved;
-	mark = highest_mark = 0;
+	memory = Context.default_allocator->allocate( reserved_size );
+	mark   = highest_mark = 0;
 }
 
 void Temporary_Allocator::free( byte* location, s32 size_ )
@@ -114,16 +113,16 @@ returning Temporary_Allocator::get_highest_mark() -> s32
 	return highest_mark;
 }
 
-returning Temporary_Allocator::allocate( s32 size_ ) -> byte*
+returning Temporary_Allocator::allocate( s32 size ) -> byte*
 {
 	byte* requested_memory = memory + mark;
-	mark += size_;
+	mark += size;
 
 	if ( mark > highest_mark ) {
 		highest_mark = mark;
 	}
 
-	con_assert( mark < size );
+	con_assert( mark < reserved_size );
 
 	return requested_memory;
 }

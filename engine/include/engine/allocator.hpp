@@ -11,14 +11,14 @@ namespace con
 struct Allocator
 {
 	returning virtual allocate( s32 size ) -> byte* = 0;
-	void virtual free( byte* location, s32 size ) = 0;
+	void virtual      free( byte* location, s32 size ) = 0;
 };
 
 struct C_Allocator final :
 	Allocator
 {
 	returning allocate( s32 size ) -> byte* override;
-	void free( byte* location, s32 size ) override;
+	void      free( byte* location, s32 size ) override;
 };
 
 // @ToDo: Make 4 byte sized blocks and keep track of free memory using
@@ -34,12 +34,12 @@ struct Default_Allocator final :
 	// Just allocates amount*sizeof(T) bytes and does reinterpret_cast 
 	template <typename T>
 	returning allocate( s32 amount = 1 ) -> T*;
-	void free( byte* location, s32 size ) override;
+	void      free( byte* location, s32 size ) override;
 
 private:
 	compile_constant reserved_size = CON_RESERVED_MEMORY;
 
-	byte* begin = nullptr;
+	byte*  begin = nullptr;
 	Bitset used_bytes;
 };
 
@@ -47,25 +47,26 @@ private:
 struct Temporary_Allocator final :
 	Allocator
 {
-	void initialize( s32 reserved = CON_TEMPORARY_STORAGE_RESERVED_MEMORY );
+	void initialize();
 
 	returning allocate( s32 size ) -> byte* override;
 	template <typename T>
 	returning allocate( s32 amount = 1 ) -> T*;
 	// Does nothing.
-	void free( byte* location, s32 size ) override;
+	void      free( byte* location, s32 size ) override;
 
 	void reset();
 
-	void set_mark( s32 new_mark );
+	void      set_mark( s32 new_mark );
 	returning get_mark() -> s32;
 	returning get_highest_mark() -> s32;
 
 private:
-	byte* memory;
-	s32 size;
-	s32 mark;
-	s32 highest_mark;
+	compile_constant reserved_size = CON_TEMPORARY_STORAGE_RESERVED_MEMORY;
+
+	byte* memory     = nullptr;
+	s32 mark         = 0;
+	s32 highest_mark = 0;
 };
 
 // Allocates stuff on stack.
@@ -76,7 +77,7 @@ struct Stack_Allocator final :
 	void shutdown();
 
 	returning allocate( s32 size ) -> byte* override;
-	void free( byte* location, s32 size ) override;
+	void      free( byte* location, s32 size ) override;
 
 private:
 	compile_constant reserved_size = CON_STACK_RESERVED_MEMORY;
