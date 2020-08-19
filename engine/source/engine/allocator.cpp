@@ -37,9 +37,9 @@ returning Default_Allocator::allocate( s32 size ) -> byte*
 		idx = result.idx;
 		con_assert( idx < reserved_size - size );
 
-		if ( used_bytes.test( idx + size ) == false ) {
+		if ( used_bytes.test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
-			for ( ; bit < idx+size - 1; ++bit ) {
+			for ( ; bit < idx + size - 1; ++bit ) {
 				if ( used_bytes.test( bit ) == true ) {
 					idx = idx + bit;
 					break;
@@ -153,7 +153,7 @@ returning Stack_Allocator::allocate( s32 size ) -> byte*
 
 		if ( used_bytes.test( idx + size - 1 ) == false ) {
 			s32 bit = idx + 1;
-			for ( ; bit < idx+size - 1; ++bit ) {
+			for ( ; bit < idx + size - 1; ++bit ) {
 				if ( used_bytes.test( bit ) == true ) {
 					idx = idx + bit;
 					break;
