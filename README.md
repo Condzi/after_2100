@@ -1,5 +1,5 @@
 # Some kind of game.
-Check out the releases for playable versions. Last one (V1) is just me experimenting with idea of orbits. The versions before it is some kind of classic shut'em up.
+Check out the releases for playable versions. Last one (V1) is just me experimenting with idea of orbits. The versions before it is some kind of classic shut'em up. The 'tests' were not used in the legacy branch.
 # Tech
 C++ + SFML (legacy branch), C++ + OpenGL (master branch). Code should compile using Visual Studio 2019. 
 
