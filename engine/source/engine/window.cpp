@@ -98,7 +98,10 @@ void Window::initialize()
 	// Initializing OpenGL
 	//
 	con_log( "Initializing OpenGL..." );
-	release_con_assert( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) != 0 );
+	if ( con_check( gladLoadGLLoader( reinterpret_cast<GLADloadproc>( glfwGetProcAddress ) ) != 0 ).failed ){
+		Context.exit_flags.requested_by_app = true;
+		return;
+	}
 
 	con_push_indent();
 	con_log( "Got OpenGL: %.%; requested: %.%.", GLVersion.major, GLVersion.minor, gl_major, gl_minor );
@@ -122,7 +125,9 @@ void Window::initialize()
 	} else {
 		con_log( "Setting up OpenGL debug mode..." );
 
-		release_con_assert( glDebugMessageCallback != nullptr );
+		if ( con_check( glDebugMessageCallback != nullptr ).failed ) {
+			return;
+		}
 
 		glEnable( GL_DEBUG_OUTPUT );
 		glEnable( GL_DEBUG_OUTPUT_SYNCHRONOUS );

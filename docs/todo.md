@@ -22,6 +22,4 @@
 * add random number generator (see comment in plan.md file. we may want to use a simple approach instead of using C++'s)
 
 # **BUGS**
-* sometimes we may need to call ctors. either use new and delete OR inplace new OR initialize everything to 0. If we do that, we can simply memset(0) everytime we allocate new memory.
-* if orbit is out of screen bounds the game crash (investigate when exactly and why)
 * we may introduce bugs because of copying the `Array` somewhere. investigate that.

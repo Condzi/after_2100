@@ -7,7 +7,6 @@
 
 namespace con
 {
-// @Robustess: delete operator=. We may accidentaly call shutdown() twice for the same memory location!
 template <typename T>
 class Array final
 {

@@ -1,6 +1,5 @@
 *.pdb
 *.filters
-*.lib
 *.dll
 
 .vs/
